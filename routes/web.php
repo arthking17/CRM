@@ -16,4 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
+
+Route::view('/accounts/create', 'accounts/create')->name('create');
+Route::post('/accounts/create', 'AccountsController@store')->name('create');
+Route::get('/accounts', 'AccountsController@show')->name('accounts');

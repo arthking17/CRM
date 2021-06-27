@@ -327,7 +327,7 @@
 
         <!-- LOGO -->
         <div class="logo-box">
-            <a href="index.html" class="logo logo-dark text-center">
+            <a href="{{ route('home') }}" class="logo logo-dark text-center">
                 <span class="logo-sm">
                     <img src="/images/logo-sm.png" alt="" height="22">
                     <!-- <span class="logo-lg-text-light">UBold</span> -->
@@ -338,7 +338,7 @@
                 </span>
             </a>
 
-            <a href="index.html" class="logo logo-light text-center">
+            <a href="{{ route('home') }}" class="logo logo-light text-center">
                 <span class="logo-sm">
                     <img src="/images/logo-sm.png" alt="" height="22">
                 </span>
