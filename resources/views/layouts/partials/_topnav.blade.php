@@ -15,7 +15,7 @@
                             <i class="fe-user me-1"></i> Accounts <div class="arrow-down"></div>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="topnav-dashboard">
-                            <a href="{{ route("create") }}" class="dropdown-item">Create</a>
+                            <a href="{{ route("create-account") }}" class="dropdown-item">Create</a>
                             <a href="{{ route("accounts") }}" class="dropdown-item">List</a>
                         </div>
                     </li>

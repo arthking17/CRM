@@ -45,12 +45,29 @@ class AccountsController extends Controller
         $name = $request->input('name');
         $url = $request->input('url');
         $status = $request->input('status');
-        if($status == 0)
-        {
-            $account = account::create(['name' => $name, 'url' => $url, 'status' => $status, 'start_date' => today(), 'end_date' => today()]);
-        }
         $account = account::create(['name' => $name, 'url' => $url, 'status' => $status, 'start_date' => today()]);
-        return redirect(route('accounts'));
+        /*if ($status == 0) {
+            $account = account::create(['name' => $name, 'url' => $url, 'status' => $status, 'start_date' => today(), 'end_date' => today()]);
+        } else
+            $account = account::create(['name' => $name, 'url' => $url, 'status' => $status, 'start_date' => today()]);*/
+        //return redirect(route('accounts'));
+        return response()->json($account);
+    }
+
+    /**
+     * Get all accounts.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getAllAccounts()
+    {
+        $accounts = DB::table('accounts')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return view('accounts.list', [
+            'accounts' => $accounts,
+        ]);
     }
 
     /**
@@ -59,16 +76,24 @@ class AccountsController extends Controller
      * @param  \App\Models\account  $account
      * @return \Illuminate\Http\Response
      */
-    public function show(account $account)
+    public function show(Account $account)
     {
-        $accounts = DB::table('accounts')
-        ->orderBy('id', 'desc')
-        ->get();
-
-        return view('accounts.list', [
-            'accounts' => $accounts,
-        ]);
+        //
     }
+
+    /**
+     * Get account by id.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getAccountById(int $id)
+    {
+        $account = Account::all()
+            ->find($id);
+
+        return response()->json($account);
+    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -85,12 +110,26 @@ class AccountsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\account  $account
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, account $account)
+    public function update(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|min:3',
+            'url' => 'required|url',
+            'status' => 'required|integer',
+        ]);
+        $accounts = Account::all();
+        $account = $accounts
+            ->find($request->input('id'));
+        $account->name = $request->input('name');
+        $account->url = $request->input('url');
+        /*if ($account->status == 1 && $account->status != $request->input('status')) {
+            $account->end_date = today();
+        }*/
+        $account->status = $request->input('status');
+        $account->save();
+        return response()->json($account);
     }
 
     /**
@@ -99,8 +138,19 @@ class AccountsController extends Controller
      * @param  \App\Models\account  $account
      * @return \Illuminate\Http\Response
      */
-    public function destroy(account $account)
+    public function destroy(int $id)
     {
-        //
+        $account = Account::all()
+            ->find($id);
+        $account->status = 0;
+        $account->end_date = today();
+        if ($account->save())
+            return response()->json(['success' => 'Account has been Disabled !!!', 'account' => $account]);
+        else
+            return response()->json(['error' => 'Failed to delete account !!!']);
+        /*if ($account->delete())
+            return response()->json(['success' => 'Account has been deleted !!!']);
+        else
+            return response()->json(['error' => 'Failed to delete account !!!']);*/
     }
 }

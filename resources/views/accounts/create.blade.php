@@ -32,7 +32,7 @@
                 </div>
 
                 <form class="form-horizontal parsley-account" id="create-account" method="POST"
-                    action="{{ route('create') }}" data-parsley-validate="" novalidate>
+                    action="#" data-parsley-validate="" novalidate>
                     @csrf
                     <div class="row mb-3">
                         <label for="name" class="col-4 col-xl-3 col-form-label">Name<span
@@ -69,7 +69,8 @@
                         <div class="col-8 col-xl-9">
                             <select class="form-select @error('status') parsley-error @else parsley-success @enderror" name="status" required data-parsley-type="integer" data-parsley-length="[1, 1]">
                                 <option value="1">Active</option>
-                                <option value="0">Disable</option>
+                                <option value="2">Legit</option>
+                                <option value="3">Invoicing</option>
                             </select>
                             @error('status')
                                 <ul class="parsley-errors-list filled" aria-hidden="false">
@@ -82,7 +83,7 @@
                     </div>
                     <div class="justify-content-end row">
                         <div class="col-8 col-xl-9">
-                            <button type="submit" class="btn btn-info waves-effect waves-light">Create</button>
+                            <button type="submit" id="create" class="btn btn-info waves-effect waves-light">Create</button>
                         </div>
                     </div>
                 </form>
@@ -98,9 +99,12 @@
     <!-- Plugin js-->
     <script src="/libs/parsleyjs/parsley.min.js"></script>
 
-    <!-- Validation account js
-    <script src="/js/pages/form-validation.init.js"></script> -->
+    <!-- Sweet Alerts js -->
+    <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+
+    <!-- Validation account js -->
     <script src="/js/accounts/account.js"></script>
+    <script src="/js/accounts/account-ajax.js"></script>
 
     <!-- App js-->
     <script src="/js/app.min.js"></script>

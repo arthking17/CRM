@@ -18,6 +18,9 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::view('/accounts/create', 'accounts/create')->name('create');
-Route::post('/accounts/create', 'AccountsController@store')->name('create');
-Route::get('/accounts', 'AccountsController@show')->name('accounts');
+Route::view('/accounts/create', 'accounts/create')->name('create-account');
+Route::post('/accounts/create', 'AccountsController@store')->name('create-account');
+Route::get('/accounts', 'AccountsController@getAllAccounts')->name('accounts');
+Route::get('/accounts/{id}', 'AccountsController@getAccountById')->name('get-account');
+Route::put('/accounts/update', 'AccountsController@update')->name('update-account');
+Route::delete('/accounts/{id}', 'AccountsController@destroy')->name('delete-account');

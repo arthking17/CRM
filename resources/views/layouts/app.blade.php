@@ -12,6 +12,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     @yield('css')
+    @routes
 </head>
 
 <body class="loading" data-layout-mode="horizontal"
