@@ -7,13 +7,13 @@ function editAccount(id) {
     })
 }
 $(document).ready(function () {
-    $('#create').on('click', function (e) {
+    $('#create-account').submit(function (e) {
         e.preventDefault();
         formData = $('#create-account').serialize();
 
         $.ajax({
             type: "POST",
-            url: route('create-account'),
+            url: route('account.create'),
             data: formData,
             dataType: "json",
             success: function (response) {
@@ -40,7 +40,7 @@ $(document).ready(function () {
         console.log("test : " + formData)
         $.ajax({
             type: "PUT",
-            url: route('update-account'),
+            url: route('account.update'),
             data: formData,
             dataType: "json",
             success: function (response) {
@@ -77,7 +77,7 @@ function deleteAccount(id) {
             e.value
                 ? $.ajax({
                     type: "DELETE",
-                    url: route('delete-account', id),
+                    url: route('account.delete', id),
                     data: {
                         _token: $("input[name=_token]").val(),
                     },
@@ -88,6 +88,10 @@ function deleteAccount(id) {
                         //$('#accid' + id).remove();
                         $('#accid' + id + ' td:nth-child(3)').html("<span class=\"badge label-table bg-danger\">Disabled</span>")
                         $('#accid' + id + ' td:nth-child(5)').text(response.account.end_date.substring(0, 10))
+                        $('#accid' + id + ' td:nth-child(6)').html('<a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>' +
+                            '<a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>')
+                        //$('#edit-'+id).prop("onclick", null);
+                        //$('#delete-'+id).prop("onclick", null);
                     },
                     error: function (error) {
                         console.log(error)

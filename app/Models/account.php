@@ -10,11 +10,11 @@ class Account extends Model
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['name', 'url', 'status', 'start_date', 'end_date'];
+    * The attributes that aren't mass assignable.
+    *
+    * @var array
+    */
+   protected $guarded = [];
 
     /**
      * Indicates if the model should be timestamped.
@@ -22,4 +22,13 @@ class Account extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    /**
+     * Get the users record associated with the account
+     * @return \App\Models\User
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

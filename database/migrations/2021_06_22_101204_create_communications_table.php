@@ -21,7 +21,7 @@ class CreateCommunicationsTable extends Migration
             $table->tinyInteger('class')->unsigned()->comment("Type of communication : Call , email, sms ...");
             $table->integer('channel')->unsigned()->comment("Identifier of chanel : Sip account, email sender ...");
             $table->dateTime('start_date');
-            $table->tinyInteger('status')->unsigned();
+            $table->tinyInteger('status')->unsigned()->default(1);
             $table->tinyInteger('qualification')->unsigned()->nullable();
             $table->index('contact_id', 'comm_contact_id_idx');
             $table->index('user_id', 'comm_user_id_idx');

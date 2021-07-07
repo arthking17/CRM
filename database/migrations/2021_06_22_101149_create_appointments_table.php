@@ -22,7 +22,7 @@ class CreateAppointmentsTable extends Migration
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->integer('user_id')->unsigned()->comment("User assigned")->nullable();
-            $table->tinyInteger('status')->unsigned();
+            $table->tinyInteger('status')->unsigned()->default(1);
             $table->index('contact_id', 'app_contact_id_idx');
             $table->index('user_id', 'app_user_id_idx');
             $table->foreign('contact_id', 'app_contact_id')->references('id')->on('contacts');

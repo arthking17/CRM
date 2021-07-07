@@ -17,7 +17,7 @@
                                     class="text-danger">*</span></label>
                             <div class="col-8 col-xl-9">
                                 <input type="text"
-                                    class="form-control @error('name') parsley-error @else parsley-success @enderror"
+                                    class="form-control @error('name') parsley-error @enderror"
                                     id="name" name="name" placeholder="Name" required
                                     data-parsley-minlength="3">
                                 @error('name')
@@ -34,7 +34,7 @@
                                     class="text-danger">*</span></label>
                             <div class="col-8 col-xl-9">
                                 <input type="url"
-                                    class="form-control @error('url') parsley-error @else parsley-success @enderror"
+                                    class="form-control @error('url') parsley-error @enderror"
                                     id="url" name="url" placeholder="Url" required
                                     data-parsley-type="url">
                                 @error('url')
@@ -51,7 +51,7 @@
                                     class="text-danger">*</span></label>
                             <div class="col-8 col-xl-9">
                                 <select
-                                    class="form-select @error('status') parsley-error @else parsley-success @enderror"
+                                    class="form-select @error('status') parsley-error @enderror"
                                     name="status" id="statuss" required data-parsley-type="integer"
                                     data-parsley-length="[1, 1]">
                                     <option value="1">Active</option>

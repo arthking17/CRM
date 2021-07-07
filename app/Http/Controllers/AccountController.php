@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
-class AccountsController extends Controller
+class AccountController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -45,12 +44,7 @@ class AccountsController extends Controller
         $name = $request->input('name');
         $url = $request->input('url');
         $status = $request->input('status');
-        $account = account::create(['name' => $name, 'url' => $url, 'status' => $status, 'start_date' => today()]);
-        /*if ($status == 0) {
-            $account = account::create(['name' => $name, 'url' => $url, 'status' => $status, 'start_date' => today(), 'end_date' => today()]);
-        } else
-            $account = account::create(['name' => $name, 'url' => $url, 'status' => $status, 'start_date' => today()]);*/
-        //return redirect(route('accounts'));
+        $account = Account::create(['name' => $name, 'url' => $url, 'status' => $status, 'start_date' => today()]);
         return response()->json($account);
     }
 
@@ -124,9 +118,6 @@ class AccountsController extends Controller
             ->find($request->input('id'));
         $account->name = $request->input('name');
         $account->url = $request->input('url');
-        /*if ($account->status == 1 && $account->status != $request->input('status')) {
-            $account->end_date = today();
-        }*/
         $account->status = $request->input('status');
         $account->save();
         return response()->json($account);
@@ -148,9 +139,5 @@ class AccountsController extends Controller
             return response()->json(['success' => 'Account has been Disabled !!!', 'account' => $account]);
         else
             return response()->json(['error' => 'Failed to delete account !!!']);
-        /*if ($account->delete())
-            return response()->json(['success' => 'Account has been deleted !!!']);
-        else
-            return response()->json(['error' => 'Failed to delete account !!!']);*/
     }
 }

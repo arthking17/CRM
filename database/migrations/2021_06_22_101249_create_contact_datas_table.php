@@ -20,7 +20,7 @@ class CreateContactDatasTable extends Migration
             $table->integer('element_id')->unsigned()->comment("Identifier of th origin \nIdentifier of contact");
             $table->tinyInteger('class')->unsigned()->comment("Type de field : email, phone, facebook...");
             $table->string('data', 255)->comment("Value of field");
-            $table->tinyInteger('status')->unsigned();
+            $table->tinyInteger('status')->unsigned()->default(1);
         });
 
         DB::statement("ALTER TABLE `contact_datas` comment 'Table to store all types of contact data such email, phone number, social media account...'");

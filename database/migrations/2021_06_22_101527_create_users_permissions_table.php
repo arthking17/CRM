@@ -18,7 +18,7 @@ class CreateUsersPermissionsTable extends Migration
             $table->integer('user_id', true, true);
             $table->string('code', 128);
             $table->tinyInteger('dependency')->unsigned()->comment("1 : action need admin validation\n0 : Default ");
-            $table->tinyInteger('status')->unsigned();
+            $table->tinyInteger('status')->unsigned()->default(1);
             $table->foreign('user_id')->references('id')->on('users');
         });
 

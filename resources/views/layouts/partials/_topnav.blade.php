@@ -9,31 +9,28 @@
                             <i class="fe-airplay me-1"></i> Dashboards
                         </a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-accounts" role="button"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fe-user me-1"></i> Accounts <div class="arrow-down"></div>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route("accounts") }}" id="topnav-accounts" role="button">
+                            <i class="fe-user me-1"></i> Accounts
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="topnav-dashboard">
-                            <a href="{{ route("create-account") }}" class="dropdown-item">Create</a>
-                            <a href="{{ route("accounts") }}" class="dropdown-item">List</a>
-                        </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" id="topnav-dashboard" role="button"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link" href="{{ route("users") }}" id="topnav-users" role="button">
+                            <i class="fe-user me-1"></i> Users
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="topnav-dashboard" role="button">
                             <i class="fe-phone me-1"></i> Contact
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" id="topnav-dashboard" role="button"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link" href="#" id="topnav-dashboard" role="button">
                             <i class="fe-airplay me-1"></i> Leads
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" id="topnav-dashboard" role="button"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link" href="#" id="topnav-dashboard" role="button">
                             <i class="fe-airplay me-1"></i> Customers
                         </a>
                     </li>

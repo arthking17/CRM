@@ -18,7 +18,7 @@ class CreateAccountsTable extends Migration
             $table->integer('id', true, true);
             $table->string('name');
             $table->string('url', 128);
-            $table->tinyInteger('status')->unsigned()->comment("1: active 0:delete 2:legit 3:invoicing")->change();;
+            $table->tinyInteger('status')->unsigned()->comment("1: active 0:delete 2:legit 3:invoicing")->default(1);
             $table->date('start_date');
             $table->date('end_date')->nullable();
         });

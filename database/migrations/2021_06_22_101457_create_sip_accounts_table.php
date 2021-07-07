@@ -16,7 +16,7 @@ class CreateSipAccountsTable extends Migration
     {
         Schema::create('sip_accounts', function (Blueprint $table) {
             $table->integer('id', true, true);
-            $table->tinyInteger('status')->unsigned();
+            $table->tinyInteger('status')->unsigned()->default(1);
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->integer('account_id')->unsigned();
