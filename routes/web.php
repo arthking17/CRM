@@ -39,3 +39,9 @@ Route::delete('/users/delete/{id}', 'UserController@destroy')->name('user.delete
 Route::delete('/users/restore/{id}', 'UserController@restore')->name('user.restore');
 //route for retreive users
 Route::get('/users', 'UserController@getAllUsers')->name('users');
+//route to get user in format json
+Route::get('/users/get/{id}', 'UserController@getUserJsonById')->name('user.get');
+//create note
+Route::post('/note/create', 'NoteController@store')->name('note.create');
+//pagination user
+Route::get('/users/pagination/fetch_data', 'UserController@fetch_data')->name('user.pagination');

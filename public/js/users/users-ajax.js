@@ -1,27 +1,27 @@
-$(document).ready(function () {/*
+$(document).ready(function () {
+    
     $('#create-user').submit(function (e) {
         e.preventDefault();
-        formData = $('#create-user').serialize();
 
         $.ajax({
             type: "POST",
             url: route('user.create'),
-            data: formData,
-            dataType: "json",
+            data: new FormData(this),
+            contentType: false,
+            processData: false,
+            cache: false,
             success: function (response) {
-                console.log("test : " + formData)
                 console.log(response)
                 Swal.fire({ position: "top-end", icon: "success", title: response.message, showConfirmButton: !1, timer: 1500 });
-                //setTimeout(function () { window.location.href = route('accounts'); }, 1500);
+                setTimeout(function () { window.location.href = route('users'); }, 1500);
             },
             error: function (error) {
-                console.log("test : " + formData)
                 console.log(error)
                 Swal.fire({ position: "top-end", icon: "error", title: "Error while adding this user", showConfirmButton: !1, timer: 1500 });
             }
         });
     });
-*/
+/**/
     /*$('#edit-user').submit(function (e) {
         e.preventDefault();
         form = $('#edit-user')[0];

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Log;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -45,7 +47,8 @@ class AccountController extends Controller
         $url = $request->input('url');
         $status = $request->input('status');
         $account = Account::create(['name' => $name, 'url' => $url, 'status' => $status, 'start_date' => today()]);
-        return response()->json($account);
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'account.create', 'element' => 1, 'element_id' => $account->id, 'source' => 'account.create']);
+        return response()->json(['success' => 'Account has been Added !!!', 'account' => $account]);
     }
 
     /**
@@ -55,9 +58,9 @@ class AccountController extends Controller
      */
     public function getAllAccounts()
     {
-        $accounts = DB::table('accounts')
-            ->orderBy('id', 'desc')
-            ->get();
+        $accounts = Account::All();
+
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'accounts.show', 'element' => 1, 'element_id' => 0, 'source' => 'accounts']);
 
         return view('accounts.list', [
             'accounts' => $accounts,
@@ -120,6 +123,7 @@ class AccountController extends Controller
         $account->url = $request->input('url');
         $account->status = $request->input('status');
         $account->save();
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'account.update', 'element' => 1, 'element_id' => $account->id, 'source' => 'account.update']);
         return response()->json($account);
     }
 
@@ -135,8 +139,10 @@ class AccountController extends Controller
             ->find($id);
         $account->status = 0;
         $account->end_date = today();
-        if ($account->save())
+        if ($account->save()){
+            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'account.delete', 'element' => 1, 'element_id' => $account->id, 'source' => 'account.delete, '.$id]);
             return response()->json(['success' => 'Account has been Disabled !!!', 'account' => $account]);
+        }
         else
             return response()->json(['error' => 'Failed to delete account !!!']);
     }

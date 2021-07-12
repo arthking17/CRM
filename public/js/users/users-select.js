@@ -1,6 +1,7 @@
 $(document).ready(function () {
     timezoneSelect($('#timezone'))
     languageSelect($('#language'))
+    languageSelect($('.language'))
 })
 function timezoneSelect(select) {
     var tzStrings = [

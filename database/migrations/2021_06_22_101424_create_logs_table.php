@@ -19,7 +19,12 @@ class CreateLogsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->dateTime('log_date');
             $table->string('action', 255);
-            $table->tinyInteger('element')->unsigned();
+            $table->tinyInteger('element')->unsigned()->comment(
+                '1 : accounts, 2 : appointments, 3 : communications, 4 : contact_data, 
+                5 : contacts, 6 : contacts_companies, 7 : contacts_persons, 8 : email_accounts, 
+                9 : fax_accounts, 10 : groups, 11 : imports, 12 : logs, 13 : notes, 14 : sip_accounts, 
+                15 : sms_accounts , 16 : users, 17 : users_permissions'
+            );
             $table->integer('element_id')->unsigned();
             $table->string('source', 255);
             $table->index('user_id', 'user_id_idx');

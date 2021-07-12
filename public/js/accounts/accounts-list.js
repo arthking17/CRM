@@ -8,7 +8,7 @@ $(window).on("load", function () {
         var t = $(this).val();
         $("#demo-foo-pagination").data("page-size", t), $("#demo-foo-pagination").trigger("footable_initialized")
     });
-    var t = $("#demo-foo-filtering");
+    var t = $("#table-accounts");
     t.footable().on("footable_filtering", function (o) {
         var t = $("#demo-foo-filter-status").find(":selected").val();
         o.filter += o.filter && 0 < o.filter.length ? " " + t : t, o.clear = !o.filter

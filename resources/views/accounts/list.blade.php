@@ -42,10 +42,21 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="header-title">List of Accounts</h4>
-                            <p class="sub-header">
-                                All accounts are mentioned here.
-                            </p>
+                            <div class="row justify-content-between">
+                                <div class="col-auto">
+                                    <h4 class="header-title">List of Accounts</h4>
+                                    <p class="sub-header">
+                                        All accounts are mentioned here.
+                                    </p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="text-sm-end">
+                                        <button type="button" class="btn btn-danger waves-effect waves-light"
+                                            data-bs-toggle="modal" data-bs-target="#create-modal"><i
+                                                class="mdi mdi-plus-circle me-1"></i> Add Account</button>
+                                    </div>
+                                </div><!-- end col-->
+                            </div>
 
                             <div class="mb-2">
                                 <div class="row row-cols-sm-auto g-2 align-items-center">
@@ -66,10 +77,11 @@
                             </div>
 
                             <div class="table-responsive">
-                                <table id="demo-foo-filtering" class="table table-bordered toggle-circle mb-0"
+                                <table id="table-accounts" class="table table-striped toggle-circle mb-0"
                                     data-page-size="7">
                                     <thead>
                                         <tr>
+                                            <th>Id</th>
                                             <th data-toggle="true">Name</th>
                                             <th>Url</th>
                                             <th>Status</th>
@@ -81,7 +93,8 @@
                                     <tbody>
                                         @foreach ($accounts as $account)
                                             <tr id="accid{{ $account->id }}">
-                                                <td>{{ $account->name }}</td>
+                                                <td>{{ $account->id }}</td>
+                                                <td>{{ $account->name }}</td>   
                                                 <td>{{ $account->url }}</td>
                                                 <td>
                                                     @if ($account->status === 1) <span
@@ -139,6 +152,7 @@
             </div>
             <!-- end row -->
             @include('accounts.edit')
+            @include('accounts.create-modal')
         @endsection
 
         @section('js')
