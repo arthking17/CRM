@@ -1,6 +1,6 @@
     <!-- Modal -->
-    <div class="modal fade" id="logs-modal-{{ $user_id }}" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <div class="modal fade" id="logs-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-full-width">
             <div class="modal-content">
                 <div class="modal-header bg-warning">
                     <h4 class="modal-title" id="myCenterModalLabel">Logs Activity</h4>
@@ -8,7 +8,7 @@
                 </div>
                 <div class="modal-body p-4">
 
-                    <table class="table activate-select dt-responsive nowrap w-100 users-state-datatable">
+                    <table class="table activate-select dt-responsive nowrap w-100 table-hover users-state-datatable" id="datatable-logs">
                         <thead>
                             <tr>
                                 <th>Id</th>
@@ -19,8 +19,8 @@
                                 <th>Source</th>
                             </tr>
                         </thead>
-                        @foreach ($logs as $log)
-                            @if ($log->user_id === $user_id)
+                        <tbody>
+                            @foreach ($logs as $log)
                                 <tr>
                                     <td>{{ $log->id }}</td>
                                     <td>{{ $log->log_date }}</td>
@@ -29,10 +29,18 @@
                                     <td>{{ $log->element_id }}</td>
                                     <td>{{ $log->source }}</td>
                                 </tr>
-                            @endif
-                        @endforeach
-                        <tbody>
+                            @endforeach
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>id</th>
+                                <th>log_date</th>
+                                <th>action</th>
+                                <th>element</th>
+                                <th>element_id</th>
+                                <th>source</th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div><!-- /.modal-content -->

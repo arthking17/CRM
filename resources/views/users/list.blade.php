@@ -75,7 +75,7 @@
 
 
                             <div id="view-grid-users" class="row">
-                            @include('users.grid')
+                                @include('users.grid')
                             </div>
                             <div class="" id="view-list">
                                 <table id="datatable-users"
@@ -107,7 +107,7 @@
                                                 </td>
                                                 <td><img class="img-fluid avatar-sm rounded"
                                                         src="{{ asset('storage/images/users/' . $user->photo) }}" /></td>
-                                                <td>{{ $user->account_id }}</td>
+                                                <td>{{ $user->account[0]->name }}</td>
                                                 <td>
                                                     @if ($user->status === 1) <span
                                                         class="badge bg-success">Active</span> @elseif ($user->status
@@ -130,127 +130,35 @@
                                     </tfoot>
                                 </table>
                             </div>
-
-                            @foreach ($users as $user)
-                                @include('users.logs', ['user_id' => $user->id])
-                                @include('users.users_permissions', ['user_id' => $user->id])
-                                @include('users.security', ['user_id' => $user->id])
-                                @include('users.notification', ['user_id' => $user->id])
-                            @endforeach
                         </div>
                     </div> <!-- end card -->
                 </div> <!-- end col -->
 
-                <div class="col-lg-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex align-items-start mb-3">
-                                <img id="user-photo" class="d-flex me-3 rounded-circle avatar-lg"
-                                    src="{{ asset('storage/images/users/' . $user->photo) }}"
-                                    alt="Generic placeholder image">
-                                <div class="w-100" id="user-info1">
-                                    <h4 class="mt-0 mb-1">{{ $user->username }}</h4>
-                                    <p class="text-muted">{{ $user->login }}</p>
-                                    <p class="text-muted"><i class="mdi mdi-office-building"></i>
-                                        {{ $user->account_id }}</p>
-                                    <p class="text-muted d-none"> {{ $user->id }}</p>
-
-                                    <a href="javascript: void(0);" class="btn- btn-xs btn-info">Send Email</a>
-                                    <a href="javascript: void(0);" class="btn- btn-xs btn-info">Send Sms</a>
-                                    <a href="javascript: void(0);" class="btn- btn-xs btn-secondary">Call</a>
-                                    <!--<a id="edit-{{ $user->id }}" class="btn- btn-xs btn-secondary @if ($user->status == 0) disabled @endif"
-                                                                href="{{ route('user.edit', $user->id) }}">Edit</a>-->
-                                    @if ($user->status == 0)
-                                        <a id="edit-{{ $user->id }}" class="btn- btn-xs btn-secondary"
-                                            href="javascript: void(0);" data-bs-toggle="" data-bs-target="#edit-modal"
-                                            onclick="#">Edit</a>
-                                    @else
-                                        <a id="edit-{{ $user->id }}" class="btn- btn-xs btn-secondary"
-                                            href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-modal"
-                                            onclick="editUser({{ $user->id }});">Edit</a>
-                                    @endif
-
-                                </div>
-                            </div>
-
-                            <h5 class="mb-3 mt-4 text-uppercase bg-light p-2"><i class="mdi mdi-account-circle me-1"></i>
-                                Personal Information</h5>
-                            <div class="" id="user-info2">
-                                <h4 class="font-13 text-muted text-uppercase">Role :</h4>
-                                <p class="mb-3">
-                                    @if ($user->role === 1) <span
-                                            class="badge label-table bg-danger">Admin</span>
-                                    @elseif($user->role === 2)
-                                        <span class="badge bg-success">User</span>
-                                    @elseif($user->role === 3)
-                                        <span class="badge bg-blue text-light">Visitor</span>
-                                    @endif
-                                </p>
-
-                                <h4 class="font-13 text-muted text-uppercase mb-1">language :</h4>
-                                <p class="mb-3"> {{ $user->language }}</p>
-
-                                <h4 class="font-13 text-muted text-uppercase mb-1">Timezone :</h4>
-                                <p class="mb-3"> {{ $user->timezone }}</p>
-
-                                <h4 class="font-13 text-muted text-uppercase mb-1">Browser :</h4>
-                                <p class="mb-3"> {{ $user->browser }}</p>
-
-                                <h4 class="font-13 text-muted text-uppercase mb-1">Ip Address :</h4>
-                                <p class="mb-3"> {{ $user->ip_address }}</p>
-
-                                <h4 class="font-13 text-muted text-uppercase mb-1">Status :</h4>
-                                <p class="mb-3">
-                                    @if ($user->status === 1) <span
-                                        class="badge bg-success">Active</span> @elseif ($user->status === 0)
-                                        <span class="badge label-table bg-danger">Disabled</span>
-                                    @endif
-                                </p>
-
-                                <h4 class="font-13 text-muted text-uppercase mb-1">Last Authentification :</h4>
-                                <p class="mb-3"> {{ $user->last_auth }}</p>
-
-                                <a href="javascript: void(0);" class="btn- btn-xs btn-warning" data-bs-toggle="modal"
-                                    data-bs-target="#logs-modal-{{ $user->id }}">View activity logs</a>
-                                <a href="javascript: void(0);" class="btn- btn-xs btn-secondary" data-bs-toggle="modal"
-                                    data-bs-target="#users_permissions-modal-{{ $user->id }}">View permissions</a>
-                                <a href="javascript: void(0);" class="btn- btn-xs btn-info" data-bs-toggle="modal"
-                                    data-bs-target="#notification-modal-{{ $user->id }}">Notification</a>
-                                <a href="javascript: void(0);" class="btn- btn-xs btn-danger" data-bs-toggle="modal"
-                                    data-bs-target="#security-modal-{{ $user->id }}">Security</a>
-                            </div>
-                        </div>
-                    </div> <!-- end card-->
-                    <div class="card">
-                        <div class="card-body" id="card-note">
-                            <h4 class="mb-1 mt-1 text-uppercase bg-light p-1"><i class="mdi mdi-note-text-outline me-1"></i>
-                                Note</h4>
-                            <div class="card border-success border mb-3">
-                                <div class="card-body" id="card-note-body">
-                                    <p class="card-text">
-                                        @foreach ($notes as $note)
-                                            @if ($note->element_id === $user->id)
-                                                {{ $note->content }}
-                                            @break
-                                        @endif
-                                        @endforeach
-                                    </p>
-                                </div>
-                            </div>
-                            <a href="javascript: void(0);" class="btn- btn-xs btn-success" data-bs-toggle="modal"
-                                data-bs-target="#add_note-modal" data-id="{{ $user->id }}" data-element="16"><i
-                                    class="mdi mdi-plus-circle me-1"></i>Add note</a>
-                            <a href="javascript: void(0);" class="btn- btn-xs" data-bs-toggle="modal"
-                                data-bs-target="#notes-modal" data-id="{{ $user->id }}" data-element="16"><i
-                                    class="mdi mdi-plus-circle me-1"></i>voir plus</a>
-                        </div>
-                    </div>
+                <div class="col-lg-4" id="user-info-card">
+                    @include('users.user-info')
                 </div>
             </div>
             <!-- end row -->
-            @include('users.edit-modal')
             @include('users.create-modal')
+            @if ($users->count() > 0)
+            @include('users.edit-modal')
             @include('users.add_note')
+            <div id="logs-div">
+                @include('users.logs')
+            </div>
+            <div id="users_permissions-div">
+                @include('users.users_permissions')
+            </div>
+            <div id="security-div">
+                @include('users.security')
+            </div>
+            <div id="notification-div">
+                @include('users.notification')
+            </div>
+            <div id="notes-div">
+                @include('users.notes')
+            </div>
+            @endif
         @endsection
 
         @section('js')
@@ -294,7 +202,7 @@
             <script src="/js/pages/form-fileuploads.init.js"></script>
 
             <!-- custom js files
-                                    <script src="/js/users/datatables.init.js"></script> -->
+                                                        <script src="/js/users/datatables.init.js"></script> -->
             <script src="/js/users/users-ajax-list.js"></script>
             <script src="/js/users/users-validation.js"></script>
             <script src="/js/users/users-select.js"></script>

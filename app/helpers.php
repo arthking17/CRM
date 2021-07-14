@@ -48,3 +48,15 @@ if (!function_exists('getElementName')) {
             return "users_permissions";
     }
 }
+
+if (!function_exists('getNoteClassName')) {
+    function getNoteClassName($noteClass): string
+    {
+        if ($noteClass == 1)
+            return "Description";
+        if ($noteClass == 2)
+            return "Note";
+        if ($noteClass == 3)
+            return "Task";
+    }
+}

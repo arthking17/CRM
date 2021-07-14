@@ -27,30 +27,33 @@
             </div> <!-- end card -->
         </div> <!-- end col-->
     </div>
-    @for ($i = 0; $i < 8; $i++)
-        <div class="col-md-6 col-xl-3" onclick="viewUser({{ $users[$i]->id }});">
+    @if ($users->count() > 0)
+    @foreach ($users_paginate as $user)
+        <div class="col-md-6 col-xl-3" onclick="viewUser({{ $user->id }});">
             <div class="card product-box">
                 <div class="card-body">
 
                     <div class="pt-2 pb-2 bg-light">
-                        <img src="{{ asset('storage/images/users/' . $users[$i]->photo) }}" alt="user-photo"
+                        <img src="{{ asset('storage/images/users/' . $user->photo) }}" alt="user-photo"
                             class="img-fluid rounded-circle avatar-xl" />
                     </div>
 
                     <div class="product-info">
                         <div class="row align-items-center">
                             <div class="col">
-                                <h5 class="font-16 mt-0 sp-line-1">{{ $users[$i]->username }} </h5>
+                                <h5 class="font-16 mt-0 sp-line-1">{{ $user->username }} </h5>
+                                <p class="text-muted"><i class="mdi mdi-office-building"></i>
+                                    {{ $user->account[0]->name }}</p>
                                 <h5 class="m-0">
-                                    @if ($users[$i]->role === 1) <span
+                                    @if ($user->role === 1) <span
                                             class="badge label-table bg-danger">Admin</span>
-                                    @elseif($users[$i]->role === 2)
+                                    @elseif($user->role === 2)
                                         <span class="badge bg-success">User</span>
-                                    @elseif($users[$i]->role === 3)
+                                    @elseif($user->role === 3)
                                         <span class="badge bg-blue text-light">Visitor</span>
                                     @endif
-                                    @if ($users[$i]->status === 1) <span
-                                        class="badge bg-success">Active</span> @elseif ($users[$i]->status === 0)
+                                    @if ($user->status === 1) <span
+                                        class="badge bg-success">Active</span> @elseif ($user->status === 0)
                                         <span class="badge label-table bg-danger">Disabled</span>
                                     @endif
                                 </h5>
@@ -60,7 +63,8 @@
                 </div>
             </div> <!-- end card-->
         </div> <!-- end col-->
-    @endfor
+    @endforeach
+    @endif
     <div class="row">
         <div class="col-12">
             <ul class="pagination pagination-rounded justify-content-end mb-3">

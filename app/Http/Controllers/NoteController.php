@@ -45,8 +45,18 @@ class NoteController extends Controller
             'element_id' => 'required|integer',
         ]);
         $note = Note::create($data);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'note.create', 'element' => 13, 'element_id' => $note->element_id, 'source' => 'note.create']);
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'note.create', 'element' => 13, 'element_id' => $note->id, 'source' => 'note.create']);
         return response()->json(['note' => $note, 'message' => 'Note added']);
+    }
+
+    /**
+     * list Notes
+     */
+    public function listNotes($element_id)
+    {
+        $notes = Note::all()
+            ->where('element_id', $element_id);
+        return view('users/notes', compact('notes'))->render();
     }
 
     /**

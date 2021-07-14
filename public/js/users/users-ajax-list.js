@@ -1,5 +1,11 @@
+function showPassword(id) {
+    if ($('#'+id).attr('type') === 'password') {
+        $('#'+id).attr('type', 'text')
+    } else {
+        $('#'+id).attr('type', 'password')
+    }
+}
 function deleteUser(id) {
-    console.log("id : " + id)
     Swal.fire({ title: "Are you sure?", text: "This user will be disabled!", icon: "warning", showCancelButton: !0, confirmButtonColor: "#28bb4b", cancelButtonColor: "#f34e4e", confirmButtonText: "Yes, delete it!" }).then(
         function (e) {
             e.value
@@ -11,12 +17,15 @@ function deleteUser(id) {
                     },
                     dataType: "json",
                     success: function (response) {
-                        console.log(response)
+                        $('#edit-modal').modal('toggle')
                         Swal.fire({ icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                         $('#edit-' + id).addClass('disabled');
                         $('#delete-' + id).text('Active');
                         $('#delete-' + id).attr("onclick", "restoreUser(" + id + ")");
                         $('#userid' + id + ' td:nth-child(6)').html('<span class="badge label-table bg-danger">Disabled</span>')
+                        $('#user-info2 p:nth-of-type(6)').html('<span class="badge label-table bg-danger">Disabled</span>')
+                        $('#user-info1 a:nth-of-type(4)').attr('data-bs-toggle', '')
+                        $('#user-info1 a:nth-of-type(4)').attr('onClick', '')
                     },
                     error: function (error) {
                         console.log(error)
@@ -28,7 +37,6 @@ function deleteUser(id) {
     );
 }
 function restoreUser(id) {
-    console.log("id : " + id)
     Swal.fire({ title: "Are you sure?", text: "This user will be actived !", icon: "warning", showCancelButton: !0, confirmButtonColor: "#28bb4b", cancelButtonColor: "#f34e4e", confirmButtonText: "Yes, restore it!" }).then(
         function (e) {
             e.value
@@ -40,12 +48,15 @@ function restoreUser(id) {
                     },
                     dataType: "json",
                     success: function (response) {
-                        console.log(response)
+                        $('#edit-modal').modal('toggle')
                         Swal.fire({ icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                         $('#edit-' + id).removeClass('disabled');
                         $('#delete-' + id).text('Disable');
                         $('#delete-' + id).attr("onclick", "deleteUser(" + id + ")");
                         $('#userid' + id + ' td:nth-child(6)').html('<span class="badge bg-success">Active</span>')
+                        $('#user-info2 p:nth-of-type(6)').html('<span class="badge bg-success">Active</span>')
+                        $('#user-info1 a:nth-of-type(4)').attr('data-bs-toggle', 'modal')
+                        $('#user-info1 a:nth-of-type(4)').attr('onClick', 'editUser(' + id + ');')
                     },
                     error: function (error) {
                         console.log(error)
@@ -58,59 +69,24 @@ function restoreUser(id) {
 }
 
 function viewUser(id) {
-    $.get('/users/get/' + id, function (data) {
-        /*old_id = $('#user-info1 p:nth-of-type(3)').text()
-        $('#userid'+old_id).toggleClass('selected')
-        $('#userid'+id).toggleClass('selected')*/
-        $('#user-photo').attr("src", url_photo + "/" + data.user.photo);
-        $('#user-info1 h4:nth-of-type(1)').text(data.user.username)
-        $('#user-info1 p:nth-of-type(1)').text(data.user.login)
-        $('#user-info1 p:nth-of-type(2)').html('<i class="mdi mdi-office-building"></i> ' + data.user.account_id)
-        $('#user-info1 a:nth-of-type(4)').attr('onClick', 'editUser(' + id + ');')
-        if (data.user.role == 1)
-            $('#user-info2 p:nth-of-type(1)').html('<span class="badge label-table bg-danger">Admin</span>')
-        if (data.user.role == 2)
-            $('#user-info2 p:nth-of-type(1)').html('<span class="badge bg-success">User</span>')
-        if (data.user.role == 3)
-            $('#user-info2 p:nth-of-type(1)').html('<span class="badge bg-blue text-light">Visitor</span>')
-        $('#user-info2 p:nth-of-type(2)').text(data.user.language)
-        $('#user-info2 p:nth-of-type(3)').text(data.user.timezone)
-        $('#user-info2 p:nth-of-type(4)').text(data.user.browser)
-        $('#user-info2 p:nth-of-type(5)').text(data.user.ip_address)
-        if (data.user.status == 0) {
-            $('#user-info2 p:nth-of-type(6)').html('<span class="badge label-table bg-danger">Disabled</span>')
-            $('#user-info1 a:nth-of-type(4)').attr('data-bs-toggle', '')
-            $('#user-info1 a:nth-of-type(4)').attr('onClick', '')
-        } else {
-            $('#user-info2 p:nth-of-type(6)').html('<span class="badge bg-success">Active</span>')
-            $('#user-info1 a:nth-of-type(4)').attr('data-bs-toggle', 'modal')
-            $('#user-info1 a:nth-of-type(4)').attr('onClick', 'editUser(' + id + ');')
-        }
-        $('#user-info2 p:nth-of-type(7)').text(data.user.last_auth)
-        $('#user-info2 a:nth-of-type(1)').attr('data-bs-target', '#logs-modal-' + id)
-        $('#user-info2 a:nth-of-type(2)').attr('data-bs-target', '#users_permissions-modal-' + id)
-        $('#card-note a:nth-of-type(1)').attr('data-id', id)
-        if (data.notes.length)
-            $('#card-note-body p:nth-of-type(1)').text(data.notes[0].content)
-        else
-            $('#card-note-body p:nth-of-type(1)').text('empty')
-
-
+    $.get('/users/get/' + id + '/0', function (data) {
+        $('#user-info-card').empty().html(data);
     })
 }
 function editUser(id) {
-    $.get('/users/get/' + id, function (user) {
-        $('#id').val(id)
-        $('#username').val(user.username)
-        $('#login').val(user.login)
-        $('#role').val(user.role)
-        $('#language').val(user.language)
-        $('#account_id').val(user.account_id)
-        console.log(url_photo + '/' + user.photo)
-        $('#photo').attr('data-default-file', url_photo + '/' + user.photo)
-        $('#photo').dropify({
+    $.get('/users/get/' + id + '/1', function (user) {
+        $('#edit-id').val(id)
+        $('#edit-username').val(user.username)
+        $('#edit-login').val(user.login)
+        $('#edit-role').val(user.role)
+        $('#edit-language').val(user.language)
+        $('#edit-account_id').val(user.account_id)
+        $('#edit-photo').attr('data-default-file', url_photo + '/' + user.photo)
+        $('.dropify').dropify();
+        $('#delete').attr('onClick', 'deleteUser(' + id + ');')
+        /*$('#edit-photo').dropify({
             defaultFile: url_photo + '/' + user.photo
-        });
+        });*/
     })
 }
 
@@ -118,12 +94,6 @@ $(document).ready(function () {
     /**
      * datatable js init
      */
-    $("#basic-datatable").DataTable({
-        language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
-        drawCallback: function () {
-            $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
-        },
-    });
     var a = $("#datatable-users").DataTable({
         lengthChange: !1,
         buttons: [
@@ -136,60 +106,35 @@ $(document).ready(function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
         },
     });
-    $("#selection-datatable").DataTable({
-        select: { style: "multi" },
+    dataTableLogs = $("#datatable-logs").DataTable({
+        stateSave: !0,
         language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
         },
     }),
-        $("#key-datatable").DataTable({
-            keys: !0,
+        dataTableUsers_Permissions = $("#datatable-users_permissions").DataTable({
+            stateSave: !0,
             language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
             drawCallback: function () {
                 $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
             },
         }),
-        a.buttons().container().appendTo("#datatable-users_wrapper .col-md-6:eq(0)"),
-        $("#alternative-page-datatable").DataTable({
-            pagingType: "full_numbers",
-            drawCallback: function () {
-                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
-            },
-        }),
-        $("#scroll-vertical-datatable").DataTable({
-            scrollY: "350px",
-            scrollCollapse: !0,
-            paging: !1,
+        dataTableNotification = $("#datatable-notification").DataTable({
+            stateSave: !0,
             language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
             drawCallback: function () {
                 $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
             },
         }),
-        $("#scroll-horizontal-datatable").DataTable({
-            scrollX: !0,
+        dataTableSecurity = $("#datatable-security").DataTable({
+            stateSave: !0,
             language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
             drawCallback: function () {
                 $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
             },
         }),
-        $("#complex-header-datatable").DataTable({
-            language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
-            drawCallback: function () {
-                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
-            },
-            columnDefs: [{ visible: !1, targets: -1 }],
-        }),
-        $("#row-callback-datatable").DataTable({
-            language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
-            drawCallback: function () {
-                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
-            },
-            createdRow: function (a, e, t) {
-                15e4 < +e[5].replace(/[\$,]/g, "") && $("td", a).eq(5).addClass("text-danger");
-            },
-        }),
-        $(".users-state-datatable").DataTable({
+        dataTableNotes = $("#datatable-notes").DataTable({
             stateSave: !0,
             language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
             drawCallback: function () {
@@ -199,30 +144,6 @@ $(document).ready(function () {
         $(".dataTables_length select").addClass("form-select form-select-sm"),
         $(".dataTables_length select").removeClass("custom-select custom-select-sm"),
         $(".dataTables_length label").addClass("form-label");
-
-    /* $('#datatable-users').dataTable( {
-         paging: false,
-         destroy: true,
-         searching: false
-     } );
-    a.columns().every(function () {
-        var column = this;
-        var select = $('<select class="form-select form-select-sm"><option value=""></option></select>')
-            .appendTo($(column.footer()).empty())
-            .on('change', function () {
-                var val = $.fn.dataTable.util.escapeRegex(
-                    $(this).val()
-                );
-
-                column
-                    .search(val ? '^' + val + '$' : '', true, false)
-                    .draw();
-            });
-
-        column.data().unique().sort().each(function (d, j) {
-            select.append('<option value="' + d + '">' + d + '</option>')
-        });
-    });*/
     // Setup - add a text input to each footer cell
     $('#datatable-users tfoot th').each(function () {
         var title = $(this).text();
@@ -261,6 +182,7 @@ $(document).ready(function () {
             success: function (response) {
                 console.log(response)
                 Swal.fire({ position: "top-end", icon: "success", title: response.message, showConfirmButton: !1, timer: 1500 });
+                $('#create-user')[0].reset()
                 //setTimeout(function () { window.location.href = route('accounts'); }, 1500);
                 $('#create-modal').modal('toggle')
                 newRow = '<tr id="userid' + response.user.id + '"><td>' + response.user.id + '</td><td>' + response.user.username + '</td>';
@@ -279,7 +201,7 @@ $(document).ready(function () {
                 newRow += '</tr>'
                 //a.destroy()
                 //a.rows.add(newRow).draw()
-                $('#datatable-users>tbody').prepend(newRow);
+                //$('#datatable-users>tbody').prepend(newRow);
                 //a = $('#datatable-users').DataTable()
 
                 /*a.row.add({
@@ -307,13 +229,15 @@ $(document).ready(function () {
         e.preventDefault();
         $.ajax({
             type: "PUT",
-            url: route('user.update', $('#id').val()),
-            data: new FormData(this),
+            url: route('user.update', $('#edit-id').val()),
+            data: {
+                "_token": "{{ csrf_token() }}",
+                "formData": new FormData(this)
+            },
             contentType: false,
             processData: false,
             cache: false,
             success: function (response) {
-                console.log(response)
                 Swal.fire({ position: "top-end", icon: "success", title: response[2], showConfirmButton: !1, timer: 1500 });
                 //setTimeout(function () { window.location.href = route('accounts'); }, 1500);
                 $('#edit-modal').modal('toggle')
@@ -379,14 +303,31 @@ $(document).ready(function () {
             data: formData,
             dataType: "json",
             success: function (response) {
-                console.log("test : " + formData)
-                console.log(response)
                 $('#add_note-modal').modal('toggle')
                 Swal.fire({ position: "top-end", icon: "success", title: response.message, showConfirmButton: !1, timer: 1500 });
                 $('#create-note')[0].reset();
             },
             error: function (error) {
-                console.log("test : " + formData)
+                console.log(error)
+                Swal.fire({ position: "top-end", icon: "error", title: "Error while adding that note", showConfirmButton: !1, timer: 1500 });
+            }
+        });
+    })
+
+    $('#create-permissions').submit(function (e) {
+        e.preventDefault();
+        formData = $('#create-permissions').serialize();
+        $.ajax({
+            type: "POST",
+            url: route('users_permission.create'),
+            data: formData,
+            dataType: "json",
+            success: function (response) {
+                $('#add_permission-modal').modal('toggle')
+                Swal.fire({ position: "top-end", icon: "success", title: response.message, showConfirmButton: !1, timer: 1500 });
+                $('#create-permissions')[0].reset();
+            },
+            error: function (error) {
                 console.log(error)
                 Swal.fire({ position: "top-end", icon: "error", title: "Error while adding that note", showConfirmButton: !1, timer: 1500 });
             }
@@ -397,7 +338,6 @@ $(document).ready(function () {
         $.ajax({
             url: "/users/pagination/fetch_data?page=" + page + "&sortby=" + sort_by + "&sorttype=" + sort_type + "&query=" + query,
             success: function (data) {
-                console.log(data)
                 $('#view-grid-users').html('');
                 $('#view-grid-users').html(data);
             },
@@ -429,3 +369,106 @@ $(document).ready(function () {
         }
     })
 })
+
+
+function viewLogs(id) {
+    $.get('/users/logs/get/' + id, function (data) {
+        dataTableLogs.destroy()
+        $('#logs-div').empty().html(data);
+        dataTableLogs = $('#datatable-logs').DataTable({
+            stateSave: !0,
+            language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
+            drawCallback: function () {
+                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+            },
+        }),
+            $('#datatable-logs tfoot th').each(function () {
+                var title = $(this).text();
+                $(this).html('<input class="form-control form-control-sm logs" type="text" placeholder="Search ' + title + '" />');
+            });
+        dataTableLogs.columns().every(function () {
+            var that = this;
+
+            $('.logs', this.footer()).on('keyup change clear', function () {
+                if (that.search() !== this.value) {
+                    that
+                        .search(this.value)
+                        .draw();
+                }
+            });
+        });
+        $('#logs-modal').modal('toggle')
+    })
+}
+function viewUsers_Permissions(id) {
+    $.get('/users/users_permissions/get/' + id, function (data) {
+        dataTableUsers_Permissions.destroy()
+        $('#users_permissions-div').empty().html(data);
+        dataTableUsers_Permissions = $('#datatable-users_permissions').DataTable({
+            stateSave: !0,
+            language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
+            drawCallback: function () {
+                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+            },
+        }),
+            $('#users_permissions-modal').modal('toggle')
+    })
+}
+function viewNotification(id) {
+    $.get('/users/notification/get/' + id, function (data) {
+        dataTableNotification.destroy()
+        $('#notification-div').empty().html(data);
+        dataTableNotification = $('#datatable-notification').DataTable({
+            stateSave: !0,
+            language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
+            drawCallback: function () {
+                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+            },
+        }),
+            $('#notification-modal').modal('toggle')
+    })
+}
+function addPermission(id, username) {
+    $('#create-permissions-user_id').val(id)
+    $('#create-permissions-username').val(username)
+}
+function viewNotes(user_id) {
+    $.get('/notes/get/' + user_id, function (data) {
+        dataTableNotes.destroy()
+        $('#notes-div').empty().html(data);
+        dataTableNotes = $('#datatable-notes').DataTable({
+            stateSave: !0,
+            language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
+            drawCallback: function () {
+                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+            },
+        }),
+            $('#notes-modal').modal('toggle')
+    })
+}
+function deleteUsers_Permission(user_id, code) {
+    Swal.fire({ title: "Are you sure?", text: "This user permission will be disabled!", icon: "warning", showCancelButton: !0, confirmButtonColor: "#28bb4b", cancelButtonColor: "#f34e4e", confirmButtonText: "Yes, delete it!" }).then(
+        function (e) {
+            e.value
+                ? $.ajax({
+                    type: "DELETE",
+                    url: route('users_permission.delete', { 'user_id': user_id, 'code': code }),
+                    data: {
+                        _token: $("input[name=_token]").val(),
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        code = response.users_permission.code.replace('.', '')
+                        $('#user_permission-' + code + ' td:nth-child(4)').html('<span class="badge label-table bg-danger">Disabled</span>')
+                        $('#user_permission-' + code + ' td:nth-child(5)').html('<a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>')
+                        Swal.fire({ icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
+                    },
+                    error: function (error) {
+                        console.log(error)
+                        Swal.fire({ icon: "error", title: error.message, showConfirmButton: !1, timer: 1500 });
+                    }
+                })
+                : e.dismiss === Swal.DismissReason.cancel && Swal.fire({ title: "Cancelled", text: "Operation canceled :)", icon: "error", confirmButtonColor: "#4a4fea" });
+        }
+    );
+}

@@ -1,6 +1,6 @@
 $(document).ready(function () {
     timezoneSelect($('#timezone'))
-    languageSelect($('#language'))
+    languageSelect($('#edit-language'))
     languageSelect($('.language'))
 })
 function timezoneSelect(select) {

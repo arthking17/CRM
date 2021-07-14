@@ -40,8 +40,19 @@ Route::delete('/users/restore/{id}', 'UserController@restore')->name('user.resto
 //route for retreive users
 Route::get('/users', 'UserController@getAllUsers')->name('users');
 //route to get user in format json
-Route::get('/users/get/{id}', 'UserController@getUserJsonById')->name('user.get');
+Route::get('/users/get/{id}/{modal}', 'UserController@getUserJsonById')->name('user.get');
 //create note
 Route::post('/note/create', 'NoteController@store')->name('note.create');
+//create permission
+Route::post('/permission/create', 'Users_PermissionController@store')->name('users_permission.create');
 //pagination user
 Route::get('/users/pagination/fetch_data', 'UserController@fetch_data')->name('user.pagination');
+//modal logs permissions notification note list by user
+Route::get('/users/logs/get/{user_id}', 'UserController@listLogs')->name('user.logs');
+Route::get('/users/users_permissions/get/{user_id}', 'UserController@listUsers_Permissions')->name('user.users_permissions');
+Route::get('/notes/get/{element_id}', 'NoteController@listNotes')->name('notes.get');
+//delete users_permissions
+Route::delete('/users_permission/delete/{user_id}/{code}', 'Users_PermissionController@destroy')->name('users_permission.delete');
+
+// all activity logs 
+Route::get('/users/logs', 'UserController@getAllLogs')->name('users.logs');

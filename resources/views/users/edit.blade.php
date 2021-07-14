@@ -104,7 +104,7 @@
                                                     class="form-control @error('pwd') parsley-error @enderror" id="pwd"
                                                     name="pwd" placeholder="password"
                                                     data-parsley-minlength="8"
-                                                    pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?).{8,}$"
+                                                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$"
                                                     data-parsley-pattern-message="This value should be a valid password">
                                                 @error('pwd')
                                                     <ul class="parsley-errors-list filled" aria-hidden="false">
@@ -113,6 +113,14 @@
                                                 @else
                                                     <ul class="parsley-errors-list" aria-hidden="true"></ul>
                                                 @enderror
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-8 offset-4">
+                                                <div class="checkbox checkbox-purple">
+                                                    <input id="showpwd" type="checkbox" onclick="showPassword('pwd');">
+                                                    <label for="showpwd">Show password</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

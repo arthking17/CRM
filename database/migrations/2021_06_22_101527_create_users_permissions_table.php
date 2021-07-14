@@ -15,10 +15,11 @@ class CreateUsersPermissionsTable extends Migration
     public function up()
     {
         Schema::create('users_permissions', function (Blueprint $table) {
-            $table->integer('user_id', true, true);
+            $table->integer('user_id', false, true);
             $table->string('code', 128);
             $table->tinyInteger('dependency')->unsigned()->comment("1 : action need admin validation\n0 : Default ");
             $table->tinyInteger('status')->unsigned()->default(1);
+            $table->primary(['user_id', 'code']);
             $table->foreign('user_id')->references('id')->on('users');
         });
 

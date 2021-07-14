@@ -20,9 +20,9 @@
                                     <select
                                     class="form-select @error('class') parsley-error @enderror"
                                     name="class" required data-parsley-type="integer" data-parsley-length="[1, 1]">
-                                    <option value="1">Info</option>
-                                    <option value="2">Alert</option>
-                                    <option value="3">Danger</option>
+                                    <option value="1">Description</option>
+                                    <option value="2">Note</option>
+                                    <option value="3">Task</option>
                                 </select>
                                     @error('class')
                                         <ul class="parsley-errors-list filled" aria-hidden="false">
@@ -41,7 +41,7 @@
                                         class="form-select @error('visibility') parsley-error @enderror"
                                         name="visibility" required data-parsley-type="integer" data-parsley-length="[1, 1]">
                                         <option value="1">All</option>
-                                        <option value="2">Admin</option>
+                                        <option value="0">Admin</option>
                                     </select>
                                     @error('visibility')
                                         <ul class="parsley-errors-list filled" aria-hidden="false">
@@ -57,7 +57,7 @@
                                         class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">
                                     <textarea class="form-control @error('content') parsley-error @enderror"
-                                        id="content" name="content" placeholder="content" rows="3" required data-parsley-minlength="3"></textarea>
+                                        name="content" placeholder="content" rows="3" required data-parsley-minlength="3"></textarea>
                                     @error('content')
                                         <ul class="parsley-errors-list filled" aria-hidden="false">
                                             <li class="parsley-required">{{ $errors->first('content') }}</li>

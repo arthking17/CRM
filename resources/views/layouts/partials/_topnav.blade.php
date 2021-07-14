@@ -20,8 +20,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" id="topnav-dashboard" role="button">
-                            <i class="fe-phone me-1"></i> Contact
+                        <a class="nav-link" href="{{ route("users.logs") }}" id="topnav-dashboard" role="button">
+                            <i class="fe-activity me-1"></i> Logs
                         </a>
                     </li>
                     <li class="nav-item">

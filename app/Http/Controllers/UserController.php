@@ -110,29 +110,24 @@ class UserController extends Controller
      * Get account by id with json response.
      *
      * @param int $id
+     * @param int $modal
      * @return \Illuminate\Http\Response
      */
-    public function getUserJsonById(int $id)
+    public function getUserJsonById(int $id, int $modal)
     {
         $user = User::all()
             ->find($id);
         $accounts = DB::table('accounts')
             ->orderBy('id', 'desc')
             ->get();
-        $logs = Log::all();
-        $users_permissions = Users_permission::all();
         $notes = DB::table('notes')
             ->where('element', 16)
             ->where('element_id', $id)
             ->get();
-
-        return response()->json([
-            'user' => $user,
-            'accounts' => $accounts,
-            'notes' => $notes,
-            'logs' => $logs,
-            'users_permissions' => $users_permissions,
-        ]);
+        if ($modal == 0)
+            return view('users/user-info', compact('user', 'notes'))->render();
+        if ($modal == 1)
+            return response()->json($user);
         //return response()->json($user);
     }
 
@@ -268,11 +263,20 @@ class UserController extends Controller
             ->orderBy('id', 'desc')
             ->get();
         $users = User::all();
-        $users_paginate = DB::table('users')->paginate(8);
-        $logs = Log::all();
-        $users_permissions = Users_permission::all();
-        $notes = DB::table('notes')
-            ->where('element', 16)->get();
+        $users_paginate = User::all()->take(8);
+        //$users_paginate = DB::table('users')->paginate(8);
+        if($users->count() > 0){
+            $logs = Log::all()
+                ->where('user_id', $users[count($users) - 1]->id);
+            $users_permissions = Users_permission::all()
+                ->where('user_id', $users[count($users) - 1]->id);
+            $notes = DB::table('notes')
+                ->where('element', 16)->get();
+        }else{
+            $logs = null;
+            $notes = null;
+            $users_permissions = null;
+        }
 
         Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users.show', 'element' => 16, 'element_id' => 0, 'source' => 'users']);
 
@@ -305,5 +309,36 @@ class UserController extends Controller
                 ->paginate(8);
             return view('users/grid', compact('users'))->render();
         }
+    }
+
+    /**
+     * list Logs
+     */
+    public function listLogs($user_id)
+    {
+        $logs = Log::all()
+            ->where('user_id', $user_id);
+        return view('users/logs', compact('logs'))->render();
+    }
+
+    /**
+     * list users_permissions
+     */
+    public function listUsers_Permissions($user_id)
+    {
+        $users_permissions = Users_permission::all()
+            ->where('user_id', $user_id);
+        return view('users/users_permissions', compact('users_permissions'))->render();
+    }
+
+    /**
+     * list All activity Logs
+     */
+    public function getAllLogs()
+    {
+        $logs = Log::all();
+        return view('users/all-logs', [
+            'logs' => $logs,
+        ]);
     }
 }

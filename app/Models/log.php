@@ -22,4 +22,13 @@ class Log extends Model
     * @var bool
     */
    public $timestamps = false;
+
+   /**
+    * Get the user record associated with the log.
+    * @return \App\Models\User
+    */
+   public function user()
+   {
+       return $this->hasMany(User::class, 'id', 'user_id');
+   }
 }

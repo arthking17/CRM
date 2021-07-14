@@ -48,6 +48,15 @@ class User extends Authenticatable
      */
     public function account()
     {
-        return $this->belongsTo(Account::class, 'id', 'account_id');
+        return $this->hasMany(Account::class, 'id', 'account_id');
+    }
+
+    /**
+     * Get the logs record associated with the log
+     * @return \App\Models\Log
+     */
+    public function logs()
+    {
+        return $this->belongsTo(Log::class);
     }
 }

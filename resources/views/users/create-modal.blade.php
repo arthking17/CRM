@@ -52,9 +52,9 @@
                                             class="text-danger">*</span></label>
                                     <div class="col-8 col-xl-9">
                                         <input type="password"
-                                            class="form-control @error('pwd') parsley-error @enderror" name="pwd"
+                                            class="form-control @error('pwd') parsley-error @enderror" name="pwd" id="create-user-pwd"
                                             placeholder="password" required data-parsley-minlength="3"
-                                            pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?).{8,}$"
+                                            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$"
                                             data-parsley-pattern-message="This value should be a valid password">
                                         @error('pwd')
                                             <ul class="parsley-errors-list filled" aria-hidden="false">
@@ -63,6 +63,14 @@
                                         @else
                                             <ul class="parsley-errors-list" aria-hidden="true"></ul>
                                         @enderror
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-8 offset-4">
+                                        <div class="checkbox checkbox-purple">
+                                            <input id="create-user-showpwd" type="checkbox" onclick="showPassword('create-user-pwd');">
+                                            <label for="create-user-showpwd">Show password</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -145,6 +153,7 @@
                         </div>
                         <!-- end row-->
                         <button type="submit" id="create" class="btn btn-info waves-effect waves-light">Create</button>
+                        <button type="reset" class="btn btn-light waves-effect waves-light m-1"><i class="fe-x me-1"></i>Create</button>
                     </form>
                 </div>
             </div><!-- /.modal-content -->
