@@ -14,13 +14,11 @@
                     <a href="javascript: void(0);" class="btn- btn-xs btn-info">Send Email</a>
                     <a href="javascript: void(0);" class="btn- btn-xs btn-info">Send Sms</a>
                     <a href="javascript: void(0);" class="btn- btn-xs btn-secondary">Call</a>
-                    <!--<a id="edit-{{ $user->id }}" class="btn- btn-xs btn-secondary @if ($user->status == 0) disabled @endif"
-                                                                                    href="{{ route('user.edit', $user->id) }}">Edit</a>-->
                     @if ($user->status == 0)
-                        <a id="edit-{{ $user->id }}" class="btn- btn-xs btn-secondary" href="javascript: void(0);"
+                        <a id="button-edit-{{ $user->id }}" class="btn- btn-xs btn-secondary" href="javascript: void(0);"
                             data-bs-toggle="" data-bs-target="#edit-modal" onclick="#">Edit</a>
                     @else
-                        <a id="edit-{{ $user->id }}" class="btn- btn-xs btn-secondary" href="javascript: void(0);"
+                        <a id="button-edit-{{ $user->id }}" class="btn- btn-xs btn-secondary" href="javascript: void(0);"
                             data-bs-toggle="modal" data-bs-target="#edit-modal"
                             onclick="editUser({{ $user->id }});">Edit</a>
                     @endif

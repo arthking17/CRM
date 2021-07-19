@@ -47,7 +47,7 @@
             <!-- end page title -->
 
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="row justify-content-between">
@@ -90,10 +90,10 @@
                                         <th>id</th>
                                         <th>user_id</th>
                                         <th>log_date</th>
-                                        <th>action</th>
-                                        <th>element</th>
+                                        <th class="select">action</th>
+                                        <th class="select">element</th>
                                         <th>element_id</th>
-                                        <th>source</th>
+                                        <th class="select">source</th>
                                     </tr>
                                 </tfoot>
                             </table>

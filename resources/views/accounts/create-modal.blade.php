@@ -11,10 +11,10 @@
                         data-parsley-validate="" novalidate>
                         @csrf
                         <div class="row mb-3">
-                            <label for="name" class="col-4 col-xl-3 col-form-label">Name<span
+                            <label for="create-account-name" class="col-4 col-xl-3 col-form-label">Name<span
                                     class="text-danger">*</span></label>
                             <div class="col-8 col-xl-9">
-                                <input type="text" class="form-control @error('name') parsley-error @enderror" id="name"
+                                <input type="text" class="form-control @error('name') parsley-error @enderror" id="create-account-name"
                                     name="name" placeholder="Name" required data-parsley-minlength="3">
                                 @error('name')
                                     <ul class="parsley-errors-list filled" aria-hidden="false">
@@ -26,11 +26,11 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="url" class="col-4 col-xl-3 col-form-label">Url<span
+                            <label for="create-account-url" class="col-4 col-xl-3 col-form-label">Url<span
                                     class="text-danger">*</span></label>
                             <div class="col-8 col-xl-9">
-                                <input type="url" class="form-control @error('url') parsley-error @enderror" id="url"
-                                    name="url" placeholder="Url" required data-parsley-type="url">
+                                <input type="url" class="form-control @error('url') parsley-error @enderror" id="create-account-url"
+                                    name="url" placeholder="Url" required data-parsley-type="url" data-parsley-maxlength="128">
                                 @error('url')
                                     <ul class="parsley-errors-list filled" aria-hidden="false">
                                         <li class="parsley-required">{{ $errors->first('url') }}</li>
@@ -41,10 +41,10 @@
                             </div>
                         </div>
                         <div class="row mb-3">
-                            <label for="status" class="col-4 col-xl-3 col-form-label">Status<span
+                            <label for="create-account-status" class="col-4 col-xl-3 col-form-label">Status<span
                                     class="text-danger">*</span></label>
                             <div class="col-8 col-xl-9">
-                                <select class="form-select @error('status') parsley-error @enderror" name="status"
+                                <select class="form-select @error('status') parsley-error @enderror" name="status" id="create-account-status"
                                     required data-parsley-type="integer" data-parsley-length="[1, 1]">
                                     <option value="1">Active</option>
                                     <option value="2">Legit</option>
@@ -61,7 +61,7 @@
                         </div>
                         <div class="justify-content-end row">
                             <div class="col-8 col-xl-9">
-                                <button type="submit" id="create"
+                                <button type="submit" id="btn-create"
                                     class="btn btn-info waves-effect waves-light">Create</button>
                             </div>
                         </div>

@@ -55,7 +55,7 @@
                             </div>
                         </div>
                         <!-- end row-->
-                        <button type="submit" id="create_permissions"
+                        <button type="submit" id="btn-create_permissions"
                             class="btn btn-info waves-effect waves-light">Create</button>
                     </form>
                 </div>

@@ -1,18 +1,6 @@
 $(document).ready(function () {
 
     window.Parsley
-        .addValidator('timezone', {
-            requirementType: 'string',
-            validateString: function (value, requirement) {
-                return false;
-            },
-            messages: {
-                en: 'This value should be a timezone',
-                fr: 'Cette valeur doit être un fuseau horaire'
-            }
-        });
-
-    window.Parsley
         .addValidator('ipaddress', {
             requirementType: 'string',
             validateString: function (value, requirement) {

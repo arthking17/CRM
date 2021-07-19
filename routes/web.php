@@ -56,3 +56,14 @@ Route::delete('/users_permission/delete/{user_id}/{code}', 'Users_PermissionCont
 
 // all activity logs 
 Route::get('/users/logs', 'UserController@getAllLogs')->name('users.logs');
+
+//route for module contact 
+Route::get('/contacts', 'ContactController@index')->name('contacts');
+Route::post('/contacts/create', 'ContactController@store')->name('contacts.create');
+Route::get('/contacts/get/{id}/{modal}', 'ContactController@getContactJsonById')->name('contacts.get');
+Route::put('/contacts/update', 'ContactController@update')->name('contacts.update');
+Route::delete('/contacts/delete/{id}', 'ContactController@destroy')->name('contacts.delete');
+Route::view('/contacts/upload', 'contacts/upload')->name('contacts.upload');
+Route::view('/contacts/search', 'contacts/search')->name('contacts.search');
+//route for groups of contact
+Route::view('/contacts/groups/list', 'GroupController@index')->name('contacts.groups');

@@ -38,15 +38,15 @@ class NoteController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'class' => 'required|integer',
-            'visibility' => 'required|integer',
+            'class' => 'required|integer|digits_between:1,1',
+            'visibility' => 'required|integer|digits_between:1,1',
             'content' => 'required',
-            'element' => 'required|integer',
-            'element_id' => 'required|integer',
+            'element' => 'required|integer|min:0|max:16',
+            'element_id' => 'required|integer|digits_between:1,10',
         ]);
         $note = Note::create($data);
         Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'note.create', 'element' => 13, 'element_id' => $note->id, 'source' => 'note.create']);
-        return response()->json(['note' => $note, 'message' => 'Note added']);
+        return response()->json(['note' => $note, 'success' => 'Note added']);
     }
 
     /**

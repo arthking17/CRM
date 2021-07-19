@@ -1,5 +1,13 @@
 $(document).ready(function () {
-    
+    $('#btn-create').on('click', function () {
+        cleanErrorsInForm('create-user', create_user_errors)
+        create_user_errors = null
+    })
+    $('#btn-edit').on('click', function () {
+        cleanErrorsInForm('edit-user', edit_user_errors)
+        edit_user_errors = null
+    })
+
     $('#create-user').submit(function (e) {
         e.preventDefault();
 
@@ -12,16 +20,46 @@ $(document).ready(function () {
             cache: false,
             success: function (response) {
                 console.log(response)
-                Swal.fire({ position: "top-end", icon: "success", title: response.message, showConfirmButton: !1, timer: 1500 });
+                Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                 setTimeout(function () { window.location.href = route('users'); }, 1500);
             },
             error: function (error) {
                 console.log(error)
                 Swal.fire({ position: "top-end", icon: "error", title: "Error while adding this user", showConfirmButton: !1, timer: 1500 });
+                if (typeof error.responseJSON.errors !== 'undefined') {
+                    create_user_errors = error.responseJSON.errors
+                    laravelValidation('create-user', error.responseJSON.errors)
+                }
             }
         });
     });
-/**/
+    $('#edit-user').submit(function (e) {
+        e.preventDefault();
+        formData = $('#edit-user').serialize();
+        console.log($('#edit-user')[0])
+        $.ajax({
+            type: "POST",
+            url: route('user.update', $('#edit-user-id').val()),
+            data: new FormData(this),
+            contentType: false,
+            processData: false,
+            cache: false,
+            success: function (response) {
+                Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
+                //setTimeout(function () { window.location.href = route('accounts'); }, 1500);
+                $('#edit-modal').modal('toggle')
+            },
+            error: function (error) {
+                console.log(error)
+                Swal.fire({ position: "top-end", icon: "error", title: "Error while saving that user", showConfirmButton: !1, timer: 1500 });
+                if (typeof error.responseJSON.errors !== 'undefined') {
+                    form_edit_errors = error.responseJSON.errors
+                    laravelValidation('edit-user', error.responseJSON.errors)
+                }
+            }
+        });
+    });
+    /**/
     /*$('#edit-user').submit(function (e) {
         e.preventDefault();
         form = $('#edit-user')[0];
@@ -37,7 +75,7 @@ $(document).ready(function () {
         console.log(formData1)
         $.ajax({
             type: "PUT",
-            url: route('user.update', $('#id').val()),
+            url: route('user.update', $('#edit-user-id').val()),
             data: formData,
             dataType: "json",
             processData: false,
@@ -51,18 +89,10 @@ $(document).ready(function () {
                 console.log("test : " + formData)
                 console.log(error)
                 Swal.fire({ position: "top-end", icon: "error", title: "Error while saving that user", showConfirmButton: !1, timer: 1500 });
-                $.each(error.responseJSON.errors, function (prefix, val) {
-                    //$('#accid' + response.id + ' td:nth-child(2)').text(response.url)
-                    if ($('#' + prefix).hasClass('parsley-success'))
-                        $('#' + prefix).removeClass('parsley-success')
-                    if ($('#' + prefix).hasClass('parsley-error'))
-                        $('#' + prefix).removeClass('parsley-error')
-                    if ($('#error-' + prefix).length)
-                        $('#error-' + prefix).remove()
-                    $('#div-' + prefix).append("<ul class=\"parsley-errors-list filled\" id=\"error-"+prefix+"\" aria-hidden=\"false\">" +
-                        "<li class=\"parsley-required\">" + val[0] + "</li></ul>")
-                    $('#' + prefix).addClass('parsley-error')
-                })
+                if (typeof error.responseJSON.errors !== 'undefined') {
+                    edit_user_errors = error.responseJSON.errors
+                    laravelValidation('edit-user', error.responseJSON.errors)
+                }
             }
         });
     });*/

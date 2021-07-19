@@ -1,10 +1,3 @@
-function showPassword(id) {
-    if ($('#'+id).attr('type') === 'password') {
-        $('#'+id).attr('type', 'text')
-    } else {
-        $('#'+id).attr('type', 'password')
-    }
-}
 function deleteUser(id) {
     Swal.fire({ title: "Are you sure?", text: "This user will be disabled!", icon: "warning", showCancelButton: !0, confirmButtonColor: "#28bb4b", cancelButtonColor: "#f34e4e", confirmButtonText: "Yes, delete it!" }).then(
         function (e) {
@@ -19,9 +12,9 @@ function deleteUser(id) {
                     success: function (response) {
                         $('#edit-modal').modal('toggle')
                         Swal.fire({ icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
-                        $('#edit-' + id).addClass('disabled');
-                        $('#delete-' + id).text('Active');
-                        $('#delete-' + id).attr("onclick", "restoreUser(" + id + ")");
+                        $('#btn-edit-' + id).addClass('disabled');
+                        $('#btn-delete-' + id).text('Active');
+                        $('#btn-delete-' + id).attr("onclick", "restoreUser(" + id + ")");
                         $('#userid' + id + ' td:nth-child(6)').html('<span class="badge label-table bg-danger">Disabled</span>')
                         $('#user-info2 p:nth-of-type(6)').html('<span class="badge label-table bg-danger">Disabled</span>')
                         $('#user-info1 a:nth-of-type(4)').attr('data-bs-toggle', '')
@@ -50,9 +43,9 @@ function restoreUser(id) {
                     success: function (response) {
                         $('#edit-modal').modal('toggle')
                         Swal.fire({ icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
-                        $('#edit-' + id).removeClass('disabled');
-                        $('#delete-' + id).text('Disable');
-                        $('#delete-' + id).attr("onclick", "deleteUser(" + id + ")");
+                        $('#btn-edit-' + id).removeClass('disabled');
+                        $('#btn-delete-' + id).text('Disable');
+                        $('#btn-delete-' + id).attr("onclick", "deleteUser(" + id + ")");
                         $('#userid' + id + ' td:nth-child(6)').html('<span class="badge bg-success">Active</span>')
                         $('#user-info2 p:nth-of-type(6)').html('<span class="badge bg-success">Active</span>')
                         $('#user-info1 a:nth-of-type(4)').attr('data-bs-toggle', 'modal')
@@ -75,18 +68,15 @@ function viewUser(id) {
 }
 function editUser(id) {
     $.get('/users/get/' + id + '/1', function (user) {
-        $('#edit-id').val(id)
-        $('#edit-username').val(user.username)
-        $('#edit-login').val(user.login)
-        $('#edit-role').val(user.role)
-        $('#edit-language').val(user.language)
-        $('#edit-account_id').val(user.account_id)
-        $('#edit-photo').attr('data-default-file', url_photo + '/' + user.photo)
+        $('#edit-user-id').val(id)
+        $('#edit-user-username').val(user.username)
+        $('#edit-user-login').val(user.login)
+        $('#edit-user-role').val(user.role)
+        $('#edit-user-language').val(user.language)
+        $('#edit-user-account_id').val(user.account_id)
+        $('#edit-user-photo').attr('data-default-file', url_photo + '/' + user.photo)
         $('.dropify').dropify();
-        $('#delete').attr('onClick', 'deleteUser(' + id + ');')
-        /*$('#edit-photo').dropify({
-            defaultFile: url_photo + '/' + user.photo
-        });*/
+        $('#btn-delete').attr('onClick', 'deleteUser(' + id + ');')
     })
 }
 
@@ -146,14 +136,42 @@ $(document).ready(function () {
         $(".dataTables_length label").addClass("form-label");
     // Setup - add a text input to each footer cell
     $('#datatable-users tfoot th').each(function () {
-        var title = $(this).text();
-        $(this).html('<input class="form-control form-control-sm" type="text" placeholder="Search ' + title + '" />');
+        if (!$(this).hasClass('select')) {
+            var title = $(this).text();
+            $(this).html('<input class="form-control form-control-sm" type="text" placeholder="Search ' + title + '" />');
+        }
     });
     $('.disabled').each(function () {
         $(this).html('');
     })
+    a.columns().every(function () {
+        var column = this;
+        if ($(column.footer()).hasClass('select')) {
+            var select = $('<select class="form-select"><option value=""></option></select>')
+                .appendTo($(column.footer()).empty())
+                .on('change', function () {
+                    var val = $.fn.dataTable.util.escapeRegex(
+                        $(this).val()
+                    );
+
+                    column
+                        .search(val ? '^' + val + '$' : '', true, false)
+                        .draw();
+                });
+            if ($(column.footer()).hasClass('account')) {
+                column.data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            } else {
+                column.data().unique().sort().each(function (d, j) {
+                    d = d.slice(d.indexOf(">") + 1, d.indexOf("<", 1))
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            }
+        }
+    });
     // DataTable filter
-    a.columns('.select-filter').every(function () {
+    a.columns('.text-filter').every(function () {
         var that = this;
 
         $('input', this.footer()).on('keyup change clear', function () {
@@ -169,7 +187,22 @@ $(document).ready(function () {
      * end datatable js init
      */
 
-
+    $('#btn-create').on('click', function () {
+        cleanErrorsInForm('create-user', form_create_errors)
+        form_create_errors = null
+    })
+    $('#btn-edit').on('click', function () {
+        cleanErrorsInForm('edit-user', form_edit_errors)
+        form_edit_errors = null
+    })
+    $('#btn-create_permissions').on('click', function () {
+        cleanErrorsInForm('create-permissions', create_permission_errors)
+        create_permission_errors = null
+    })
+    $('#btn-create-note').on('click', function () {
+        cleanErrorsInForm('create-note', create_note_errors)
+        create_note_errors = null
+    })
     $('#create-user').submit(function (e) {
         e.preventDefault();
         $.ajax({
@@ -181,7 +214,7 @@ $(document).ready(function () {
             cache: false,
             success: function (response) {
                 console.log(response)
-                Swal.fire({ position: "top-end", icon: "success", title: response.message, showConfirmButton: !1, timer: 1500 });
+                Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                 $('#create-user')[0].reset()
                 //setTimeout(function () { window.location.href = route('accounts'); }, 1500);
                 $('#create-modal').modal('toggle')
@@ -216,47 +249,35 @@ $(document).ready(function () {
             error: function (error) {
                 console.log(error)
                 Swal.fire({ position: "top-end", icon: "error", title: "Error while adding this user", showConfirmButton: !1, timer: 1500 });
+                if (typeof error.responseJSON.errors !== 'undefined') {
+                    form_create_errors = error.responseJSON.errors
+                    laravelValidation('create-user', error.responseJSON.errors)
+                }
             }
         });
     });
 
     $('#edit-user').submit(function (e) {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-            }
-        });
         e.preventDefault();
         $.ajax({
-            type: "PUT",
-            url: route('user.update', $('#edit-id').val()),
-            data: {
-                "_token": "{{ csrf_token() }}",
-                "formData": new FormData(this)
-            },
+            type: "POST",
+            url: route('user.update', $('#edit-user-id').val()),
+            data: new FormData(this),
             contentType: false,
             processData: false,
             cache: false,
             success: function (response) {
-                Swal.fire({ position: "top-end", icon: "success", title: response[2], showConfirmButton: !1, timer: 1500 });
+                Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                 //setTimeout(function () { window.location.href = route('accounts'); }, 1500);
                 $('#edit-modal').modal('toggle')
             },
             error: function (error) {
                 console.log(error)
                 Swal.fire({ position: "top-end", icon: "error", title: "Error while saving that user", showConfirmButton: !1, timer: 1500 });
-                $.each(error.responseJSON.errors, function (prefix, val) {
-                    //$('#accid' + response.id + ' td:nth-child(2)').text(response.url)
-                    if ($('#' + prefix).hasClass('parsley-success'))
-                        $('#' + prefix).removeClass('parsley-success')
-                    if ($('#' + prefix).hasClass('parsley-error'))
-                        $('#' + prefix).removeClass('parsley-error')
-                    if ($('#error-' + prefix).length)
-                        $('#error-' + prefix).remove()
-                    $('#div-' + prefix).append("<ul class=\"parsley-errors-list filled\" id=\"error-" + prefix + "\" aria-hidden=\"false\">" +
-                        "<li class=\"parsley-required\">" + val[0] + "</li></ul>")
-                    $('#' + prefix).addClass('parsley-error')
-                })
+                if (typeof error.responseJSON.errors !== 'undefined') {
+                    form_edit_errors = error.responseJSON.errors
+                    laravelValidation('edit-user', error.responseJSON.errors)
+                }
             }
         });
     });
@@ -304,12 +325,16 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 $('#add_note-modal').modal('toggle')
-                Swal.fire({ position: "top-end", icon: "success", title: response.message, showConfirmButton: !1, timer: 1500 });
+                Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                 $('#create-note')[0].reset();
             },
             error: function (error) {
                 console.log(error)
                 Swal.fire({ position: "top-end", icon: "error", title: "Error while adding that note", showConfirmButton: !1, timer: 1500 });
+                if (typeof error.responseJSON.errors !== 'undefined') {
+                    create_note_errors = error.responseJSON.errors
+                    laravelValidation('create-note', error.responseJSON.errors)
+                }
             }
         });
     })
@@ -324,20 +349,25 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 $('#add_permission-modal').modal('toggle')
-                Swal.fire({ position: "top-end", icon: "success", title: response.message, showConfirmButton: !1, timer: 1500 });
+                Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                 $('#create-permissions')[0].reset();
             },
             error: function (error) {
                 console.log(error)
                 Swal.fire({ position: "top-end", icon: "error", title: "Error while adding that note", showConfirmButton: !1, timer: 1500 });
+                if (typeof error.responseJSON.errors !== 'undefined') {
+                    create_permission_errors = error.responseJSON.errors
+                    laravelValidation('create-permissions', error.responseJSON.errors)
+                }
             }
         });
     })
 
-    function fetch_data(page, sort_type = null, sort_by = null, query = null) {
+    function fetch_data(sort_type = null, sort_by = null, query = null) {
         $.ajax({
-            url: "/users/pagination/fetch_data?page=" + page + "&sortby=" + sort_by + "&sorttype=" + sort_type + "&query=" + query,
+            url: "/users/pagination/fetch_data?sortby=" + sort_by + "&sorttype=" + sort_type + "&query=" + query,
             success: function (data) {
+                console.log(data)
                 $('#view-grid-users').html('');
                 $('#view-grid-users').html(data);
             },
@@ -347,26 +377,47 @@ $(document).ready(function () {
         })
     }
 
-    $(document).on('keyup', '#view-grid-search', function () {
+    $('#view-grid-search').on('keyup', function () {
         var query = $('#view-grid-search').val();
         var column_name = $('#view-grid-sort').val();
         var sort_type = 'asc';
-        var page = $('#hidden_page').val();
-        fetch_data(page, sort_type, column_name, query);
+        //var page = $('#hidden_page').val();
+        fetch_data(sort_type, column_name, query);
     });
 
     $('.view-grid-page-item').on('click', function () {
         if (!$(this).hasClass('active')) {
+            visiblepageid = $('#activepage').val()
+            $('#page' + visiblepageid).addClass('d-none')
             $('.view-grid-page-item.active').removeClass('active')
             $(this).addClass('active')
-            page = $(this).attr('id').substr(4)
-            if (page == "1") {
-                $('#view-grid-paginate_button').addClass('disabled')
-            } else {
-                $('#view-grid-paginate_button').removeClass('disabled')
-            }
-            fetch_data(page, 'asc', $('#view-grid-sort').val(), $('#view-grid-search').val())
+            page = $(this).attr('id').substr(6)
+            $('#activepage').val(page)
+            $('#page' + page).removeClass('d-none')
         }
+    })
+    $('.view-grid-nextpage').on('click', function () {
+        visiblepageid = $('#activepage').val()
+        if (visiblepageid < $('#numberofpage').val()) {
+            $('#page' + visiblepageid).addClass('d-none')
+            $('.view-grid-page-item.active').removeClass('active')
+            page = parseInt(visiblepageid) + 1
+            $('#pageno' + page).addClass('active')
+            $('#activepage').val(page)
+            $('#page' + page).removeClass('d-none')
+        }
+    })
+    $('.view-grid-previouspage').on('click', function () {
+        visiblepageid = $('#activepage').val()
+        if (visiblepageid != 1) {
+            $('#page' + visiblepageid).addClass('d-none')
+            $('.view-grid-page-item.active').removeClass('active')
+            page = parseInt(visiblepageid) - 1
+            $('#pageno' + page).addClass('active')
+            $('#activepage').val(page)
+            $('#page' + page).removeClass('d-none')
+        }
+
     })
 })
 
@@ -376,7 +427,7 @@ function viewLogs(id) {
         dataTableLogs.destroy()
         $('#logs-div').empty().html(data);
         dataTableLogs = $('#datatable-logs').DataTable({
-            stateSave: !0,
+            stateSave: 0,
             language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
             drawCallback: function () {
                 $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
@@ -396,6 +447,25 @@ function viewLogs(id) {
                         .draw();
                 }
             });
+        });
+        dataTableLogs.columns().every(function () {
+            var column = this;
+            if ($(column.footer()).hasClass('select')) {
+                var select = $('<select class="form-select"><option value=""></option></select>')
+                    .appendTo($(column.footer()).empty())
+                    .on('change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+
+                        column
+                            .search(val ? '^' + val + '$' : '', true, false)
+                            .draw();
+                    });
+                column.data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            }
         });
         $('#logs-modal').modal('toggle')
     })
@@ -465,7 +535,7 @@ function deleteUsers_Permission(user_id, code) {
                     },
                     error: function (error) {
                         console.log(error)
-                        Swal.fire({ icon: "error", title: error.message, showConfirmButton: !1, timer: 1500 });
+                        Swal.fire({ icon: "error", title: "Error while deleting permission", showConfirmButton: !1, timer: 1500 });
                     }
                 })
                 : e.dismiss === Swal.DismissReason.cancel && Swal.fire({ title: "Cancelled", text: "Operation canceled :)", icon: "error", confirmButtonColor: "#4a4fea" });

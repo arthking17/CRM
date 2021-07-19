@@ -27,8 +27,8 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a
-                                        href="{{ route('home') }}">{{ config('app.name') }}</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ config('app.name') }}</a>
+                                </li>
                                 <li class="breadcrumb-item active">Accounts</li>
                             </ol>
                         </div>
@@ -94,7 +94,7 @@
                                         @foreach ($accounts as $account)
                                             <tr id="accid{{ $account->id }}">
                                                 <td>{{ $account->id }}</td>
-                                                <td>{{ $account->name }}</td>   
+                                                <td>{{ $account->name }}</td>
                                                 <td>{{ $account->url }}</td>
                                                 <td>
                                                     @if ($account->status === 1) <span
@@ -172,6 +172,11 @@
             <script src="/js/accounts/account.js"></script>
             <script src="/js/accounts/accounts-list.js"></script>
             <script src="/js/accounts/account-ajax.js"></script>
+            <script src="/js/form-validation-laravel.js"></script>
+            <script>
+                var create_account_errors = null
+                var edit_account_errors = null
+            </script>
 
             <!-- App js -->
             <script src="/js/app.min.js"></script>

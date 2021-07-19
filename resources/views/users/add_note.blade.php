@@ -19,7 +19,7 @@
                                 <div class="col-8 col-xl-9">
                                     <select
                                     class="form-select @error('class') parsley-error @enderror"
-                                    name="class" required data-parsley-type="integer" data-parsley-length="[1, 1]">
+                                    name="class" id="create-note-class" required data-parsley-type="integer" data-parsley-length="[1, 1]">
                                     <option value="1">Description</option>
                                     <option value="2">Note</option>
                                     <option value="3">Task</option>
@@ -39,7 +39,7 @@
                                 <div class="col-8 col-xl-9">
                                     <select
                                         class="form-select @error('visibility') parsley-error @enderror"
-                                        name="visibility" required data-parsley-type="integer" data-parsley-length="[1, 1]">
+                                        name="visibility" id="create-note-visibility" required data-parsley-type="integer" data-parsley-length="[1, 1]">
                                         <option value="1">All</option>
                                         <option value="0">Admin</option>
                                     </select>
@@ -57,7 +57,7 @@
                                         class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">
                                     <textarea class="form-control @error('content') parsley-error @enderror"
-                                        name="content" placeholder="content" rows="3" required data-parsley-minlength="3"></textarea>
+                                        name="content" id="create-note-content" placeholder="content" rows="3" required data-parsley-minlength="3"></textarea>
                                     @error('content')
                                         <ul class="parsley-errors-list filled" aria-hidden="false">
                                             <li class="parsley-required">{{ $errors->first('content') }}</li>
@@ -69,7 +69,7 @@
                             </div>
                         </div>
                         <!-- end row-->
-                        <button type="submit" id="create_note" class="btn btn-info waves-effect waves-light">Create</button>
+                        <button type="submit" id="btn-create-note" class="btn btn-info waves-effect waves-light">Create</button>
                     </form>
                 </div>
             </div><!-- /.modal-content -->

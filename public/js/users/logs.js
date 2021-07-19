@@ -10,7 +10,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
         },
-        stateSave: !0,
+        stateSave: 0,
         language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
@@ -41,5 +41,24 @@ $(document).ready(function () {
                     .draw();
             }
         });
+    });
+    a.columns().every(function () {
+        var column = this;
+        if ($(column.footer()).hasClass('select')) {
+            var select = $('<select class="form-select"><option value=""></option></select>')
+                .appendTo($(column.footer()).empty())
+                .on('change', function () {
+                    var val = $.fn.dataTable.util.escapeRegex(
+                        $(this).val()
+                    );
+
+                    column
+                        .search(val ? '^' + val + '$' : '', true, false)
+                        .draw();
+                });
+            column.data().unique().sort().each(function (d, j) {
+                select.append('<option value="' + d + '">' + d + '</option>')
+            });
+        }
     });
 });

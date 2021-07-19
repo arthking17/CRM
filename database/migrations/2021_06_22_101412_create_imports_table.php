@@ -16,7 +16,7 @@ class CreateImportsTable extends Migration
     {
         Schema::create('imports', function (Blueprint $table) {
             $table->integer('id', true, true);
-            $table->dateTime('start_date');
+            $table->dateTime('start_date')->default(date("Y-m-d H:i:s"));
         });
 
         DB::statement("ALTER TABLE `imports` comment 'Table to store import actions'");

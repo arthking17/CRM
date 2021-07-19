@@ -73,7 +73,7 @@ class UserController extends Controller
         $user = User::create($data);
         Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.create', 'element' => 16, 'element_id' => $user->id, 'source' => 'user.create']);
         //return redirect(route('users'));
-        return response()->json(['user' => $user, 'message' => 'This User has been added']);
+        return response()->json(['user' => $user, 'success' => 'This User has been added']);
     }
 
     /**
@@ -107,7 +107,7 @@ class UserController extends Controller
     }
 
     /**
-     * Get account by id with json response.
+     * Get user by id with json response.
      *
      * @param int $id
      * @param int $modal
@@ -215,7 +215,7 @@ class UserController extends Controller
         $user->update($data);
         Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.update', 'element' => 16, 'element_id' => $user->id, 'source' => 'user.update, ' . $id]);
         //return redirect(route('users'));
-        return response()->json(['message' => 'This User has been edited']);
+        return response()->json(['success' => 'This User has been edited']);
     }
 
     /**
@@ -263,7 +263,7 @@ class UserController extends Controller
             ->orderBy('id', 'desc')
             ->get();
         $users = User::all();
-        $users_paginate = User::all()->take(8);
+        $users_paginate = User::all()->take(9);
         //$users_paginate = DB::table('users')->paginate(8);
         if($users->count() > 0){
             $logs = Log::all()

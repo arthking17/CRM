@@ -19,7 +19,7 @@ class CreateAppointmentsTable extends Migration
             $table->integer('contact_id')->unsigned();
             $table->tinyInteger('class')->unsigned()->comment("Appointment type");
             $table->string('subject', 255)->comment("Appointment title");
-            $table->dateTime('start_date');
+            $table->dateTime('start_date')->default(date("Y-m-d H:i:s"));
             $table->dateTime('end_date');
             $table->integer('user_id')->unsigned()->comment("User assigned")->nullable();
             $table->tinyInteger('status')->unsigned()->default(1);

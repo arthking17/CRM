@@ -38,13 +38,13 @@ class Users_PermissionController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'user_id' => 'required|integer',
+            'user_id' => 'required|integer|digits_between:1,10',
             'code' => 'required',
             'dependency' => 'required|integer|min:0|max:1',
         ]);
         $users_Permission = Users_Permission::create($data);
         Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users_permission.create', 'element' => 17, 'element_id' => $users_Permission->user_id, 'source' => 'users_permission.create']);
-        return response()->json(['users_permission' => $users_Permission, 'message' => 'User permission added']);
+        return response()->json(['users_permission' => $users_Permission, 'success' => 'User permission added']);
     }
 
     /**

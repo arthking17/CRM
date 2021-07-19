@@ -10,28 +10,28 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route("accounts") }}" id="topnav-accounts" role="button">
+                        <a class="nav-link" href="{{ route('accounts') }}" id="topnav-accounts" role="button">
                             <i class="fe-user me-1"></i> Accounts
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route("users") }}" id="topnav-users" role="button">
+                        <a class="nav-link" href="{{ route('users') }}" id="topnav-users" role="button">
                             <i class="fe-user me-1"></i> Users
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route("users.logs") }}" id="topnav-dashboard" role="button">
+                        <a class="nav-link" href="{{ route('users.logs') }}" id="topnav-dashboard" role="button">
                             <i class="fe-activity me-1"></i> Logs
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" id="topnav-dashboard" role="button">
-                            <i class="fe-airplay me-1"></i> Leads
+                        <a class="nav-link" href="{{ route('contacts') }}" id="topnav-dashboard" role="button">
+                            <i class="fe-phone me-1"></i> Contact
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" id="topnav-dashboard" role="button">
-                            <i class="fe-airplay me-1"></i> Customers
+                        <a class="nav-link" href="{{ route('contacts.groups') }}" id="topnav-dashboard" role="button">
+                            <i class="fe-layers me-1"></i> Groups
                         </a>
                     </li>
                 </ul> <!-- end navbar-->

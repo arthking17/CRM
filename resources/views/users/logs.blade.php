@@ -35,10 +35,10 @@
                             <tr>
                                 <th>id</th>
                                 <th>log_date</th>
-                                <th>action</th>
-                                <th>element</th>
+                                <th class="select">action</th>
+                                <th class="select">element</th>
                                 <th>element_id</th>
-                                <th>source</th>
+                                <th class="select">source</th>
                             </tr>
                         </tfoot>
                     </table>

@@ -82,8 +82,8 @@
                                     class="table table-center dt-responsive nowrap table-hover w-100">
                                     <thead>
                                         <tr>
-                                            <th class="select-filter">Id</th>
-                                            <th class="select-filter">Username</th>
+                                            <th class="text-filter">Id</th>
+                                            <th class="text-filter">Username</th>
                                             <th class="select-filter">role</th>
                                             <th>photo</th>
                                             <th class="select-filter">account</th>
@@ -122,10 +122,10 @@
                                         <tr>
                                             <th>id</th>
                                             <th>username</th>
-                                            <th>role</th>
+                                            <th class="select role">role</th>
                                             <th class="disabled">photo</th>
-                                            <th>account</th>
-                                            <th>status</th>
+                                            <th class="select account">account</th>
+                                            <th class="select status">status</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -141,23 +141,23 @@
             <!-- end row -->
             @include('users.create-modal')
             @if ($users->count() > 0)
-            @include('users.edit-modal')
-            @include('users.add_note')
-            <div id="logs-div">
-                @include('users.logs')
-            </div>
-            <div id="users_permissions-div">
-                @include('users.users_permissions')
-            </div>
-            <div id="security-div">
-                @include('users.security')
-            </div>
-            <div id="notification-div">
-                @include('users.notification')
-            </div>
-            <div id="notes-div">
-                @include('users.notes')
-            </div>
+                @include('users.edit-modal')
+                @include('users.add_note')
+                <div id="logs-div">
+                    @include('users.logs')
+                </div>
+                <div id="users_permissions-div">
+                    @include('users.users_permissions')
+                </div>
+                <div id="security-div">
+                    @include('users.security')
+                </div>
+                <div id="notification-div">
+                    @include('users.notification')
+                </div>
+                <div id="notes-div">
+                    @include('users.notes')
+                </div>
             @endif
         @endsection
 
@@ -201,17 +201,27 @@
             <!-- Init js-->
             <script src="/js/pages/form-fileuploads.init.js"></script>
 
-            <!-- custom js files
-                                                        <script src="/js/users/datatables.init.js"></script> -->
+            <!-- custom js files -->
+            <script type="text/javascript">
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+            </script>
             <script src="/js/users/users-ajax-list.js"></script>
             <script src="/js/users/users-validation.js"></script>
-            <script src="/js/users/users-select.js"></script>
+            <script src="/js/form-validation-laravel.js"></script>
             <script>
                 $('.dropify').dropify();
                 $('document').ready(function() {
                     $("#language").val($('#language-val').val()).attr("selected", "selected");
                 })
                 url_photo = '{{ URL::asset('/storage/images/users/') }}';
+                var form_create_errors = null
+                var form_edit_errors = null
+                var create_note_errors = null
+                var create_permission_errors = null
             </script>
             <!-- custom js files end -->
 

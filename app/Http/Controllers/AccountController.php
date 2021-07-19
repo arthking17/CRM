@@ -41,7 +41,7 @@ class AccountController extends Controller
         $request->validate([
             'name' => 'required|min:3',
             'url' => 'required|url',
-            'status' => 'required|integer',
+            'status' => 'required|integer|digits_between:1,1',
         ]);
         $name = $request->input('name');
         $url = $request->input('url');
@@ -114,7 +114,7 @@ class AccountController extends Controller
         $request->validate([
             'name' => 'required|min:3',
             'url' => 'required|url',
-            'status' => 'required|integer',
+            'status' => 'required|integer|digits_between:1,1',
         ]);
         $accounts = Account::all();
         $account = $accounts
@@ -124,7 +124,7 @@ class AccountController extends Controller
         $account->status = $request->input('status');
         $account->save();
         Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'account.update', 'element' => 1, 'element_id' => $account->id, 'source' => 'account.update']);
-        return response()->json($account);
+        return response()->json(['success' => 'Account has been Updated !!!', 'account' => $account]);
     }
 
     /**

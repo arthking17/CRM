@@ -20,7 +20,7 @@ class CreateContactsTable extends Migration
             $table->tinyInteger('class')->unsigned()->comment("Contact Type : Person, Company");
             $table->tinyInteger('source')->unsigned()->comment("Origin of contact : Telephone prospecting, Landing pages, affiliation, Database purchased");
             $table->integer('source_id')->unsigned()->comment("Identifier of th origin");
-            $table->dateTime('creation_date');
+            $table->dateTime('creation_date')->default(date("Y-m-d H:i:s"));
             $table->tinyInteger('status')->comment("Status : Lead, Customer, Not interested");
             $table->index('account_id', 'cont_account_id_idx');
             $table->foreign('account_id', 'cont_account_id')->references('id')->on('accounts');

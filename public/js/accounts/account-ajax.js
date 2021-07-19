@@ -1,12 +1,20 @@
 function editAccount(id) {
     $.get('/accounts/' + id, function (account) {
-        $('#id').val(id)
-        $('#name').val(account.name)
-        $('#url').val(account.url)
-        $('#statuss').val(account.status)
+        $('#edit-account-id').val(id)
+        $('#edit-account-name').val(account.name)
+        $('#edit-account-url').val(account.url)
+        $('#edit-account-status').val(account.status)
     })
 }
 $(document).ready(function () {
+    $('#btn-create').on('click', function () {
+        cleanErrorsInForm('create-account', create_account_errors)
+        create_account_errors = null
+    })
+    $('#btn-edit').on('click', function () {
+        cleanErrorsInForm('edit-account', edit_account_errors)
+        edit_account_errors = null
+    })
     $('#create-account').submit(function (e) {
         e.preventDefault();
         formData = $('#create-account').serialize();
@@ -21,30 +29,30 @@ $(document).ready(function () {
                 console.log(response)
                 $('#create-modal').modal('toggle')
                 Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
-                newRow = '<tr id="accid'+response.account.id+'"><td>'+response.account.id+'</td><td>'+response.account.name+'</td>';
-                newRow += '<td>'+response.account.url+'</td>';
-                if(response.account.status == 1)
-                newRow += '<td><span class="badge bg-success">Active</span></td>';
-                if(response.account.status == 2)
-                newRow += '<td><span class="badge bg-blue text-light">Legit</span></td>';
-                if(response.account.status == 3)
-                newRow += '<td><span class="badge bg-dark text-light">Invoicing</span></td>';
-                if(response.account.status == 0)
-                newRow += '<td><span class="badge label-table bg-danger">Disabled</span></td>';
-                newRow += '<td>'+response.account.start_date.substring(0, 10)+'</td>';
+                newRow = '<tr id="accid' + response.account.id + '"><td>' + response.account.id + '</td><td>' + response.account.name + '</td>';
+                newRow += '<td>' + response.account.url + '</td>';
+                if (response.account.status == 1)
+                    newRow += '<td><span class="badge bg-success">Active</span></td>';
+                if (response.account.status == 2)
+                    newRow += '<td><span class="badge bg-blue text-light">Legit</span></td>';
+                if (response.account.status == 3)
+                    newRow += '<td><span class="badge bg-dark text-light">Invoicing</span></td>';
+                if (response.account.status == 0)
+                    newRow += '<td><span class="badge label-table bg-danger">Disabled</span></td>';
+                newRow += '<td>' + response.account.start_date.substring(0, 10) + '</td>';
                 newRow += '<td></td><td>';
-                if(response.account.status == 0){
+                if (response.account.status == 0) {
                     newRow += '<a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>';
                     newRow += '<a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>'
                 }
-                else{
-                    newRow += '<a href="javascript:void(0);" class="action-icon" '+
-                    'data-bs-toggle="modal" data-bs-target="#edit-modal"'+
-                    ' id="edit-"'+response.account.id+
-                    ' onclick="editAccount('+response.account.id+');"'+
-                    ' data-toggle="modal"> <i class="mdi mdi-square-edit-outline"></i></a>';
-                    newRow += '<a href="javascript:void(0);" class="action-icon" id="delete-"'+response.account.id+
-                    ' onclick="deleteAccount('+response.account.id+');"> <i class="mdi mdi-delete"></i></a>';
+                else {
+                    newRow += '<a href="javascript:void(0);" class="action-icon" ' +
+                        'data-bs-toggle="modal" data-bs-target="#edit-modal"' +
+                        ' id="edit-"' + response.account.id +
+                        ' onclick="editAccount(' + response.account.id + ');"' +
+                        ' data-toggle="modal"> <i class="mdi mdi-square-edit-outline"></i></a>';
+                    newRow += '<a href="javascript:void(0);" class="action-icon" id="delete-"' + response.account.id +
+                        ' onclick="deleteAccount(' + response.account.id + ');"> <i class="mdi mdi-delete"></i></a>';
                 }
                 newRow += '</td></tr>'
                 $('#table-accounts>tbody').prepend(newRow);
@@ -55,6 +63,10 @@ $(document).ready(function () {
                 console.log("test : " + formData)
                 console.log(error)
                 Swal.fire({ position: "top-end", icon: "error", title: "Error while adding that account", showConfirmButton: !1, timer: 1500 });
+                if (typeof error.responseJSON.errors !== 'undefined') {
+                    create_account_errors = error.responseJSON.errors
+                    laravelValidation('create-account', error.responseJSON.errors)
+                }
             }
         });
     })
@@ -75,7 +87,7 @@ $(document).ready(function () {
             success: function (response) {
                 console.log(response)
                 $('#edit-modal').modal('toggle')
-                Swal.fire({ position: "top-end", icon: "success", title: "This account has been saved", showConfirmButton: !1, timer: 1500 });
+                Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                 $('#accid' + response.id + ' td:nth-child(2)').text(response.name)
                 $('#accid' + response.id + ' td:nth-child(3)').text(response.url)
                 if (response.status == 1)
@@ -91,6 +103,10 @@ $(document).ready(function () {
             error: function (error) {
                 console.log(error)
                 Swal.fire({ position: "top-end", icon: "error", title: "Error while saving that account", showConfirmButton: !1, timer: 1500 });
+                if (typeof error.responseJSON.errors !== 'undefined') {
+                    edit_account_errors = error.responseJSON.errors
+                    laravelValidation('edit-account', error.responseJSON.errors)
+                }
             }
         });
     });
