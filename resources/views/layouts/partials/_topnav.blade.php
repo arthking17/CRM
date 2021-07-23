@@ -34,6 +34,11 @@
                             <i class="fe-layers me-1"></i> Groups
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('notes') }}" id="topnav-dashboard" role="button">
+                            <i class="mdi mdi-evernote"></i> Notes
+                        </a>
+                    </li>
                 </ul> <!-- end navbar-->
             </div> <!-- end .collapsed-->
         </nav>

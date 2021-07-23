@@ -165,6 +165,7 @@
             <!-- end row -->
             @include('contacts.create')
             @include('contacts.data.create')
+            @include('contacts.data.edit')
             @if ($contacts->count() > 0)
                 @include('contacts.edit')
             @endif
@@ -218,10 +219,13 @@
             <script src="/js/contacts/custom-parsley.js"></script>
             <script src="/js/contacts/contacts-validation.js"></script>
             <script src="/js/form-validation-laravel.js"></script>
+            <script src="/js/contacts/data/contact-data.js"></script>
             <script>
                 url_photo = '{{ URL::asset('/storage/images/logo/') }}';
                 var form_create_errors = null
                 var form_edit_errors = null
+                var create_contact_data_errors = null
+                var edit_contact_data_errors = null
             </script>
             <!-- custom js files end -->
 

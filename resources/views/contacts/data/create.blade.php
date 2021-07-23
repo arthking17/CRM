@@ -7,6 +7,9 @@
                         data-parsley-validate="" novalidate enctype="multipart/form-data">
                         <div class="row">
                             @csrf
+                            <input type="hidden" name="element" id="create-contact-data-element">
+                            <input type="hidden" name="element_id" id="create-contact-data-element_id">
+                            <input type="hidden" name="class" id="create-contact-data-class">
                             <div class="row mb-3">
                                 <label for="create-contact-data-data" class="col-4 col-xl-3 col-form-label">Data<span class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">

@@ -42,7 +42,7 @@ Route::get('/users', 'UserController@getAllUsers')->name('users');
 //route to get user in format json
 Route::get('/users/get/{id}/{modal}', 'UserController@getUserJsonById')->name('user.get');
 //create note
-Route::post('/note/create', 'NoteController@store')->name('note.create');
+//Route::post('/note/create', 'NoteController@store')->name('note.create');
 //create permission
 Route::post('/permission/create', 'Users_PermissionController@store')->name('users_permission.create');
 //pagination user
@@ -72,3 +72,13 @@ Route::post('/contacts/groups/create', 'GroupController@store')->name('contacts.
 Route::put('/contacts/groups/update', 'GroupController@update')->name('contacts.groups.update');
 Route::delete('/contacts/groups/delete/{id}', 'GroupController@destroy')->name('contacts.groups.delete');
 Route::get('/contacts/groups/get/{id}/{modal}', 'GroupController@getGroupJsonById')->name('contacts.groups.get');
+//route for contact data
+Route::post('/contacts/data/create', 'Contact_dataController@store')->name('contacts.data.create');
+Route::post('/contacts/data/update', 'Contact_dataController@update')->name('contacts.data.update');
+
+//route for note module
+Route::get('/notes', 'NoteController@index')->name('notes');
+Route::post('/notes/create', 'NoteController@store')->name('notes.create');
+Route::get('/notes/get/{id}/{modal}', 'NoteController@getNoteJsonById')->name('notes.get');
+Route::put('/notes/update', 'NoteController@update')->name('notes.update');
+Route::delete('/notes/delete/{id}', 'NoteController@destroy')->name('notes.delete');

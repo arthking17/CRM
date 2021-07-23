@@ -33,26 +33,26 @@
                         class="mdi mdi-chevron-down"></i></button>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="addContact_data({{ $contacts_person->id }});">Phone Number</a>
+                        onclick="displayFormAddContactData({{ $contacts_person->id }}, 0);">Phone Number</a>
                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="addContact_data({{ $contacts_person->id }});">Mobile</a>
+                        onclick="displayFormAddContactData({{ $contacts_person->id }}, 1);">Mobile</a>
                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="addContact_data({{ $contacts_person->id }});">Fax Number</a>
+                        onclick="displayFormAddContactData({{ $contacts_person->id }}, 2);">Fax Number</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="addContact_data({{ $contacts_person->id }});">Email Address</a>
+                        onclick="displayFormAddContactData({{ $contacts_person->id }}, 3);">Email Address</a>
                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="addContact_data({{ $contacts_person->id }});">Facebook</a>
+                        onclick="displayFormAddContactData({{ $contacts_person->id }}, 4);">Facebook</a>
                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="addContact_data({{ $contacts_person->id }});">Instagram</a>
+                        onclick="displayFormAddContactData({{ $contacts_person->id }}, 5);">Instagram</a>
                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="addContact_data({{ $contacts_person->id }});">Skype</a>
+                        onclick="displayFormAddContactData({{ $contacts_person->id }}, 6);">Skype</a>
                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="addContact_data({{ $contacts_person->id }});">WhatsApp</a>
+                        onclick="displayFormAddContactData({{ $contacts_person->id }}, 7);">WhatsApp</a>
                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="addContact_data({{ $contacts_person->id }});">Viber</a>
+                        onclick="displayFormAddContactData({{ $contacts_person->id }}, 8);">Viber</a>
                     <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="addContact_data({{ $contacts_person->id }});">Messenger</a>
+                        onclick="displayFormAddContactData({{ $contacts_person->id }}, 9);">Messenger</a>
                 </div>
             </div><!-- /btn-group -->
 
