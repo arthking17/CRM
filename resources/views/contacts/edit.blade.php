@@ -17,7 +17,7 @@
                                     <a href="#edit-contact-class" data-bs-toggle="tab" data-toggle="tab"
                                         class="nav-link rounded-0 pt-2 pb-2">
                                         <i class="mdi mdi-account-circle me-1"></i>
-                                        <span class="d-none d-sm-inline">Contact Class</span>
+                                        <span class="d-none d-sm-inline">Contact</span>
                                     </a>
                                 </li>
                                 <li class="nav-item" id="edit-nav-tab-info">
@@ -53,12 +53,12 @@
                                                         class="text-danger">*</span></label>
                                                 <div class="col-8 col-xl-9">
                                                     <select class="form-select @error('class') parsley-error @enderror"
-                                                        name="class" id="form_edit-class" required
-                                                        data-parsley-type="integer" data-parsley-length="[1, 1]"
-                                                        >
+                                                        name="class" id="form_edit-class-disabled" required
+                                                        data-parsley-type="integer" data-parsley-length="[1, 1]" disabled>
                                                         <option value="1">Person</option>
                                                         <option value="2">Company</option>
                                                     </select>
+                                                    <input type="hidden" name="class" id="form_edit-class" />
                                                     @error('class')
                                                         <ul class="parsley-errors-list filled" aria-hidden="false">
                                                             <li class="parsley-required">{{ $errors->first('class') }}
@@ -75,7 +75,7 @@
                                                         class="text-danger">*</span></label>
                                                 <div class="col-8 col-xl-9">
                                                     <select class="form-select @error('source') parsley-error @enderror"
-                                                        name="source" id="form_edit-source" required required
+                                                        name="source" id="form_edit-source" required
                                                         data-parsley-type="integer" data-parsley-maxlength="10">
                                                         <option value="1">Telephone prospecting</option>
                                                         <option value="2">Landing pages</option>
@@ -189,8 +189,7 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="form_edit-nickname"
-                                                    class="col-4 col-xl-3 col-form-label">Nickname<span
-                                                        class="text-danger">*</span></label>
+                                                    class="col-4 col-xl-3 col-form-label">Nickname</label>
                                                 <div class="col-8 col-xl-9">
                                                     <input type="text"
                                                         class="form-control @error('nickname') parsley-error @enderror"
@@ -208,8 +207,7 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="form_edit-birthdate"
-                                                    class="col-4 col-xl-3 col-form-label">Birthdate<span
-                                                        class="text-danger">*</span></label>
+                                                    class="col-4 col-xl-3 col-form-label">Birthdate</label>
                                                 <div class="col-8 col-xl-9">
                                                     <input
                                                         class="form-control @error('birthdate') parsley-error @enderror"
@@ -227,8 +225,7 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="form_edit-country"
-                                                    class="col-4 col-xl-3 col-form-label">country<span
-                                                        class="text-danger">*</span></label>
+                                                    class="col-4 col-xl-3 col-form-label">country</label>
                                                 <div class="col-8 col-xl-9">
                                                     <select
                                                         class="form-select country @error('country') parsley-error @enderror"
@@ -313,8 +310,7 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="form_edit-language"
-                                                    class="col-4 col-xl-3 col-form-label">language<span
-                                                        class="text-danger">*</span></label>
+                                                    class="col-4 col-xl-3 col-form-label">language</label>
                                                 <div class="col-8 col-xl-9">
                                                     <select
                                                         class="form-select @error('language') parsley-error @enderror"
@@ -390,8 +386,7 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="form_edit-registered_number"
-                                                    class="col-4 col-xl-3 col-form-label">Registered
-                                                    number<span class="text-danger">*</span></label>
+                                                    class="col-4 col-xl-3 col-form-label">Registered number</label>
                                                 <div class="col-8 col-xl-9">
                                                     <input type="text"
                                                         class="form-control @error('registered_number') parsley-error @enderror"
@@ -412,8 +407,7 @@
                                         <div class="col-lg-6">
                                             <div class="row mb-3">
                                                 <label for="form_edit-activity"
-                                                    class="col-4 col-xl-3 col-form-label">Activity<span
-                                                        class="text-danger">*</span></label>
+                                                    class="col-4 col-xl-3 col-form-label">Activity</label>
                                                 <div class="col-8 col-xl-9">
                                                     <input type="number"
                                                         class="form-control @error('activity') parsley-error @enderror"
@@ -433,8 +427,7 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="form_edit-country"
-                                                    class="col-4 col-xl-3 col-form-label">country<span
-                                                        class="text-danger">*</span></label>
+                                                    class="col-4 col-xl-3 col-form-label">country</label>
                                                 <div class="col-8 col-xl-9">
                                                     <select
                                                         class="form-select country @error('country') parsley-error @enderror"
@@ -454,8 +447,7 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="form_edit-language"
-                                                    class="col-4 col-xl-3 col-form-label">language<span
-                                                        class="text-danger">*</span></label>
+                                                    class="col-4 col-xl-3 col-form-label">language</label>
                                                 <div class="col-8 col-xl-9">
                                                     <select
                                                         class="form-select @error('language') parsley-error @enderror"
@@ -479,8 +471,7 @@
                                             </div>
                                         </div><!-- end col -->
                                         <div class="row mb-3">
-                                            <label for="form_edit-logo" class="col-4 col-xl-3 col-form-label">Logo<span
-                                                    class="text-danger">*</span></label>
+                                            <label for="form_edit-logo" class="col-4 col-xl-3 col-form-label">Logo</label>
                                             <div class="col-8 col-xl-9">
                                                 <input type="file"
                                                     class="form-control dropify @error('logo') parsley-error @enderror"
@@ -529,9 +520,6 @@
                                     <li class="float-start">
                                         <a href="javascript: void(0);" class="btn btn-light waves-effect waves-light m-1" onclick="$('#edit-modal').modal('toggle')"><i
                                                 class="fe-x me-1"></i>Cancel</a>
-                                    </li>
-                                    <li class="previous list-inline-item">
-                                        <a href="javascript: void(0);" class="btn btn-secondary">Previous</a>
                                     </li>
                                     <li class="next list-inline-item float-end">
                                         <a href="javascript: void(0);" class="btn btn-secondary">Next</a>

@@ -12,18 +12,11 @@
                     <a href="javascript: void(0);" class="btn- btn-xs btn-info">Send Email</a>
                     <a href="javascript: void(0);" class="btn- btn-xs btn-info">Send Sms</a>
                     <a href="javascript: void(0);" class="btn- btn-xs btn-secondary">Call</a>
-                    @if ($contacts_person->status == 3)
-                        <a id="edit-{{ $contacts_person->id }}" class="btn- btn-xs btn-success"
-                            href="javascript: void(0);">Edit</a>
-                        <a id="delete-{{ $contacts_person->id }}" class="btn- btn-xs btn-danger"
-                            href="javascript: void(0);">Delete</a>
-                    @else
-                        <a id="edit-{{ $contacts_person->id }}" class="btn- btn-xs btn-success"
-                            href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-modal"
-                            onclick="editContact({{ $contacts_person->id }});">Edit</a>
-                        <a id="delete-{{ $contacts_person->id }}" class="btn- btn-xs btn-danger"
-                            href="javascript: void(0);" onclick="deleteContact({{ $contacts_person->id }});">Delete</a>
-                    @endif
+                    <a id="edit-{{ $contacts_person->id }}" class="btn- btn-xs btn-success" href="javascript: void(0);"
+                        data-bs-toggle="modal" data-bs-target="#edit-modal"
+                        onclick="editContact({{ $contacts_person->id }});">Edit</a>
+                    <a id="delete-{{ $contacts_person->id }}" class="btn- btn-xs btn-danger" href="javascript: void(0);"
+                        onclick="deleteContact({{ $contacts_person->id }});">Delete</a>
                 </div>
             @endisset
         </div>
@@ -31,7 +24,38 @@
         <h5 class="mb-3 mt-4 text-uppercase bg-light p-2"><i class="mdi mdi-account-circle me-1"></i>
             Personal Information</h5>
         <div class="" id="contact-info2">
+            
             @isset($contacts_person)
+            
+            <div class="btn-group mb-2">
+                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false"><i class="mdi mdi-plus-circle me-1"></i>Add <i
+                        class="mdi mdi-chevron-down"></i></button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
+                        onclick="addContact_data({{ $contacts_person->id }});">Phone Number</a>
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
+                        onclick="addContact_data({{ $contacts_person->id }});">Mobile</a>
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
+                        onclick="addContact_data({{ $contacts_person->id }});">Fax Number</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
+                        onclick="addContact_data({{ $contacts_person->id }});">Email Address</a>
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
+                        onclick="addContact_data({{ $contacts_person->id }});">Facebook</a>
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
+                        onclick="addContact_data({{ $contacts_person->id }});">Instagram</a>
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
+                        onclick="addContact_data({{ $contacts_person->id }});">Skype</a>
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
+                        onclick="addContact_data({{ $contacts_person->id }});">WhatsApp</a>
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
+                        onclick="addContact_data({{ $contacts_person->id }});">Viber</a>
+                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
+                        onclick="addContact_data({{ $contacts_person->id }});">Messenger</a>
+                </div>
+            </div><!-- /btn-group -->
+
                 <h4 class="font-13 text-muted text-uppercase">Class :</h4>
                 <p class="mb-3">
                     @if ($contacts_person->class === 2)

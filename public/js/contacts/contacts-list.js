@@ -99,6 +99,7 @@ function editContact(id) {
         $('#form_edit-id').val(id)
         $('#form_edit-account_id').val(contact.account_id)
         $('#form_edit-class').val(contact.class)
+        $('#form_edit-class-disabled').val(contact.class)
         $('#form_edit-source').val(contact.source)
         $('#form_edit-status').val(contact.status)
         $('#form_edit-source_id').val(contact.source_id)

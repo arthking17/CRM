@@ -149,6 +149,9 @@
                 <div id="users_permissions-div">
                     @include('users.users_permissions')
                 </div>
+                <div id="create-Permission-div">
+                    @include('users.create-permission')
+                </div>
                 <div id="security-div">
                     @include('users.security')
                 </div>
@@ -212,6 +215,7 @@
             <script src="/js/users/users-ajax-list.js"></script>
             <script src="/js/users/users-validation.js"></script>
             <script src="/js/form-validation-laravel.js"></script>
+            <script src="/js/users/users-select.js"></script>
             <script>
                 $('.dropify').dropify();
                 $('document').ready(function() {
@@ -222,6 +226,7 @@
                 var form_edit_errors = null
                 var create_note_errors = null
                 var create_permission_errors = null
+                elementSelect($('#create-permissions-element'))
             </script>
             <!-- custom js files end -->
 

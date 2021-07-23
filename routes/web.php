@@ -64,6 +64,11 @@ Route::get('/contacts/get/{id}/{modal}', 'ContactController@getContactJsonById')
 Route::put('/contacts/update', 'ContactController@update')->name('contacts.update');
 Route::delete('/contacts/delete/{id}', 'ContactController@destroy')->name('contacts.delete');
 Route::view('/contacts/upload', 'contacts/upload')->name('contacts.upload');
-Route::view('/contacts/search', 'contacts/search')->name('contacts.search');
+Route::get('/contacts/search', 'ContactController@searchForm')->name('contacts.search');
+Route::post('/contacts/search', 'ContactController@search')->name('contacts.search');
 //route for groups of contact
-Route::view('/contacts/groups/list', 'GroupController@index')->name('contacts.groups');
+Route::get('/contacts/groups', 'GroupController@index')->name('contacts.groups');
+Route::post('/contacts/groups/create', 'GroupController@store')->name('contacts.groups.create');
+Route::put('/contacts/groups/update', 'GroupController@update')->name('contacts.groups.update');
+Route::delete('/contacts/groups/delete/{id}', 'GroupController@destroy')->name('contacts.groups.delete');
+Route::get('/contacts/groups/get/{id}/{modal}', 'GroupController@getGroupJsonById')->name('contacts.groups.get');

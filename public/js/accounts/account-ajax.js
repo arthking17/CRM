@@ -88,16 +88,16 @@ $(document).ready(function () {
                 console.log(response)
                 $('#edit-modal').modal('toggle')
                 Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
-                $('#accid' + response.id + ' td:nth-child(2)').text(response.name)
-                $('#accid' + response.id + ' td:nth-child(3)').text(response.url)
-                if (response.status == 1)
-                    $('#accid' + response.id + ' td:nth-child(4)').html("<span class=\"badge bg-success\">Active</span>")
-                else if (response.status == 0)
-                    $('#accid' + response.id + ' td:nth-child(4)').html("<span class=\"badge label-table bg-danger\">Disabled</span>")
-                else if (response.status == 2)
-                    $('#accid' + response.id + ' td:nth-child(4)').html("<span class=\"badge bg-blue text-light\">Legit</span>")
-                else if (response.status == 3)
-                    $('#accid' + response.id + ' td:nth-child(4)').html("<span class=\"badge bg-dark text-light\">Invoicing</span>")
+                $('#accid' + response.account.id + ' td:nth-child(2)').text(response.account.name)
+                $('#accid' + response.account.id + ' td:nth-child(3)').text(response.account.url)
+                if (response.account.status == 1)
+                    $('#accid' + response.account.id + ' td:nth-child(4)').html("<span class=\"badge bg-success\">Active</span>")
+                else if (response.account.status == 0)
+                    $('#accid' + response.account.id + ' td:nth-child(4)').html("<span class=\"badge label-table bg-danger\">Disabled</span>")
+                else if (response.account.status == 2)
+                    $('#accid' + response.account.id + ' td:nth-child(4)').html("<span class=\"badge bg-blue text-light\">Legit</span>")
+                else if (response.account.status == 3)
+                    $('#accid' + response.account.id + ' td:nth-child(4)').html("<span class=\"badge bg-dark text-light\">Invoicing</span>")
                 $('#edit-account')[0].reset();
             },
             error: function (error) {

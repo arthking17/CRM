@@ -1,36 +1,65 @@
-$(window).on("load", function () {
-    $("#demo-foo-row-toggler").footable(), $("#demo-foo-accordion").footable().on("footable_row_expanded", function (o) {
-        $("#demo-foo-accordion tbody tr.footable-detail-show").not(o.row).each(function () {
-            $("#demo-foo-accordion").data("footable").toggleDetail(this)
-        })
-    }), $("#demo-foo-pagination").footable(), $("#demo-show-entries").change(function (o) {
-        o.preventDefault();
-        var t = $(this).val();
-        $("#demo-foo-pagination").data("page-size", t), $("#demo-foo-pagination").trigger("footable_initialized")
+$(document).ready(function () {
+    var a = $("#datatable-accounts").DataTable({
+        language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+        },
+        stateSave: 0,
+        language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+        },
     });
-    var t = $("#table-accounts");
-    t.footable().on("footable_filtering", function (o) {
-        var t = $("#demo-foo-filter-status").find(":selected").val();
-        o.filter += o.filter && 0 < o.filter.length ? " " + t : t, o.clear = !o.filter
-    }), $("#demo-foo-filter-status").change(function (o) {
-        o.preventDefault(), t.trigger("footable_filter", {
-            filter: $(this).val()
-        })
-    }), $("#demo-foo-search").on("input", function (o) {
-        o.preventDefault(), t.trigger("footable_filter", {
-            filter: $(this).val()
-        })
+    a.buttons().container().appendTo("#datatable-accounts_wrapper .col-md-6:eq(0)"),
+        $(".dataTables_length select").addClass("form-select form-select-sm"),
+        $(".dataTables_length select").removeClass("custom-select custom-select-sm"),
+        $(".dataTables_length label").addClass("form-label");
+
+
+    // Setup - add a text input to each footer cell
+    $('#datatable-accounts tfoot th').each(function () {
+        var title = $(this).text();
+        $(this).html('<input class="form-control form-control-sm" type="text" placeholder="Search ' + title + '" />');
     });
-    var e = $("#demo-foo-addrow");
-    e.footable().on("click", ".demo-delete-row", function () {
-        var o = e.data("footable"),
-            t = $(this).parents("tr:first");
-        o.removeRow(t)
-    }), $("#demo-input-search2").on("input", function (o) {
-        o.preventDefault(), e.trigger("footable_filter", {
-            filter: $(this).val()
-        })
-    }), $("#demo-btn-addrow").click(function () {
-        e.data("footable").appendRow('<tr><td style="text-align: center;"><button class="demo-delete-row btn btn-danger btn-xs btn-icon"><i class="fa fa-times"></i></button></td><td>Adam</td><td>Doe</td><td>Traffic Court Referee</td><td>22 Jun 1972</td><td><span class="badge label-table badge-success   ">Active</span></td></tr>')
+    $('.disabled').each(function () {
+        $(this).html('');
     })
+    // DataTable filter
+    a.columns('.text-filter').every(function () {
+        var that = this;
+
+        $('input', this.footer()).on('keyup change clear', function () {
+            if (that.search() !== this.value) {
+                that
+                    .search(this.value)
+                    .draw();
+            }
+        });
+    });
+    a.columns().every(function () {
+        var column = this;
+        if ($(column.footer()).hasClass('select')) {
+            var select = $('<select class="form-select"><option value=""></option></select>')
+                .appendTo($(column.footer()).empty())
+                .on('change', function () {
+                    var val = $.fn.dataTable.util.escapeRegex(
+                        $(this).val()
+                    );
+
+                    column
+                        .search(val ? '^' + val + '$' : '', true, false)
+                        .draw();
+                });
+            if ($(column.footer()).hasClass('account')) {
+                column.data().unique().sort().each(function (d, j) {
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            } else {
+                column.data().unique().sort().each(function (d, j) {
+                    d = d.slice(d.indexOf(">") + 1, d.indexOf("<", 1))
+                    select.append('<option value="' + d + '">' + d + '</option>')
+                });
+            }
+        }
+    });
 });

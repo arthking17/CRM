@@ -65,6 +65,35 @@ $(document).ready(function () {
                     console.log(response)
                     $('#edit-modal').modal('toggle')
                     Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
+                    console.log('response')
+                    console.log(response.contact.source)
+                    $('#contactid' + response.contact.id + ' td:nth-child(1)').text(response.contact.id)
+                    //$('#contactid' + response.contact.id + ' td:nth-child(2)').text(response.contact.id)
+                    /*if (response.contact.class == 1)
+                    $('#contactid' + response.contact.id + ' td:nth-child(3)').html('<span class="badge bg-blue text-light">Person</span>')
+                    else if (response.contact.class == 2)
+                    $('#contactid' + response.contact.id + ' td:nth-child(3)').html('<span class="badge bg-success">Company</span>')*/
+
+                    if (response.contact.source == 1)
+                    $('#contactid' + response.contact.id + ' td:nth-child(4)').html('<span class="badge label-table bg-danger">Telephone prospecting</span>')
+                    else if (response.contact.source == 2)
+                    $('#contactid' + response.contact.id + ' td:nth-child(4)').html('<span class="badge bg-warning">Landing pages</span>')
+                    else if (response.contact.source == 3)
+                    $('#contactid' + response.contact.id + ' td:nth-child(4)').html('<span class="badge bg-success">Affiliation</span>')
+                    else if (response.contact.source == 4)
+                    $('#contactid' + response.contact.id + ' td:nth-child(4)').html('<span class="badge bg-blue text-light">Database purchased</span>')
+
+                    $('#contactid' + response.contact.id + ' td:nth-child(5)').text(response.contact.source_id)
+                    $('#contactid' + response.contact.id + ' td:nth-child(6)').text(response.contact.creation_date)
+
+                    if (response.contact.status == 1)
+                    $('#contactid' + response.contact.id + ' td:nth-child(7)').html('<span class="badge label-table bg-success">Lead</span>')
+                    else if (response.contact.status == 2)
+                    $('#contactid' + response.contact.id + ' td:nth-child(7)').html('<span class="badge bg-blue text-light">Customer</span>')
+                    else if (response.contact.status == 3)
+                    $('#contactid' + response.contact.id + ' td:nth-child(7)').html('<span class="badge bg-danger">Not interested</span>')
+
+                    viewContact(response.contact.id, response.contact.class)
                     //$('#form_create')[0].reset();
                 },
                 error: function (error) {
@@ -78,30 +107,3 @@ $(document).ready(function () {
             });
         });
     });
-window.ParsleyValidator
-    .addValidator('maxdate', function (value, requirement) {
-        // is valid date?
-        var timestamp = Date.parse(value),
-            minTs = Date.parse(requirement);
-
-        return isNaN(timestamp) ? false : timestamp < minTs;
-    }, 32)
-    .addMessage('en', 'maxdate', 'This date should be less than %s');
-
-
-window.ParsleyValidator
-    .addValidator('fileextension', function (value, requirement) {
-        var tagslistarr = requirement.split(',');
-        var fileExtension = value.split('.').pop();
-        var arr = [];
-        $.each(tagslistarr, function (i, val) {
-            arr.push(val);
-        });
-        if (jQuery.inArray(fileExtension.toLowerCase(), arr) != '-1') {
-            return true;
-        } else {
-            return false;
-        }
-    }, 32)
-    .addMessage('en', 'fileextension', 'This photo must be a file of type: jpg, png, jpeg.')
-    .addMessage('fr', 'fileextension', 'Cette photo doit être un fichier d\'extension jpg, png, jpeg.');

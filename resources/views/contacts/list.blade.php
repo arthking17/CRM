@@ -71,13 +71,16 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="text-sm-end">
-                                        <a href="{{ route('contacts.upload') }}" data-bs-toggle="" data-bs-target="#upload-modal"
-                                            class="btn btn-success mb-2 me-1">
+                                        <a href="{{ route('contacts.upload') }}" data-bs-toggle=""
+                                            data-bs-target="#upload-modal" class="btn btn-success mb-2 me-1">
                                             <i class="mdi mdi-cloud-upload-outline"></i>
                                         </a>
-                                        <a href="{{ route('contacts.search') }}" data-bs-toggle="" data-bs-target="#search-modal"
-                                            class="btn btn-light mb-2 me-1">
+                                        <a href="{{ route('contacts.search') }}" data-bs-toggle=""
+                                            data-bs-target="#search-modal" class="btn btn-light mb-2 me-1">
                                             <i class="fe-search"></i>
+                                        </a>
+                                        <a href="{{ route('contacts.groups') }}" class="btn btn-info mb-2 me-1">
+                                            <i class="fe-layers"></i>
                                         </a>
                                     </div>
                                 </div><!-- end col-->
@@ -150,16 +153,18 @@
                         </div>
                     </div> <!-- end card -->
                 </div> <!-- end col -->
-
-                <div class="col-lg-4 @if ($contact->class !== 1) d-none @endif" id="contacts_person-info-card">
-                    @include('contacts.contacts_person-info')
-                </div>
-                <div class="col-lg-4 @if ($contact->class !== 2) d-none @endif" id="contacts_companie-info-card">
-                    @include('contacts.contacts_companie-info')
-                </div>
+                @if ($contacts->count() > 0)
+                    <div class="col-lg-4 @if ($contact->class !== 1) d-none @endif" id="contacts_person-info-card">
+                        @include('contacts.contacts_person-info')
+                    </div>
+                    <div class="col-lg-4 @if ($contact->class !== 2) d-none @endif" id="contacts_companie-info-card">
+                        @include('contacts.contacts_companie-info')
+                    </div>
+                @endif
             </div>
             <!-- end row -->
             @include('contacts.create')
+            @include('contacts.data.create')
             @if ($contacts->count() > 0)
                 @include('contacts.edit')
             @endif
@@ -201,27 +206,16 @@
             <!-- Plugins js-->
             <script src="/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 
-            <!-- country select js files -->
-            <script src="build/js/countrySelect.min.js"></script>
-            <script>
-                $("#country").countrySelect();
-            </script>
-            <!-- country select js files end -->
-
-            <!-- Plugin js-->
-            <script src="/libs/parsleyjs/parsley.min.js"></script>
-
-            <!-- Sweet Alerts js -->
-            <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
-
             <!-- Plugins js -->
             <script src="/libs/dropzone/min/dropzone.min.js"></script>
             <script src="/libs/dropify/js/dropify.min.js"></script>
 
             <!-- custom js files -->
-            <script src="/js/contacts/form-wizard.init.js"></script>
+            <script src="/js/contacts/form-edit-wizard.js"></script>
+            <script src="/js/contacts/form-add-wizard.js"></script>
             <script src="/js/contacts/contacts-list.js"></script>
             <script src="/js/contacts/country-select.js"></script>
+            <script src="/js/contacts/custom-parsley.js"></script>
             <script src="/js/contacts/contacts-validation.js"></script>
             <script src="/js/form-validation-laravel.js"></script>
             <script>

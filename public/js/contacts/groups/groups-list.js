@@ -1,11 +1,5 @@
 $(document).ready(function () {
     var a = $("#datatable-groups").DataTable({
-        lengthChange: !1,
-        buttons: [
-            { extend: "copy", className: "btn-light" },
-            { extend: "print", className: "btn-light" },
-            { extend: "pdf", className: "btn-light" },
-        ],
         language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
@@ -69,17 +63,20 @@ $(document).ready(function () {
         }
     });
 });
+
+function viewGroup(id) {
+    $.get('/contacts/groups/get/' + id + '/0', function (data) {
+        $('#group-info-card').empty().html(data);
+    })
+}
+
 function editGroup(id) {
-    $.get('/groups/get/' + id + '/1', function (contact) {
-        contact = contact[0]
-        console.log(contact)
-        $('#form_edit-id').val(id)
-        $('#form_edit-account_id').val(contact.account_id)
-        $('#form_edit-class').val(contact.class)
-        $('#form_edit-source').val(contact.source)
-        $('#form_edit-status').val(contact.status)
-        $('#form_edit-source_id').val(contact.source_id)
-        $('#delete').attr('onClick', 'deleteContact(' + id + ');')
+    $.get('/contacts/groups/get/' + id + '/1', function (group) {
+        console.log(group)
+        $('#edit-group-id').val(id)
+        $('#edit-group-account_id').val(group.account_id)
+        $('#edit-group-name').val(group.name)
+        $('#btn-delete').attr('onClick', 'deleteGroup(' + id + ');')
     })
 }
 function deleteGroup(id) {
@@ -88,7 +85,7 @@ function deleteGroup(id) {
             e.value
                 ? $.ajax({
                     type: "DELETE",
-                    url: route('groups.delete', id),
+                    url: route('contacts.groups.delete', id),
                     data: {
                         _token: $("input[name=_token]").val(),
                     },
@@ -96,13 +93,10 @@ function deleteGroup(id) {
                     success: function (response) {
                         //$('#edit-modal').modal('toggle')
                         Swal.fire({ icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
-                        $('#btn-edit-' + id).addClass('disabled');
-                        $('#btn-delete-' + id).addClass('disabled');
-                        $('#contactid' + id + ' td:nth-child(7)').html('<span class="badge label-table bg-danger">Not interested</span>')
-                        $('#contact-info2 p:nth-of-type(4)').html('<span class="badge label-table bg-danger">Not interested</span>')
-                        $('#contact-info1 a:nth-of-type(4)').attr('data-bs-toggle', '')
-                        $('#contact-info1 a:nth-of-type(4)').attr('onClick', '')
-                        $('#contact-info1 a:nth-of-type(5)').attr('onClick', '')
+                        $('#btn-edit').addClass('disabled');
+                        $('#groupid' + id + ' td:nth-child(4)').html('<div class="text-sm-end">'+
+                            '<a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>' +
+                            '<a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a></div>')
                     },
                     error: function (error) {
                         console.log(error)

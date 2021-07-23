@@ -24,4 +24,13 @@ class Contacts_person extends Model
     public $timestamps = false;
 
     protected $table = 'contacts_persons';
+
+    /**
+     * Get the account record associated with the user.
+     * @return \App\Models\Account
+     */
+    public function account()
+    {
+        return $this->hasMany(Account::class, 'id', 'account_id');
+    }
 }

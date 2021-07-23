@@ -15,11 +15,11 @@
                     <a href="javascript: void(0);" class="btn- btn-xs btn-info">Send Sms</a>
                     <a href="javascript: void(0);" class="btn- btn-xs btn-secondary">Call</a>
                     @if ($user->status == 0)
-                        <a id="button-edit-{{ $user->id }}" class="btn- btn-xs btn-secondary" href="javascript: void(0);"
-                            data-bs-toggle="" data-bs-target="#edit-modal" onclick="#">Edit</a>
+                        <a id="button-edit-{{ $user->id }}" class="btn- btn-xs btn-secondary"
+                            href="javascript: void(0);" data-bs-toggle="" data-bs-target="#edit-modal" onclick="#">Edit</a>
                     @else
-                        <a id="button-edit-{{ $user->id }}" class="btn- btn-xs btn-secondary" href="javascript: void(0);"
-                            data-bs-toggle="modal" data-bs-target="#edit-modal"
+                        <a id="button-edit-{{ $user->id }}" class="btn- btn-xs btn-secondary"
+                            href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-modal"
                             onclick="editUser({{ $user->id }});">Edit</a>
                     @endif
                 </div>
@@ -65,16 +65,20 @@
                 <p class="mb-3"> {{ $user->last_auth }}</p>
 
                 <a href="javascript: void(0);" class="btn- btn-xs btn-warning" data-bs-toggle=""
-                    onclick="viewLogs({{ $user->id }});" data-bs-target="#logs-modal">View activity
+                    onclick="viewLogs({{ $user->id }});" data-bs-target="#logs-modal"><i
+                        class="mdi mdi-history me-1"></i>View activity
                     logs</a>
                 <a href="javascript: void(0);" class="btn- btn-xs btn-secondary" data-bs-toggle=""
-                    onclick="viewUsers_Permissions({{ $user->id }});" data-bs-target="#users_permissions-modal">View
-                    permissions</a>
-                <a href="javascript: void(0);" class="btn- btn-xs btn-info" data-bs-toggle=""
-                    onclick="viewNotification({{ $user->id }});" data-bs-target="#notification-modal">Notification</a>
+                    onclick="viewUsers_Permissions({{ $user->id }});" data-bs-target="#users_permissions-modal"><i
+                        class="mdi mdi-key-chain me-1"></i>View permissions</a>
                 <a href="javascript: void(0);" class="btn- btn-xs btn-danger" data-bs-toggle="modal"
                     onclick="addPermission({{ $user->id }}, '{{ $user->username }}');"
-                    data-bs-target="#add_permission-modal"><i class="mdi mdi-plus-circle me-1"></i>Add permission</a>
+                    data-bs-target="#create-permission-modal"><i class="mdi mdi-key-plus me-1"></i>Add permission</a>
+                <a href="javascript: void(0);" class="btn- btn-xs btn-info" data-bs-toggle=""
+                    onclick="viewNotification({{ $user->id }});" data-bs-target="#notification-modal"><i
+                        class="mdi mdi-bell-plus-outline me-1"></i>Notification</a>
+                <a href="javascript: void(0);" class="btn- btn-xs btn-danger" data-bs-toggle="modal" onclick="#"
+                    data-bs-target="#security-modal"><i class="mdi mdi-account-key-outline me-1"></i>Security</a>
             @endisset
         </div>
     </div>

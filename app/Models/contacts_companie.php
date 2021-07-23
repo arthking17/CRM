@@ -22,4 +22,13 @@ class Contacts_companie extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    /**
+     * Get the account record associated with the user.
+     * @return \App\Models\Account
+     */
+    public function account()
+    {
+        return $this->hasMany(Account::class, 'id', 'account_id');
+    }
 }

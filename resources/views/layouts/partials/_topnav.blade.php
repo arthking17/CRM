@@ -26,7 +26,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('contacts') }}" id="topnav-dashboard" role="button">
-                            <i class="fe-phone me-1"></i> Contact
+                            <i class="fe-phone me-1"></i> Contacts
                         </a>
                     </li>
                     <li class="nav-item">

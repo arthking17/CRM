@@ -16,7 +16,7 @@
                                     <a href="#contact-class" data-bs-toggle="tab" data-toggle="tab"
                                         class="nav-link rounded-0 pt-2 pb-2">
                                         <i class="mdi mdi-account-circle me-1"></i>
-                                        <span class="d-none d-sm-inline">Contact Class</span>
+                                        <span class="d-none d-sm-inline">Contact</span>
                                     </a>
                                 </li>
                                 <li class="nav-item" data-target-form="#personForm" id="nav-tab-info">
@@ -179,8 +179,7 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="form_create-nickname"
-                                                    class="col-4 col-xl-3 col-form-label">Nickname<span
-                                                        class="text-danger">*</span></label>
+                                                    class="col-4 col-xl-3 col-form-label">Nickname</label>
                                                 <div class="col-8 col-xl-9">
                                                     <input type="text"
                                                         class="form-control @error('nickname') parsley-error @enderror"
@@ -198,8 +197,7 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="form_create-birthdate"
-                                                    class="col-4 col-xl-3 col-form-label">Birthdate<span
-                                                        class="text-danger">*</span></label>
+                                                    class="col-4 col-xl-3 col-form-label">Birthdate</label>
                                                 <div class="col-8 col-xl-9">
                                                     <input
                                                         class="form-control @error('birthdate') parsley-error @enderror"
@@ -216,12 +214,11 @@
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label for="form_create-person_country" class="col-4 col-xl-3 col-form-label">country<span
-                                                        class="text-danger">*</span></label>
+                                                <label for="form_create-person_country" class="col-4 col-xl-3 col-form-label">country</label>
                                                 <div class="col-8 col-xl-9">
                                                     <select
                                                         class="form-select country @error('person_country') parsley-error @enderror"
-                                                        name="person_country" id="form_create-person_country" data-parsley-type="integer"
+                                                        name="person_country" id="form_create-person_country"
                                                         data-parsley-length="[2, 2]">
                                                         <option value="">Select a country</option>
                                                     </select>
@@ -299,12 +296,11 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="form_create-person_language"
-                                                    class="col-4 col-xl-3 col-form-label">language<span
-                                                        class="text-danger">*</span></label>
+                                                    class="col-4 col-xl-3 col-form-label">language</label>
                                                 <div class="col-8 col-xl-9">
                                                     <select
                                                         class="form-select @error('person_language') parsley-error @enderror"
-                                                        name="person_language" id="form_create-person_language" data-parsley-type="integer"
+                                                        name="person_language" id="form_create-person_language"
                                                         data-parsley-length="[2, 2]">
                                                         <option value="">Select a language</option>
                                                         <option value="ar">Arabic - العربية</option>
@@ -373,8 +369,7 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="form_create-registered_number"
-                                                    class="col-4 col-xl-3 col-form-label">Registered
-                                                    number<span class="text-danger">*</span></label>
+                                                    class="col-4 col-xl-3 col-form-label">Registered number</label>
                                                 <div class="col-8 col-xl-9">
                                                     <input type="text"
                                                         class="form-control @error('registered_number') parsley-error @enderror"
@@ -395,8 +390,7 @@
                                         <div class="col-lg-6">
                                             <div class="row mb-3">
                                                 <label for="form_create-activity"
-                                                    class="col-4 col-xl-3 col-form-label">Activity<span
-                                                        class="text-danger">*</span></label>
+                                                    class="col-4 col-xl-3 col-form-label">Activity</label>
                                                 <div class="col-8 col-xl-9">
                                                     <input type="number"
                                                         class="form-control @error('activity') parsley-error @enderror"
@@ -414,12 +408,11 @@
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label for="form_create-companies_country" class="col-4 col-xl-3 col-form-label">country<span
-                                                        class="text-danger">*</span></label>
+                                                <label for="form_create-companies_country" class="col-4 col-xl-3 col-form-label">country</label>
                                                 <div class="col-8 col-xl-9">
                                                     <select
                                                         class="form-select country @error('companies_country') parsley-error @enderror"
-                                                        name="companies_country" id="form_create-companies_country" data-parsley-type="integer"
+                                                        name="companies_country" id="form_create-companies_country"
                                                         data-parsley-length="[2, 2]">
                                                         <option value="">Select a country</option>
                                                     </select>
@@ -435,12 +428,11 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="form_create-companies_language"
-                                                    class="col-4 col-xl-3 col-form-label">language<span
-                                                        class="text-danger">*</span></label>
+                                                    class="col-4 col-xl-3 col-form-label">language</label>
                                                 <div class="col-8 col-xl-9">
                                                     <select
                                                         class="form-select @error('companies_language') parsley-error @enderror"
-                                                        name="companies_language" id="form_create-companies_language" data-parsley-type="integer"
+                                                        name="companies_language" id="form_create-companies_language"
                                                         data-parsley-length="[2, 2]">
                                                         <option value="">Select a language</option>
                                                         <option value="ar">Arabic - العربية</option>
@@ -460,8 +452,7 @@
                                             </div>
                                         </div><!-- end col -->
                                         <div class="row mb-3">
-                                            <label for="form_create-logo" class="col-4 col-xl-3 col-form-label">Logo<span
-                                                    class="text-danger">*</span></label>
+                                            <label for="form_create-logo" class="col-4 col-xl-3 col-form-label">Logo</label>
                                             <div class="col-8 col-xl-9">
                                                 <input type="file"
                                                     class="form-control dropify @error('logo') parsley-error @enderror"

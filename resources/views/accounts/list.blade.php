@@ -4,6 +4,13 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="https://coderthemes.com/ubold/layouts/assets/images/favicon.ico">
 
+    <!-- third party css -->
+    <link href="/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="/libs/datatables.net-select-bs4/css/select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- third party css end -->
+
     <!-- App css -->
     <link href="/css/config/creative/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
     <link href="/css/config/creative/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
@@ -58,36 +65,18 @@
                                 </div><!-- end col-->
                             </div>
 
-                            <div class="mb-2">
-                                <div class="row row-cols-sm-auto g-2 align-items-center">
-                                    <div class="col-12 text-sm-center">
-                                        <select id="demo-foo-filter-status" class="form-select form-select-sm">
-                                            <option value="">Show all</option>
-                                            <option value="active">Active</option>
-                                            <option value="disabled">Disabled</option>
-                                            <option value="legit">legit</option>
-                                            <option value="invoicing">invoicing</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12">
-                                        <input id="demo-foo-search" type="text" placeholder="Search"
-                                            class="form-control form-control-sm" autocomplete="on">
-                                    </div>
-                                </div>
-                            </div>
-
                             <div class="table-responsive">
-                                <table id="table-accounts" class="table table-striped toggle-circle mb-0"
+                                <table id="datatable-accounts" class="table table-striped dt-responsive nowrap w-100"
                                     data-page-size="7">
                                     <thead>
                                         <tr>
-                                            <th>Id</th>
-                                            <th data-toggle="true">Name</th>
-                                            <th>Url</th>
-                                            <th>Status</th>
-                                            <th>Start date</th>
-                                            <th>End date</th>
-                                            <th style="width: 90px;">Action</th>
+                                            <th class="text-filter">Id</th>
+                                            <th data-toggle="true" class="text-filter">Name</th>
+                                            <th class="text-filter">Url</th>
+                                            <th class="select-filter">Status</th>
+                                            <th class="text-filter">Start date</th>
+                                            <th class="text-filter">End date</th>
+                                            <th class="disabled" style="width: 90px;">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -134,14 +123,14 @@
                                         @endforeach
                                     </tbody>
                                     <tfoot>
-                                        <tr class="active">
-                                            <td colspan="6">
-                                                <div class="text-end">
-                                                    <ul
-                                                        class="pagination pagination-rounded justify-content-end footable-pagination mb-0">
-                                                    </ul>
-                                                </div>
-                                            </td>
+                                        <tr>
+                                            <th class="">Id</th>
+                                            <th class="">Name</th>
+                                            <th class="">Url</th>
+                                            <th class="select">Status</th>
+                                            <th class="">Start date</th>
+                                            <th class="">End date</th>
+                                            <th class="disabled" style="width: 90px;">Action</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -162,14 +151,34 @@
             <!-- Plugin js-->
             <script src="/libs/parsleyjs/parsley.min.js"></script>
 
-            <!-- Footable js -->
-            <script src="/libs/footable/footable.all.min.js"></script>
+            <!-- third party js -->
+            <script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+            <script src="/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+            <script src="/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+            <script src="/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+            <script src="/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+            <!-- button pdf copy -->
+            <script src="/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+            <!-- style button -->
+            <script src="/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+            <!-- style button end -->
+            <!-- button print -->
+            <script src="/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+            <!-- not use -->
+            <script src="/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
+            <script src="/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+            <script src="/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+            <!-- not use end -->
+            <!-- pdf -->
+            <script src="/libs/pdfmake/build/pdfmake.min.js"></script>
+            <script src="/libs/pdfmake/build/vfs_fonts.js"></script>
+            <!-- third party js ends -->
 
             <!-- Sweet Alerts js -->
             <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
 
-            <!-- custom js-->
-            <script src="/js/accounts/account.js"></script>
+            <!-- custom js
+            <script src="/js/accounts/account.js"></script>-->
             <script src="/js/accounts/accounts-list.js"></script>
             <script src="/js/accounts/account-ajax.js"></script>
             <script src="/js/form-validation-laravel.js"></script>

@@ -1,8 +1,3 @@
-$(document).ready(function () {
-    timezoneSelect($('#timezone'))
-    languageSelect($('#edit-user-language'))
-    languageSelect($('.language'))
-})
 function timezoneSelect(select) {
     var tzStrings = [
         { "label": "(GMT-12:00) International Date Line West", "value": "Etc/GMT+12" },
@@ -245,6 +240,39 @@ function languageSelect(select) {
         { "value": "yi", "label": "Yiddish" },
         { "value": "yo", "label": "Yoruba - Èdè Yorùbá" },
         { "value": "zu", "label": "Zulu - isiZulu" },
+    ];
+    var options = [];
+    //select = document.createElement("select");
+
+    for (var i = 0; i < tzStrings.length; i++) {
+        var tz = tzStrings[i],
+            option = document.createElement("option");
+
+        option.value = tz.value
+        option.append(document.createTextNode(tz.label))
+        select.append(option)
+    }
+}
+
+function elementSelect(select) {
+    var tzStrings = [
+        { "value": "1", "label": "Account" },
+        { "value": "2", "label": "Appointments" },
+        { "value": "3", "label": "Communications" },
+        { "value": "4", "label": "Contact data" },
+        { "value": "5", "label": "Contacts" },
+        { "value": "6", "label": "Contacts companies" },
+        { "value": "7", "label": "Contacts persons" },
+        { "value": "8", "label": "Email accounts" },
+        { "value": "9", "label": "Fax accounts" },
+        { "value": "10", "label": "Groups" },
+        { "value": "11", "label": "Imports" },
+        { "value": "12", "label": "Logs" },
+        { "value": "13", "label": "Notes" },
+        { "value": "14", "label": "Sip accounts" },
+        { "value": "15", "label": "Sms accounts" },
+        { "value": "16", "label": "Users" },
+        { "value": "17", "label": "Users permissions" },
     ];
     var options = [];
     //select = document.createElement("select");
