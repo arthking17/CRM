@@ -20,8 +20,8 @@
                                     <div class="col-8 col-xl-9">
                                         <input type="text"
                                             class="form-control @error('username') parsley-error @enderror"
-                                            id="edit-user-username" name="username"
-                                            placeholder="username" required data-parsley-minlength="3"
+                                            id="edit-user-username" name="username" placeholder="username" required
+                                            data-parsley-minlength="3"
                                             pattern="^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$"
                                             data-parsley-pattern-message="This value should be a valid username">
                                         <span class="parsley-errors-list username_error"></span>
@@ -38,10 +38,10 @@
                                     <label for="edit-user-login" class="col-4 col-xl-3 col-form-label">login<span
                                             class="text-danger">*</span></label>
                                     <div class="col-8 col-xl-9">
-                                        <input type="text"
-                                            class="form-control @error('login') parsley-error @enderror" id="edit-user-login"
-                                            name="login" placeholder="login" required
-                                            data-parsley-minlength="3" pattern="^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$"
+                                        <input type="text" class="form-control @error('login') parsley-error @enderror"
+                                            id="edit-user-login" name="login" placeholder="login" required
+                                            data-parsley-minlength="3"
+                                            pattern="^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$"
                                             data-parsley-pattern-message="This value should be a valid login">
                                         <span class="parsley-errors-list login_error"></span>
                                         @error('login')
@@ -57,9 +57,8 @@
                                     <label for="edit-user-pwd" class="col-4 col-xl-3 col-form-label">password</label>
                                     <div class="col-8 col-xl-9">
                                         <input type="password"
-                                            class="form-control @error('pwd') parsley-error @enderror" id="edit-user-pwd"
-                                            name="pwd" placeholder="password"
-                                            data-parsley-minlength="8"
+                                            class="form-control @error('pwd') parsley-error @enderror"
+                                            id="edit-user-pwd" name="pwd" placeholder="password"
                                             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$"
                                             data-parsley-pattern-message="This value should be a valid password">
                                         @error('pwd')
@@ -74,7 +73,8 @@
                                 <div class="row mb-3">
                                     <div class="col-8 offset-4">
                                         <div class="checkbox checkbox-purple">
-                                            <input id="showpwd" type="checkbox" onclick="showPassword('edit-user-pwd');">
+                                            <input id="showpwd" type="checkbox"
+                                                onclick="showPassword('edit-user-pwd');">
                                             <label for="showpwd">Show password</label>
                                         </div>
                                     </div>
@@ -85,8 +85,8 @@
                                     <label for="edit-user-role" class="col-4 col-xl-3 col-form-label">role<span
                                             class="text-danger">*</span></label>
                                     <div class="col-8 col-xl-9">
-                                        <select class="form-select @error('role') parsley-error @enderror"
-                                            name="role" id="edit-user-role" required data-parsley-type="integer"
+                                        <select class="form-select @error('role') parsley-error @enderror" name="role"
+                                            id="edit-user-role" required data-parsley-type="integer"
                                             data-parsley-length="[1, 1]">
                                             <option value="1">admin</option>
                                             <option value="2">user</option>
@@ -106,7 +106,9 @@
                                             class="text-danger">*</span></label>
                                     <div class="col-8 col-xl-9">
                                         <select class="form-select @error('language') parsley-error @enderror"
-                                            name="language" id="edit-user-language" required data-parsley-length="[2, 2]" data-parsley-length-message="select a language">
+                                            name="language" id="edit-user-language" required
+                                            data-parsley-length="[2, 2]"
+                                            data-parsley-length-message="select a language">
                                             <option>Select a language</option>
                                             <option value="ar">Arabic - العربية</option>
                                             <option value="en">English</option>
@@ -127,7 +129,8 @@
                                             class="text-danger">*</span></label>
                                     <div class="col-8 col-xl-9">
                                         <select class="form-select @error('account_id') parsley-error @enderror"
-                                            name="account_id" id="edit-user-account_id" required data-parsley-type="integer" data-parsley-length="[1, 10]">
+                                            name="account_id" id="edit-user-account_id" required
+                                            data-parsley-type="integer" data-parsley-length="[1, 10]">
                                             @foreach ($accounts as $account)
                                                 <option value="{{ $account->id }}">{{ $account->name }}
                                                 </option>
@@ -148,17 +151,16 @@
                                 <label for="edit-user-photo" class="col-4 col-xl-3 col-form-label">photo<span
                                         class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">
-                                    <input type="file"
-                                        class="form-control dropify @error('photo') parsley-error @enderror" id="edit-user-photo"
-                                        name="photo" data-plugins="dropify"
-                                        data-parsley-fileextension='jpg,png,jpeg' data-height="100px">
-                                    @error('photo')
-                                        <ul class="parsley-errors-list filled" aria-hidden="false">
-                                            <li class="parsley-required">{{ $errors->first('photo') }}</li>
-                                        </ul>
-                                    @else
-                                        <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                    @enderror
+                                    <div class="d-flex me-3 profile-pic">
+                                        <label class="-label" for="edit-user-photo">
+                                            <span class="glyphicon glyphicon-camera"></span>
+                                            <span>Change</span>
+                                        </label>
+                                        <input id="edit-user-photo" type="file" name="photo"
+                                            onchange="updateUserPhotoImg(event)" data-parsley-fileextension='jpg,png,jpeg'/>
+                                        <img id="edit-user-photo-img" class="rounded-circle avatar-lg" src=""
+                                            alt="Generic placeholder image">
+                                    </div>
                                 </div>
                             </div>
                         </div>

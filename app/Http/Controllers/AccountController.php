@@ -17,7 +17,13 @@ class AccountController extends Controller
      */
     public function index()
     {
-        //
+        $accounts = Account::All();
+
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'accounts.show', 'element' => 1, 'element_id' => 0, 'source' => 'accounts']);
+
+        return view('accounts.list', [
+            'accounts' => $accounts,
+        ]);
     }
 
     /**
@@ -48,23 +54,9 @@ class AccountController extends Controller
         $status = $request->input('status');
         $account = Account::create(['name' => $name, 'url' => $url, 'status' => $status, 'start_date' => today()]);
         Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'account.create', 'element' => 1, 'element_id' => $account->id, 'source' => 'account.create']);
-        return response()->json(['success' => 'Account has been Added !!!', 'account' => $account]);
-    }
-
-    /**
-     * Get all accounts.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getAllAccounts()
-    {
         $accounts = Account::All();
-
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'accounts.show', 'element' => 1, 'element_id' => 0, 'source' => 'accounts']);
-
-        return view('accounts.list', [
-            'accounts' => $accounts,
-        ]);
+        $returnHTML = view('accounts/datatable-accounts', compact('accounts'))->render();
+        return response()->json(['success' => 'Account has been Added !!!', 'html' => $returnHTML, 'account' => $account]);
     }
 
     /**
@@ -124,7 +116,9 @@ class AccountController extends Controller
         $account->status = $request->input('status');
         $account->save();
         Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'account.update', 'element' => 1, 'element_id' => $account->id, 'source' => 'account.update']);
-        return response()->json(['success' => 'Account has been Updated !!!', 'account' => $account]);
+        $accounts = Account::All();
+        $returnHTML = view('accounts/datatable-accounts', compact('accounts'))->render();
+        return response()->json(['success' => 'Account has been Updated !!!', 'html' => $returnHTML, 'account' => $account]);
     }
 
     /**
@@ -139,11 +133,12 @@ class AccountController extends Controller
             ->find($id);
         $account->status = 0;
         $account->end_date = today();
-        if ($account->save()){
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'account.delete', 'element' => 1, 'element_id' => $account->id, 'source' => 'account.delete, '.$id]);
-            return response()->json(['success' => 'Account has been Disabled !!!', 'account' => $account]);
-        }
-        else
+        if ($account->save()) {
+            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'account.delete', 'element' => 1, 'element_id' => $account->id, 'source' => 'account.delete, ' . $id]);
+            $accounts = Account::All();
+            $returnHTML = view('accounts/datatable-accounts', compact('accounts'))->render();
+            return response()->json(['success' => 'Account has been Disabled !!!', 'html' => $returnHTML, 'account' => $account]);
+        } else
             return response()->json(['error' => 'Failed to delete account !!!']);
     }
 }

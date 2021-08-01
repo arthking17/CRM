@@ -60,3 +60,45 @@ if (!function_exists('getNoteClassName')) {
             return "Task";
     }
 }
+
+if (!function_exists('getContactTypeByClass')) {
+    function getContactTypeByClass($contactClass): string
+    {
+        if ($contactClass == 0)
+            return "phone_number";
+        if ($contactClass == 1)
+            return "mobile";
+        if ($contactClass == 2)
+            return "fax_number";
+        if ($contactClass == 3)
+            return "email";
+        if ($contactClass == 4)
+            return "facebook";
+        if ($contactClass == 5)
+            return "instagram";
+        if ($contactClass == 6)
+            return "skype";
+        if ($contactClass == 7)
+            return "whatsapp";
+        if ($contactClass == 8)
+            return "viber";
+        if ($contactClass == 9)
+            return "messenger";
+    }
+}
+
+if (!function_exists('getCompanieClassName')) {
+    function getCompanieClassName($class): string
+    {
+        if ($class == 1)
+            return "One Person Companies";
+        if ($class == 2)
+            return "Private Companies";
+        if ($class == 3)
+            return "Public Companies";
+        if ($class == 4)
+            return "Holding and Subsidiary Companies";
+        if ($class == 5)
+            return "Associate Companies";
+    }
+}

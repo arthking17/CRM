@@ -1,113 +1,94 @@
 <div class="card">
     <div class="card-body">
         <div class="d-flex align-items-start mb-3">
-            @isset($contacts_companie)
-                <img id="contact-photo" class="d-flex me-3 rounded-circle avatar-lg"
-                    src="@if($contacts_companie->logo) {{ asset('storage/images/logo/' . $contacts_companie->logo) }} @else {{ asset('storage/images/logo/image-not-found.png') }} @endif" alt="Generic placeholder image">
-                <div class="w-100" id="contact-info1">
-                    <h4 class="mt-0 mb-1">{{ $contacts_companie->name }}</h4>
-                    <p class="text-muted">{{ $contacts_companie->class }}</p>
-                    <p class="text-muted"><i class="mdi mdi-office-building"></i>
-                        {{ $contacts_companie->account_id }}</p>
-                    <p class="text-muted d-none"> {{ $contacts_companie->id }}</p>
-
-                    <a href="javascript: void(0);" class="btn- btn-xs btn-info">Send Email</a>
-                    <a href="javascript: void(0);" class="btn- btn-xs btn-info">Send Sms</a>
-                    <a href="javascript: void(0);" class="btn- btn-xs btn-secondary">Call</a>
-                    <a id="edit-{{ $contacts_companie->id }}" class="btn- btn-xs btn-success"
-                        href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-modal"
-                        onclick="editContact({{ $contacts_companie->id }});">Edit</a>
-                    <a id="delete-{{ $contacts_companie->id }}" class="btn- btn-xs btn-danger"
-                        href="javascript: void(0);" onclick="deleteContact({{ $contacts_companie->id }});">Delete</a>
+            @isset($contact)
+            @if ($contact->class === 2)
+            <form id="form-edit-contact-companie-logo" method="POST" action="#" data-parsley-validate="" novalidate enctype="multipart/form-data">
+                <div class="d-flex me-3 profile-pic">
+                    @csrf
+                    @method('PUT')
+                    <input type="number" name="id" id="form-edit-contact-companie-logo-id" value="{{ $contact->id }}" required data-parsley-fileextension='jpg,png,jpeg' hidden>
+                    <label class="-label" for="form-edit-contact-companie-logo-file">
+                        <span class="glyphicon glyphicon-camera"></span>
+                        <span>Change</span>
+                    </label>
+                    <input id="form-edit-contact-companie-logo-file" type="file" name="logo" onchange="updateContactCompanieLogo(event)" />
+                    <img id="contact-companie-logo" class="rounded-circle avatar-lg" src="@if ($contact->logo) {{ asset('storage/images/logo/' . $contact->logo) }} @else
+                    {{ asset('storage/images/logo/image-not-found.png') }} @endif" alt="contact companie logo">
                 </div>
+            </form>
+            <div class="w-100" id="contact-info1">
+                <h4 class="mt-0 mb-1">{{ $contact->name }}</h4>
+                <p class="text-muted">{{ getCompanieClassName($contact->class) }}</p>
+                <p class="text-muted"><i class="mdi mdi-office-building"></i>
+                    {{ $accounts->find($contact->account_id)->name }}</p>
+                <p class="text-muted d-none"> {{ $contact->id }}</p>
+
+                <a href="javascript: void(0);" class="btn- btn-xs btn-info" title="New Email"><i class="mdi mdi-email-edit-outline"></i></a>
+                <a href="javascript: void(0);" class="btn- btn-xs btn-info" title="New Sms"><i class="mdi mdi-message-text-outline"></i></a>
+                <a href="javascript: void(0);" class="btn- btn-xs btn-success" title="Call"><i class="fe-phone-call"></i></a>
+                <a id="edit-{{ $contact->id }}" class="btn- btn-xs btn-primary" title="Edit Contact" href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-modal" onclick="editContact({{ $contact->id }});"><i class="mdi mdi-square-edit-outline"></i></a>
+                <a id="delete-{{ $contact->id }}" class="btn- btn-xs btn-danger" title="Delete Contact" href="javascript: void(0);" onclick="deleteContact({{ $contact->id }});"><i class="mdi mdi-delete-circle"></i></a>
+            </div>
+            @endif
             @endisset
         </div>
 
         <h5 class="mb-3 mt-4 text-uppercase bg-light p-2"><i class="mdi mdi-account-circle me-1"></i>
             Personal Information</h5>
         <div class="" id="contact-info2">
-            
-            @isset($contacts_companie)
-            
-            <div class="btn-group mb-2">
-                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false"><i class="mdi mdi-plus-circle me-1"></i>Add <i
-                        class="mdi mdi-chevron-down"></i></button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="displayFormAddContactData({{ $contacts_companie->id }}, 0);">Phone Number</a>
-                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="displayFormAddContactData({{ $contacts_companie->id }}, 1);">Mobile</a>
-                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="displayFormAddContactData({{ $contacts_companie->id }}, 2);">Fax Number</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="displayFormAddContactData({{ $contacts_companie->id }}, 3);">Email Address</a>
-                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="displayFormAddContactData({{ $contacts_companie->id }}, 4);">Facebook</a>
-                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="displayFormAddContactData({{ $contacts_companie->id }}, 5);">Instagram</a>
-                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="displayFormAddContactData({{ $contacts_companie->id }}, 6);">Skype</a>
-                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="displayFormAddContactData({{ $contacts_companie->id }}, 7);">WhatsApp</a>
-                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="displayFormAddContactData({{ $contacts_companie->id }}, 8);">Viber</a>
-                    <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-contact-data-modal"
-                        onclick="displayFormAddContactData({{ $contacts_companie->id }}, 9);">Messenger</a>
-                </div>
-            </div><!-- /btn-group -->
 
-                <h4 class="font-13 text-muted text-uppercase">Class :</h4>
-                <p class="mb-3">
-                    @if ($contacts_companie->companies_class === 2)
-                        <span class="badge bg-success">Company</span>
-                    @elseif($contacts_companie->companies_class === 1)
-                        <span class="badge bg-blue text-light">Person</span>
-                    @endif
-                </p>
+            @isset($contact)
+            @if ($contact->class === 2)
+            <h4 class="font-13 text-muted text-uppercase">Class :</h4>
+            <p class="mb-3">
+                @if ($contact->companies_class === 2)
+                <span class="badge bg-success">Company</span>
+                @elseif($contact->companies_class === 1)
+                <span class="badge bg-blue text-light">Person</span>
+                @endif
+            </p>
 
-                <h4 class="font-13 text-muted text-uppercase mb-1">Source :</h4>
-                <p class="mb-3">
-                    @if ($contacts_companie->source === 1) <span
-                            class="badge label-table bg-danger">Telephone prospecting</span>
-                    @elseif($contacts_companie->source === 2)
-                        <span class="badge bg-warning">Landing pages</span>
-                    @elseif($contacts_companie->source === 3)
-                        <span class="badge bg-success">Affiliation</span>
-                    @elseif($contacts_companie->source === 4)
-                        <span class="badge bg-blue text-light">Database purchased</span>
-                    @endif
-                </p>
+            <h4 class="font-13 text-muted text-uppercase mb-1">Source :</h4>
+            <p class="mb-3">
+                @if ($contact->source === 1) <span class="badge label-table bg-danger">Telephone prospecting</span>
+                @elseif($contact->source === 2)
+                <span class="badge bg-warning">Landing pages</span>
+                @elseif($contact->source === 3)
+                <span class="badge bg-success">Affiliation</span>
+                @elseif($contact->source === 4)
+                <span class="badge bg-blue text-light">Database purchased</span>
+                @endif
+            </p>
 
-                <h4 class="font-13 text-muted text-uppercase mb-1">Source ID :</h4>
-                <p class="mb-3"> {{ $contacts_companie->source_id }}</p>
+            <h4 class="font-13 text-muted text-uppercase mb-1">Source ID :</h4>
+            <p class="mb-3"> {{ $contact->source_id }}</p>
 
-                <h4 class="font-13 text-muted text-uppercase mb-1">Status :</h4>
-                <p class="mb-3">
-                    @if ($contacts_companie->status === 1) <span
-                            class="badge label-table bg-success">Lead</span>
-                    @elseif($contacts_companie->status === 2)
-                        <span class="badge bg-blue text-light">Customer</span>
-                    @elseif($contacts_companie->status === 3)
-                        <span class="badge bg-danger">Not interested</span>
-                    @endif
-                </p>
+            <h4 class="font-13 text-muted text-uppercase mb-1">Status :</h4>
+            <p class="mb-3">
+                @if ($contact->status === 1) <span class="badge label-table bg-success">Lead</span>
+                @elseif($contact->status === 2)
+                <span class="badge bg-blue text-light">Customer</span>
+                @elseif($contact->status === 3)
+                <span class="badge bg-danger">Not interested</span>
+                @endif
+            </p>
 
-                <h4 class="font-13 text-muted text-uppercase mb-1">Activity :</h4>
-                <p class="mb-3"> {{ $contacts_companie->activity }}</p>
+            <h4 class="font-13 text-muted text-uppercase mb-1">Activity :</h4>
+            <p class="mb-3"> {{ $contact->activity }}</p>
 
-                <h4 class="font-13 text-muted text-uppercase mb-1">Registered number :</h4>
-                <p class="mb-3"> {{ $contacts_companie->registered_number }}</p>
+            <h4 class="font-13 text-muted text-uppercase mb-1">Registered number :</h4>
+            <p class="mb-3"> {{ $contact->registered_number }}</p>
 
-                <h4 class="font-13 text-muted text-uppercase mb-1">Country :</h4>
-                <p class="mb-3"> {{ $contacts_companie->country }}</p>
+            <h4 class="font-13 text-muted text-uppercase mb-1">Country :</h4>
+            <p class="mb-3"> {{ $contact->country }}</p>
 
-                <h4 class="font-13 text-muted text-uppercase mb-1">Language :</h4>
-                <p class="mb-3"> {{ $contacts_companie->language }}</p>
+            <h4 class="font-13 text-muted text-uppercase mb-1">Language :</h4>
+            <p class="mb-3"> {{ $contact->language }}</p>
 
-                <h4 class="font-13 text-muted text-uppercase mb-1">Creation Date :</h4>
-                <p class="mb-3"> {{ $contacts_companie->creation_date }}</p>
+            <h4 class="font-13 text-muted text-uppercase mb-1">Creation Date :</h4>
+            <p class="mb-3"> {{ $contact->creation_date }}</p>
+            @endif
             @endisset
         </div>
     </div>

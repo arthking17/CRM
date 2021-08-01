@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Log;
+use App\Models\User;
 use App\Models\Users_Permission;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Users_PermissionController extends Controller
 {
@@ -37,14 +39,55 @@ class Users_PermissionController extends Controller
      */
     public function store(Request $request)
     {
+        //return $request;
         $data = $request->validate([
             'user_id' => 'required|integer|digits_between:1,10',
-            'code' => 'required',
+            'element' => 'required',
             'dependency' => 'required|integer|min:0|max:1',
+            'create' => 'nullable',
+            'show' => 'nullable',
+            'update' => 'nullable',
+            'delete' => 'nullable',
         ]);
-        $users_Permission = Users_Permission::create($data);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users_permission.create', 'element' => 17, 'element_id' => $users_Permission->user_id, 'source' => 'users_permission.create']);
-        return response()->json(['users_permission' => $users_Permission, 'success' => 'User permission added']);
+        $codes = ['create', 'show', 'update', 'delete'];
+        $element = getElementName($request->element);
+
+        $users_permissions = DB::table('users_permissions')
+            ->where('user_id', $request->user_id)
+            ->where('code', $element . '.create')
+            ->where('status', 1)
+            ->get();
+
+        foreach ($codes as $code) {
+            if (isset($data[$code])) {
+                Users_Permission::create(['user_id' => $request->user_id, 'code' => $element . '.' . $code, 'dependency' => $request->dependency]);
+            }else{
+                Users_Permission::create(['user_id' => $request->user_id, 'code' => $element . '.' . $code, 'dependency' => $request->dependency, 'status' => 0]);
+            }
+        }
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users_permission.create', 'element' => 17, 'element_id' => $request->user_id, 'source' => 'users_permission.create']);
+        return response()->json(['user_id' => $request->user_id, 'success' => 'User permission added']);
+    }
+
+    /**
+     * Get user permissions by id with json response.
+     *
+     * @param int $id
+     * @param int $modal
+     * @return \Illuminate\Http\Response
+     */
+    public function getUserPermissionsJsonById(int $id, int $modal)
+    {
+        $users_permissions = DB::table('users_permissions')
+            ->where('user_id', $id)
+            ->where('status', 1)
+            ->get();
+        $user = User::find($id);
+        if ($modal == 0)
+            return view('permissions/users-permissions-info', compact('users_permissions', 'user'))->render();
+        if ($modal == 1)
+            return response()->json($users_permissions);
+        //return response()->json($user);
     }
 
     /**

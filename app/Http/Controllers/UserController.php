@@ -23,7 +23,41 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $accounts = DB::table('accounts')
+            ->orderBy('id', 'desc')
+            ->get();
+        $users = User::all();
+        $users_paginate = User::all()->take(9);
+        //$users_paginate = DB::table('users')->paginate(8);
+        if ($users->count() > 0) {
+            $user = $users->last();
+            $logs = DB::table('logs')
+                ->where('user_id', $user->id)
+                ->orderBy('id', 'asc')
+                ->take(20)
+                ->get();
+            $users_permissions = Users_permission::all()
+                ->where('user_id', $user->id);
+            $notes = DB::table('notes')
+                ->where('element', 16)->where('element_id', $user->id)->get();
+        } else {
+            $user = null;
+            $logs = null;
+            $notes = null;
+            $users_permissions = null;
+        }
+
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users.show', 'element' => 16, 'element_id' => 0, 'source' => 'users']);
+
+        return view('users.list', [
+            'users' => $users,
+            'user' => $user,
+            'users_paginate' => $users_paginate,
+            'logs' => $logs,
+            'users_permissions' => $users_permissions,
+            'notes' => $notes,
+            'accounts' => $accounts
+        ]);
     }
 
     /**
@@ -73,7 +107,10 @@ class UserController extends Controller
         $user = User::create($data);
         Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.create', 'element' => 16, 'element_id' => $user->id, 'source' => 'user.create']);
         //return redirect(route('users'));
-        return response()->json(['user' => $user, 'success' => 'This User has been added']);
+        //return response()->json(['user' => $user, 'success' => 'This User has been added']);
+        $users = User::All();
+        $returnHTML = view('users/datatable-users', compact('users'))->render();
+        return response()->json(['success' => 'This user has been added', 'html' => $returnHTML, 'user' => $user]);
     }
 
     /**
@@ -120,12 +157,8 @@ class UserController extends Controller
         $accounts = DB::table('accounts')
             ->orderBy('id', 'desc')
             ->get();
-        $notes = DB::table('notes')
-            ->where('element', 16)
-            ->where('element_id', $id)
-            ->get();
         if ($modal == 0)
-            return view('users/user-info', compact('user', 'notes'))->render();
+            return view('users/user-info', compact('user'))->render();
         if ($modal == 1)
             return response()->json($user);
         //return response()->json($user);
@@ -215,7 +248,34 @@ class UserController extends Controller
         $user->update($data);
         Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.update', 'element' => 16, 'element_id' => $user->id, 'source' => 'user.update, ' . $id]);
         //return redirect(route('users'));
-        return response()->json(['success' => 'This User has been edited']);
+        //return response()->json(['success' => 'This User has been edited']);
+        $users = User::All();
+        $returnHTML = view('users/datatable-users', compact('users'))->render();
+        return response()->json(['success' => 'This user has been Updated', 'html' => $returnHTML, 'user' => $user]);
+    }
+
+    /**
+     * Update user photo.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePhoto(Request $request)
+    {
+        $data = $request->validate([
+            'id' => 'required',
+            'photo' => 'required|mimes:jpg,png,jpeg',
+        ]);
+        $user = User::find($request->id);
+
+        Storage::delete('public/images/users/' . $user->photo);
+        $request->file('photo')->storePublicly('public/images/users');
+        $user->photo = $request->file('photo')->hashName();
+
+        $user->save();
+
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.photo.update', 'element' => 16, 'element_id' => $request->id, 'source' => 'user.photo.update, ' . $request->id]);
+        return response()->json(['success' => 'This user profile picture Updated', 'user' => $user]);
     }
 
     /**
@@ -253,44 +313,6 @@ class UserController extends Controller
     }
 
     /**
-     * Get all Users.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getAllUsers()
-    {
-        $accounts = DB::table('accounts')
-            ->orderBy('id', 'desc')
-            ->get();
-        $users = User::all();
-        $users_paginate = User::all()->take(9);
-        //$users_paginate = DB::table('users')->paginate(8);
-        if($users->count() > 0){
-            $logs = Log::all()
-                ->where('user_id', $users[count($users) - 1]->id);
-            $users_permissions = Users_permission::all()
-                ->where('user_id', $users[count($users) - 1]->id);
-            $notes = DB::table('notes')
-                ->where('element', 16)->get();
-        }else{
-            $logs = null;
-            $notes = null;
-            $users_permissions = null;
-        }
-
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users.show', 'element' => 16, 'element_id' => 0, 'source' => 'users']);
-
-        return view('users.list', [
-            'users' => $users,
-            'users_paginate' => $users_paginate,
-            'logs' => $logs,
-            'users_permissions' => $users_permissions,
-            'notes' => $notes,
-            'accounts' => $accounts
-        ]);
-    }
-
-    /**
      * pagination search 
      */
     public function fetch_data(Request $request)
@@ -313,12 +335,26 @@ class UserController extends Controller
 
     /**
      * list Logs
+     * @param int $user_id
+     * @param int $modal
+     * @return \Illuminate\Http\Response
      */
-    public function listLogs($user_id)
+    public function listLogs($user_id, $modal)
     {
-        $logs = Log::all()
-            ->where('user_id', $user_id);
-        return view('users/logs', compact('logs'))->render();
+        if ($modal == 1) {
+            $logs = DB::table('logs')
+                ->where('user_id', $user_id)
+                ->orderBy('log_date', 'desc')
+                ->get();
+            return view('users/logs', compact('logs'))->render();
+        } else if ($modal == 0) {
+            $logs = DB::table('logs')
+                ->where('user_id', $user_id)
+                ->orderBy('log_date', 'desc')
+                ->take(20)
+                ->get();
+            return view('users/logs-info', compact('logs'))->render();
+        }
     }
 
     /**
@@ -328,7 +364,7 @@ class UserController extends Controller
     {
         $users_permissions = Users_permission::all()
             ->where('user_id', $user_id);
-        return view('users/users_permissions', compact('users_permissions'))->render();
+        return view('permissions.users_permissions', compact('users_permissions'))->render();
     }
 
     /**
@@ -340,5 +376,40 @@ class UserController extends Controller
         return view('users/all-logs', [
             'logs' => $logs,
         ]);
+    }
+
+    /**
+     * Update user password.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updatePassword(Request $request)
+    {
+        //return $request;
+        $data = $request->validate([
+            'id' => 'required',
+            'pwd' => [
+                'required',
+                // 'same : confirm-pwd',
+                Password::min(8)
+                    ->letters()
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised()
+            ],
+            'confirm-pwd' => [
+                'required',
+                'same : pwd',
+            ],
+        ]);
+        $pwd = Hash::make($data['pwd']);
+        $user = User::find($request->id);
+        $user->pwd = $pwd;
+        $user->save();
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.password.update', 'element' => 16, 'element_id' => $user->id, 'source' => 'password.update, ' . $request->id]);
+        //return redirect(route('users'));
+        return response()->json(['success' => 'This user password has been Updated']);
     }
 }

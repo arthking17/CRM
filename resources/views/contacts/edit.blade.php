@@ -54,7 +54,8 @@
                                                 <div class="col-8 col-xl-9">
                                                     <select class="form-select @error('class') parsley-error @enderror"
                                                         name="class" id="form_edit-class-disabled" required
-                                                        data-parsley-type="integer" data-parsley-length="[1, 1]" disabled>
+                                                        data-parsley-type="integer" data-parsley-length="[1, 1]"
+                                                        disabled>
                                                         <option value="1">Person</option>
                                                         <option value="2">Company</option>
                                                     </select>
@@ -471,19 +472,27 @@
                                             </div>
                                         </div><!-- end col -->
                                         <div class="row mb-3">
-                                            <label for="form_edit-logo" class="col-4 col-xl-3 col-form-label">Logo</label>
+                                            <label for="form_edit-logo"
+                                                class="col-4 col-xl-3 col-form-label">Logo</label>
                                             <div class="col-8 col-xl-9">
-                                                <input type="file"
-                                                    class="form-control dropify @error('logo') parsley-error @enderror"
-                                                    name="logo" id="form_edit-logo" data-plugins="dropify"
-                                                    data-parsley-fileextension='jpg,png,jpeg' data-height="100px">
-                                                @error('logo')
-                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                        <li class="parsley-required">{{ $errors->first('logo') }}</li>
-                                                    </ul>
-                                                @else
-                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                @enderror
+                                                <div class="d-flex me-3 profile-pic">
+                                                    <label class="-label" for="form_edit-logo">
+                                                        <span class="glyphicon glyphicon-camera"></span>
+                                                        <span>Change</span>
+                                                    </label>
+                                                    <input id="form_edit-logo" type="file" name="photo"
+                                                        onchange="updateContactCompanieLogoImg(event)" data-parsley-fileextension='jpg,png,jpeg'/>
+                                                    <img id="form_edit-logo-img" class="rounded-circle avatar-lg" src=""
+                                                        alt="Generic placeholder image">
+                                                    @error('logo')
+                                                        <ul class="parsley-errors-list filled" aria-hidden="false">
+                                                            <li class="parsley-required">{{ $errors->first('logo') }}
+                                                            </li>
+                                                        </ul>
+                                                    @else
+                                                        <ul class="parsley-errors-list" aria-hidden="true"></ul>
+                                                    @enderror
+                                                </div>
                                             </div>
                                         </div>
                                     </div> <!-- end row -->
@@ -505,11 +514,11 @@
                                                 </div>
 
                                                 <div class="mb-3">
-                                                    <button type="submit" id="edit"
+                                                    <button type="submit" id="btn-edit"
                                                         class="btn btn-info waves-effect waves-light">Save</button>
                                                     <button type="button" id="btn-delete"
                                                         class="btn btn-danger waves-effect waves-light"
-                                                        onclick="#">Delete</button>
+                                                        onclick="deleteContact({{ $contact->id }});">Delete</button>
                                                 </div>
                                             </div>
                                         </div> <!-- end col -->
@@ -518,7 +527,9 @@
 
                                 <ul class="list-inline mb-0 wizard">
                                     <li class="float-start">
-                                        <a href="javascript: void(0);" class="btn btn-light waves-effect waves-light m-1" onclick="$('#edit-modal').modal('toggle')"><i
+                                        <a href="javascript: void(0);"
+                                            class="btn btn-light waves-effect waves-light m-1"
+                                            onclick="$('#edit-modal').modal('toggle')"><i
                                                 class="fe-x me-1"></i>Cancel</a>
                                     </li>
                                     <li class="next list-inline-item float-end">

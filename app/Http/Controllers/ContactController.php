@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Contact;
+use App\Models\Contact_data;
 use App\Models\Contacts_companie;
 use App\Models\Contacts_person;
 use App\Models\Group;
@@ -11,6 +12,7 @@ use App\Models\Log;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class ContactController extends Controller
@@ -22,17 +24,27 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $contacts = Contact::All();
-        $contacts_person = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')->first();
-        $contacts_companie = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
-            ->select('contacts.*', 'contacts_companies.class as companies_class', 'contacts_companies.name', 'contacts_companies.registered_number', 'contacts_companies.logo', 'contacts_companies.activity', 'contacts_companies.country', 'contacts_companies.language')
-            ->first();
-        $accounts = Account::All();
+        $contacts = Contact::All()->sortBy("id");
+        $groups = Group::all();
+        if ($contacts->count() > 0) {
+            $accounts = Account::All();
+            $contact_datas = Contact_data::all()->where('element_id', $contacts->first()->id);
+            $notes = DB::table('notes')->where('element_id', $contacts->first()->id)->get();
+            if ($contacts->first()->class == 1)
+                $contact = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')->where('contacts.id', $contacts->first()->id)->get();
+            else if ($contacts->first()->class == 2)
+                $contact = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+                    ->select('contacts.*', 'contacts_companies.class as companies_class', 'contacts_companies.name', 'contacts_companies.registered_number', 'contacts_companies.logo', 'contacts_companies.activity', 'contacts_companies.country', 'contacts_companies.language')
+                    ->where('contacts.id', $contacts->first()->id)->get();
+        }
+        $contact = $contact[0];
         return view('contacts/list', [
             'contacts' => $contacts,
             'accounts' => $accounts,
-            'contacts_person' => $contacts_person,
-            'contacts_companie' => $contacts_companie,
+            'contact' => $contact,
+            'contact_datas' => $contact_datas,
+            'notes' => $notes,
+            'groups' => $groups,
         ]);
     }
 
@@ -47,37 +59,39 @@ class ContactController extends Controller
     {
         $contact = Contact::all()
             ->find($id);
+        $accounts = Account::all();
         try {
             if ($contact->class == 1) {
                 $contacts_person = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')->where('contacts.id', $id)->get();
                 //dd($person);
-                if ($modal == 0) {
-                    if (!$contacts_person->isEmpty()) {
-                        $contacts_person = $contacts_person[0];
-                        return view('contacts/contacts_person-info', compact('contacts_person'))->render();
-                    }
-                    return null;
-                }
-                if ($modal == 1)
-                    return response()->json($contacts_person);
+                if (!$contacts_person->isEmpty()) {
+                    $contact = $contacts_person[0];
+                    if ($modal == 0) {
+                        $returnHTML = view('contacts/contacts_person-info', compact('contact', 'accounts'))->render();
+                        return response()->json(['success' => 'Contact Person found', 'html' => $returnHTML]);
+                    } else if ($modal == 1)
+                        return response()->json($contact);
+                } else
+                    return response()->json(['error' => 'Contact Not Found !!!', 300]);
             } else if ($contact->class == 2) {
                 $contacts_companie = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
                     ->select('contacts.*', 'contacts_companies.class as companies_class', 'contacts_companies.name', 'contacts_companies.registered_number', 'contacts_companies.logo', 'contacts_companies.activity', 'contacts_companies.country', 'contacts_companies.language')
                     ->where('contacts.id', $id)->get();
-                //dd($companie);
-                if ($modal == 0) {
-                    if (!$contacts_companie->isEmpty()) {
-                        $contacts_companie = $contacts_companie[0];
-                        return view('contacts/contacts_companie-info', compact('contacts_companie'))->render();
-                    }
-                    return null;
-                }
-                if ($modal == 1)
-                    return response()->json($contacts_companie);
+                if (!$contacts_companie->isEmpty()) {
+                    $contact = $contacts_companie[0];
+                    //dd($companie);
+                    if ($modal == 0) {
+                        $returnHTML = view('contacts/contacts_companie-info', compact('contact', 'accounts'))->render();
+                        return response()->json(['success' => 'Contact Companie found', 'html' => $returnHTML]);
+                    } else if ($modal == 1)
+                        return response()->json($contact);
+                } else
+                    return response()->json(['error' => 'Contact Not Found !!!', 300]);
             }
         } catch (Throwable $e) {
+            dd($e);
             report($e);
-            return null;
+            return response()->json(['error' => 'Contact Not Found !!!', 300]);
         }
     }
 
@@ -102,6 +116,7 @@ class ContactController extends Controller
         $request->validate([
             'class' => 'required|string|min:1|max:2',
         ]);
+        $contact = null;
         if ($request->class == 1) //person contact
         {
             $person_data = $request->validate([
@@ -133,10 +148,11 @@ class ContactController extends Controller
             try {
                 $contact_person->save();
                 Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact_person.create', 'element' => 7, 'element_id' => $contact->id, 'source' => 'contact_person.create']);
-                return response()->json(['contact_person' => $contact_person, 'success' => 'This person contact has been added']);
+                //return response()->json(['contact_person' => $contact_person, 'success' => 'This person contact has been added']);
+                $contact = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')->where('contacts.id', $contact->id)->get();
             } catch (Throwable $e) {
                 report($e);
-                Contact::find($contact->id)->delete();
+                Contact::find($contact_person->id)->delete();
                 return response()->json(['error' => 'Error while adding that contact !!!'], 300);
             }
         } else if ($request->class == 2) //companies contact
@@ -173,13 +189,21 @@ class ContactController extends Controller
             try {
                 $contact_companie->save();
                 Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact_companie.create', 'element' => 6, 'element_id' => $contact->id, 'source' => 'contact_companie.create']);
-                return response()->json(['contact_companie' => $contact_companie, 'success' => 'This companie contact has been added']);
+                //return response()->json(['contact_companie' => $contact_companie, 'success' => 'This companie contact has been added']);
+                $contact = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+                    ->select('contacts.*', 'contacts_companies.class as companies_class', 'contacts_companies.name', 'contacts_companies.registered_number', 'contacts_companies.logo', 'contacts_companies.activity', 'contacts_companies.country', 'contacts_companies.language')
+                    ->where('contacts.id', $contact->id)->get();
             } catch (Throwable $e) {
                 report($e);
-                Contact::find($contact->id)->delete();
+                Contact::find($contact_companie->id)->delete();
                 return response()->json(['error' => 'Error while adding that contact !!!'], 300);
             }
         }
+
+        $contacts = Contact::All();
+        $accounts = Account::All();
+        $returnHTML = view('contacts/datatable-contacts', compact('contacts', 'accounts'))->render();
+        return response()->json(['success' => 'This companie contact has been added', 'html' => $returnHTML, 'contact' => $contact[0]]);
     }
 
     /**
@@ -246,7 +270,8 @@ class ContactController extends Controller
             $contact_person->birthdate = $person_data['birthdate'];
             $contact_person->save();
             Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact_person.update', 'element' => 7, 'element_id' => $request->input('id'), 'source' => 'contact_person.update']);
-            return response()->json(['contact' => $contact, 'success' => 'This person contact has been updated']);
+            //return response()->json(['contact' => $contact, 'success' => 'This person contact has been updated']);
+            $contact = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')->where('contacts.id', $request->id)->get();
         } else if ($request->class == 2) //companies contact
         {
             $companies_data = $request->validate([
@@ -275,13 +300,45 @@ class ContactController extends Controller
             $contact_companie->country = $companies_data['companies_country'];
 
             if ($request->hasFile('logo')) {
+                Storage::delete('public/images/logo/' . $contact->photo);
                 $request->file('logo')->storePublicly('public/images/logo');
                 $contact_companie->logo = $request->file('logo')->hashName();
             }
             $contact_companie->save();
             Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact_companie.update', 'element' => 6, 'element_id' => $request->input('id'), 'source' => 'contact_companie.update']);
-            return response()->json(['contact' => $contact, 'success' => 'This companie contact has been updated']);
+            //return response()->json(['contact' => $contact, 'success' => 'This companie contact has been updated']);
+            $contact = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+                ->select('contacts.*', 'contacts_companies.class as companies_class', 'contacts_companies.name', 'contacts_companies.registered_number', 'contacts_companies.logo', 'contacts_companies.activity', 'contacts_companies.country', 'contacts_companies.language')
+                ->where('contacts.id', $request->id)->get();
         }
+        $contacts = Contact::All();
+        $accounts = Account::All();
+        $returnHTML = view('contacts/datatable-contacts', compact('contacts', 'accounts'))->render();
+        return response()->json(['success' => 'This companie contact has been updated', 'html' => $returnHTML, 'contact' => $contact[0]]);
+    }
+
+    /**
+     * Update contact companie logo.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateContactCompanieLogo(Request $request)
+    {
+        $data = $request->validate([
+            'id' => 'required',
+            'logo' => 'required|mimes:jpg,png,jpeg',
+        ]);
+        $contact_companie = Contacts_companie::find($request->id);
+
+        Storage::delete('public/images/logo/' . $contact_companie->photo);
+        $request->file('logo')->storePublicly('public/images/logo');
+        $contact_companie->logo = $request->file('logo')->hashName();
+
+        $contact_companie->save();
+
+        Log::create(['user_id' => 2, 'log_date' => new DateTime(), 'action' => 'contact_companie.logo.update', 'element' => 6, 'element_id' => $request->id, 'source' => 'contact_companie.logo.update, ' . $request->id]);
+        return response()->json(['success' => 'This contact companie logo Updated', 'contact' => $contact_companie]);
     }
 
     /**
@@ -296,7 +353,11 @@ class ContactController extends Controller
         //$contact->status = 3;
         if ($contact->delete()) {
             Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts.delete', 'element' => 16, 'element_id' => $contact->id, 'source' => 'contacts.delete, ' . $id]);
-            return response()->json(['success' => 'This contact has been Disabled !!!', 'contact' => $contact]);
+            $contacts = Contact::All();
+            $accounts = Account::All();
+            $returnHTML = view('contacts/datatable-contacts', compact('contacts', 'accounts'))->render();
+            return response()->json(['success' => 'This contact has been Disabled !!!', 'html' => $returnHTML]);
+            //return response()->json(['success' => 'This contact has been Disabled !!!', 'contact' => $contact]);
         } else
             return response()->json(['error' => 'Failed to delete this contact !!!']);
     }
@@ -349,47 +410,40 @@ class ContactController extends Controller
             'companies_language' => 'nullable|string|min:2|max:2',
             'companies_country' => 'nullable|string|min:2|max:2',
         ]);
-        $contacts = DB::table('contacts')
-            //->join('accounts', 'accounts.')
-            // ->select('id', 'account_id.name as account', 'class', 'source', 'source_id', 'creation_date', 'status')
-            ->where('id', 'like', '%'.$request->id.'%')
-            ->where('source_id', 'like', '%' . $request->source_id . '%')
-            ->where('source', 'like', '%' . $request->source . '%')
-            ->where('status', 'like', '%' . $request->status . '%')
-            ->where('account_id', 'like', '%' . $request->account_id . '%')
-            ->get();
         $accounts = Account::All();
-        //return $contacts;
         if ($request->class == 1) {
             $contacts = DB::table('contacts')
                 ->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
+                ->join('contact_datas', 'contacts.id', '=', 'contact_datas.element_id')
+                ->select('contacts.*', 'contacts_persons.*')
                 //contact
-                ->where('contacts.id', 'like', '%'.$request->id.'%')
+                ->where('contacts.id', 'like', '%' . $request->id . '%')
                 ->where('source_id', 'like', '%' . $request->source_id . '%')
                 ->where('source', 'like', '%' . $request->source . '%')
-                ->where('status', 'like', '%' . $request->status . '%')
+                ->where('contacts.status', 'like', '%' . $request->status . '%')
                 ->where('account_id', 'like', '%' . $request->account_id . '%')
                 //person data
                 ->where('first_name', 'like', '%' . $request->first_name . '%')
                 ->where('last_name', 'like', '%' . $request->last_name . '%')
-                ->where(function($query) use ($request){
+                ->where(function ($query) use ($request) {
                     $query->where('nickname', 'like', '%' . $request->nickname . '%')->orWhere('nickname', $request->nickname);
                 })
                 ->where('profile', 'like', '%' . $request->profile . '%')
                 ->where('gender', 'like', '%' . $request->gender . '%')
-                ->where(function($query) use ($request){
+                ->where(function ($query) use ($request) {
                     $query->where('language', 'like', '%' . $request->person_language . '%')->orWhere('language', $request->person_language);
                 })
-                ->where(function($query) use ($request){
+                ->where(function ($query) use ($request) {
                     $query->where('country', 'like', '%' . $request->person_country . '%')->orWhere('country', $request->person_country);
                 })
-                ->where(function($query) use ($request){
+                ->where(function ($query) use ($request) {
                     $query->where('birthdate', 'like', '%' . $request->birthdate . '%')->orWhere('birthdate', $request->birthdate);
                 })
                 ->get();
         } else if ($request->class == 2) {
             $contacts = DB::table('contacts')
                 ->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+                ->join('contact_datas', 'contacts.id', '=', 'contact_datas.element_id')
                 ->select(
                     'contacts.*',
                     'contacts_companies.class as companies_class',
@@ -401,26 +455,37 @@ class ContactController extends Controller
                     'contacts_companies.language'
                 )
                 //contact
-                ->where('contacts.id', 'like', '%'.$request->id.'%')
+                ->where('contacts.id', 'like', '%' . $request->id . '%')
                 ->where('source_id', 'like', '%' . $request->source_id . '%')
                 ->where('source', 'like', '%' . $request->source . '%')
-                ->where('status', 'like', '%' . $request->status . '%')
+                ->where('contacts.status', 'like', '%' . $request->status . '%')
                 ->where('account_id', 'like', '%' . $request->account_id . '%')
                 //companie data
                 ->where('contacts_companies.class', 'like', '%' . $request->companies_class . '%')
                 ->where('name', 'like', '%' . $request->name . '%')
-                ->where(function($query) use ($request){
+                ->where(function ($query) use ($request) {
                     $query->where('registered_number', 'like', '%' . $request->registered_number . '%')->orWhere('registered_number', $request->registered_number);
                 })
-                ->where(function($query) use ($request){
+                ->where(function ($query) use ($request) {
                     $query->where('activity', 'like', '%' . $request->activity . '%')->orWhere('activity', $request->activity);
                 })
-                ->where(function($query) use ($request){
+                ->where(function ($query) use ($request) {
                     $query->where('language', 'like', '%' . $request->companies_language . '%')->orWhere('language', $request->companies_language);
                 })
-                ->where(function($query) use ($request){
+                ->where(function ($query) use ($request) {
                     $query->where('country', 'like', '%' . $request->companies_country . '%')->orWhere('country', $request->companies_country);
                 })
+                ->get();
+        } else {
+            $contacts = DB::table('contacts')
+                //->leftJoin('contact_datas', 'contacts.id', '=', 'contact_datas.element_id')
+                ->select('contacts.*')
+                ->where('contacts.id', 'like', '%' . $request->id . '%')
+                ->where('source_id', 'like', '%' . $request->source_id . '%')
+                ->where('source', 'like', '%' . $request->source . '%')
+                ->where('contacts.status', 'like', '%' . $request->status . '%')
+                ->where('account_id', 'like', '%' . $request->account_id . '%')
+                ->where('creation_date', 'like', '%' . $request->creation_date . '%')
                 ->get();
         }
         if ($contacts->isEmpty()) {
@@ -435,8 +500,23 @@ class ContactController extends Controller
                             </div>'
             ]);
         } else {
-            $returnHTML = view('contacts/search-result', compact('contacts', 'accounts'))->render();
+            $returnHTML = view('contacts/datatable-contacts', compact('contacts', 'accounts'))->render();
             return response()->json(['success' => 'Results found !!!', 'html' => $returnHTML]);
         }
+    }
+
+    /**
+     * upload contact file
+     * 
+     * @param \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function upload(Request $request)
+    {
+        //return $request;
+        $file = $request->validate([
+            'file' => 'required|mimes:csv,xlsx,xls',
+        ]);
+        return response()->json(['success' => 'Successful  Upload  !!!']);
     }
 }

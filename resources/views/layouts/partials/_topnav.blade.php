@@ -30,7 +30,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('contacts.groups') }}" id="topnav-dashboard" role="button">
+                        <a class="nav-link" href="{{ route('users.groups') }}" id="topnav-dashboard" role="button">
                             <i class="fe-layers me-1"></i> Groups
                         </a>
                     </li>

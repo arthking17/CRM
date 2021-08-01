@@ -11,6 +11,9 @@
     <link href="/libs/datatables.net-select-bs4/css/select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <!-- third party css end -->
 
+    <!-- custom style -->
+    <link href="/css/custom-style.css" rel="stylesheet" type="text/css" />
+
     <!-- App css -->
     <link href="/css/config/creative/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
     <link href="/css/config/creative/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
@@ -60,52 +63,55 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="text-sm-end">
-                                        
+
                                     </div>
                                 </div><!-- end col-->
                             </div>
 
-                            <table id="datatable-notes"
-                                class="table table-center dt-responsive nowrap table-hover w-100">
-                                <thead>
-                                    <tr>
-                                        <th class="text-filter">Id</th>
-                                        <th class="select-filter">Class</th>
-                                        <th class="select-filter">Visibility</th>
-                                        <th class="text-filter">Content</th>
-                                        <th class="select-filter">Element</th>
-                                        <th class="text-filter">Element Id</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($notes as $note)
-                                        <tr id="noteid{{ $note->id }}" onclick="viewNote({{ $note->id }});">
-                                            <td>{{ $note->id }}</td>
-                                            <td>{{ getNoteClassName($note->class) }}</td>
-                                            <td>
-                                                @if ($note->visibility === 1) <span
-                                                        class="badge bg-success">Visible for all</span>
-                                                @elseif ($note->visibility === 0)
-                                                    <span class="badge label-table bg-danger">Visible only for admin</span>
-                                                @endif
-                                            </td>
-                                            <td>{{ $note->content }}</td>
-                                            <td>{{ getElementName($note->element) }}</td>
-                                            <td>{{ $note->element_id }}</td>
+                            <div class="table-responsive" id="view-list" data-simplebar>
+                                <table id="datatable-notes"
+                                    class="table table-center dt-responsive nowrap table-hover w-100">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-filter">Id</th>
+                                            <th class="select-filter">Class</th>
+                                            <th class="select-filter">Visibility</th>
+                                            <th class="select-filter">Element</th>
+                                            <th class="text-filter">Element Id</th>
+                                            <th class="text-filter">Content</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th class="select account">Class</th>
-                                        <th class="select">Visibility</th>
-                                        <th>Content</th>
-                                        <th class="select account">Element</th>
-                                        <th>Element Id</th>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($notes as $note)
+                                            <tr id="noteid{{ $note->id }}" onclick="viewNote({{ $note->id }});">
+                                                <td>{{ $note->id }}</td>
+                                                <td>{{ getNoteClassName($note->class) }}</td>
+                                                <td>
+                                                    @if ($note->visibility === 1) <span
+                                                            class="badge bg-success">Visible for all</span>
+                                                    @elseif ($note->visibility === 0)
+                                                        <span class="badge label-table bg-danger">Visible only for
+                                                            admin</span>
+                                                    @endif
+                                                </td>
+                                                <td>{{ getElementName($note->element) }}</td>
+                                                <td>{{ $note->element_id }}</td>
+                                                <td>{{ $note->content }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th class="select account">Class</th>
+                                            <th class="select">Visibility</th>
+                                            <th class="select account">Element</th>
+                                            <th>Element Id</th>
+                                            <th>Content</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
                     </div> <!-- end card -->
                 </div> <!-- end col -->
@@ -157,9 +163,11 @@
 
             <!-- custom js files -->
             <script src="/js/notes/notes-list.js"></script>
+            <script src="/js/notes/datatable-notes.init.js"></script>
             <script src="/js/notes/notes-validation.js"></script>
             <script src="/js/form-validation-laravel.js"></script>
             <script>
+                url_jsfile = '{{ URL::asset('/js/notes/') }}';
                 var create_note_errors = null
                 var edit_note_errors = null
             </script>

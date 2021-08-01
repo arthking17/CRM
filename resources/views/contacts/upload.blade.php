@@ -4,10 +4,6 @@
     <!-- App favicon -->
     <link rel="shortcut icon" href="https://coderthemes.com/ubold/layouts/assets/images/favicon.ico">
 
-    <!-- Plugins css -->
-    <link href="/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
-    <link href="/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
-
     <!-- App css -->
     <link href="/css/config/creative/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
     <link href="/css/config/creative/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
@@ -56,16 +52,14 @@
                                 <div class="row">
                                     @csrf
                                     <div class="row align-items-center">
-                                        <label for="create-user-photo" class="col-4 col-xl-3 col-form-label">Contact
-                                            file<span class="text-danger">*</span></label>
+                                        <label for="upload-contact-file" class="col-4 col-xl-3 col-form-label">Contact
+                                            File<span class="text-danger">*</span></label>
                                         <div class="col-auto">
-                                            <input type="file" class="form-control @error('photo') parsley-error @enderror"
-                                                id="create-user-photo" name="photo" placeholder="photo"
-                                                data-plugins="dropify" required data-parsley-fileextension='jpg,png,jpeg'
-                                                data-height="300px">
-                                            @error('photo')
+                                            <input type="file" class="form-control @error('file') parsley-error @enderror"
+                                                id="upload-contact-file" name="file" placeholder="file" required data-parsley-fileextension='csv,xlsx,xls'>
+                                            @error('file')
                                                 <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                    <li class="parsley-required">{{ $errors->first('photo') }}</li>
+                                                    <li class="parsley-required">{{ $errors->first('file') }}</li>
                                                 </ul>
                                             @else
                                                 <ul class="parsley-errors-list" aria-hidden="true"></ul>
@@ -97,16 +91,10 @@
             <!-- Sweet Alerts js -->
             <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
 
-            <!-- Plugins js -->
-            <script src="/libs/dropzone/min/dropzone.min.js"></script>
-            <script src="/libs/dropify/js/dropify.min.js"></script>
-
-            <!-- Init js-->
-            <!--<script src="/js/pages/form-fileuploads.init.js"></script>-->
-
             <!-- custom js files -->
-            <script src="/js/form-validation-laravel.js"></script>
+            <script src="/js/custom-parsley.js"></script>
             <script src="/js/contacts/upload.js"></script>
+            <script src="/js/form-validation-laravel.js"></script>
             <script>
                 var upload_contact_errors = null
             </script>

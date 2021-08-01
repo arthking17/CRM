@@ -65,7 +65,7 @@
                                 </div><!-- end col-->
                             </div>
 
-                            <div class="table-responsive">
+                            <div id="view-list" class="table-responsive" data-simplebar>
                                 <table id="datatable-accounts" class="table table-striped dt-responsive nowrap w-100"
                                     data-page-size="7">
                                     <thead>
@@ -177,12 +177,12 @@
             <!-- Sweet Alerts js -->
             <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
 
-            <!-- custom js
-            <script src="/js/accounts/account.js"></script>-->
-            <script src="/js/accounts/accounts-list.js"></script>
+            <!-- custom js -->
+            <script src="/js/accounts/datatable-accounts.init.js"></script>
             <script src="/js/accounts/account-ajax.js"></script>
             <script src="/js/form-validation-laravel.js"></script>
             <script>
+                url_jsfile = '{{ URL::asset('/js/accounts/') }}';
                 var create_account_errors = null
                 var edit_account_errors = null
             </script>

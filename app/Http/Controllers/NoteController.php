@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contact;
 use App\Models\Log;
 use App\Models\Note;
+use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class NoteController extends Controller
 {
@@ -40,6 +43,7 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
+        //return $request;
         $data = $request->validate([
             'class' => 'required|integer|digits_between:1,1',
             'visibility' => 'required|integer|digits_between:1,1',
@@ -49,7 +53,9 @@ class NoteController extends Controller
         ]);
         $note = Note::create($data);
         Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'note.create', 'element' => 13, 'element_id' => $note->id, 'source' => 'note.create']);
-        return response()->json(['note' => $note, 'success' => 'Note added']);
+        $notes = Note::All();
+        $returnHTML = view('notes/datatable-notes', compact('notes'))->render();
+        return response()->json(['success' => 'This note has been added !!!', 'html' => $returnHTML, 'note' => $note]);
     }
 
     /**
@@ -59,7 +65,7 @@ class NoteController extends Controller
     {
         $notes = Note::all()
             ->where('element_id', $element_id);
-        return view('users/notes', compact('notes'))->render();
+        return view('notes/notes-list-modal', compact('notes'))->render();
     }
 
     /**
@@ -83,12 +89,20 @@ class NoteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Note  $note
+     * @param  int $element_id
+     * @param  int $element
      * @return \Illuminate\Http\Response
      */
-    public function show(Note $note)
+    public function show(int $element_id, int $element)
     {
-        //
+        $notes = DB::table('notes')->where('element_id', $element_id)->get();
+        if ($element == 5) {
+            $contact = Contact::find($element_id);
+            return view('notes.notes-info-card', compact('notes', 'contact'))->render();
+        } else if ($element == 16) {
+            $user = User::find($element_id);
+            return view('notes.notes-info-card', compact('notes', 'user'))->render();
+        }
     }
 
     /**
@@ -112,6 +126,7 @@ class NoteController extends Controller
     public function update(Request $request)
     {
         $data = $request->validate([
+            'id' => 'required',
             'class' => 'required|integer|digits_between:1,1',
             'visibility' => 'required|integer|digits_between:1,1',
             'content' => 'required',
@@ -121,7 +136,9 @@ class NoteController extends Controller
         $note = Note::find($request->id);
         $note->update($data);
         Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'note.update', 'element' => 13, 'element_id' => $note->id, 'source' => 'note.update']);
-        return response()->json(['note' => $note, 'success' => 'Note updated']);
+        $notes = Note::All();
+        $returnHTML = view('notes/datatable-notes', compact('notes'))->render();
+        return response()->json(['success' => 'This note has been updated !!!', 'html' => $returnHTML, 'note' => $note]);
     }
 
     /**
@@ -133,10 +150,11 @@ class NoteController extends Controller
     public function destroy(int $id)
     {
         $note = Note::find($id);
-        //$contact->status = 3;
         if ($note->delete()) {
             Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'notes.delete', 'element' => 13, 'element_id' => $id, 'source' => 'notes.delete, ' . $id]);
-            return response()->json(['success' => 'This note has been Deleted !!!', 'contact' => $note]);
+            $notes = Note::All();
+            $returnHTML = view('notes/datatable-notes', compact('notes'))->render();
+            return response()->json(['success' => 'This note has been Deleted !!!', 'html' => $returnHTML, 'note' => $note]);
         } else
             return response()->json(['error' => 'Failed to delete this note !!!']);
     }

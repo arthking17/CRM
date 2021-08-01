@@ -24,11 +24,20 @@ class Contact extends Model
     public $timestamps = false;
 
     /**
-     * Get the account record associated with the user.
+     * Get the account record associated with the contact.
      * @return \App\Models\Account
      */
     public function account()
     {
         return $this->hasMany(Account::class, 'id', 'account_id');
+    }
+    
+    /**
+     * Get the Contact_data record associated with the contact.
+     * @return \App\Models\Contact_data
+     */
+    public function contact_datas()
+    {
+        return $this->belongsToMany('\App\Contact_data');
     }
 }

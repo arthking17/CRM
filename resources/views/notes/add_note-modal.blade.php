@@ -11,8 +11,8 @@
                         data-parsley-validate="" novalidate>
                         <div class="row">
                             @csrf
-                            <input type="number" name="element" value="16" hidden/>
-                            <input type="number" name="element_id" hidden/>
+                            <input type="number" name="element" id="create-note-element" hidden/>
+                            <input type="number" name="element_id" id="create-note-element_id" hidden/>
                             <div class="row mb-3">
                                 <label for="class" class="col-4 col-xl-3 col-form-label">Class<span
                                         class="text-danger">*</span></label>

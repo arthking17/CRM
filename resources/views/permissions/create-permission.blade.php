@@ -25,7 +25,7 @@
                                 <div class="col-8 col-xl-9">
                                     <select class="form-select @error('element') parsley-error @enderror"
                                         name="element" id="create-permissions-element" required data-parsley-type="integer"
-                                        data-parsley-length="[1, 1]">
+                                        data-parsley-length="[1, 2]">
                                         <option>Select a element</option>
                                     </select>
                                     @error('element')
@@ -42,17 +42,11 @@
                                         class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">
                                     <div class="switchery-demo">
-                                        <input type="checkbox" checked="" data-plugin="switchery" data-color="#64b0f2" data-size="small">Create
-                                        <input type="checkbox" checked="" data-plugin="switchery" data-color="#ff7aa3">Update
-                                        <input type="checkbox" checked="" data-plugin="switchery" data-color="#2b3d51" data-size="large">Delete
+                                        <input type="checkbox" checked="" data-plugin="switchery" data-color="#64b0f2" name="create" id="create-permissions-create">Create
+                                        <input type="checkbox" checked="" data-plugin="switchery" data-color="#ff7aa3" name="show" id="create-permissions-show">Show
+                                        <input type="checkbox" checked="" data-plugin="switchery" data-color="#ff7aa3" name="update" id="create-permissions-update">Update
+                                        <input type="checkbox" checked="" data-plugin="switchery" data-color="#2b3d51" name="delete" id="create-permissions-delete">Delete
                                     </div>
-                                    @error('code')
-                                        <ul class="parsley-errors-list filled" aria-hidden="false">
-                                            <li class="parsley-required">{{ $errors->first('code') }}</li>
-                                        </ul>
-                                    @else
-                                        <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                    @enderror
                                 </div>
                             </div>
                             <div class="row mb-3">

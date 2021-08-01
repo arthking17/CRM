@@ -6,7 +6,15 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-2">
+        <div class="card" id="contact_data-info-card">
+            @include('contacts.contact_data')
+        </div>
+        <div class="card" id="notes-info-card">
+            @include('notes.notes-info-card')
+        </div>
+    </div>
+    <div class="col-lg-7">
         <div class="card">
             <div class="card-body">
 
@@ -17,9 +25,9 @@
                             <th class="select-filter">Account</th>
                             <th class="select-filter">Class</th>
                             <th class="select-filter">Source</th>
-                            <th class="text-filter">Source Id</th>
                             <th class="text-filter">Creation Date</th>
                             <th class="select-filter">Status</th>
+                            <th class="text-filter">Source Id</th>
                         </tr>
                     </thead>
 
@@ -47,7 +55,6 @@
                                         <span class="badge bg-blue text-light">Database purchased</span>
                                     @endif
                                 </td>
-                                <td>{{ $contact->source_id }}</td>
                                 <td>{{ $contact->creation_date }}</td>
                                 <td>
                                     @if ($contact->status === 1)
@@ -58,6 +65,7 @@
                                         <span class="badge bg-danger">Not interested</span>
                                     @endif
                                 </td>
+                                <td>{{ $contact->source_id }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -67,27 +75,32 @@
                             <th class="select account">Account</th>
                             <th class="select">Class</th>
                             <th class="select">Source</th>
-                            <th class="">Source Id</th>
                             <th class="">Creation Date</th>
                             <th class="select">Status</th>
+                            <th class="">Source Id</th>
                         </tr>
                     </tfoot>
                 </table>
             </div>
         </div> <!-- end card -->
     </div> <!-- end col -->
-
-    <div class="col-lg-4 @if ($contact->class !== 1) d-none @endif"
-        id="contacts_person-info-card">
-        @include('contacts.contacts_person-info')
-    </div>
-    <div class="col-lg-4 @if ($contact->class !== 2) d-none @endif"
-        id="contacts_companie-info-card">
-        @include('contacts.contacts_companie-info')
-    </div>
+    @if ($contacts->count() > 0)
+        <div class="col-lg-3 @if ($contact->class !== 1) d-none @endif" id="contacts_person-info-card">
+            @include('contacts.contacts_person-info')
+        </div>
+        <div class="col-lg-3 @if ($contact->class !== 2) d-none @endif" id="contacts_companie-info-card">
+            @include('contacts.contacts_companie-info')
+        </div>
+    @endif
 </div>
 <!-- end row -->
 @include('contacts.create')
+@include('contacts.data.create')
 @if ($contacts->count() > 0)
     @include('contacts.edit')
+    @include('users.add_note')
+    <div id="notes-div">
+        @include('users.notes')
+    </div>
+    @include('contacts.data.edit')
 @endif

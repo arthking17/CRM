@@ -669,7 +669,7 @@
                                                                 class="form-control @error('phone') parsley-error @enderror"
                                                                 name="phone" id="search-contact-phone"
                                                                 placeholder="Identifier of phone"
-                                                                data-parsley-type="integer" data-parsley-maxlength="10">
+                                                                data-parsley-type="integer">
                                                             @error('phone')
                                                                 <ul class="parsley-errors-list filled" aria-hidden="false">
                                                                     <li class="parsley-required">
@@ -688,8 +688,7 @@
                                                             <input type="text"
                                                                 class="form-control @error('email') parsley-error @enderror"
                                                                 name="email" placeholder="Email Address"
-                                                                id="search-contact-email" data-parsley-minlength="2"
-                                                                data-parsley-type="email">
+                                                                id="search-contact-email">
                                                             @error('email')
                                                                 <ul class="parsley-errors-list filled" aria-hidden="false">
                                                                     <li class="parsley-required">
@@ -708,7 +707,7 @@
                                                             <input type="text"
                                                                 class="form-control @error('facebook') parsley-error @enderror"
                                                                 name="facebook" placeholder="Facebook account name"
-                                                                id="search-contact-facebook" data-parsley-minlength="2">
+                                                                id="search-contact-facebook">
                                                             @error('facebook')
                                                                 <ul class="parsley-errors-list filled" aria-hidden="false">
                                                                     <li class="parsley-required">
@@ -727,7 +726,7 @@
                                                             <input type="text"
                                                                 class="form-control @error('skype') parsley-error @enderror"
                                                                 name="skype" placeholder="Skype account name"
-                                                                id="search-contact-skype" data-parsley-minlength="2">
+                                                                id="search-contact-skype">
                                                             @error('skype')
                                                                 <ul class="parsley-errors-list filled" aria-hidden="false">
                                                                     <li class="parsley-required">
@@ -746,7 +745,7 @@
                                                             <input type="text"
                                                                 class="form-control @error('viber') parsley-error @enderror"
                                                                 name="viber" placeholder="viber account name"
-                                                                id="search-contact-viber" data-parsley-minlength="2">
+                                                                id="search-contact-viber">
                                                             @error('viber')
                                                                 <ul class="parsley-errors-list filled" aria-hidden="false">
                                                                     <li class="parsley-required">
@@ -767,7 +766,7 @@
                                                             <input type="number"
                                                                 class="form-control @error('fax') parsley-error @enderror"
                                                                 name="fax" id="search-contact-fax" placeholder="Fax Number"
-                                                                data-parsley-type="integer" data-parsley-maxlength="10">
+                                                                data-parsley-type="integer">
                                                             @error('fax')
                                                                 <ul class="parsley-errors-list filled" aria-hidden="false">
                                                                     <li class="parsley-required">
@@ -786,8 +785,7 @@
                                                             <input type="number"
                                                                 class="form-control @error('mobile') parsley-error @enderror"
                                                                 name="mobile" id="search-contact-mobile"
-                                                                placeholder="Mobile" data-parsley-type="integer"
-                                                                data-parsley-maxlength="10">
+                                                                placeholder="Mobile" data-parsley-type="integer">
                                                             @error('mobile')
                                                                 <ul class="parsley-errors-list filled" aria-hidden="false">
                                                                     <li class="parsley-required">
@@ -806,7 +804,7 @@
                                                             <input type="text"
                                                                 class="form-control @error('instagram') parsley-error @enderror"
                                                                 name="instagram" placeholder="Instagram account name"
-                                                                id="search-contact-instagram" data-parsley-minlength="2">
+                                                                id="search-contact-instagram">
                                                             @error('instagram')
                                                                 <ul class="parsley-errors-list filled" aria-hidden="false">
                                                                     <li class="parsley-required">
@@ -825,7 +823,7 @@
                                                             <input type="number"
                                                                 class="form-control @error('whatsapp') parsley-error @enderror"
                                                                 name="whatsapp" placeholder="WhatsApp Phone Number"
-                                                                id="search-contact-whatsapp" data-parsley-minlength="2">
+                                                                id="search-contact-whatsapp">
                                                             @error('whatsapp')
                                                                 <ul class="parsley-errors-list filled" aria-hidden="false">
                                                                     <li class="parsley-required">
@@ -844,7 +842,7 @@
                                                             <input type="text"
                                                                 class="form-control @error('messenger') parsley-error @enderror"
                                                                 name="messenger" placeholder="messenger account name"
-                                                                id="search-contact-messenger" data-parsley-minlength="2">
+                                                                id="search-contact-messenger">
                                                             @error('messenger')
                                                                 <ul class="parsley-errors-list filled" aria-hidden="false">
                                                                     <li class="parsley-required">
@@ -942,13 +940,21 @@
             <!-- custom js files -->
             <script src="/js/form-validation-laravel.js"></script>
             <script src="/js/contacts/search.js"></script>
+            <script src="/js/contacts/form-search-wizard.js"></script>
             <script src="/js/contacts/country-select.js"></script>
-            <script src="/js/contacts/custom-parsley.js"></script>
+            <script src="/js/custom-parsley.js"></script>
+            <script src="/js/contacts/data/contact-data.js"></script>
+            <script src="/js/helpers.js"></script>
+            <script src="/js/notes/notes-modal.js"></script>
             <script>
                 url_photo = '{{ URL::asset('/storage/images/logo/') }}';
                 url_jsfile = '{{ URL::asset('/js/contacts/') }}';
+                url_contact_image = '{{ URL::asset('images/contact_data/') }}';
                 var search_contact_errors = null
                 var form_edit_errors = null
+                var create_contact_data_errors = null
+                var edit_contact_data_errors = null
+                var create_note_errors = null
             </script>
 
             <!-- App js-->

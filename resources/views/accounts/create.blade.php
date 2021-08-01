@@ -139,7 +139,6 @@
             <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
 
             <!-- Validation account js -->
-            <script src="/js/accounts/account.js"></script>
             <script src="/js/accounts/account-ajax.js"></script>
             <script src="/js/form-validation-laravel.js"></script>
             <script>

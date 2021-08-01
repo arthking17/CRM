@@ -11,6 +11,9 @@
     <link href="/libs/datatables.net-select-bs4/css/select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <!-- third party css end -->
 
+    <!-- Edit user photo css -->
+    <link href="/css/users/user-photo.css" rel="stylesheet" type="text/css" />
+
     <!-- Plugins css -->
     <link href="/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
     <link href="/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
@@ -50,7 +53,16 @@
             <!-- end page title -->
 
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-2">
+                    <div class="card" id="notes-info-card">
+                        @include('notes.notes-info-card')
+                    </div>
+                    <div class="card" id="logs-info-card">
+                        @include('users.logs-info')
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
                     <div class="card">
                         <div class="card-body">
                             <div class="row justify-content-between">
@@ -59,7 +71,7 @@
                                         data-bs-toggle="modal" data-bs-target="#create-modal"><i
                                             class="mdi mdi-plus-circle me-1"></i> Add User</button>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-6 col-auto">
                                     <div class="text-sm-end">
                                         <div class="btn-group mb-3 ms-2 d-none d-sm-inline-block">
                                             <button type="button" id="button-view-list" class="btn btn-dark"><i
@@ -77,7 +89,8 @@
                             <div id="view-grid-users" class="row">
                                 @include('users.grid')
                             </div>
-                            <div class="" id="view-list">
+
+                            <div class="table-responsive" id="view-list" data-simplebar>
                                 <table id="datatable-users"
                                     class="table table-center dt-responsive nowrap table-hover w-100">
                                     <thead>
@@ -134,23 +147,29 @@
                     </div> <!-- end card -->
                 </div> <!-- end col -->
 
-                <div class="col-lg-4" id="user-info-card">
-                    @include('users.user-info')
+                <div class="col-lg-3">
+                    <div class="card" id="user-info-card">
+                        @include('users.user-info')
+                    </div>
+                    <div class="card" id="user-permissions-info-card">
+                        @include('permissions.users-permissions-info')
+                    </div>
                 </div>
             </div>
             <!-- end row -->
             @include('users.create-modal')
             @if ($users->count() > 0)
                 @include('users.edit-modal')
-                @include('users.add_note')
+                @include('notes.add_note-modal')
+                @include('notes.edit-note-ext')
                 <div id="logs-div">
                     @include('users.logs')
                 </div>
                 <div id="users_permissions-div">
-                    @include('users.users_permissions')
+                    @include('permissions.users_permissions')
                 </div>
                 <div id="create-Permission-div">
-                    @include('users.create-permission')
+                    @include('permissions.create-permission')
                 </div>
                 <div id="security-div">
                     @include('users.security')
@@ -159,7 +178,7 @@
                     @include('users.notification')
                 </div>
                 <div id="notes-div">
-                    @include('users.notes')
+                    @include('notes.notes-list-modal')
                 </div>
             @endif
         @endsection
@@ -201,6 +220,9 @@
             <script src="/libs/dropzone/min/dropzone.min.js"></script>
             <script src="/libs/dropify/js/dropify.min.js"></script>
 
+            <!-- Tippy js-->
+            <script src="/libs/tippy.js/tippy.all.min.js"></script>
+
             <!-- Init js-->
             <script src="/js/pages/form-fileuploads.init.js"></script>
 
@@ -213,19 +235,33 @@
                 });
             </script>
             <script src="/js/users/users-ajax-list.js"></script>
-            <script src="/js/users/users-validation.js"></script>
+            <script src="/js/users/datatable-users.init.js"></script>
+            <script src="/js/custom-parsley.js"></script>
             <script src="/js/form-validation-laravel.js"></script>
             <script src="/js/users/users-select.js"></script>
+            <script src="/js/users/edit-password.js"></script>
+
+            <script src="/js/notes/notes-module-ext.js"></script>
+
+            <!-- Edit user photo js -->
+            <script src="/js/users/user-photo.js"></script>
+
+            <!-- users permissions js -->
+            <script src="/js/users/users-permissions.js"></script>
+
             <script>
                 $('.dropify').dropify();
                 $('document').ready(function() {
                     $("#language").val($('#language-val').val()).attr("selected", "selected");
                 })
                 url_photo = '{{ URL::asset('/storage/images/users/') }}';
+                url_jsfile = '{{ URL::asset('/js/users/') }}';
                 var form_create_errors = null
                 var form_edit_errors = null
                 var create_note_errors = null
+                var edit_note_errors = null
                 var create_permission_errors = null
+                var edit_password_errors = null
                 elementSelect($('#create-permissions-element'))
             </script>
             <!-- custom js files end -->

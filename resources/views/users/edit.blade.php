@@ -104,7 +104,6 @@
                                                 <input type="password"
                                                     class="form-control @error('pwd') parsley-error @enderror"
                                                     id="edit-user-pwd" name="pwd" placeholder="password"
-                                                    data-parsley-minlength="8"
                                                     pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$"
                                                     data-parsley-pattern-message="This value should be a valid password">
                                                 @error('pwd')
@@ -269,7 +268,7 @@
         <script src="/js/pages/form-fileuploads.init.js"></script>
 
         <!-- custom js files -->
-        <script src="/js/users/users-validation.js"></script>
+        <script src="/js/custom-parsley.js"></script>
         <script src="/js/users/users-ajax.js"></script>
         <script src="/js/form-validation-laravel.js"></script>
         <script>

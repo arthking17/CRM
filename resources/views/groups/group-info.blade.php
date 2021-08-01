@@ -19,7 +19,7 @@
         </div>
 
         <h5 class="mb-3 mt-4 text-uppercase bg-light p-2"><i class="mdi mdi-account-circle me-1"></i>List of Users</h5>
-        <div class="" id="contact-info2" style="width:10;height:10;overflow-y:scroll">
+        <div class="" id="contact-info2" data-simplebar style="max-height: 400px;">
             @isset($group)
                 @if ($users->where('account_id', $group->account_id)->count() > 0)
                     @foreach ($users->where('account_id', $group->account_id) as $user)
@@ -30,10 +30,10 @@
                             <p class="text-muted">{{ $user->login }}</p>
                         </div>
                     @endforeach
-                    <a href="{{ route('users') }}" class="btn- btn-xs"><i class="mdi mdi-plus-circle me-1"></i>voir
-                        plus</a>
                 @endif
             @endisset
         </div>
+        <a href="{{ route('users') }}" class="btn- btn-xs"><i class="mdi mdi-plus-circle me-1"></i>voir
+            plus</a>
     </div>
 </div> <!-- end card-->
