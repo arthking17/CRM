@@ -190,7 +190,9 @@ $(document).ready(function() {
                     //setTimeout(function () { window.location.href = route('accounts'); }, 1500);
                 $('#create-modal').modal('toggle')
 
-                viewUser(response.user.id)
+                showViewGrid('id', 'asc')
+
+                showViewGrid()
 
                 $('#view-list').html(response.html);
                 $.getScript(url_jsfile + "/datatable-users.init.js")
@@ -229,6 +231,8 @@ $(document).ready(function() {
                 $('#view-list').html(response.html);
                 viewInfoCardUser(response.user.id)
 
+                showViewGrid('id', 'asc')
+
                 $.getScript(url_jsfile + "/datatable-users.init.js")
                     .done(function(script, textStatus) {
                         console.log(textStatus);
@@ -247,96 +251,6 @@ $(document).ready(function() {
             }
         });
     });
-
-    $('#button-view-grid').on('click', function() {
-        if ($('#view-grid').hasClass('d-none')) {
-            $('#button-view-list').attr('class', 'btn btn-link text-dark')
-            $('#button-view-grid').attr('class', 'btn btn-dark')
-            $('#view-grid').removeClass('d-none')
-            $('#view-list').addClass('d-none')
-                //$('#datatable-users').addClass('d-none')
-                //a.hide()
-        }
-    })
-    $('#button-view-list').on('click', function() {
-        if ($('#view-list').hasClass('d-none')) {
-            $('#button-view-grid').attr('class', 'btn btn-link text-dark')
-            $('#button-view-list').attr('class', 'btn btn-dark')
-            $('#view-grid').addClass('d-none')
-            $('#view-list').removeClass('d-none')
-                //a.show()
-                //$('#datatable-users').removeClass('d-none')
-                /*var a = $("#datatable-users").DataTable({
-                    lengthChange: !1,
-                    buttons: [
-                        { extend: "copy", className: "btn-light" },
-                        { extend: "print", className: "btn-light" },
-                        { extend: "pdf", className: "btn-light" },
-                    ],
-                    language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
-                    drawCallback: function () {
-                        $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
-                    },
-                });*/
-        }
-    })
-
-    function fetch_data(sort_type = null, sort_by = null, query = null) {
-        $.ajax({
-            url: "/users/pagination/fetch_data?sortby=" + sort_by + "&sorttype=" + sort_type + "&query=" + query,
-            success: function(data) {
-                console.log(data)
-                $('#view-grid-users').html('');
-                $('#view-grid-users').html(data);
-            },
-            error: function(error) {
-                console.log(error)
-            }
-        })
-    }
-
-    $('#view-grid-search').on('keyup', function() {
-        var query = $('#view-grid-search').val();
-        var column_name = $('#view-grid-sort').val();
-        var sort_type = 'asc';
-        //var page = $('#hidden_page').val();
-        fetch_data(sort_type, column_name, query);
-    });
-
-    $('.view-grid-page-item').on('click', function() {
-        if (!$(this).hasClass('active')) {
-            visiblepageid = $('#activepage').val()
-            $('#page' + visiblepageid).addClass('d-none')
-            $('.view-grid-page-item.active').removeClass('active')
-            $(this).addClass('active')
-            page = $(this).attr('id').substr(6)
-            $('#activepage').val(page)
-            $('#page' + page).removeClass('d-none')
-        }
-    })
-    $('.view-grid-nextpage').on('click', function() {
-        visiblepageid = $('#activepage').val()
-        if (visiblepageid < $('#numberofpage').val()) {
-            $('#page' + visiblepageid).addClass('d-none')
-            $('.view-grid-page-item.active').removeClass('active')
-            page = parseInt(visiblepageid) + 1
-            $('#pageno' + page).addClass('active')
-            $('#activepage').val(page)
-            $('#page' + page).removeClass('d-none')
-        }
-    })
-    $('.view-grid-previouspage').on('click', function() {
-        visiblepageid = $('#activepage').val()
-        if (visiblepageid != 1) {
-            $('#page' + visiblepageid).addClass('d-none')
-            $('.view-grid-page-item.active').removeClass('active')
-            page = parseInt(visiblepageid) - 1
-            $('#pageno' + page).addClass('active')
-            $('#activepage').val(page)
-            $('#page' + page).removeClass('d-none')
-        }
-
-    })
 
     /**
      * tippy initialisation

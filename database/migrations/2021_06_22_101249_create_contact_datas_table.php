@@ -14,7 +14,7 @@ class CreateContactDatasTable extends Migration
      */
     public function up()
     {
-        Schema::create('contact_datas', function (Blueprint $table) {
+        Schema::create('contact_data', function (Blueprint $table) {
             $table->integer('id', true, true);
             $table->tinyInteger('element')->unsigned()->comment("Origin\nBy default : 1 for contacts");
             $table->integer('element_id')->unsigned()->comment("Identifier of th origin \nIdentifier of contact");
@@ -23,7 +23,7 @@ class CreateContactDatasTable extends Migration
             $table->tinyInteger('status')->unsigned()->default(1);
         });
 
-        DB::statement("ALTER TABLE `contact_datas` comment 'Table to store all types of contact data such email, phone number, social media account...'");
+        DB::statement("ALTER TABLE `contact_data` comment 'Table to store all types of contact data such email, phone number, social media account...'");
     }
 
     /**
@@ -33,6 +33,6 @@ class CreateContactDatasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contact_datas');
+        Schema::dropIfExists('contact_data');
     }
 }

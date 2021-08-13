@@ -25,6 +25,15 @@
     <!-- Jquery Toast css -->
     <link href="/libs/jquery-toast-plugin/jquery.toast.min.css" rel="stylesheet" type="text/css" />
 
+    <!-- selectize js -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.bootstrap4.min.css" />
+
+    <!-- picker css -->
+    <link href="/libs/spectrum-colorpicker2/spectrum.min.css" rel="stylesheet" type="text/css">
+    <link href="/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+    <link href="/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+
     <!-- Plugins css -->
     <link href="/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
     <link href="/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
@@ -86,7 +95,14 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="text-sm-end">
-                                        <a href="{{ route('contacts.upload') }}" data-bs-toggle=""
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#create-custom-field-modal"
+                                            class="btn btn-light mb-2 me-1" title="Create Custom Field"><i
+                                                class="fe-plus"></i>
+                                        </a>
+                                        <a href="#" data-bs-toggle="" data-bs-target="#custom-fields-modal"
+                                            onclick="viewCustomFields()" class="btn btn-light mb-2 me-1">View Custom Fields
+                                        </a>
+                                        <a href="{{ route('contacts.import') }}" data-bs-toggle=""
                                             data-bs-target="#upload-modal" class="btn btn-success mb-2 me-1">
                                             <i class="mdi mdi-cloud-upload-outline"></i>
                                         </a>
@@ -97,7 +113,7 @@
                                     </div>
                                 </div><!-- end col-->
                             </div>
-                            <div id="contacts-result" class="table-responsive" data-simplebar>
+                            <div id="contacts-result" data-simplebar>
                                 <table id="datatable-contacts"
                                     class="table table-center dt-responsive nowrap table-hover w-100">
                                     <thead>
@@ -167,30 +183,62 @@
                         </div>
                     </div> <!-- end card -->
                 </div> <!-- end col -->
-                @isset($contact)
+                @if (isset($contact))
                     <div class="col-lg-3 @if ($contact->class !== 1) d-none @endif" id="contacts_person-info-card">
                         @include('contacts.contacts_person-info')
                     </div>
                     <div class="col-lg-3 @if ($contact->class !== 2) d-none @endif" id="contacts_companie-info-card">
                         @include('contacts.contacts_companie-info')
                     </div>
-                @endisset
+                @endif
+                <div class="col-lg-3 @if (isset($contact)) d-none @endif"
+                    id="contacts_info_not_found">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start mb-3">
+                            </div>
+                            <div class="accordion custom-accordion" id="custom-accordion-contacts-person-info">
+                                <div class="card mb-0">
+                                    <div id="heading-contacts-person-info">
+                                        <a class="custom-accordion-title text-reset d-block" data-bs-toggle="collapse"
+                                            href="#collapse-contacts-person-info" aria-expanded="true"
+                                            aria-controls="collapse-contacts-person-info">
+                                            <h5 class="mb-3 mt-4 text-uppercase bg-light p-2"><i
+                                                    class="mdi mdi-account-circle me-1"></i>
+                                                Personal Information<i class="mdi mdi-chevron-down accordion-arrow"></i>
+                                            </h5>
+                                        </a>
+                                    </div>
+                                    <div id="collapse-contacts-person-info" class="collapse show"
+                                        aria-labelledby="headingFour"
+                                        data-bs-parent="#custom-accordion-contacts-person-info">
+                                        <div class="card-body">
+                                            <p class="text-center">empty</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- end row -->
             @include('contacts.create')
             @include('contacts.search-modal')
-            @if ($contacts->count() > 0)
-                @include('contacts.edit')
-                @include('notes.add_note-modal')
-                @include('notes.edit-note-ext')
-                <div id="notes-div">
-                    @include('notes.notes-list-modal')
-                </div>
-                @include('contacts.data.create')
-                @include('contacts.data.edit')
-                @include('contacts.data.create-phone')
-                @include('contacts.data.edit-phone')
-            @endif
+            @include('contacts.edit')
+            @include('contacts.data.create-phone')
+            @include('contacts.data.edit-phone')
+            @include('contacts.data.create')
+            @include('contacts.data.edit')
+            @include('notes.add_note-modal')
+            @include('notes.edit-note-ext')
+            <div id="notes-div">
+                @include('notes.notes-list-modal')
+            </div>
+            <div id="custom-fields-div">
+            </div>
+            @include('contacts.custom-fields.create')
+            @include('contacts.custom-fields.edit')
         @endsection
 
         @section('js')
@@ -229,8 +277,6 @@
             <!-- Plugins js-->
             <script src="/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 
-            <!-- plugin js select with country flag
-                        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
             <script src="/twilio/js/intlTelInput.min.js"></script>
             <script src="/twilio/js/intlTelInput-jquery.min.js"></script>
             <script src="/twilio/js/utils.js"></script>
@@ -242,6 +288,19 @@
 
             <!-- Tippy js-->
             <script src="/libs/tippy.js/tippy.all.min.js"></script>
+
+            <!-- selectize js -->
+            <script type="text/javascript"
+                        src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js">
+            </script>
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/selectize.min.js">
+            </script>
+
+            <!-- picker js -->
+            <script src="/libs/spectrum-colorpicker2/spectrum.min.js"></script>
+            <script src="/libs/flatpickr/flatpickr.min.js"></script>
+            <script src="/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+            <script src="/js/form-pickers.init.js"></script>
 
             <!-- Edit contact companie logo js -->
             <script src="/js/contacts/companie-logo.js"></script>
@@ -267,10 +326,14 @@
 
             <script src="/js/notes/notes-module-ext.js"></script>
 
-            <script src="/js/contacts/form-search-wizard.js"></script>
-            <script src="/js/contacts/search-module.js"></script>
+            <script src="/js/contacts/search/form-search-wizard.js"></script>
+            <script src="/js/contacts/search/search-module.js"></script>
+
+            <script src="/js/contacts/custom-fields/form-create.js"></script>
+            <script src="/js/contacts/custom-fields/custom-fields.js"></script>
             <script>
                 url_logo = '{{ URL::asset('/storage/images/logo/') }}';
+                url_custom_field = '{{ URL::asset('/storage/custom_field/') }}';
                 url_contact_image = '{{ URL::asset('images/contact_data/') }}';
                 url_jsfile = '{{ URL::asset('/js/contacts/') }}';
                 var form_create_errors = null
@@ -284,6 +347,9 @@
                 var errors_edit_phone_data = null
                 var iti = null
                 var edit_iti = null
+                var skipErrors = 0
+                var errors_create_custom_field = null
+                var errors_edit_custom_field = null
             </script>
             <!-- custom js files end -->
 

@@ -56,26 +56,18 @@
                                 <div class="row mb-3">
                                     <label for="edit-user-pwd" class="col-4 col-xl-3 col-form-label">password</label>
                                     <div class="col-8 col-xl-9">
-                                        <input type="password"
-                                            class="form-control @error('pwd') parsley-error @enderror"
-                                            id="edit-user-pwd" name="pwd" placeholder="password"
-                                            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$"
-                                            data-parsley-pattern-message="This value should be a valid password">
-                                        @error('pwd')
-                                            <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                <li class="parsley-required">{{ $errors->first('pwd') }}</li>
-                                            </ul>
-                                        @else
-                                            <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-8 offset-4">
-                                        <div class="checkbox checkbox-purple">
-                                            <input id="showpwd" type="checkbox"
-                                                onclick="showPassword('edit-user-pwd');">
-                                            <label for="showpwd">Show password</label>
+                                        <div class="input-group input-group-merge">
+                                            <div class="input-group-text" data-password="false">
+                                                <span class="password-eye"></span>
+                                            </div>
+                                            <input type="password" id="edit-user-pwd" name="pwd" class="form-control @error('pwd') parsley-error @enderror" 
+                                            placeholder="Enter your password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$"
+                                                data-parsley-pattern-message="This value should be a valid password">
+                                            @error('pwd')
+                                                <div class="invalid-feedback">
+                                                    {{ $errors->first('pwd') }}
+                                                </div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -157,7 +149,8 @@
                                             <span>Change</span>
                                         </label>
                                         <input id="edit-user-photo" type="file" name="photo"
-                                            onchange="updateUserPhotoImg(event)" data-parsley-fileextension='jpg,png,jpeg'/>
+                                            onchange="updateUserPhotoImg(event)"
+                                            data-parsley-fileextension='jpg,png,jpeg' />
                                         <img id="edit-user-photo-img" class="rounded-circle avatar-lg" src=""
                                             alt="Generic placeholder image">
                                     </div>

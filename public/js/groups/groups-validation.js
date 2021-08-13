@@ -38,6 +38,8 @@ $(document).ready(function() {
                         .fail(function(jqxhr, settings, exception) {
                             console.log("Triggered ajaxError handler.");
                         });
+
+                    viewGroup(response.group.id)
                 },
                 error: function(error) {
                     console.log(error)
@@ -63,7 +65,6 @@ $(document).ready(function() {
             e.preventDefault();
             cleanErrorsInForm('edit-group', edit_group_errors)
             console.log($('#edit-group-source_id').val())
-            console.log($('#edit-group')[0])
             $.ajax({
                 type: "POST",
                 url: route('users.groups.update'),

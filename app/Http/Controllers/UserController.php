@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Log;
 use App\Models\Note;
 use App\Models\User;
@@ -23,6 +24,10 @@ class UserController extends Controller
      */
     public function index()
     {
+        $user = null;
+        $users_permissions = [];
+        $notes = [];
+        $logs = [];
         $accounts = DB::table('accounts')
             ->orderBy('id', 'desc')
             ->get();
@@ -40,14 +45,9 @@ class UserController extends Controller
                 ->where('user_id', $user->id);
             $notes = DB::table('notes')
                 ->where('element', 16)->where('element_id', $user->id)->get();
-        } else {
-            $user = null;
-            $logs = null;
-            $notes = null;
-            $users_permissions = null;
         }
 
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users.show', 'element' => 16, 'element_id' => 0, 'source' => 'users']);
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users.show', 'element' => getElementByName('users'), 'element_id' => 0, 'source' => 'users']);
 
         return view('users.list', [
             'users' => $users,
@@ -105,7 +105,7 @@ class UserController extends Controller
         $data['photo'] = $request->file('photo')->hashName();
         $data['pwd'] = Hash::make($data['pwd']);
         $user = User::create($data);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.create', 'element' => 16, 'element_id' => $user->id, 'source' => 'user.create']);
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.create', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'user.create']);
         //return redirect(route('users'));
         //return response()->json(['user' => $user, 'success' => 'This User has been added']);
         $users = User::All();
@@ -246,7 +246,7 @@ class UserController extends Controller
             $data['photo'] = $request->file('photo')->hashName();
         }
         $user->update($data);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.update', 'element' => 16, 'element_id' => $user->id, 'source' => 'user.update, ' . $id]);
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.update', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'user.update, ' . $id]);
         //return redirect(route('users'));
         //return response()->json(['success' => 'This User has been edited']);
         $users = User::All();
@@ -274,7 +274,7 @@ class UserController extends Controller
 
         $user->save();
 
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.photo.update', 'element' => 16, 'element_id' => $request->id, 'source' => 'user.photo.update, ' . $request->id]);
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.photo.update', 'element' => getElementByName('users'), 'element_id' => $request->id, 'source' => 'user.photo.update, ' . $request->id]);
         return response()->json(['success' => 'This user profile picture Updated', 'user' => $user]);
     }
 
@@ -289,7 +289,7 @@ class UserController extends Controller
         $user = User::find($id);
         $user->status = 0;
         if ($user->save()) {
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.delete', 'element' => 16, 'element_id' => $user->id, 'source' => 'user.delete, ' . $id]);
+            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.delete', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'user.delete, ' . $id]);
             return response()->json(['success' => 'This User has been Disabled !!!', 'user' => $user]);
         } else
             return response()->json(['error' => 'Failed to delete this user !!!']);
@@ -306,7 +306,7 @@ class UserController extends Controller
         $user = User::find($id);
         $user->status = 1;
         if ($user->save()) {
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.restore', 'element' => 16, 'element_id' => $user->id, 'source' => 'user.restore, ' . $id]);
+            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.restore', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'user.restore, ' . $id]);
             return response()->json(['success' => 'This User has been Actived !!!', 'user' => $user]);
         } else
             return response()->json(['error' => 'Failed to active this user !!!']);
@@ -315,22 +315,27 @@ class UserController extends Controller
     /**
      * pagination search 
      */
-    public function fetch_data(Request $request)
+    public function getGridView(Request $request)
     {
-        if ($request->ajax()) {
-            $sort_by = $request->get('sortby');
-            $sort_type = $request->get('sorttype');
-            $query = $request->get('query');
-            $query = str_replace(" ", "%", $query);
-            $users = DB::table('users')
-                ->where('id', 'like', '%' . $query . '%')
-                ->orWhere('username', 'like', '%' . $query . '%')
-                ->orWhere('role', 'like', '%' . $query . '%')
-                ->orWhere('status', 'like', '%' . $query . '%')
-                ->orderBy($sort_by, $sort_type)
-                ->paginate(8);
-            return view('users/grid', compact('users'))->render();
+        //return $request->ajax();
+        /*if ($request->ajax()) {*/
+        $sort_by = $request->get('sortby');
+        $sort_type = $request->get('sorttype');
+        $sort_type = 'asc';
+        if ($sort_by == 'status') {
+            if ($request->get('sorttype') == 'asc')
+                $sort_type = 'desc';
         }
+        $query = $request->get('query');
+        $query = str_replace(" ", "%", $query);
+        $users = User::where('id', 'like', '%' . $query . '%')
+            ->orWhere('username', 'like', '%' . $query . '%')
+            ->orWhere('role', 'like', '%' . $query . '%')
+            ->orWhere('status', 'like', '%' . $query . '%')
+            ->orderBy($sort_by, $sort_type)->get();
+        $accounts = Account::all();
+        return view('users/grid', compact('users', 'accounts'))->render();
+        /* }*/
     }
 
     /**
@@ -391,7 +396,6 @@ class UserController extends Controller
             'id' => 'required',
             'pwd' => [
                 'required',
-                // 'same : confirm-pwd',
                 Password::min(8)
                     ->letters()
                     ->mixedCase()
@@ -401,14 +405,14 @@ class UserController extends Controller
             ],
             'confirm-pwd' => [
                 'required',
-                'same : pwd',
+                'same:pwd',
             ],
         ]);
         $pwd = Hash::make($data['pwd']);
         $user = User::find($request->id);
         $user->pwd = $pwd;
         $user->save();
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.password.update', 'element' => 16, 'element_id' => $user->id, 'source' => 'password.update, ' . $request->id]);
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.password.update', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'password.update, ' . $request->id]);
         //return redirect(route('users'));
         return response()->json(['success' => 'This user password has been Updated']);
     }

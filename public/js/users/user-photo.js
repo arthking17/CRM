@@ -12,8 +12,10 @@ var updateUserPhoto = function(e) {
             Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
             var image = document.getElementById('user-photo');
             image.src = URL.createObjectURL(e.target.files[0]);
-            if (typeof response.user.id !== 'undefined')
+            if (typeof response.user !== 'undefined' && typeof response.user.id !== 'undefined') {
                 $('#userid' + response.user.id + ' td:nth-of-type(4)').html('<img class="img-fluid avatar-sm rounded" src="' + url_photo + '/' + response.user.photo + '" />')
+                $('#grid-view-userid' + response.user.id + ' img:nth-of-type(1)').attr('src', url_photo + '/' + response.user.photo)
+            }
         },
         error: function(error) {
             console.log(error)

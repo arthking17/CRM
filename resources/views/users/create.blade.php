@@ -52,7 +52,7 @@
                             </p>
 
                             <form class="form-horizontal parsley-user" id="create-user" method="POST" action="#"
-                                data-parsley-validate="" novalidate  enctype="multipart/form-data">
+                                data-parsley-validate="" novalidate enctype="multipart/form-data">
                                 <div class="row">
                                     @csrf
                                     <div class="col-lg-6">
@@ -171,6 +171,7 @@
                                                 <select
                                                     class="form-select @error('account_id') parsley-error @enderror"
                                                     name="account_id" id="create-user-account_id" required data-parsley-type="integer" data-parsley-length="[1, 10]">
+                                                    <option value="">select an account</option>
                                                     @foreach ($accounts as $account)
                                                         <option value="{{ $account->id }}">{{ $account->name }}
                                                         </option>

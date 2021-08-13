@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "18261c0af738ad52dd7d94a16e5aee7f",
+    "content-hash": "0ab0a48315a9cec85833d6f77e729ec4",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2460,6 +2460,59 @@
                 }
             ],
             "time": "2021-07-05T08:18:36+00:00"
+        },
+        {
+            "name": "naxon/laravel-url-uploaded-file",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Naxon/laravel-url-uploaded-file.git",
+                "reference": "d10639b001c738b2c2a371f3a127fdf5ef3b9e8e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Naxon/laravel-url-uploaded-file/zipball/d10639b001c738b2c2a371f3a127fdf5ef3b9e8e",
+                "reference": "d10639b001c738b2c2a371f3a127fdf5ef3b9e8e",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "^8.0",
+                "php": "^7.4"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "orchestra/testbench": "^6.2",
+                "phpunit/phpunit": "^9.4",
+                "vimeo/psalm": "^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Naxon\\UrlUploadedFile\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Naxon",
+                    "email": "naxond@gmail.com",
+                    "homepage": "https://naxon.dev"
+                }
+            ],
+            "description": "A package to leverage Laravel's UploadedFile functionality from URLs.",
+            "keywords": [
+                "laravel",
+                "laravel-url-uploaded-file",
+                "naxon"
+            ],
+            "support": {
+                "issues": "https://github.com/Naxon/laravel-url-uploaded-file/issues",
+                "source": "https://github.com/Naxon/laravel-url-uploaded-file/tree/1.0.0"
+            },
+            "time": "2020-10-25T14:18:33+00:00"
         },
         {
             "name": "nesbot/carbon",

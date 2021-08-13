@@ -15,6 +15,10 @@
     <link href="/libs/datatables.net-select-bs4/css/select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <!-- third party css end -->
 
+    <!-- datepicker css -->
+        <link href="/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+    <link href="/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+
     <!-- App css -->
     <link href="/css/config/creative/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
     <link href="/css/config/creative/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
@@ -299,9 +303,8 @@
                                                         <div class="col-8 col-xl-9">
                                                             <input
                                                                 class="form-control @error('creation_date') parsley-error @enderror"
-                                                                type="date" name="creation_date"
-                                                                id="search-contact-creation_date"
-                                                                data-parsley-maxdate="{{ date('m/d/Y') }}">
+                                                                type="text" name="creation_date"
+                                                                id="search-contact-creation_date">
                                                             @error('creation_date')
                                                                 <ul class="parsley-errors-list filled" aria-hidden="false">
                                                                     <li class="parsley-required">
@@ -403,7 +406,8 @@
                                                         <div class="col-8 col-xl-9">
                                                             <select
                                                                 class="form-select country @error('person_country') parsley-error @enderror"
-                                                                name="person_country" id="search-contact-person_country" data-parsley-length="[2, 2]">
+                                                                name="person_country" id="search-contact-person_country"
+                                                                data-parsley-length="[2, 2]">
                                                                 <option value="">no choice</option>
                                                                 <option value="">Select a country</option>
                                                             </select>
@@ -492,7 +496,8 @@
                                                         <div class="col-8 col-xl-9">
                                                             <select
                                                                 class="form-select @error('person_language') parsley-error @enderror"
-                                                                name="person_language" id="search-contact-person_language" data-parsley-length="[2, 2]">
+                                                                name="person_language" id="search-contact-person_language"
+                                                                data-parsley-length="[2, 2]">
                                                                 <option value="">no choice</option>
                                                                 <option value="ar">Arabic - العربية</option>
                                                                 <option value="en">English</option>
@@ -613,7 +618,8 @@
                                                             <select
                                                                 class="form-select country @error('companies_country') parsley-error @enderror"
                                                                 name="companies_country"
-                                                                id="search-contact-companies_country" data-parsley-length="[2, 2]">
+                                                                id="search-contact-companies_country"
+                                                                data-parsley-length="[2, 2]">
                                                                 <option value="">no choice</option>
                                                             </select>
                                                             @error('companies_country')
@@ -635,7 +641,7 @@
                                                                 class="form-select @error('companies_language') parsley-error @enderror"
                                                                 name="companies_language"
                                                                 id="search-contact-companies_language"
-                                                                 data-parsley-length="[2, 2]">
+                                                                data-parsley-length="[2, 2]">
                                                                 <option value="">no choice</option>
                                                                 <option value="ar">Arabic - العربية</option>
                                                                 <option value="en">English</option>
@@ -937,17 +943,27 @@
             <!-- Footable js -->
             <script src="/libs/footable/footable.all.min.js"></script>
 
+            <!-- datepicker js -->
+            <script src="/libs/flatpickr/flatpickr.min.js"></script>
+            <script src="/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+
             <!-- custom js files -->
             <script src="/js/form-validation-laravel.js"></script>
-            <script src="/js/contacts/search.js"></script>
-            <script src="/js/contacts/form-search-wizard.js"></script>
+            <script src="/js/contacts/search/search.js"></script>
+            <script src="/js/contacts/search/form-search-wizard.js"></script>
             <script src="/js/contacts/country-select.js"></script>
             <script src="/js/custom-parsley.js"></script>
             <script src="/js/contacts/data/contact-data.js"></script>
             <script src="/js/helpers.js"></script>
             <script src="/js/notes/notes-modal.js"></script>
             <script>
-                url_photo = '{{ URL::asset('/storage/images/logo/') }}';
+                $("#search-contact-creation_date").flatpickr({
+                        mode: "range",
+                        maxDate: "today",
+                        dateFormat: "Y-m-d",
+                        defaultDate: ["2016-10-10", "2016-10-20"]
+                    }),
+                    url_photo = '{{ URL::asset('/storage/images/logo/') }}';
                 url_jsfile = '{{ URL::asset('/js/contacts/') }}';
                 url_contact_image = '{{ URL::asset('images/contact_data/') }}';
                 var search_contact_errors = null

@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ContactImport;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Contact_data;
 use App\Models\Contacts_companie;
+use App\Models\Contacts_field;
 use App\Models\Contacts_person;
+use App\Models\Custom_field;
+use App\Models\Custom_select_field;
 use App\Models\Group;
+use App\Models\Import;
 use App\Models\Log;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\HeadingRowImport;
 use Throwable;
 
 class ContactController extends Controller
@@ -26,8 +33,15 @@ class ContactController extends Controller
     {
         $contacts = Contact::All()->sortBy("id");
         $groups = Group::all();
+        $accounts = Account::All();
+        $contact = null;
+        $contact_datas = [];
+        $notes = [];
+        $imports = DB::table('imports')->select('id')->get();
+        $custom_fields = Custom_field::where('status', 1)->get();
+        $select_options = DB::table('custom_select_fields')->join('custom_fields', 'field_id', '=', 'custom_fields.id')->select('custom_select_fields.*')->where('status', 1)->get();
+        $contact_field = [];
         if ($contacts->count() > 0) {
-            $accounts = Account::All();
             $contact_datas = Contact_data::all()->where('element_id', $contacts->first()->id);
             $notes = DB::table('notes')->where('element_id', $contacts->first()->id)->get();
             if ($contacts->first()->class == 1)
@@ -36,8 +50,9 @@ class ContactController extends Controller
                 $contact = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
                     ->select('contacts.*', 'contacts_companies.class as companies_class', 'contacts_companies.name', 'contacts_companies.registered_number', 'contacts_companies.logo', 'contacts_companies.activity', 'contacts_companies.country', 'contacts_companies.language')
                     ->where('contacts.id', $contacts->first()->id)->get();
+            $contact = $contact[0];
+            $contact_field = Contacts_field::join('custom_fields', 'field_id', '=', 'custom_fields.id')->where('contact_id', $contact->id)->where('status', 1)->select('contacts_fields.id', 'field_type', 'custom_fields.tag', 'field_value', 'custom_fields.name')->get();
         }
-        $contact = $contact[0];
         return view('contacts/list', [
             'contacts' => $contacts,
             'accounts' => $accounts,
@@ -45,7 +60,35 @@ class ContactController extends Controller
             'contact_datas' => $contact_datas,
             'notes' => $notes,
             'groups' => $groups,
+            'imports' => $imports,
+            'custom_fields' => $custom_fields,
+            'select_options' => $select_options,
+            'contact_field' => $contact_field,
         ]);
+    }
+
+    /**
+     * Get all contact id for selectize input (tagsinput).
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function findContactId(int $id)
+    {
+        $contactsId = DB::table('contacts')->select('id')->where('id', 'like', $id . '%')->get();
+        return response()->json([$contactsId]);
+    }
+
+    /**
+     * Get all contact source_id for selectize input (tagsinput).
+     *
+     * @param int $source_id
+     * @return \Illuminate\Http\Response
+     */
+    public function getContactsSourceId(int $source_id)
+    {
+        $source_id = DB::table('contacts')->select('source_id')->where('source_id', 'like', $source_id . '%')->get();
+        return response()->json([$source_id]);
     }
 
     /**
@@ -60,6 +103,8 @@ class ContactController extends Controller
         $contact = Contact::all()
             ->find($id);
         $accounts = Account::all();
+        $custom_fields = Custom_field::where('status', 1)->get();
+        $contact_field = Contacts_field::join('custom_fields', 'field_id', '=', 'custom_fields.id')->where('contact_id', $id)->where('status', 1)->select('contacts_fields.id', 'field_type', 'custom_fields.tag', 'field_value', 'custom_fields.name')->get();
         try {
             if ($contact->class == 1) {
                 $contacts_person = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')->where('contacts.id', $id)->get();
@@ -67,12 +112,12 @@ class ContactController extends Controller
                 if (!$contacts_person->isEmpty()) {
                     $contact = $contacts_person[0];
                     if ($modal == 0) {
-                        $returnHTML = view('contacts/contacts_person-info', compact('contact', 'accounts'))->render();
+                        $returnHTML = view('contacts/contacts_person-info', compact('contact', 'accounts', 'contact_field'))->render();
                         return response()->json(['success' => 'Contact Person found', 'html' => $returnHTML]);
                     } else if ($modal == 1)
-                        return response()->json($contact);
+                        return response()->json(['contact' => $contact, 'contact_field' => $contact_field, 'custom_fields' => $custom_fields]);
                 } else
-                    return response()->json(['error' => 'Contact Not Found !!!', 300]);
+                    return response()->json(['error' => 'Contact Not Found !!!'], 300);
             } else if ($contact->class == 2) {
                 $contacts_companie = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
                     ->select('contacts.*', 'contacts_companies.class as companies_class', 'contacts_companies.name', 'contacts_companies.registered_number', 'contacts_companies.logo', 'contacts_companies.activity', 'contacts_companies.country', 'contacts_companies.language')
@@ -81,17 +126,17 @@ class ContactController extends Controller
                     $contact = $contacts_companie[0];
                     //dd($companie);
                     if ($modal == 0) {
-                        $returnHTML = view('contacts/contacts_companie-info', compact('contact', 'accounts'))->render();
+                        $returnHTML = view('contacts/contacts_companie-info', compact('contact', 'accounts', 'contact_field'))->render();
                         return response()->json(['success' => 'Contact Companie found', 'html' => $returnHTML]);
                     } else if ($modal == 1)
-                        return response()->json($contact);
+                        return response()->json(['contact' => $contact, 'contact_field' => $contact_field, 'custom_fields' => $custom_fields]);
                 } else
-                    return response()->json(['error' => 'Contact Not Found !!!', 300]);
+                    return response()->json(['error' => 'Contact Not Found !!!'], 300);
             }
         } catch (Throwable $e) {
             dd($e);
             report($e);
-            return response()->json(['error' => 'Contact Not Found !!!', 300]);
+            return response()->json(['error' => 'Contact Not Found !!!'], 300);
         }
     }
 
@@ -114,7 +159,7 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'class' => 'required|string|min:1|max:2',
+            'class' => 'required|integer|min:1|max:2',
         ]);
         $contact = null;
         if ($request->class == 1) //person contact
@@ -134,7 +179,6 @@ class ContactController extends Controller
                 'birthdate' => 'date|nullable|min:today',
             ]);
             $contact = Contact::create(['class' => $request->class, 'source_id' => $person_data['source_id'], 'source' => $person_data['source'], 'status' => $person_data['status'], 'account_id' => $person_data['account_id']]);
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact.create', 'element' => 5, 'element_id' => $contact->id, 'source' => 'contact.create']);
             $contact_person = new Contacts_person();
             $contact_person->id = $contact->id;
             $contact_person->profile = $person_data['profile'];
@@ -147,12 +191,26 @@ class ContactController extends Controller
             $contact_person->birthdate = $person_data['birthdate'];
             try {
                 $contact_person->save();
-                Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact_person.create', 'element' => 7, 'element_id' => $contact->id, 'source' => 'contact_person.create']);
+                $custom_fields = Custom_field::all();
+                foreach ($custom_fields as $key => $custom_field) {
+                    if ($request->input($custom_field->tag)) {
+                        $contacts_field = Contacts_field::create(['contact_id' => $contact->id, 'field_id' => $custom_field->id, 'field_value' => $request->input($custom_field->tag)]);
+                        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
+                    }
+                    if ($request->file($custom_field->tag)) {
+                        $request->file($custom_field->tag)->storePublicly('public/custom_field');
+                        $custom_file_name = $request->file($custom_field->tag)->hashName();
+                        $contacts_field = Contacts_field::create(['contact_id' => $contact->id, 'field_id' => $custom_field->id, 'field_value' => $custom_file_name]);
+                        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
+                    }
+                }
+                Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact_person.create', 'element' => getElementByName('contacts'), 'element_id' => $contact->id, 'source' => 'contact_person.create']);
                 //return response()->json(['contact_person' => $contact_person, 'success' => 'This person contact has been added']);
                 $contact = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')->where('contacts.id', $contact->id)->get();
             } catch (Throwable $e) {
                 report($e);
                 Contact::find($contact_person->id)->delete();
+                Contacts_field::where('contact_id', $contact_person->id)->delete();
                 return response()->json(['error' => 'Error while adding that contact !!!'], 300);
             }
         } else if ($request->class == 2) //companies contact
@@ -171,7 +229,6 @@ class ContactController extends Controller
                 'companies_country' => 'nullable|string|min:2|max:2',
             ]);
             $contact = Contact::create(['class' => $request->class, 'source_id' => $companies_data['source_id'], 'source' => $companies_data['source'], 'status' => $companies_data['status'], 'account_id' => $companies_data['account_id']]);
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact.create', 'element' => 5, 'element_id' => $contact->id, 'source' => 'contact.create']);
             $contact_companie = new Contacts_companie();
             $contact_companie->id = $contact->id;
             $contact_companie->class = $companies_data['companies_class'];
@@ -188,7 +245,20 @@ class ContactController extends Controller
             }
             try {
                 $contact_companie->save();
-                Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact_companie.create', 'element' => 6, 'element_id' => $contact->id, 'source' => 'contact_companie.create']);
+                $custom_fields = Custom_field::all();
+                foreach ($custom_fields as $key => $custom_field) {
+                    if ($request->input($custom_field->tag)) {
+                        $contacts_field = Contacts_field::create(['contact_id' => $contact->id, 'field_id' => $custom_field->id, 'field_value' => $request->input($custom_field->tag)]);
+                        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
+                    }
+                    if ($request->file($custom_field->tag)) {
+                        $request->file($custom_field->tag)->storePublicly('public/custom_field');
+                        $custom_file_name = $request->file($custom_field->tag)->hashName();
+                        $contacts_field = Contacts_field::create(['contact_id' => $contact->id, 'field_id' => $custom_field->id, 'field_value' => $custom_file_name]);
+                        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
+                    }
+                }
+                Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact_companie.create', 'element' => getElementByName('contacts'), 'element_id' => $contact->id, 'source' => 'contact_companie.create']);
                 //return response()->json(['contact_companie' => $contact_companie, 'success' => 'This companie contact has been added']);
                 $contact = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
                     ->select('contacts.*', 'contacts_companies.class as companies_class', 'contacts_companies.name', 'contacts_companies.registered_number', 'contacts_companies.logo', 'contacts_companies.activity', 'contacts_companies.country', 'contacts_companies.language')
@@ -196,6 +266,7 @@ class ContactController extends Controller
             } catch (Throwable $e) {
                 report($e);
                 Contact::find($contact_companie->id)->delete();
+                Contacts_field::where('contact_id', $contact_companie->id)->delete();
                 return response()->json(['error' => 'Error while adding that contact !!!'], 300);
             }
         }
@@ -238,7 +309,7 @@ class ContactController extends Controller
     {
         //return $request->all();
         $request->validate([
-            'class' => 'required|string|min:1|max:2',
+            'class' => 'required|integer|min:1|max:2',
         ]);
         if ($request->class == 1) //person contact
         {
@@ -258,7 +329,6 @@ class ContactController extends Controller
             ]);
             Contact::find($request->input('id'))->update(['class' => $request->class, 'source_id' => $person_data['source_id'], 'source' => $person_data['source'], 'status' => $person_data['status'], 'account_id' => $person_data['account_id']]);
             $contact = Contact::find($request->input('id'));
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact.update', 'element' => 5, 'element_id' => $request->input('id'), 'source' => 'contact.update']);
             $contact_person = Contacts_person::find($request->input('id'));
             $contact_person->profile = $person_data['profile'];
             $contact_person->first_name = $person_data['first_name'];
@@ -269,7 +339,8 @@ class ContactController extends Controller
             $contact_person->country = $person_data['person_country'];
             $contact_person->birthdate = $person_data['birthdate'];
             $contact_person->save();
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact_person.update', 'element' => 7, 'element_id' => $request->input('id'), 'source' => 'contact_person.update']);
+
+            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact_person.update', 'element' => getElementByName('contacts'), 'element_id' => $request->input('id'), 'source' => 'contact_person.update']);
             //return response()->json(['contact' => $contact, 'success' => 'This person contact has been updated']);
             $contact = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')->where('contacts.id', $request->id)->get();
         } else if ($request->class == 2) //companies contact
@@ -289,7 +360,6 @@ class ContactController extends Controller
             ]);
             Contact::find($request->input('id'))->update(['class' => $request->class, 'source_id' => $companies_data['source_id'], 'source' => $companies_data['source'], 'status' => $companies_data['status'], 'account_id' => $companies_data['account_id']]);
             $contact = Contact::find($request->input('id'));
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact.update', 'element' => 5, 'element_id' => $request->input('id'), 'source' => 'contact.update']);
             $contact_companie = Contacts_companie::find($request->input('id'));
             $contact_companie->class = $companies_data['companies_class'];
             $contact_companie->name = $companies_data['name'];
@@ -305,12 +375,55 @@ class ContactController extends Controller
                 $contact_companie->logo = $request->file('logo')->hashName();
             }
             $contact_companie->save();
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact_companie.update', 'element' => 6, 'element_id' => $request->input('id'), 'source' => 'contact_companie.update']);
+
+            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact_companie.update', 'element' => getElementByName('contacts'), 'element_id' => $request->input('id'), 'source' => 'contact_companie.update']);
             //return response()->json(['contact' => $contact, 'success' => 'This companie contact has been updated']);
             $contact = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
                 ->select('contacts.*', 'contacts_companies.class as companies_class', 'contacts_companies.name', 'contacts_companies.registered_number', 'contacts_companies.logo', 'contacts_companies.activity', 'contacts_companies.country', 'contacts_companies.language')
                 ->where('contacts.id', $request->id)->get();
         }
+
+        $custom_fields = Custom_field::all();
+        foreach ($custom_fields as $key => $custom_field) {
+            $contact_field = Contacts_field::where('contact_id', $request->id)->where('field_id', $custom_field->id)->first();
+            if ($contact_field) {
+                if ($request->file($custom_field->tag)) {
+                    if ($contact_field->field_value != $request->input($custom_field->tag)) {
+                        Storage::delete('public/custom_field/' . $custom_field->field_value);
+                        $request->file($custom_field->tag)->storePublicly('public/custom_field');
+                        $custom_file_name = $request->file($custom_field->tag)->hashName();
+                        $contact_field->field_value = $custom_file_name;
+                        $contact_field->save();
+                        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.update', 'element' => getElementByName('contacts_fields'), 'element_id' => $contact_field->id, 'source' => 'contacts_fields.update']);
+                    }
+                } else {
+                    if ($custom_field->field_type != 'file') {
+                        if ($request->input($custom_field->tag)) {
+                            if ($contact_field->field_value != $request->input($custom_field->tag)) {
+                                $contact_field->field_value = $request->input($custom_field->tag);
+                                $contact_field->save();
+                                Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.update', 'element' => getElementByName('contacts_fields'), 'element_id' => $contact_field->id, 'source' => 'contacts_fields.update']);
+                            }
+                        } else {
+                            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.delete', 'element' => getElementByName('contacts_fields'), 'element_id' => $contact_field->id, 'source' => 'contacts_fields.delete']);
+                            $contact_field->delete();
+                        }
+                    }
+                }
+            } else {
+                if ($request->input($custom_field->tag)) {
+                    $contacts_field = Contacts_field::create(['contact_id' => $request->id, 'field_id' => $custom_field->id, 'field_value' => $request->input($custom_field->tag)]);
+                    Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
+                }
+                if ($request->file($custom_field->tag)) {
+                    $request->file($custom_field->tag)->storePublicly('public/custom_field');
+                    $custom_file_name = $request->file($custom_field->tag)->hashName();
+                    $contacts_field = Contacts_field::create(['contact_id' => $request->id, 'field_id' => $custom_field->id, 'field_value' => $custom_file_name]);
+                    Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
+                }
+            }
+        }
+
         $contacts = Contact::All();
         $accounts = Account::All();
         $returnHTML = view('contacts/datatable-contacts', compact('contacts', 'accounts'))->render();
@@ -337,7 +450,7 @@ class ContactController extends Controller
 
         $contact_companie->save();
 
-        Log::create(['user_id' => 2, 'log_date' => new DateTime(), 'action' => 'contact_companie.logo.update', 'element' => 6, 'element_id' => $request->id, 'source' => 'contact_companie.logo.update, ' . $request->id]);
+        Log::create(['user_id' => 2, 'log_date' => new DateTime(), 'action' => 'contact_companie.logo.update', 'element' => getElementByName('contacts'), 'element_id' => $request->id, 'source' => 'contact_companie.logo.update, ' . $request->id]);
         return response()->json(['success' => 'This contact companie logo Updated', 'contact' => $contact_companie]);
     }
 
@@ -350,13 +463,17 @@ class ContactController extends Controller
     public function destroy(int $id)
     {
         $contact = Contact::find($id);
+        if ($contact->class == 1)
+            $contact_1 = Contacts_person::find($id);
+        else if ($contact->class == 2)
+            $contact_1 = Contacts_companie::find($id);
         //$contact->status = 3;
-        if ($contact->delete()) {
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts.delete', 'element' => 16, 'element_id' => $contact->id, 'source' => 'contacts.delete, ' . $id]);
+        if ($contact->delete() && $contact_1->delete()) {
+            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts.delete', 'element' => getElementByName('contacts'), 'element_id' => $contact->id, 'source' => 'contacts.delete, ' . $id]);
             $contacts = Contact::All();
             $accounts = Account::All();
             $returnHTML = view('contacts/datatable-contacts', compact('contacts', 'accounts'))->render();
-            return response()->json(['success' => 'This contact has been Disabled !!!', 'html' => $returnHTML]);
+            return response()->json(['success' => 'This contact has been Disabled !!!', 'html' => $returnHTML, 'contact' => $contact]);
             //return response()->json(['success' => 'This contact has been Disabled !!!', 'contact' => $contact]);
         } else
             return response()->json(['error' => 'Failed to delete this contact !!!']);
@@ -371,9 +488,11 @@ class ContactController extends Controller
     {
         $accounts = Account::all();
         $groups = Group::all();
+        $imports = DB::table('imports')->select('id')->get();
         return view('/contacts/search', [
             'accounts' => $accounts,
             'groups' => $groups,
+            'imports' => $imports,
         ]);
     }
 
@@ -385,14 +504,16 @@ class ContactController extends Controller
      */
     public function search(Request $request)
     {
-        //return $request;
+        return $request;
         $request->validate([
             //validate contact
-            'id' => 'nullable|integer|digits_between:0,10',
+            'id' => 'nullable|string',
             'source_id' => 'nullable|integer|digits_between:0,10',
             'source' => 'nullable|integer|digits_between:1,1',
             'status' => 'nullable|integer|digits_between:1,1',
             'account_id' => 'nullable|exists:App\Models\Account,id',
+            'import_id' => 'nullable|integer|digits_between:0,10',
+            'adding_method' => 'integer|min:0|max:2',
             //validate person contact data
             'first_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
@@ -414,14 +535,27 @@ class ContactController extends Controller
         if ($request->class == 1) {
             $contacts = DB::table('contacts')
                 ->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
-                ->join('contact_datas', 'contacts.id', '=', 'contact_datas.element_id')
+                ->leftjoin('contact_datas', 'contacts.id', '=', 'contact_datas.element_id')
                 ->select('contacts.*', 'contacts_persons.*')
                 //contact
-                ->where('contacts.id', 'like', '%' . $request->id . '%')
+                ->where(function ($query) use ($request) {
+                    if ($request->id)
+                        $query->whereIn('contacts.id', explode(",", $request->id));
+                })
                 ->where('source_id', 'like', '%' . $request->source_id . '%')
                 ->where('source', 'like', '%' . $request->source . '%')
                 ->where('contacts.status', 'like', '%' . $request->status . '%')
                 ->where('account_id', 'like', '%' . $request->account_id . '%')
+                ->where(function ($query) use ($request) {
+                    if ($request->creation_date)
+                        $query->whereBetween('creation_date', explode("to", $request->creation_date));
+                })
+                ->where(function ($query) use ($request) {
+                    if ($request->adding_method == 2)
+                        $query->where('import_id', $request->import_id)->Where('import_id', '!=', null);
+                    else if ($request->adding_method == 1)
+                        $query->Where('import_id', null);
+                })
                 //person data
                 ->where('first_name', 'like', '%' . $request->first_name . '%')
                 ->where('last_name', 'like', '%' . $request->last_name . '%')
@@ -437,13 +571,14 @@ class ContactController extends Controller
                     $query->where('country', 'like', '%' . $request->person_country . '%')->orWhere('country', $request->person_country);
                 })
                 ->where(function ($query) use ($request) {
-                    $query->where('birthdate', 'like', '%' . $request->birthdate . '%')->orWhere('birthdate', $request->birthdate);
+                    if ($request->birthdate)
+                        $query->whereDate('birthdate', $request->birthdate);
                 })
                 ->get();
         } else if ($request->class == 2) {
             $contacts = DB::table('contacts')
                 ->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
-                ->join('contact_datas', 'contacts.id', '=', 'contact_datas.element_id')
+                ->leftjoin('contact_datas', 'contacts.id', '=', 'contact_datas.element_id')
                 ->select(
                     'contacts.*',
                     'contacts_companies.class as companies_class',
@@ -455,11 +590,24 @@ class ContactController extends Controller
                     'contacts_companies.language'
                 )
                 //contact
-                ->where('contacts.id', 'like', '%' . $request->id . '%')
+                ->where(function ($query) use ($request) {
+                    if ($request->id)
+                        $query->whereIn('contacts.id', explode(",", $request->id));
+                })
                 ->where('source_id', 'like', '%' . $request->source_id . '%')
                 ->where('source', 'like', '%' . $request->source . '%')
                 ->where('contacts.status', 'like', '%' . $request->status . '%')
                 ->where('account_id', 'like', '%' . $request->account_id . '%')
+                ->where(function ($query) use ($request) {
+                    if ($request->creation_date)
+                        $query->whereBetween('creation_date', explode("to", $request->creation_date));
+                })
+                ->where(function ($query) use ($request) {
+                    if ($request->adding_method == 2)
+                        $query->where('import_id', $request->import_id)->Where('import_id', '!=', null);
+                    else if ($request->adding_method == 1)
+                        $query->Where('import_id', null);
+                })
                 //companie data
                 ->where('contacts_companies.class', 'like', '%' . $request->companies_class . '%')
                 ->where('name', 'like', '%' . $request->name . '%')
@@ -480,12 +628,33 @@ class ContactController extends Controller
             $contacts = DB::table('contacts')
                 //->leftJoin('contact_datas', 'contacts.id', '=', 'contact_datas.element_id')
                 ->select('contacts.*')
-                ->where('contacts.id', 'like', '%' . $request->id . '%')
-                ->where('source_id', 'like', '%' . $request->source_id . '%')
+                ->where(function ($query) use ($request) {
+                    if ($request->id)
+                        $query->whereIn('contacts.id', explode(",", $request->id));
+                })
+                ->where(function ($query) use ($request) {
+                    if ($request->source_id)
+                        $query->whereIn('contacts.source_id', explode(",", $request->source_id));
+                })
                 ->where('source', 'like', '%' . $request->source . '%')
-                ->where('contacts.status', 'like', '%' . $request->status . '%')
-                ->where('account_id', 'like', '%' . $request->account_id . '%')
-                ->where('creation_date', 'like', '%' . $request->creation_date . '%')
+                ->where(function ($query) use ($request) {
+                    if ($request->status)
+                        $query->whereIn('contacts.status', explode(",", $request->status));
+                })
+                ->where(function ($query) use ($request) {
+                    if ($request->account_id)
+                        $query->whereIn('contacts.account_id', explode(",", $request->account_id));
+                })
+                ->where(function ($query) use ($request) {
+                    if ($request->creation_date)
+                        $query->whereBetween('creation_date', explode("to", $request->creation_date));
+                })
+                ->where(function ($query) use ($request) {
+                    if ($request->adding_method == 2)
+                        $query->where('import_id', $request->import_id)->Where('import_id', '!=', null);
+                    else if ($request->adding_method == 1)
+                        $query->Where('import_id', null);
+                })
                 ->get();
         }
         if ($contacts->isEmpty()) {
@@ -506,17 +675,195 @@ class ContactController extends Controller
     }
 
     /**
-     * upload contact file
+     * display upload form
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function uploadForm()
+    {
+        $accounts = Account::all();
+        return view('/contacts/import/upload', [
+            'accounts' => $accounts,
+        ]);
+    }
+
+    /**
+     * preview 10 rows with select option to choose column
      * 
      * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function upload(Request $request)
+    public function previewContactsImport(Request $request)
+    {
+        $data = $request->validate([
+            'account_id' => 'exists:App\Models\Account,id',
+            'file' => 'required|mimes:csv,txt,xlsx,xls',
+            'class' => 'required|integer|min:1|max:2',
+        ]);
+
+        $class = $request->class;
+
+        $request->file->storePublicly('public/contact');
+        $file_name = $request->file->hashName();
+        $file_path = 'public/contact/' . $file_name;
+
+        //return $request->file->extension();
+        //return $collection = Excel::toCollection(new ContactImport, $file_path);
+        /*$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        $spreadsheet = $reader->load($request->file);
+        return $sheetData = $spreadsheet->getActiveSheet()->toArray();*/
+
+        $import = Import::create(['start_date' => new DateTime()]);
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts.import', 'element' => getElementByName('imports'), 'element_id' => $import->id, 'source' => 'contacts.import']);
+
+        if ($request->header) {
+            $headings = (new HeadingRowImport())->toArray($file_path);
+            $contactImport = new ContactImport($headings);
+        } else {
+            $headings = null;
+            $contactImport = new ContactImport();
+        }
+
+        $contacts = Excel::import($contactImport, $file_path);
+
+        $contacts = $contactImport->get10FirstRows();
+
+        $columnCount = $contactImport->getColumnCount();
+
+        $rowCount = $contactImport->getRowCount();
+
+        $returnHTML = view('contacts/import/preview', compact('contacts', 'columnCount', 'headings', 'class', 'rowCount'))->render();
+
+        return response()->json(['success' => 'preview 10 rows success  !!!', 'html' => $returnHTML, 'import' => $import, 'file_path' => $file_path, 'account_id' => $data['account_id'], 'headings' => $headings]);
+    }
+
+    /**
+     * upload contact file
+     * 
+     * @param \Illuminate\Http\Request  $request
+     * @param int $skipErrors
+     * @return \Illuminate\Http\Response
+     */
+    public function upload(Request $request, int $skipErrors)
     {
         //return $request;
-        $file = $request->validate([
-            'file' => 'required|mimes:csv,xlsx,xls',
+        $data = $request->validate([
+            'account_id' => 'exists:App\Models\Account,id',
+            'import_id' => 'exists:App\Models\Import,id',
+            'file_path' => 'required:filepath',
+            'class' => 'required|integer|min:1|max:2',
+            'heading' => 'required|integer|min:0|max:1',
+            //'column-1' => 'required|string',
         ]);
-        return response()->json(['success' => 'Successful  Upload  !!!']);
+
+        $contactImport = new ContactImport();
+        $contacts = Excel::import($contactImport, $request->file_path);
+        $columnCount = $contactImport->getColumnCount();
+        if ($request->class == 1)
+            $column = ['source' => 0, 'source_id' => 0, 'status' => 0, 'profile' => 0, 'gender' => 0, 'first_name' => 0, 'last_name' => 0, 'nickname' => 0, 'birthdate' => 0, 'country' => 0, 'language' => 0];
+        else if ($request->class == 2)
+            $column = ['source' => 0, 'source_id' => 0, 'status' => 0, 'class' => 0, 'name' => 0, 'registered_number' => 0, 'logo' => 0, 'activity' => 0, 'country' => 0, 'language' => 0];
+
+        $error = 0;
+        foreach ($column as $key => $c) {
+            for ($i = 0; $i < $columnCount; $i++) {
+                if ($key == $request->input('column-' . $i)) {
+                    $column[$key]++;
+                }
+            }
+        }
+        if ($column['source'] == 0)
+            return response()->json(['errors' => 'Select column name for source  !!!'], 300);
+        else if ($column['source'] > 1)
+            return response()->json(['errors' => 'Multiple column source select  !!!'], 300);
+
+        else if ($column['source_id'] == 0)
+            return response()->json(['errors' => 'Select column name for source_id  !!!'], 300);
+        else if ($column['source_id'] > 1)
+            return response()->json(['errors' => 'Multiple column source_id select  !!!'], 300);
+
+        else if ($column['status'] == 0)
+            return response()->json(['errors' => 'Select column name for status  !!!'], 300);
+        else if ($column['status'] > 1)
+            return response()->json(['errors' => 'Multiple column status select  !!!'], 300);
+
+        else if ($column['country'] > 1)
+            return response()->json(['errors' => 'Multiple column country select  !!!'], 300);
+
+        else if ($column['language'] > 1)
+            return response()->json(['errors' => 'Multiple column language select  !!!'], 300);
+
+        if ($request->class == 1) {
+            if ($column['profile'] == 0)
+                return response()->json(['errors' => 'Select column name for profile  !!!'], 300);
+            else if ($column['profile'] > 1)
+                return response()->json(['errors' => 'Multiple column profile select  !!!'], 300);
+
+            else if ($column['gender'] == 0)
+                return response()->json(['errors' => 'Select column name for gender  !!!'], 300);
+            else if ($column['gender'] > 1)
+                return response()->json(['errors' => 'Multiple column gender select  !!!'], 300);
+
+            else if ($column['first_name'] == 0)
+                return response()->json(['errors' => 'Select column name for first_name  !!!'], 300);
+            else if ($column['first_name'] > 1)
+                return response()->json(['errors' => 'Multiple column first_name select  !!!'], 300);
+
+            else if ($column['last_name'] == 0)
+                return response()->json(['errors' => 'Select column name for last_name  !!!'], 300);
+            else if ($column['last_name'] > 1)
+                return response()->json(['errors' => 'Multiple column last_name select  !!!'], 300);
+
+            else if ($column['nickname'] > 1)
+                return response()->json(['errors' => 'Multiple column nickname select  !!!'], 300);
+
+            else if ($column['birthdate'] > 1)
+                return response()->json(['errors' => 'Multiple column birthdate select  !!!'], 300);
+        } else if ($request->class == 2) {
+            if ($column['class'] == 0)
+                return response()->json(['errors' => 'Select column name for class  !!!'], 300);
+            else if ($column['class'] > 1)
+                return response()->json(['errors' => 'Multiple column class select  !!!'], 300);
+
+            if ($column['name'] == 0)
+                return response()->json(['errors' => 'Select column name for name  !!!'], 300);
+            else if ($column['name'] > 1)
+                return response()->json(['errors' => 'Multiple column name select  !!!'], 300);
+
+            else if ($column['registered_number'] > 1)
+                return response()->json(['errors' => 'Multiple column registered_number select  !!!'], 300);
+
+            else if ($column['logo'] > 1)
+                return response()->json(['errors' => 'Multiple column logo select  !!!'], 300);
+
+            else if ($column['activity'] > 1)
+                return response()->json(['errors' => 'Multiple column activity select  !!!'], 300);
+        }
+
+        $column = ['source' => null, 'source_id' => null, 'status' => null, 'profile' => null, 'gender' => null, 'first_name' => null, 'last_name' => null, 'nickname' => null, 'birthdate' => null, 'class' => null, 'name' => null, 'registered_number' => null, 'logo' => null, 'activity' => null, 'country' => null, 'language' => null];
+
+        foreach ($column as $key => $c) {
+            for ($i = 0; $i < $columnCount; $i++) {
+                if ($key == $request->input('column-' . $i)) {
+                    $column[$key] = $i;
+                }
+            }
+        }
+
+        $contactImport = new ContactImport($request->heading, $column, $request->account_id, $request->import_id, $skipErrors);
+        Excel::import($contactImport, $data['file_path']);
+
+        if ($request->class == 1) {
+            $contacts = $contactImport->insertPersonContactInDB();
+        } else if ($request->class == 2) {
+            $contacts = $contactImport->insertCompanieContactInDB();
+        }
+
+        if ($contactImport->containErrors())
+            return response()->json(['error' => 'failed to Upload  !!!'], 300);
+        else {
+            Storage::delete($request->file_path);
+            return response()->json(['success' => 'Successful Upload  !!!', 'import' => $data['import_id'], 'contacts' => $contacts, $column]);
+        }
     }
 }

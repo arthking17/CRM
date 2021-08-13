@@ -13,7 +13,7 @@
                         <div id="search-contact-wizard">
                             <ul class="nav nav-pills bg-light nav-justified form-wizard-header mb-3">
                                 <li class="nav-item" data-target-form="#classForm">
-                                    <a href="#search-contact-class" data-bs-toggle="tab" data-toggle="tab"
+                                    <a href="#search-contact-class-tab" data-bs-toggle="tab" data-toggle="tab"
                                         class="nav-link rounded-0 pt-2 pb-2">
                                         <i class="mdi mdi-account-circle me-1"></i>
                                         <span class="d-none d-sm-inline">Contact</span>
@@ -38,12 +38,11 @@
                             <div class="tab-content b-0 mb-0 pt-0">
 
                                 <div id="bar" class="progress mb-3" style="height: 7px;">
-                                    <div
-                                        class="bar progress-bar progress-bar-striped progress-bar-animated bg-success">
+                                    <div class="bar progress-bar progress-bar-striped progress-bar-animated bg-success">
                                     </div>
                                 </div>
 
-                                <div class="tab-pane" id="search-contact-class">
+                                <div class="tab-pane" id="search-contact-class-tab">
 
                                     <div class="row">
                                         <div class="col-lg-6">
@@ -52,10 +51,8 @@
                                                     class="col-4 col-xl-3 col-form-label">account</label>
                                                 <div class="col-8 col-xl-9">
                                                     <select
-                                                        class="form-select @error('account_id') parsley-error @enderror"
-                                                        name="account_id" id="search-contact-account_id"
-                                                        data-parsley-type="integer" data-parsley-length="[1, 10]">
-                                                        <option value="">no choice</option>
+                                                        class="@error('account_id') parsley-error @enderror"
+                                                        name="account_id" id="search-contact-account_id">
                                                         @foreach ($accounts as $account)
                                                             <option value="{{ $account->id }}">
                                                                 {{ $account->name }}
@@ -74,11 +71,10 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="search-contact-id"
-                                                    class="col-4 col-xl-3 col-form-label">Contact
-                                                    Id</label>
+                                                    class="col-4 col-xl-3 col-form-label">Contact Id</label>
                                                 <div class="col-8 col-xl-9">
-                                                    <input type="number"
-                                                        class="form-control @error('id') parsley-error @enderror"
+                                                    <input type="text"
+                                                        class="@error('id') parsley-error @enderror"
                                                         id="search-contact-id" name="id" placeholder="id">
                                                     @error('id')
                                                         <ul class="parsley-errors-list filled" aria-hidden="false">
@@ -92,14 +88,11 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="search-contact-source_id"
-                                                    class="col-4 col-xl-3 col-form-label">Source
-                                                    Id</label>
+                                                    class="col-4 col-xl-3 col-form-label">Source Id</label>
                                                 <div class="col-8 col-xl-9">
-                                                    <input type="number"
-                                                        class="form-control @error('source_id') parsley-error @enderror"
+                                                    <input class="@error('source_id') parsley-error @enderror"
                                                         name="source_id" id="search-contact-source_id"
-                                                        placeholder="Identifier of Source"
-                                                        data-parsley-type="integer" >
+                                                        placeholder="Identifier of Source">
                                                     @error('source_id')
                                                         <ul class="parsley-errors-list filled" aria-hidden="false">
                                                             <li class="parsley-required">
@@ -113,13 +106,11 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="search-contact-group_id"
-                                                    class="col-4 col-xl-3 col-form-label">Group Name</label>
+                                                    class="col-4 col-xl-3 col-form-label">Group_Name</label>
                                                 <div class="col-8 col-xl-9">
                                                     <select
-                                                        class="form-select @error('group_id') parsley-error @enderror"
-                                                        name="group_id" id="search-contact-group_id"
-                                                        data-parsley-type="integer" data-parsley-length="[1, 10]">
-                                                        <option value="">no choice</option>
+                                                        class="@error('group_id') parsley-error @enderror"
+                                                        name="group_id" id="search-contact-group_id">
                                                         @foreach ($groups as $group)
                                                             <option value="{{ $group->id }}">
                                                                 {{ $group->name }}
@@ -137,32 +128,17 @@
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
-                                                <label for="search-contact-adding_method"
-                                                    class="col-4 col-xl-3 col-form-label">Adding Method</label>
+                                                <!--<label for="search-contact-adding_method"
+                                                    class="col-4 col-xl-3 col-form-label">Adding Method</label>-->
                                                 <div class="col-8 col-xl-9">
-                                                    <input class="form-check-input" type="radio"
-                                                        name="adding_method" id="adding_method" checked="" value="">
-                                                    <label class="form-check-label" for="adding_method">no
-                                                        choice</label>
+                                                    <label class="form-check-label" for="adding_method"><input class="form-check-input" type="radio" name="adding_method"
+                                                        id="adding_method" checked="" value="0">no choice</label>
+                                                        
+                                                    <label class="form-check-label" for="adding_method1"><input class="form-check-input" type="radio" name="adding_method"
+                                                        id="adding_method1" value="1">Unitally added</label>
 
-                                                    <input class="form-check-input" type="radio"
-                                                        name="adding_method" id="adding_method1" value="1">
-                                                    <label class="form-check-label" for="adding_method1">Unitally
-                                                        added</label>
-
-                                                    <input class="form-check-input" type="radio"
-                                                        name="adding_method" id="adding_method2" value="2">
-                                                    <label class="form-check-label"
-                                                        for="adding_method2">Import</label>
-                                                    @error('adding_method')
-                                                        <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                            <li class="parsley-required">
-                                                                {{ $errors->first('adding_method') }}
-                                                            </li>
-                                                        </ul>
-                                                    @else
-                                                        <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                    @enderror
+                                                    <label class="form-check-label" for="adding_method2"><input class="form-check-input" type="radio" name="adding_method"
+                                                        id="adding_method2" value="2">Import</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -171,11 +147,8 @@
                                                 <label for="search-contact-status"
                                                     class="col-4 col-xl-3 col-form-label">Status</label>
                                                 <div class="col-8 col-xl-9">
-                                                    <select
-                                                        class="form-select @error('status') parsley-error @enderror"
-                                                        name="status" id="search-contact-status"
-                                                        data-parsley-type="integer" data-parsley-length="[1, 1]">
-                                                        <option value="">no choice</option>
+                                                    <select class="@error('status') parsley-error @enderror"
+                                                        name="status" id="search-contact-status" multiple>
                                                         <option value="1">Lead</option>
                                                         <option value="2">Customer</option>
                                                         <option value="3">Not interested</option>
@@ -193,11 +166,9 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="search-contact-class"
-                                                    class="col-4 col-xl-3 col-form-label">Contact
-                                                    Type</label>
+                                                    class="col-4 col-xl-3 col-form-label">Contact_Type</label>
                                                 <div class="col-8 col-xl-9">
-                                                    <select
-                                                        class="form-select @error('class') parsley-error @enderror"
+                                                    <select class="form-select @error('class') parsley-error @enderror"
                                                         name="class" id="search-contact-class"
                                                         data-parsley-type="integer" data-parsley-length="[1, 1]">
                                                         <option value="">no choice</option>
@@ -217,11 +188,9 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="search-contact-source"
-                                                    class="col-4 col-xl-3 col-form-label">Source
-                                                    Type</label>
+                                                    class="col-4 col-xl-3 col-form-label">Source_Type</label>
                                                 <div class="col-8 col-xl-9">
-                                                    <select
-                                                        class="form-select @error('source') parsley-error @enderror"
+                                                    <select class="form-select @error('source') parsley-error @enderror"
                                                         name="source" id="search-contact-source"
                                                         data-parsley-type="integer" data-parsley-length="[1, 1]">
                                                         <option value="">no choice</option>
@@ -243,33 +212,26 @@
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="search-contact-creation_date"
-                                                    class="col-4 col-xl-3 col-form-label">Creation Date</label>
+                                                    class="col-4 col-xl-3 col-form-label">Creation_Date</label>
                                                 <div class="col-8 col-xl-9">
-                                                    <input
-                                                        class="form-control @error('creation_date') parsley-error @enderror"
-                                                        type="date" name="creation_date"
-                                                        id="search-contact-creation_date"
-                                                        data-parsley-maxdate="{{ date('m/d/Y') }}">
-                                                    @error('creation_date')
-                                                        <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                            <li class="parsley-required">
-                                                                {{ $errors->first('creation_date') }}</li>
-                                                        </ul>
-                                                    @else
-                                                        <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                    @enderror
+                                                    <input class="form-control @error('creation_date') parsley-error @enderror"
+                                                        type="text" name="creation_date" id="search-contact-creation_date" placeholder="yyyy-mm-dd to yyyy-mm-dd">
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
                                                 <label for="search-contact-import_id"
-                                                    class="col-4 col-xl-3 col-form-label">Import
-                                                    Id</label>
+                                                    class="col-4 col-xl-3 col-form-label">Import Id</label>
                                                 <div class="col-8 col-xl-9">
-                                                    <input type="number"
-                                                        class="form-control @error('import_id') parsley-error @enderror"
+                                                    <select
+                                                        class="form-select @error('import_id') parsley-error @enderror"
                                                         name="import_id" id="search-contact-import_id"
-                                                        placeholder="Identifier of Import"
-                                                        data-parsley-type="integer" >
+                                                        data-parsley-type="integer" data-parsley-length="[1, 10]">
+                                                        <option value="">no choice</option>
+                                                        @foreach ($imports as $import)
+                                                            <option value="{{ $import->id }}">{{ $import->id }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
                                                     @error('import_id')
                                                         <ul class="parsley-errors-list filled" aria-hidden="false">
                                                             <li class="parsley-required">
@@ -332,9 +294,9 @@
                                                     class="col-4 col-xl-3 col-form-label">Birthdate</label>
                                                 <div class="col-8 col-xl-9">
                                                     <input
-                                                        class="form-control @error('birthdate') parsley-error @enderror"
+                                                        class="form-control birthdate-datepicker @error('birthdate') parsley-error @enderror"
                                                         type="date" name="birthdate" id="search-contact-birthdate"
-                                                        data-parsley-maxdate="{{ date('m/d/Y') }}">
+                                                        data-parsley-maxdate="{{ date('m/d/Y') }}" placeholder="yyyy-mm-dd">
                                                     @error('birthdate')
                                                         <ul class="parsley-errors-list filled" aria-hidden="false">
                                                             <li class="parsley-required">
@@ -351,7 +313,8 @@
                                                 <div class="col-8 col-xl-9">
                                                     <select
                                                         class="form-select country @error('person_country') parsley-error @enderror"
-                                                        name="person_country" id="search-contact-person_country" data-parsley-length="[2, 2]">
+                                                        name="person_country" id="search-contact-person_country"
+                                                        data-parsley-length="[2, 2]">
                                                         <option value="">no choice</option>
                                                         <option value="">Select a country</option>
                                                     </select>
@@ -415,8 +378,7 @@
                                                 <label for="search-contact-gender"
                                                     class="col-4 col-xl-3 col-form-label">gender</label>
                                                 <div class="col-8 col-xl-9">
-                                                    <select
-                                                        class="form-select @error('gender') parsley-error @enderror"
+                                                    <select class="form-select @error('gender') parsley-error @enderror"
                                                         name="gender" id="search-contact-gender"
                                                         data-parsley-type="integer" data-parsley-length="[1, 1]">
                                                         <option value="">no choice</option>
@@ -440,7 +402,8 @@
                                                 <div class="col-8 col-xl-9">
                                                     <select
                                                         class="form-select @error('person_language') parsley-error @enderror"
-                                                        name="person_language" id="search-contact-person_language" data-parsley-length="[2, 2]">
+                                                        name="person_language" id="search-contact-person_language"
+                                                        data-parsley-length="[2, 2]">
                                                         <option value="">no choice</option>
                                                         <option value="ar">Arabic - العربية</option>
                                                         <option value="en">English</option>
@@ -498,8 +461,7 @@
                                                 <div class="col-8 col-xl-9">
                                                     <input type="text"
                                                         class="form-control @error('name') parsley-error @enderror"
-                                                        name="name" placeholder="Name" id="search-contact-name"
-                                                       >
+                                                        name="name" placeholder="Name" id="search-contact-name">
                                                     @error('name')
                                                         <ul class="parsley-errors-list filled" aria-hidden="false">
                                                             <li class="parsley-required">{{ $errors->first('name') }}
@@ -517,10 +479,8 @@
                                                 <div class="col-8 col-xl-9">
                                                     <input type="text"
                                                         class="form-control @error('registered_number') parsley-error @enderror"
-                                                        name="registered_number"
-                                                        id="search-contact-registered_number"
-                                                        placeholder="Registered number"
-                                                        data-parsley-maxlength="128">
+                                                        name="registered_number" id="search-contact-registered_number"
+                                                        placeholder="Registered number" data-parsley-maxlength="128">
                                                     @error('registered_number')
                                                         <ul class="parsley-errors-list filled" aria-hidden="false">
                                                             <li class="parsley-required">
@@ -542,7 +502,7 @@
                                                         class="form-control @error('activity') parsley-error @enderror"
                                                         name="activity" id="search-contact-activity"
                                                         placeholder="Identifier of activity"
-                                                        data-parsley-type="integer" >
+                                                        data-parsley-type="integer">
                                                     @error('activity')
                                                         <ul class="parsley-errors-list filled" aria-hidden="false">
                                                             <li class="parsley-required">
@@ -560,8 +520,8 @@
                                                 <div class="col-8 col-xl-9">
                                                     <select
                                                         class="form-select country @error('companies_country') parsley-error @enderror"
-                                                        name="companies_country"
-                                                        id="search-contact-companies_country" data-parsley-length="[2, 2]">
+                                                        name="companies_country" id="search-contact-companies_country"
+                                                        data-parsley-length="[2, 2]">
                                                         <option value="">no choice</option>
                                                     </select>
                                                     @error('companies_country')
@@ -581,9 +541,8 @@
                                                 <div class="col-8 col-xl-9">
                                                     <select
                                                         class="form-select @error('companies_language') parsley-error @enderror"
-                                                        name="companies_language"
-                                                        id="search-contact-companies_language"
-                                                         data-parsley-length="[2, 2]">
+                                                        name="companies_language" id="search-contact-companies_language"
+                                                        data-parsley-length="[2, 2]">
                                                         <option value="">no choice</option>
                                                         <option value="ar">Arabic - العربية</option>
                                                         <option value="en">English</option>
@@ -613,7 +572,8 @@
                                                 <label for="search-contact-phone"
                                                     class="col-4 col-xl-3 col-form-label">Phone Number</label>
                                                 <div class="col-8 col-xl-9">
-                                                    <input class="form-control" name="phone_number" id="search-contact-phone_number" type="tel">
+                                                    <input class="form-control" name="phone_number"
+                                                        id="search-contact-phone_number" type="tel">
                                                     <span id="valid-msg-phone_number" class="d-none">✓ Valid</span>
                                                     <span id="error-msg-phone_number" class="d-none"></span>
                                                 </div>
@@ -622,7 +582,8 @@
                                                 <label for="search-contact-mobile"
                                                     class="col-4 col-xl-3 col-form-label">Mobile</label>
                                                 <div class="col-8 col-xl-9">
-                                                    <input class="form-control" name="mobile" id="search-contact-mobile" type="tel">
+                                                    <input class="form-control" name="mobile" id="search-contact-mobile"
+                                                        type="tel">
                                                     <span id="valid-msg-mobile" class="d-none">✓ Valid</span>
                                                     <span id="error-msg-mobile" class="d-none"></span>
                                                 </div>
@@ -652,8 +613,7 @@
                                                 <div class="col-8 col-xl-9">
                                                     <input type="text"
                                                         class="form-control @error('skype') parsley-error @enderror"
-                                                        name="skype" placeholder="username"
-                                                        id="search-contact-skype">
+                                                        name="skype" placeholder="username" id="search-contact-skype">
                                                     @error('skype')
                                                         <ul class="parsley-errors-list filled" aria-hidden="false">
                                                             <li class="parsley-required">
@@ -671,8 +631,7 @@
                                                 <div class="col-8 col-xl-9">
                                                     <input type="text"
                                                         class="form-control @error('viber') parsley-error @enderror"
-                                                        name="viber" placeholder="username"
-                                                        id="search-contact-viber">
+                                                        name="viber" placeholder="username" id="search-contact-viber">
                                                     @error('viber')
                                                         <ul class="parsley-errors-list filled" aria-hidden="false">
                                                             <li class="parsley-required">
@@ -690,7 +649,8 @@
                                                 <label for="search-contact-fax"
                                                     class="col-4 col-xl-3 col-form-label">Fax Number</label>
                                                 <div class="col-8 col-xl-9">
-                                                    <input class="form-control" name="fax_number" id="search-contact-fax_number" type="tel">
+                                                    <input class="form-control" name="fax_number"
+                                                        id="search-contact-fax_number" type="tel">
                                                     <span id="valid-msg-fax_number" class="d-none">✓ Valid</span>
                                                     <span id="error-msg-fax_number" class="d-none"></span>
                                                 </div>
@@ -699,7 +659,8 @@
                                                 <label for="search-contact-whatsapp"
                                                     class="col-4 col-xl-3 col-form-label">WhatsApp</label>
                                                 <div class="col-8 col-xl-9">
-                                                    <input class="form-control" name="whatsapp" id="search-contact-whatsapp" type="tel">
+                                                    <input class="form-control" name="whatsapp"
+                                                        id="search-contact-whatsapp" type="tel">
                                                     <span id="valid-msg-whatsapp" class="d-none">✓ Valid</span>
                                                     <span id="error-msg-whatsapp" class="d-none"></span>
                                                 </div>
@@ -779,8 +740,8 @@
                                         </div>
                                     </li>
                                     <li class="list-inline-item float-end">
-                                        <button type="reset"
-                                            class="btn btn-light waves-effect waves-light"><i class="fe-x me-1"></i>Reset</button>
+                                        <button type="reset" class="btn btn-light waves-effect waves-light"><i
+                                                class="fe-x me-1"></i>Reset</button>
                                         <button type="submit"
                                             class="btn btn-info waves-effect waves-light">Search</button>
                                     </li>

@@ -2,7 +2,7 @@
     <div class="card-body">
         <div class="d-flex align-items-start mb-3">
             @isset($group)
-                <div class="w-100" id="contact-info1">
+                <div class="w-100" id="group-info1">
                     <h4 class="mt-0 mb-1">{{ $group->name }}</h4>
                     <p class="text-muted">{{ $group->class }}</p>
                     <p class="text-muted"><i class="mdi mdi-office-building"></i>
@@ -19,9 +19,8 @@
         </div>
 
         <h5 class="mb-3 mt-4 text-uppercase bg-light p-2"><i class="mdi mdi-account-circle me-1"></i>List of Users</h5>
-        <div class="" id="contact-info2" data-simplebar style="max-height: 400px;">
-            @isset($group)
-                @if ($users->where('account_id', $group->account_id)->count() > 0)
+        <div class="" id="group-info2" data-simplebar style="max-height: 400px;">
+            @if(isset($group) and $users->count() > 0)
                     @foreach ($users->where('account_id', $group->account_id) as $user)
                         <img id="user-photo" class="d-flex me-3 rounded-circle avatar-lg"
                             src="{{ asset('storage/images/users/' . $user->photo) }}" alt="Generic placeholder image">
@@ -30,8 +29,9 @@
                             <p class="text-muted">{{ $user->login }}</p>
                         </div>
                     @endforeach
-                @endif
-            @endisset
+            @else
+                <p class="text-center">empty</p>
+            @endif
         </div>
         <a href="{{ route('users') }}" class="btn- btn-xs"><i class="mdi mdi-plus-circle me-1"></i>voir
             plus</a>

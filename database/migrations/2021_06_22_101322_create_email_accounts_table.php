@@ -17,7 +17,7 @@ class CreateEmailAccountsTable extends Migration
         Schema::create('email_accounts', function (Blueprint $table) {
             $table->integer('id', true, true);
             $table->tinyInteger('status')->unsigned()->default(1);
-            $table->date('start_date')->default(date("Y-m-d"));
+            $table->date('start_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->date('end_date')->nullable();
             $table->integer('account_id')->unsigned();
             $table->index('account_id', 'mail_account_id_idx');

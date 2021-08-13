@@ -23,10 +23,14 @@ class GroupController extends Controller
         $groups = Group::All();
         //dd($groups);
         $accounts = Account::All();
+        $user = null;
+        $users_permissions = null;
         $users = User::all();
-        $users_permissions = Users_permission::all()
-            ->where('user_id', $users->last()->id);
-        $user = $users->where('account_id', $groups->last()->account_id)->first();
+        if ($groups->count() > 0)
+            $user = $users->where('account_id', $groups->last()->account_id)->first();
+        if ($users->count() > 0)
+            $users_permissions = Users_permission::all()
+                ->where('user_id', $user->id);
         return view('groups.list', [
             'groups' => $groups,
             'accounts' => $accounts,
@@ -59,7 +63,7 @@ class GroupController extends Controller
             'account_id' => 'required|exists:App\Models\Account,id',
         ]);
         $group = Group::create($data);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users.groups.create', 'element' => 10, 'element_id' => $group->id, 'source' => 'users.groups.create']);
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users.groups.create', 'element' => getElementByName('groups'), 'element_id' => $group->id, 'source' => 'users.groups.create']);
         //return response()->json(['success' => 'New Group created !!!', 'group' => $group]);
         $groups = Group::All();
         $returnHTML = view('groups/datatable-groups', compact('groups'))->render();
@@ -133,7 +137,7 @@ class GroupController extends Controller
             'account_id' => 'required|exists:App\Models\Account,id',
         ]);
         Group::find($request->id)->update($data);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users.groups.create', 'element' => 10, 'element_id' => $request->id, 'source' => 'users.groups.create']);
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users.groups.create', 'element' => getElementByName('groups'), 'element_id' => $request->id, 'source' => 'users.groups.create']);
         $group = Group::find($request->id);
         array_push($data, ['account' => $group->account[0]->name, 'id' => $group->id]);
         //return response()->json(['success' => 'Group updated !!!', 'group' => $data]);
@@ -152,7 +156,7 @@ class GroupController extends Controller
     {
         $group = Group::find($id);
         if ($group->delete()) {
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users.groups.delete', 'element' => 16, 'element_id' => $id, 'source' => 'users.groups.delete, ' . $id]);
+            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users.groups.delete', 'element' => getElementByName('groups'), 'element_id' => $id, 'source' => 'users.groups.delete, ' . $id]);
             //return response()->json(['success' => 'Group Deleted !!!', 'group' => $group]);
             $groups = Group::All();
             $returnHTML = view('groups/datatable-groups', compact('groups'))->render();

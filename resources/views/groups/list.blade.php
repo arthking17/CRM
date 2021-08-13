@@ -120,8 +120,8 @@
             </div>
             <!-- end row -->
             @include('groups.create')
+            @include('groups.edit')
             @if ($groups->count() > 0)
-                @include('groups.edit')
                 <div id="users_permissions-div">
                     @include('permissions.users_permissions')
                 </div>

@@ -39,6 +39,18 @@ $(document).ready(function() {
                         .fail(function(jqxhr, settings, exception) {
                             console.log("Triggered ajaxError handler.");
                         });
+
+                    $(".datepicker").flatpickr({
+                        dateFormat: "Y-m-d",
+                        altInput: true,
+                        defaultDate: null,
+                    });
+                    $(".datetimepicker").flatpickr({
+                        enableTime: true,
+                        altInput: true,
+                        defaultDate: null,
+                        dateFormat: "Y-m-d H:i",
+                    });
                 },
                 error: function(error) {
                     console.log(error)
@@ -88,6 +100,18 @@ $(document).ready(function() {
                             console.log("Triggered ajaxError handler.");
                         });
                     $('#edit-contactwizard').find("a[href*='edit-contact-class']").trigger('click');
+
+                    $(".datepicker").flatpickr({
+                        dateFormat: "Y-m-d",
+                        altInput: true,
+                        defaultDate: null,
+                    });
+                    $(".datetimepicker").flatpickr({
+                        enableTime: true,
+                        altInput: true,
+                        defaultDate: null,
+                        dateFormat: "Y-m-d H:i",
+                    });
                 },
                 error: function(error) {
                     console.log(error)

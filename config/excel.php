@@ -97,7 +97,7 @@ return [
         | ignored by enabling the setting ignore_empty to true.
         |
         */
-        'ignore_empty' => false,
+        'ignore_empty' => true,
 
         /*
         |--------------------------------------------------------------------------
@@ -174,6 +174,7 @@ return [
         'htm'      => Excel::HTML,
         'html'     => Excel::HTML,
         'csv'      => Excel::CSV,
+        'txt'      => Excel::CSV,
         'tsv'      => Excel::TSV,
 
         /*
@@ -206,7 +207,7 @@ return [
     |
     */
     'value_binder' => [
-        'default' => Maatwebsite\Excel\DefaultValueBinder::class,
+        'default' => PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder::class,
     ],
 
     'cache' => [

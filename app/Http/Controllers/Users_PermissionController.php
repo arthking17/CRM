@@ -60,29 +60,34 @@ class Users_PermissionController extends Controller
 
         foreach ($codes as $code) {
             if (isset($data[$code])) {
-                Users_Permission::create(['user_id' => $request->user_id, 'code' => $element . '.' . $code, 'dependency' => $request->dependency]);
-            }else{
-                Users_Permission::create(['user_id' => $request->user_id, 'code' => $element . '.' . $code, 'dependency' => $request->dependency, 'status' => 0]);
-            }
+                $user_permission = Users_Permission::create(['user_id' => $request->user_id, 'code' => $element . '.' . $code, 'dependency' => $request->dependency]);
+            } /*else {
+                $user_permission = Users_Permission::create(['user_id' => $request->user_id, 'code' => $element . '.' . $code, 'dependency' => $request->dependency, 'status' => 0]);
+            }*/
         }
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users_permission.create', 'element' => 17, 'element_id' => $request->user_id, 'source' => 'users_permission.create']);
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users_permission.create', 'element' => getElementByName('users_permissions'), 'element_id' => $user_permission->id, 'source' => 'users_permission.create']);
         return response()->json(['user_id' => $request->user_id, 'success' => 'User permission added']);
     }
 
     /**
      * Get user permissions by id with json response.
      *
-     * @param int $id
+     * @param int $user_id
      * @param int $modal
      * @return \Illuminate\Http\Response
      */
-    public function getUserPermissionsJsonById(int $id, int $modal)
+    public function getUserPermissionsJsonByUserId(int $user_id, int $modal)
     {
+        if ($user_id == -1) {
+            $users_permissions = null;
+            $user = null;
+            return view('permissions/users-permissions-info', compact('users_permissions', 'user'))->render();
+        }
         $users_permissions = DB::table('users_permissions')
-            ->where('user_id', $id)
+            ->where('user_id', $user_id)
             ->where('status', 1)
             ->get();
-        $user = User::find($id);
+        $user = User::find($user_id);
         if ($modal == 0)
             return view('permissions/users-permissions-info', compact('users_permissions', 'user'))->render();
         if ($modal == 1)
@@ -130,12 +135,12 @@ class Users_PermissionController extends Controller
      * @param  \App\Models\Users_Permission  $users_Permission
      * @return \Illuminate\Http\Response
      */
-    public function destroy($user_id, $code)
+    public function destroy($id)
     {
-        $users_permission = Users_Permission::where('user_id', $user_id)->Where('code', $code)->update(['status' => 0]);
+        $users_permission = Users_Permission::where('id', $id)->update(['status' => 0]);
         if ($users_permission) {
-            $users_permission = Users_Permission::where('user_id', $user_id)->Where('code', $code)->first();
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users_permission.delete', 'element' => 16, 'element_id' => $users_permission->user_id, 'source' => 'users_permission.delete, ["user_id":' . $users_permission->user_id . ', "code" : ' . $users_permission->code . ']']);
+            $users_permission = Users_Permission::where('id', $id)->first();
+            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users_permission.delete', 'element' => getElementByName('users_permissions'), 'element_id' => $users_permission->user_id, 'source' => 'users_permission.delete, ["id":' . $users_permission->id . ']']);
             return response()->json(['success' => 'This user permission has been Disabled !!!', 'users_permission' => $users_permission]);
         }
     }

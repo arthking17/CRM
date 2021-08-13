@@ -1,0 +1,14 @@
+Landing page,124,lead,engineer,Jermaine,male,Lindgren,possimus nemo quia,29/05/1996,tn,en
+affiliation,708,not interested,engineer,Jermaine,male,Lindgren,possimus nemo quia,29/05/1996,tn,en
+affiliation,708,not interested,engineer,Jermaine,male,Lindgren,possimus nemo quia,29/05/1996,tn,en
+Telephone prospecting,708,not interested,engineer,Jermaine,male,Lindgren,possimus nemo quia,29/05/1996,tn,en
+affiliation,708,not interested,engineer,Jermaine,male,Lindgren,possimus nemo quia,29/05/1996,tn,en
+Telephone prospecting,708,customer,engineer,Jermaine,male,Lindgren,possimus nemo quia,29/05/1996,tn,en
+Landing page,708,lead,engineer,Jermaine,male,Lindgren,possimus nemo quia,29/05/1996,tn,en
+affiliation,708,customer,engineer,Jermaine,male,Lindgren,possimus nemo quia,29/05/1996,tn,en
+Telephone prospecting,708,lead,engineer,Jermaine,male,Lindgren,possimus nemo quia,29/05/1996,tn,en
+affiliation,708,customer,engineer,Jermaine,male,Lindgren,possimus nemo quia,29/05/1996,tn,en
+Telephone prospecting,708,lead,engineer,Jermaine,male,Lindgren,possimus nemo quia,29/05/1996,tn,en
+affiliation,708,customer,engineer,Jermaine,male,Lindgren,possimus nemo quia,29/05/1996,tn,en
+Landing page,708,lead,engineer,Jermaine,male,Lindgren,possimus nemo quia,29/05/1996,tn,en
+affiliation,708,lead,engineer,Jermaine,male,Lindgren,possimus nemo quia,29/05/1996,tn,en

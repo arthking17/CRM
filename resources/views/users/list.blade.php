@@ -86,8 +86,46 @@
                             </div>
 
 
-                            <div id="view-grid-users" class="row">
-                                @include('users.grid')
+                            <div class="row">
+                                <div class="row d-none" id="view-grid">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="row justify-content-between">
+                                                        <div class="col-auto">
+                                                            <form class="d-flex flex-wrap align-items-center">
+                                                                <label for="inputPassword2"
+                                                                    class="visually-hidden">Search</label>
+                                                                <div class="me-3">
+                                                                    <input type="search" class="form-control my-1 my-lg-0"
+                                                                        id="view-grid-search" placeholder="Search...">
+                                                                </div>
+                                                                <label for="status-select" class="me-2">Sort By</label>
+                                                                <div class="me-sm-3">
+                                                                    <select class="form-select my-1 my-lg-0"
+                                                                        id="view-grid-sort">
+                                                                        <option value="id" selected>All</option>
+                                                                        <option value="username">Username</option>
+                                                                        <option value="role">Role</option>
+                                                                        <option value="status">Status</option>
+                                                                    </select>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div> <!-- end row -->
+                                                </div>
+                                            </div> <!-- end card -->
+                                        </div> <!-- end col-->
+                                    </div>
+                                    <div id="view-grid-users">
+                                        @if (count($users) > 0)
+                                            @include('users.grid')
+                                        @else
+                                            <p class="text-center">No data available in table</p>
+                                        @endif
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="table-responsive" id="view-list" data-simplebar>
@@ -158,29 +196,27 @@
             </div>
             <!-- end row -->
             @include('users.create-modal')
-            @if ($users->count() > 0)
-                @include('users.edit-modal')
-                @include('notes.add_note-modal')
-                @include('notes.edit-note-ext')
-                <div id="logs-div">
-                    @include('users.logs')
-                </div>
-                <div id="users_permissions-div">
-                    @include('permissions.users_permissions')
-                </div>
-                <div id="create-Permission-div">
-                    @include('permissions.create-permission')
-                </div>
-                <div id="security-div">
-                    @include('users.security')
-                </div>
-                <div id="notification-div">
-                    @include('users.notification')
-                </div>
-                <div id="notes-div">
-                    @include('notes.notes-list-modal')
-                </div>
-            @endif
+            @include('users.edit-modal')
+            @include('notes.add_note-modal')
+            @include('notes.edit-note-ext')
+            <div id="create-Permission-div">
+                @include('permissions.create-permission')
+            </div>
+            <div id="security-div">
+                @include('users.security')
+            </div>
+            <div id="notification-div">
+                @include('users.notification')
+            </div>
+            <div id="notes-div">
+                @include('notes.notes-list-modal')
+            </div>
+            <div id="logs-div">
+                @include('users.logs')
+            </div>
+            <div id="users_permissions-div">
+                @include('permissions.users_permissions')
+            </div>
         @endsection
 
         @section('js')
@@ -248,6 +284,9 @@
 
             <!-- users permissions js -->
             <script src="/js/users/users-permissions.js"></script>
+
+            <!-- grid view js -->
+            <script src="/js/users/grid-view.js"></script>
 
             <script>
                 $('.dropify').dropify();

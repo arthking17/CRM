@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="class" class="col-4 col-xl-3 col-form-label">Class<span
+                                <label for="create-note-class" class="col-4 col-xl-3 col-form-label">Class<span
                                         class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">
                                     <select class="form-select @error('class') parsley-error @enderror" name="class"

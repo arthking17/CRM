@@ -44,7 +44,7 @@
                                         </div>
                                         <input type="password" id="edit-user-password-confirm-pwd" name="confirm-pwd"
                                             class="form-control @error('confirm-pwd') parsley-error @enderror"
-                                            placeholder="Re-Enter your password"
+                                            placeholder="Re-Enter your password" data-parsley-equalto="#edit-user-password-pwd"
                                             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$"
                                             data-parsley-pattern-message="This value should be a valid password" required>
                                         @error('confirm-pwd')

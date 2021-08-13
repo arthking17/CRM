@@ -87,8 +87,7 @@
                                                 <td>{{ $account->url }}</td>
                                                 <td>
                                                     @if ($account->status === 1) <span
-                                                        class="badge bg-success">Active</span> @elseif ($account->status
-                                                        === 0)
+                                                        class="badge bg-success">Active</span> @elseif ($account->status === 0)
                                                         <span class="badge label-table bg-danger">Disabled</span>
                                                     @elseif($account->status === 2)
                                                         <span class="badge bg-blue text-light">Legit</span>

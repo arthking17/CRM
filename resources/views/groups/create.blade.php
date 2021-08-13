@@ -32,6 +32,7 @@
                                     <select class="form-select @error('account_id') parsley-error @enderror"
                                         name="account_id" id="create-group-account_id" required
                                         data-parsley-type="integer" data-parsley-length="[1, 10]">
+                                        <option value="">choose an account</option>
                                         @foreach ($accounts as $account)
                                             <option value="{{ $account->id }}">{{ $account->name }}
                                             </option>

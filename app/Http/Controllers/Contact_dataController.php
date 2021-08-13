@@ -47,7 +47,7 @@ class Contact_dataController extends Controller
             'element_id' => 'required|integer|digits_between:1,10',
         ]);
         $contact_data = Contact_data::create($data);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact.data.create', 'element' => 4, 'element_id' => $contact_data->id, 'source' => 'contact.data.create']);
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact.data.create', 'element' => getElementByName('contact_data'), 'element_id' => $contact_data->id, 'source' => 'contact.data.create']);
         return response()->json(['contact_data' => $contact_data, 'success' => 'Contact Data Added']);
     }
 
@@ -111,7 +111,7 @@ class Contact_dataController extends Controller
         ]);
         Contact_data::find($request->id)->update($data);
         $contact_data = Contact_data::find($request->id);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact.data.update', 'element' => 4, 'element_id' => $contact_data->id, 'source' => 'contact.data.update']);
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact.data.update', 'element' => getElementByName('contact_data'), 'element_id' => $contact_data->id, 'source' => 'contact.data.update']);
         return response()->json(['contact_data' => $contact_data, 'success' => 'Contact Data Updated']);
     }
 
@@ -126,7 +126,7 @@ class Contact_dataController extends Controller
         $contact_data = Contact_data::find($id);
         //$contact->status = 3;
         if ($contact_data->delete()) {
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts.data.delete', 'element' => 4, 'element_id' => $id, 'source' => 'contacts.data.delete, ' . $id]);
+            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts.data.delete', 'element' => getElementByName('contact_data'), 'element_id' => $id, 'source' => 'contacts.data.delete, ' . $id]);
             return response()->json(['success' => 'This contact data has been Disabled !!!', 'contact_data' => $contact_data]);
         } else
             return response()->json(['error' => 'Failed to delete this contact !!!']);

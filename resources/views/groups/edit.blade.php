@@ -34,6 +34,7 @@
                                     <select class="form-select @error('account_id') parsley-error @enderror"
                                         name="account_id" id="edit-group-account_id" required
                                         data-parsley-type="integer" data-parsley-length="[1, 10]">
+                                        <option value="">choose an account</option>
                                         @foreach ($accounts as $account)
                                             <option value="{{ $account->id }}">{{ $account->name }}
                                             </option>
@@ -71,7 +72,7 @@
                         </div>
                         <!-- end row-->
                         <button type="submit" id="btn-edit" class="btn btn-info waves-effect waves-light">Save</button>
-                        <a id="btn-delete" href="javascript: void(0);" onclick="$('#edit-modal').modal('toggle')"
+                        <a href="javascript: void(0);" onclick="$('#edit-modal').modal('toggle')"
                             class="btn btn-light waves-effect waves-light m-1"><i class="fe-x me-1"></i>Cancel</a>
                     </form>
                 </div>

@@ -107,13 +107,13 @@ function viewDatatableNotes(user_id) {
         dataTableNotes.destroy()
         $('#notes-div').empty().html(data);
         dataTableNotes = $('#datatable-notes').DataTable({
-                stateSave: !0,
-                language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
-                drawCallback: function() {
-                    $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
-                },
-            }),
-            $('#notes-modal').modal('toggle')
+            stateSave: !0,
+            language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
+            drawCallback: function() {
+                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+            },
+        });
+        $('#notes-modal').modal('toggle')
     })
 }
 

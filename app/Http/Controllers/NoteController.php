@@ -52,7 +52,7 @@ class NoteController extends Controller
             'element_id' => 'required|integer|digits_between:1,10',
         ]);
         $note = Note::create($data);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'note.create', 'element' => 13, 'element_id' => $note->id, 'source' => 'note.create']);
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'note.create', 'element' => getElementByName('notes'), 'element_id' => $note->id, 'source' => 'note.create']);
         $notes = Note::All();
         $returnHTML = view('notes/datatable-notes', compact('notes'))->render();
         return response()->json(['success' => 'This note has been added !!!', 'html' => $returnHTML, 'note' => $note]);
@@ -95,7 +95,7 @@ class NoteController extends Controller
      */
     public function show(int $element_id, int $element)
     {
-        $notes = DB::table('notes')->where('element_id', $element_id)->get();
+        $notes = DB::table('notes')->where('element_id', $element_id)->where('element', $element)->get();
         if ($element == 5) {
             $contact = Contact::find($element_id);
             return view('notes.notes-info-card', compact('notes', 'contact'))->render();
@@ -135,7 +135,7 @@ class NoteController extends Controller
         ]);
         $note = Note::find($request->id);
         $note->update($data);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'note.update', 'element' => 13, 'element_id' => $note->id, 'source' => 'note.update']);
+        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'note.update', 'element' => getElementByName('notes'), 'element_id' => $note->id, 'source' => 'note.update']);
         $notes = Note::All();
         $returnHTML = view('notes/datatable-notes', compact('notes'))->render();
         return response()->json(['success' => 'This note has been updated !!!', 'html' => $returnHTML, 'note' => $note]);
@@ -151,7 +151,7 @@ class NoteController extends Controller
     {
         $note = Note::find($id);
         if ($note->delete()) {
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'notes.delete', 'element' => 13, 'element_id' => $id, 'source' => 'notes.delete, ' . $id]);
+            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'notes.delete', 'element' => getElementByName('notes'), 'element_id' => $id, 'source' => 'notes.delete, ' . $id]);
             $notes = Note::All();
             $returnHTML = view('notes/datatable-notes', compact('notes'))->render();
             return response()->json(['success' => 'This note has been Deleted !!!', 'html' => $returnHTML, 'note' => $note]);

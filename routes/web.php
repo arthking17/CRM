@@ -44,17 +44,16 @@ Route::get('/users', 'UserController@index')->name('users');
 //route to get user in format json
 Route::get('/users/get/{id}/{modal}', 'UserController@getUserJsonById')->name('user.get');
 //route to get user permissions in format json
-Route::get('/users/permissions/get/{id}/{modal}', 'Users_PermissionController@getUserPermissionsJsonById')->name('user.permissions.get');
+Route::get('/users/permissions/get/{user_id}/{modal}', 'Users_PermissionController@getUserPermissionsJsonByUserId')->name('user.permissions.get');
 //create note
 //Route::post('/note/create', 'NoteController@store')->name('note.create');
 //create permission
 Route::post('/permission/create', 'Users_PermissionController@store')->name('users_permission.create');
 //pagination user
-Route::get('/users/pagination/fetch_data', 'UserController@fetch_data')->name('user.pagination');
-//modal logs permissions notification note list by user
+Route::get('/users/grid-view', 'UserController@getGridView')->name('user.pagination');
+//modal logs permissions notification list by user
 Route::get('/users/logs/get/{user_id}/{modal}', 'UserController@listLogs')->name('user.logs');
 Route::get('/users/users_permissions/get/{user_id}', 'UserController@listUsers_Permissions')->name('user.users_permissions');
-Route::get('/notes/get/{element_id}', 'NoteController@listNotes')->name('notes.get');
 //delete users_permissions
 Route::delete('/users_permission/delete/{user_id}/{code}', 'Users_PermissionController@destroy')->name('users_permission.delete');
 
@@ -68,9 +67,12 @@ Route::get('/contacts/get/{id}/{modal}', 'ContactController@getContactJsonById')
 Route::put('/contacts/update', 'ContactController@update')->name('contacts.update');
 Route::put('/contacts/logo/update', 'ContactController@updateContactCompanieLogo')->name('contacts.logo.update');
 Route::delete('/contacts/delete/{id}', 'ContactController@destroy')->name('contacts.delete');
+Route::get('/contacts/id/{id}', 'ContactController@findContactId')->name('contacts.id');
+Route::get('/contacts/source_id/{source_id}', 'ContactController@getContactsSourceId')->name('contacts.source_id');
 
-Route::view('contacts/upload', 'contacts/upload')->name('contacts.upload');
-Route::post('contacts/upload', 'ContactController@upload')->name('contacts.upload');
+Route::get('contacts/upload', 'ContactController@uploadForm')->name('contacts.import');
+Route::post('contacts/upload/preview', 'ContactController@previewContactsImport')->name('contacts.upload.preview');
+Route::post('contacts/upload/{skipErrors}', 'ContactController@upload')->name('contacts.upload');
 
 Route::get('/contacts/search', 'ContactController@searchForm')->name('contacts.search');
 Route::post('/contacts/search', 'ContactController@search')->name('contacts.search');
@@ -94,3 +96,19 @@ Route::get('/notes/get/{id}/{modal}', 'NoteController@getNoteJsonById')->name('n
 Route::put('/notes/update', 'NoteController@update')->name('notes.update');
 Route::delete('/notes/delete/{id}', 'NoteController@destroy')->name('notes.delete');
 Route::get('/notes/element/{element_id}/{element}', 'NoteController@show')->name('notes.element');
+Route::get('/notes/get/{element_id}', 'NoteController@listNotes')->name('notes.get');
+
+//route for custom fields
+Route::get('/contacts/custom-fields', 'CustomFieldController@index')->name('custom-fields');
+Route::get('/contacts/custom-fields/get/{id}', 'CustomFieldController@edit')->name('custom-fields.get');
+Route::post('/contacts/custom-fields/create', 'CustomFieldController@store')->name('custom-fields.create');
+Route::put('/contacts/custom-fields/update', 'CustomFieldController@update')->name('custom-fields.update');
+Route::delete('/contacts/custom-fields/delete/{id}', 'CustomFieldController@destroy')->name('custom-fields.delete');
+
+//route for contacts fields 
+Route::delete('/contacts/field/file/{id}', 'CustomFieldController@deleteContactFieldFile')->name('contacts_field_file.delete');
+
+//route for login
+Route::get('login', 'LoginController@index')->name('login');
+Route::post('authenticate', 'LoginController@authenticate')->name('login.authenticate');
+Route::get('signout', 'LoginController@signOut')->name('signout');

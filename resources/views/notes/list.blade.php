@@ -115,11 +115,9 @@
                         </div>
                     </div> <!-- end card -->
                 </div> <!-- end col -->
-                @if ($notes->count() > 0)
-                    <div class="col-lg-4" id="note-info-card">
-                        @include('notes.note-info')
-                    </div>
-                @endif
+                <div class="col-lg-4" id="note-info-card">
+                    @include('notes.note-info')
+                </div>
             </div>
             <!-- end row -->
             @include('notes.create')

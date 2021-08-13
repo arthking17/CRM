@@ -48,28 +48,20 @@
                                     </div>
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="create-user-pwd" class="col-4 col-xl-3 col-form-label">password<span
-                                            class="text-danger">*</span></label>
+                                    <label for="create-user-pwd" class="col-4 col-xl-3 col-form-label">password</label>
                                     <div class="col-8 col-xl-9">
-                                        <input type="password"
-                                            class="form-control @error('pwd') parsley-error @enderror" name="pwd" id="create-user-pwd"
-                                            placeholder="password" required data-parsley-minlength="3"
-                                            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$"
-                                            data-parsley-pattern-message="This value should be a valid password">
-                                        @error('pwd')
-                                            <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                <li class="parsley-required">{{ $errors->first('pwd') }}</li>
-                                            </ul>
-                                        @else
-                                            <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-8 offset-4">
-                                        <div class="checkbox checkbox-purple">
-                                            <input id="create-user-showpwd" type="checkbox" onclick="showPassword('create-user-pwd');">
-                                            <label for="create-user-showpwd">Show password</label>
+                                        <div class="input-group input-group-merge">
+                                            <div class="input-group-text" data-password="false">
+                                                <span class="password-eye"></span>
+                                            </div>
+                                            <input type="password" id="create-user-pwd" name="pwd" class="form-control @error('pwd') parsley-error @enderror"
+                                            placeholder="Enter your password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$"
+                                                data-parsley-pattern-message="This value should be a valid password" required>
+                                            @error('pwd')
+                                                <div class="invalid-feedback">
+                                                    {{ $errors->first('pwd') }}
+                                                </div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -122,6 +114,7 @@
                                     <div class="col-8 col-xl-9">
                                         <select class="form-select @error('account_id') parsley-error @enderror"
                                             name="account_id" id="create-user-account_id" required data-parsley-type="integer" data-parsley-length="[1, 10]">
+                                            <option value="">select an account</option>
                                             @foreach ($accounts as $account)
                                                 <option value="{{ $account->id }}">{{ $account->name }}
                                                 </option>

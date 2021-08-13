@@ -65,7 +65,7 @@
                                     <thead>
                                         <tr>
                                             <th>id</th>
-                                            <th>user_id</th>
+                                            <th>user</th>
                                             <th>log_date</th>
                                             <th>action</th>
                                             <th>element</th>
@@ -78,7 +78,7 @@
                                             @foreach ($logs as $log)
                                                 <tr>
                                                     <td>{{ $log->id }}</td>
-                                                    <td>{{ $log->user[0]->username }}</td>
+                                                    <td> @php try{ $username = $log->user[0]->username;} catch (Exception $e) { $username = "no user";} @endphp {{ $username }}</td>
                                                     <td>{{ $log->log_date }}</td>
                                                     <td>{{ $log->action }}</td>
                                                     <td>{{ getElementName($log->element) }}</td>
@@ -91,7 +91,7 @@
                                     <tfoot>
                                         <tr>
                                             <th>id</th>
-                                            <th>user_id</th>
+                                            <th>user</th>
                                             <th>log_date</th>
                                             <th class="select">action</th>
                                             <th class="select">element</th>

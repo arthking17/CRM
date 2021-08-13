@@ -12,40 +12,16 @@ if (!function_exists('page_title')) {
 if (!function_exists('getElementName')) {
     function getElementName($element): string
     {
-        if ($element == 1)
-            return "accounts";
-        if ($element == 2)
-            return "appointments";
-        if ($element == 3)
-            return "communications";
-        if ($element == 4)
-            return "contact_data";
-        if ($element == 5)
-            return "contacts";
-        if ($element == 6)
-            return "contacts_companies";
-        if ($element == 7)
-            return "contacts_persons";
-        if ($element == 8)
-            return "email_accounts";
-        if ($element == 9)
-            return "fax_accounts";
-        if ($element == 10)
-            return "groups";
-        if ($element == 11)
-            return "imports";
-        if ($element == 12)
-            return "logs";
-        if ($element == 13)
-            return "notes";
-        if ($element == 14)
-            return "sip_accounts";
-        if ($element == 15)
-            return "sms_accounts";
-        if ($element == 16)
-            return "users";
-        if ($element == 17)
-            return "users_permissions";
+        $elements = ["accounts", "appointments", "communications", "contact_data", "contacts", "contacts_companies", "contacts_field", "contacts_persons", "custom_field", "email_accounts", "fax_accounts", "groups", "imports", "logs", "notes", "sip_accounts", "sms_accounts", "users", "users_permissions"];
+        return $elements[$element];
+    }
+}
+
+if (!function_exists('getElementByName')) {
+    function getElementByName($element): int
+    {
+        $elements = ["accounts", "appointments", "communications", "contact_data", "contacts", "contacts_companies", "contacts_field", "contacts_persons", "custom_field", "email_accounts", "fax_accounts", "groups", "imports", "logs", "notes", "sip_accounts", "sms_accounts", "users", "users_permissions"];
+       return array_search(strtolower($element), $elements);
     }
 }
 
@@ -64,26 +40,8 @@ if (!function_exists('getNoteClassName')) {
 if (!function_exists('getContactTypeByClass')) {
     function getContactTypeByClass($contactClass): string
     {
-        if ($contactClass == 0)
-            return "phone_number";
-        if ($contactClass == 1)
-            return "mobile";
-        if ($contactClass == 2)
-            return "fax_number";
-        if ($contactClass == 3)
-            return "email";
-        if ($contactClass == 4)
-            return "facebook";
-        if ($contactClass == 5)
-            return "instagram";
-        if ($contactClass == 6)
-            return "skype";
-        if ($contactClass == 7)
-            return "whatsapp";
-        if ($contactClass == 8)
-            return "viber";
-        if ($contactClass == 9)
-            return "messenger";
+        $contacts_class = ["phone_number", "mobile", "fax_number", "email", "facebook", "instagram", "skype", "whatsapp", "viber", "messenger"];
+        return $contacts_class[$contactClass];
     }
 }
 
@@ -100,5 +58,59 @@ if (!function_exists('getCompanieClassName')) {
             return "Holding and Subsidiary Companies";
         if ($class == 5)
             return "Associate Companies";
+    }
+}
+
+if (!function_exists('getCompanieClassByName')) {
+    function getCompanieClassByName($class)
+    {
+        if (str_replace(' ', '_', strtolower($class)) == "one_person_companies")
+            return 1;
+        else if (str_replace(' ', '_', strtolower($class)) == "private_companies")
+            return 2;
+        else if (str_replace(' ', '_', strtolower($class)) == "public_companies")
+            return 3;
+        else if (str_replace(' ', '_', strtolower($class)) == "holding_and_subsidiary_companies")
+            return 4;
+        else if (str_replace(' ', '_', strtolower($class)) == "associate_companies")
+            return 5;
+    }
+}
+
+if (!function_exists('getSourceByName')) {
+    function getSourceByName($source)
+    {
+        if (str_replace(' ', '_', strtolower($source)) == "telephone_prospecting")
+            return 1;
+        else if (str_replace(' ', '_', strtolower($source)) == "landing_page")
+            return 2;
+        else if (strtolower($source) == "affiliation")
+            return 3;
+        else if (str_replace(' ', '_', strtolower($source)) == "database_purchased")
+            return 4;
+    }
+}
+
+if (!function_exists('getStatusByName')) {
+    function getStatusByName($status)
+    {
+        if (strtolower($status) == "lead")
+            return 1;
+        else if (strtolower($status) == "customer")
+            return 2;
+        else if (str_replace(' ', '_', strtolower($status)) == "not_interested")
+            return 3;
+    }
+}
+
+if (!function_exists('getProfileByName')) {
+    function getProfileByName($profile)
+    {
+        if (strtolower($profile) == "engineer")
+            return 1;
+        else if (strtolower($profile) == "designer")
+            return 2;
+        else if (strtolower($profile) == "businessman")
+            return 3;
     }
 }
