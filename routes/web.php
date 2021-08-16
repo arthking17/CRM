@@ -96,7 +96,7 @@ Route::get('/notes/get/{id}/{modal}', 'NoteController@getNoteJsonById')->name('n
 Route::put('/notes/update', 'NoteController@update')->name('notes.update');
 Route::delete('/notes/delete/{id}', 'NoteController@destroy')->name('notes.delete');
 Route::get('/notes/element/{element_id}/{element}', 'NoteController@show')->name('notes.element');
-Route::get('/notes/get/{element_id}', 'NoteController@listNotes')->name('notes.get');
+Route::get('/notes/get/element/{element_id}/{element}', 'NoteController@listNotes')->name('notes.get');
 
 //route for custom fields
 Route::get('/contacts/custom-fields', 'CustomFieldController@index')->name('custom-fields');
@@ -112,3 +112,19 @@ Route::delete('/contacts/field/file/{id}', 'CustomFieldController@deleteContactF
 Route::get('login', 'LoginController@index')->name('login');
 Route::post('authenticate', 'LoginController@authenticate')->name('login.authenticate');
 Route::get('signout', 'LoginController@signOut')->name('signout');
+
+//route for appointments
+Route::get('/appointments', 'AppointmentController@index')->name('appointments');
+Route::get('/appointments/all', 'AppointmentController@getAllAppointments')->name('appointments.all');
+Route::get('/appointments/get/{id}', 'AppointmentController@getAppointment')->name('appointments.get');
+Route::post('/appointments/create', 'AppointmentController@store')->name('appointments.create');
+Route::put('/appointments/update', 'AppointmentController@update')->name('appointments.update');
+Route::delete('/appointments/delete/{id}', 'AppointmentController@destroy')->name('appointments.delete');
+
+//route for communications
+Route::get('/communications', 'CommunicationController@index')->name('communications');
+Route::get('/communications/get/{id}', 'CommunicationController@getCommunication')->name('communications.get');
+Route::get('/communications/show/{id}', 'CommunicationController@show')->name('communications.show');
+Route::post('/communications/create', 'CommunicationController@store')->name('communications.create');
+Route::put('/communications/update', 'CommunicationController@update')->name('communications.update');
+Route::delete('/communications/delete/{id}', 'CommunicationController@destroy')->name('communications.delete');

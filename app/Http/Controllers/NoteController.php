@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Communication;
 use App\Models\Contact;
 use App\Models\Log;
 use App\Models\Note;
@@ -48,7 +49,7 @@ class NoteController extends Controller
             'class' => 'required|integer|digits_between:1,1',
             'visibility' => 'required|integer|digits_between:1,1',
             'content' => 'required',
-            'element' => 'required|integer|min:0|max:16',
+            'element' => 'required|integer|min:0|max:19',
             'element_id' => 'required|integer|digits_between:1,10',
         ]);
         $note = Note::create($data);
@@ -61,10 +62,11 @@ class NoteController extends Controller
     /**
      * list Notes
      */
-    public function listNotes($element_id)
+    public function listNotes($element_id, $element)
     {
         $notes = Note::all()
-            ->where('element_id', $element_id);
+            ->where('element_id', $element_id)
+            ->where('element', $element);
         return view('notes/notes-list-modal', compact('notes'))->render();
     }
 
@@ -96,12 +98,16 @@ class NoteController extends Controller
     public function show(int $element_id, int $element)
     {
         $notes = DB::table('notes')->where('element_id', $element_id)->where('element', $element)->get();
-        if ($element == 5) {
+        $elementClass = $element;
+        if ($element == 4) {
             $contact = Contact::find($element_id);
-            return view('notes.notes-info-card', compact('notes', 'contact'))->render();
-        } else if ($element == 16) {
+            return view('notes.notes-info-card', compact('notes', 'contact', 'elementClass'))->render();
+        } else if ($element == 17) {
             $user = User::find($element_id);
-            return view('notes.notes-info-card', compact('notes', 'user'))->render();
+            return view('notes.notes-info-card', compact('notes', 'user', 'elementClass'))->render();
+        }else if($element == 2){
+            $element = Communication::find($element_id);
+            return view('notes.notes-info-card', compact('notes', 'element', 'elementClass'))->render();
         }
     }
 
@@ -130,7 +136,7 @@ class NoteController extends Controller
             'class' => 'required|integer|digits_between:1,1',
             'visibility' => 'required|integer|digits_between:1,1',
             'content' => 'required',
-            'element' => 'required|integer|min:0|max:16',
+            'element' => 'required|integer|min:0|max:19',
             'element_id' => 'required|integer|digits_between:1,10',
         ]);
         $note = Note::find($request->id);

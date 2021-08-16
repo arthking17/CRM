@@ -93,7 +93,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="row mb-3">
+                            <div class="row mb-3 d-none" id="create-custom-field-options">
                                 <label for="create-custom-field-select_option"
                                     class="col-4 col-xl-3 col-form-label">Option</label>
                                 <div class="col-8 col-xl-9">

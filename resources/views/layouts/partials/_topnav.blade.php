@@ -30,6 +30,16 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('appointments') }}" id="topnav-dashboard" role="button">
+                            <i class="fe-calendar me-1"></i> Appointments
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('communications') }}" id="topnav-dashboard" role="button">
+                            <i class="mdi mdi-cellphone-message me-1"></i> Communication
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('users.groups') }}" id="topnav-dashboard" role="button">
                             <i class="fe-layers me-1"></i> Groups
                         </a>

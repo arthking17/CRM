@@ -239,6 +239,8 @@
             </div>
             @include('contacts.custom-fields.create')
             @include('contacts.custom-fields.edit')
+            
+            @include('appointments.create')
         @endsection
 
         @section('js')
@@ -331,6 +333,9 @@
 
             <script src="/js/contacts/custom-fields/form-create.js"></script>
             <script src="/js/contacts/custom-fields/custom-fields.js"></script>
+
+            <!-- appointments -->
+            <script src="/js/appointments/ajax-crud.js"></script>
             <script>
                 url_logo = '{{ URL::asset('/storage/images/logo/') }}';
                 url_custom_field = '{{ URL::asset('/storage/custom_field/') }}';
@@ -350,6 +355,7 @@
                 var skipErrors = 0
                 var errors_create_custom_field = null
                 var errors_edit_custom_field = null
+                var create_appointment_errors = null
             </script>
             <!-- custom js files end -->
 

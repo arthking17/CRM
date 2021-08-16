@@ -97,6 +97,7 @@ function viewContact(id, type) {
                     return title;
                 },
             });
+            viewNotes(id, response.elementClass)
         } catch (e) {
             Swal.fire({ icon: "error", title: 'error !!!', showConfirmButton: !1, timer: 1500 });
             $('#contacts_info_not_found').removeClass('d-none')
@@ -110,7 +111,6 @@ function viewContact(id, type) {
         $('#contacts_person-info-card').addClass('d-none')
         $('#contacts_companie-info-card').addClass('d-none')
     })
-    viewNotes(id, 5)
     viewContactData(id)
 }
 
@@ -252,4 +252,9 @@ function deleteContact(id) {
                 e.dismiss === Swal.DismissReason.cancel && Swal.fire({ title: "Cancelled", text: "Operation canceled :)", icon: "error", confirmButtonColor: "#4a4fea" });
         }
     );
+}
+
+function viewFormCreateAppointment(contact_id, user_id) {
+    $('#create-appointment-contact_id').val(contact_id)
+    $('#create-appointment-user_id').val(user_id)
 }

@@ -88,10 +88,10 @@ function viewInfoCardUser(id) {
 
 function viewUser(id) {
     $.get('/users/get/' + id + '/0', function(data) {
-        $('#user-info-card').empty().html(data);
+        $('#user-info-card').empty().html(data.html);
         viewUsers_Permissions(id)
         viewLogsInCard(id)
-        viewNotes(id, 16)
+        viewNotes(id, data.elementClass)
         tippy('[title]', {
             // change these to your liking
             arrow: true,

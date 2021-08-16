@@ -41,9 +41,10 @@ class ContactController extends Controller
         $custom_fields = Custom_field::where('status', 1)->get();
         $select_options = DB::table('custom_select_fields')->join('custom_fields', 'field_id', '=', 'custom_fields.id')->select('custom_select_fields.*')->where('status', 1)->get();
         $contact_field = [];
+        $users = DB::table('users')->select('id', 'username')->get();
         if ($contacts->count() > 0) {
             $contact_datas = Contact_data::all()->where('element_id', $contacts->first()->id);
-            $notes = DB::table('notes')->where('element_id', $contacts->first()->id)->get();
+            $notes = DB::table('notes')->where('element_id', $contacts->first()->id)->where('element', getElementByName('contacts'))->get();
             if ($contacts->first()->class == 1)
                 $contact = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')->where('contacts.id', $contacts->first()->id)->get();
             else if ($contacts->first()->class == 2)
@@ -64,6 +65,8 @@ class ContactController extends Controller
             'custom_fields' => $custom_fields,
             'select_options' => $select_options,
             'contact_field' => $contact_field,
+            'users' => $users,
+            'elementClass' => getElementByName('contacts'),
         ]);
     }
 
@@ -113,7 +116,7 @@ class ContactController extends Controller
                     $contact = $contacts_person[0];
                     if ($modal == 0) {
                         $returnHTML = view('contacts/contacts_person-info', compact('contact', 'accounts', 'contact_field'))->render();
-                        return response()->json(['success' => 'Contact Person found', 'html' => $returnHTML]);
+                        return response()->json(['success' => 'Contact Person found', 'html' => $returnHTML, 'elementClass' => getElementByName('contacts')]);
                     } else if ($modal == 1)
                         return response()->json(['contact' => $contact, 'contact_field' => $contact_field, 'custom_fields' => $custom_fields]);
                 } else
@@ -127,7 +130,7 @@ class ContactController extends Controller
                     //dd($companie);
                     if ($modal == 0) {
                         $returnHTML = view('contacts/contacts_companie-info', compact('contact', 'accounts', 'contact_field'))->render();
-                        return response()->json(['success' => 'Contact Companie found', 'html' => $returnHTML]);
+                        return response()->json(['success' => 'Contact Companie found', 'html' => $returnHTML, 'elementClass' => getElementByName('contacts')]);
                     } else if ($modal == 1)
                         return response()->json(['contact' => $contact, 'contact_field' => $contact_field, 'custom_fields' => $custom_fields]);
                 } else

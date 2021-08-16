@@ -44,7 +44,7 @@ class UserController extends Controller
             $users_permissions = Users_permission::all()
                 ->where('user_id', $user->id);
             $notes = DB::table('notes')
-                ->where('element', 16)->where('element_id', $user->id)->get();
+                ->where('element', getElementByName('users'))->where('element_id', $user->id)->get();
         }
 
         Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users.show', 'element' => getElementByName('users'), 'element_id' => 0, 'source' => 'users']);
@@ -56,7 +56,8 @@ class UserController extends Controller
             'logs' => $logs,
             'users_permissions' => $users_permissions,
             'notes' => $notes,
-            'accounts' => $accounts
+            'accounts' => $accounts,
+            'elementClass' => getElementByName('users'),
         ]);
     }
 
@@ -157,8 +158,10 @@ class UserController extends Controller
         $accounts = DB::table('accounts')
             ->orderBy('id', 'desc')
             ->get();
-        if ($modal == 0)
-            return view('users/user-info', compact('user'))->render();
+        if ($modal == 0) {
+            $returnHTML = view('users/user-info', compact('user'))->render();
+            return response()->json(['success' => 'User found', 'html' => $returnHTML, 'elementClass' => getElementByName('users')]);
+        }
         if ($modal == 1)
             return response()->json($user);
         //return response()->json($user);

@@ -77,10 +77,10 @@
             @isset($element)
                 <div class="text-center">
                     <a href="javascript: void(0);" class="btn- btn-xs btn-success"
-                        onclick="viewFomAddNote({{ $element->id }}, @if (isset($contact)) 5 @elseif(isset($user)) 16 @endif)" data-bs-toggle="modal"
+                        onclick="viewFomAddNote({{ $element->id }}, {{ $elementClass }})" data-bs-toggle="modal"
                         data-bs-target="#add_note-modal"><i class="mdi mdi-plus-circle me-1"></i>Add note</a>
                     <a href="javascript: void(0);" class="btn- btn-xs" data-bs-toggle="" data-bs-target="#notes-modal"
-                        onclick="viewDatatableNotes({{ $element->id }});"><i class="mdi mdi-plus-circle me-1"></i>more
+                        onclick="viewDatatableNotes({{ $element->id }}, {{ $elementClass }});"><i class="mdi mdi-plus-circle me-1"></i>more
                         details</a><br><br>
                 </div>
             @endisset

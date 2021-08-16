@@ -82,8 +82,8 @@ function viewFomAddNote(element_id, element) {
     $("#create-note-element").val(element);
 }
 
-function viewFomEditNote(element_id) {
-    $.get('/notes/get/' + element_id + '/1', function(note) {
+function viewFomEditNote(id) {
+    $.get('/notes/get/' + id + '/1', function(note) {
         console.log(note)
         $("#edit-note-id").val(note.id);
         $("#edit-note-element_id").val(note.element_id);
@@ -102,8 +102,8 @@ function viewNotes(element_id, element) {
     })
 }
 
-function viewDatatableNotes(user_id) {
-    $.get('/notes/get/' + user_id, function(data) {
+function viewDatatableNotes(element_id, element) {
+    $.get('/notes/get/element/' + element_id + '/' + element, function(data) {
         dataTableNotes.destroy()
         $('#notes-div').empty().html(data);
         dataTableNotes = $('#datatable-notes').DataTable({

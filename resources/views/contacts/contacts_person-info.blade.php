@@ -22,6 +22,8 @@
                         <a id="delete-{{ $contact->id }}" class="btn- btn-xs btn-danger js--tippy" title="Delete Contact"
                             href="javascript: void(0);" onclick="deleteContact({{ $contact->id }});"><i
                                 class="mdi mdi-delete-circle"></i></a>
+                        <a class="btn- btn-xs btn-info" title="Add Appointment" data-bs-toggle="modal" data-bs-target="#create-appointment-modal"
+                            href="javascript: void(0);" onclick="viewFormCreateAppointment('{{ $contact->id }}', '4')"><i class="mdi mdi-calendar-plus"></i></a>
                     </div>
                 @endif
             @endisset

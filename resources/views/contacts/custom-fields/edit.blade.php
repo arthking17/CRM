@@ -94,10 +94,11 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="row mb-3">
+                            <div class="row mb-3 d-none" id="edit-custom-field-options">
                                 <label for="edit-custom-field-select_option"
                                     class="col-4 col-xl-3 col-form-label">Option</label>
                                 <div class="col-8 col-xl-9">
+                                    <p class="text-muted font-13">(Respect the <code>default order</code>, option are separated by <code>comma ','</code>)</p>
                                     <input type="text" class="form-control @error('select_option') parsley-error @enderror"
                                         name="select_option" id="edit-custom-field-select_option">
                                     @error('select_option')

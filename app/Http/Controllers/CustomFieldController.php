@@ -113,8 +113,15 @@ class CustomFieldController extends Controller
                 'select_option' => 'required|string',
             ]);
             $options = explode(",", $request->select_option);
+            $select_options = Custom_select_field::where('field_id', $request->id)->get();
             foreach ($options as $key => $opt) {
-                //Custom_select_field::create(['field_id' => $custom_field->id, 'title' => $opt]);
+                if($key < $select_options->count()){
+                    $select_option = Custom_select_field::find($select_options[$key]->id);
+                    $select_option->title = $opt;
+                    $select_option->save();
+                }else{
+                    Custom_select_field::create(['field_id' => $custom_field->id, 'title' => $opt]);
+                }
             }
         } else
             $custom_field->update($data);

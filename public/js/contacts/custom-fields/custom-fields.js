@@ -1,4 +1,10 @@
 $(document).ready(function() {
+    $('#create-custom-field-field_type').on('click', function() {
+        if ($(this).val() == 'select')
+            $('#create-custom-field-options').removeClass('d-none')
+        else
+            $('#create-custom-field-options').addClass('d-none')
+    })
     $('#btn-edit-custom-field').on('click', function() {
         cleanErrorsInForm('edit-custom-field', errors_edit_custom_field)
         errors_edit_custom_field = null
@@ -108,9 +114,10 @@ function editCustomField(id) {
         $('#edit-custom-field-name').val(data.custom_field.name)
         $('#edit-custom-field-field_type').val(data.custom_field.field_type)
         $('#edit-custom-field-tag').val(data.custom_field.tag)
+        $('#edit-custom-field-options').addClass('d-none')
         if (data.custom_field.field_type == 'select') {
             var options = [];
-
+            $('#edit-custom-field-options').removeClass('d-none');
             /*var $select = $('#edit-custom-field-select_option').selectize({
                 create: true,
                 options: ['ddd'],
