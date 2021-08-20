@@ -15,9 +15,9 @@ $(document).ready(function() {
         drawCallback: function() {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
         },
-        columnDefs: [{ targets: 5, className: "truncate" }],
+        columnDefs: [{ targets: 5, className: "truncate-td" }],
         createdRow: function(row) {
-            var td = $(row).find(".truncate");
+            var td = $(row).find(".truncate-td");
             td.attr("title", td.html());
         }
     });

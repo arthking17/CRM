@@ -8,6 +8,7 @@ use App\Models\Log;
 use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AppointmentController extends Controller
@@ -60,7 +61,7 @@ class AppointmentController extends Controller
         //$user = array('user_id' => 4);
         //$data = array_merge($data,  $user);
         $appointment = Appointment::create($data);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'appointments.create', 'element' => getElementByName('appointments'), 'element_id' => $appointment->id, 'source' => 'appointments.create']);
+        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'appointments.create', 'element' => getElementByName('appointments'), 'element_id' => $appointment->id, 'source' => 'appointments.create']);
         
         $appointments = Appointment::all();
         $returnHTML = view('appointments/list', compact('appointments'))->render();
@@ -113,7 +114,7 @@ class AppointmentController extends Controller
         
         $appointment = Appointment::find($request->id);
         $appointment->update($data);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'appointments.update', 'element' => getElementByName('appointments'), 'element_id' => $appointment->id, 'source' => 'appointments.update']);
+        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'appointments.update', 'element' => getElementByName('appointments'), 'element_id' => $appointment->id, 'source' => 'appointments.update']);
         
         $appointments = Appointment::all();
         $returnHTML = view('appointments/list', compact('appointments'))->render();
@@ -131,7 +132,7 @@ class AppointmentController extends Controller
         $appointment = Appointment::find($id);
         $appointment->status = 0;
         if ($appointment->save()) {
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'appointments.delete', 'element' => getElementByName('appointments'), 'element_id' => $id, 'source' => 'appointments.delete, ' . $id]);
+            Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'appointments.delete', 'element' => getElementByName('appointments'), 'element_id' => $id, 'source' => 'appointments.delete, ' . $id]);
             return response()->json(['success' => 'Appointment Deleted !!!', 'appointment' => $appointment]);
         } else
             return response()->json(['error' => 'Failed to delete this Appointment !!!']);

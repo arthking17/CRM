@@ -6,6 +6,7 @@ use App\Models\Account;
 use App\Models\Log;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AccountController extends Controller
@@ -19,7 +20,7 @@ class AccountController extends Controller
     {
         $accounts = Account::All();
 
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'accounts.show', 'element' => getElementByName('accounts'), 'element_id' => 0, 'source' => 'accounts']);
+        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'accounts.show', 'element' => getElementByName('accounts'), 'element_id' => 0, 'source' => 'accounts']);
 
         return view('accounts.list', [
             'accounts' => $accounts,
@@ -53,7 +54,7 @@ class AccountController extends Controller
         $url = $request->input('url');
         $status = $request->input('status');
         $account = Account::create(['name' => $name, 'url' => $url, 'status' => $status, 'start_date' => today()]);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'account.create', 'element' => getElementByName('accounts'), 'element_id' => $account->id, 'source' => 'account.create']);
+        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'account.create', 'element' => getElementByName('accounts'), 'element_id' => $account->id, 'source' => 'account.create']);
         $accounts = Account::All();
         $returnHTML = view('accounts/datatable-accounts', compact('accounts'))->render();
         return response()->json(['success' => 'Account has been Added !!!', 'html' => $returnHTML, 'account' => $account]);
@@ -115,7 +116,7 @@ class AccountController extends Controller
         $account->url = $request->input('url');
         $account->status = $request->input('status');
         $account->save();
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'account.update', 'element' => getElementByName('accounts'), 'element_id' => $account->id, 'source' => 'account.update']);
+        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'account.update', 'element' => getElementByName('accounts'), 'element_id' => $account->id, 'source' => 'account.update']);
         $accounts = Account::All();
         $returnHTML = view('accounts/datatable-accounts', compact('accounts'))->render();
         return response()->json(['success' => 'Account has been Updated !!!', 'html' => $returnHTML, 'account' => $account]);
@@ -134,7 +135,7 @@ class AccountController extends Controller
         $account->status = 0;
         $account->end_date = today();
         if ($account->save()) {
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'account.delete', 'element' => getElementByName('accounts'), 'element_id' => $account->id, 'source' => 'account.delete, ' . $id]);
+            Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'account.delete', 'element' => getElementByName('accounts'), 'element_id' => $account->id, 'source' => 'account.delete, ' . $id]);
             $accounts = Account::All();
             $returnHTML = view('accounts/datatable-accounts', compact('accounts'))->render();
             return response()->json(['success' => 'Account has been Disabled !!!', 'html' => $returnHTML, 'account' => $account]);

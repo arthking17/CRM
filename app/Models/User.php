@@ -11,11 +11,11 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     /**
-    * The attributes that aren't mass assignable.
-    *
-    * @var array
-    */
-   protected $guarded = [];
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -32,6 +32,23 @@ class User extends Authenticatable
      * @var bool
      */
     public $timestamps = false;
+
+    /**
+     * Get the password for the user.
+     *
+     * @return string
+     */
+    public function getAuthPassword()
+    {
+        return $this->pwd;
+    }
+    
+    /**
+     * Indicates if the model should be rememberToken.
+     *
+     * @var bool
+     */
+    public $rememberTokenName = false;
 
     /**
      * Get the account record associated with the user.

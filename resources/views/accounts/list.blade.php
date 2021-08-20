@@ -87,7 +87,8 @@
                                                 <td>{{ $account->url }}</td>
                                                 <td>
                                                     @if ($account->status === 1) <span
-                                                        class="badge bg-success">Active</span> @elseif ($account->status === 0)
+                                                        class="badge bg-success">Active</span> @elseif ($account->status
+                                                        === 0)
                                                         <span class="badge label-table bg-danger">Disabled</span>
                                                     @elseif($account->status === 2)
                                                         <span class="badge bg-blue text-light">Legit</span>
@@ -139,53 +140,57 @@
                 </div> <!-- end col -->
             </div>
             <!-- end row -->
-            @include('accounts.edit')
-            @include('accounts.create-modal')
-        @endsection
 
-        @section('js')
-            <!-- Vendor js -->
-            <script src="/js/vendor.min.js"></script>
+        </div> <!-- container -->
 
-            <!-- Plugin js-->
-            <script src="/libs/parsleyjs/parsley.min.js"></script>
+    </div> <!-- content -->
+    @include('accounts.edit')
+    @include('accounts.create-modal')
+@endsection
 
-            <!-- third party js -->
-            <script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-            <script src="/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-            <script src="/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-            <script src="/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
-            <script src="/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-            <!-- button pdf copy -->
-            <script src="/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
-            <!-- style button -->
-            <script src="/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
-            <!-- style button end -->
-            <!-- button print -->
-            <script src="/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
-            <!-- not use -->
-            <script src="/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
-            <script src="/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-            <script src="/libs/datatables.net-select/js/dataTables.select.min.js"></script>
-            <!-- not use end -->
-            <!-- pdf -->
-            <script src="/libs/pdfmake/build/pdfmake.min.js"></script>
-            <script src="/libs/pdfmake/build/vfs_fonts.js"></script>
-            <!-- third party js ends -->
+@section('js')
+    <!-- Vendor js -->
+    <script src="/js/vendor.min.js"></script>
 
-            <!-- Sweet Alerts js -->
-            <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+    <!-- Plugin js-->
+    <script src="/libs/parsleyjs/parsley.min.js"></script>
 
-            <!-- custom js -->
-            <script src="/js/accounts/datatable-accounts.init.js"></script>
-            <script src="/js/accounts/account-ajax.js"></script>
-            <script src="/js/form-validation-laravel.js"></script>
-            <script>
-                url_jsfile = '{{ URL::asset('/js/accounts/') }}';
-                var create_account_errors = null
-                var edit_account_errors = null
-            </script>
+    <!-- third party js -->
+    <script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <!-- button pdf copy -->
+    <script src="/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <!-- style button -->
+    <script src="/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <!-- style button end -->
+    <!-- button print -->
+    <script src="/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <!-- not use -->
+    <script src="/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+    <!-- not use end -->
+    <!-- pdf -->
+    <script src="/libs/pdfmake/build/pdfmake.min.js"></script>
+    <script src="/libs/pdfmake/build/vfs_fonts.js"></script>
+    <!-- third party js ends -->
 
-            <!-- App js -->
-            <script src="/js/app.min.js"></script>
-        @endsection
+    <!-- Sweet Alerts js -->
+    <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+
+    <!-- custom js -->
+    <script src="/js/accounts/datatable-accounts.init.js"></script>
+    <script src="/js/accounts/account-ajax.js"></script>
+    <script src="/js/form-validation-laravel.js"></script>
+    <script>
+        url_jsfile = '{{ URL::asset('/js/accounts/') }}';
+        var create_account_errors = null
+        var edit_account_errors = null
+    </script>
+
+    <!-- App js -->
+    <script src="/js/app.min.js"></script>
+@endsection

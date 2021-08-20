@@ -10,20 +10,43 @@
                             {{ $accounts->find($contact->account_id)->name }}</p>
                         <p class="text-muted d-none"> {{ $contact->id }}</p>
 
-                        <a href="javascript: void(0);" class="btn- btn-xs btn-info js--tippy" title="New Email"><i
-                                class="mdi mdi-email-edit-outline"></i></a>
-                        <a href="javascript: void(0);" class="btn- btn-xs btn-info js--tippy" title="New Sms"><i
-                                class="mdi mdi-message-text-outline"></i></a>
-                        <a href="javascript: void(0);" class="btn- btn-xs btn-success js--tippy" title="Call"><i
-                                class="fe-phone-call"></i></a>
-                        <a id="edit-{{ $contact->id }}" class="btn- btn-xs btn-primary js--tippy" title="Edit Contact"
-                            href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-modal"
-                            onclick="editContact({{ $contact->id }});"><i class="mdi mdi-square-edit-outline"></i></a>
-                        <a id="delete-{{ $contact->id }}" class="btn- btn-xs btn-danger js--tippy" title="Delete Contact"
-                            href="javascript: void(0);" onclick="deleteContact({{ $contact->id }});"><i
-                                class="mdi mdi-delete-circle"></i></a>
-                        <a class="btn- btn-xs btn-info" title="Add Appointment" data-bs-toggle="modal" data-bs-target="#create-appointment-modal"
-                            href="javascript: void(0);" onclick="viewFormCreateAppointment('{{ $contact->id }}', '4')"><i class="mdi mdi-calendar-plus"></i></a>
+                        <div class="btn-group mb-2">
+                            <a href="javascript: void(0);" class="btn- btn-xs btn-info btn-sm dropdown-toggle"
+                                title="New Email" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                                    class="mdi mdi-email-edit-outline"></i></a>
+                            <div class="dropdown-menu">
+                                @foreach ($email_accounts as $key => $email)
+                                <a class="dropdown-item" href="#send-mail-modal"
+                                data-backdrop="false" data-bs-toggle="modal" onclick="sendEmail('{{ $email->id }}', '{{ $contact->id }}', {{ getElementByName('contacts') }}, '{{ $email->email }}')">
+                                <img src="{{ asset('images/contact_data/email.png') }}"
+                                alt="contact-data-logo" height="12" class="me-1">{{ $email->email }}</a>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="btn-group mb-2">
+                            <a href="javascript: void(0);" class="btn- btn-xs btn-info js--tippy" title="New Sms"><i
+                                    class="mdi mdi-message-text-outline"></i></a>
+                        </div>
+                        <div class="btn-group mb-2">
+                            <a href="javascript: void(0);" class="btn- btn-xs btn-success js--tippy" title="Call"><i
+                                    class="fe-phone-call"></i></a>
+                        </div>
+                        <div class="btn-group mb-2">
+                            <a id="edit-{{ $contact->id }}" class="btn- btn-xs btn-primary js--tippy" title="Edit Contact"
+                                href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-modal"
+                                onclick="editContact({{ $contact->id }});"><i class="mdi mdi-square-edit-outline"></i></a>
+                        </div>
+                        <div class="btn-group mb-2">
+                            <a id="delete-{{ $contact->id }}" class="btn- btn-xs btn-danger js--tippy"
+                                title="Delete Contact" href="javascript: void(0);"
+                                onclick="deleteContact({{ $contact->id }});"><i class="mdi mdi-delete-circle"></i></a>
+                        </div>
+                        <div class="btn-group mb-2">
+                            <a class="btn- btn-xs btn-info" title="Add Appointment" data-bs-toggle="modal"
+                                data-bs-target="#create-appointment-modal" href="javascript: void(0);"
+                                onclick="viewFormCreateAppointment('{{ $contact->id }}', '4')"><i
+                                    class="mdi mdi-calendar-plus"></i></a>
+                        </div>
                     </div>
                 @endif
             @endisset

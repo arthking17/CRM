@@ -10,6 +10,7 @@ use App\Models\Users_permission;
 use DateTime;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -47,7 +48,7 @@ class UserController extends Controller
                 ->where('element', getElementByName('users'))->where('element_id', $user->id)->get();
         }
 
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users.show', 'element' => getElementByName('users'), 'element_id' => 0, 'source' => 'users']);
+        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'users.show', 'element' => getElementByName('users'), 'element_id' => 0, 'source' => 'users']);
 
         return view('users.list', [
             'users' => $users,
@@ -104,9 +105,9 @@ class UserController extends Controller
         ]);
         $request->file('photo')->storePublicly('public/images/users');
         $data['photo'] = $request->file('photo')->hashName();
-        $data['pwd'] = Hash::make($data['pwd']);
+        $data['pwd'] = bcrypt($data['pwd']);
         $user = User::create($data);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.create', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'user.create']);
+        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'user.create', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'user.create']);
         //return redirect(route('users'));
         //return response()->json(['user' => $user, 'success' => 'This User has been added']);
         $users = User::All();
@@ -218,7 +219,7 @@ class UserController extends Controller
                 'account_id' => 'required|exists:App\Models\Account,id',
                 'status' => 'required|integer|min:0|max:3',
             ]);
-            $data['pwd'] = Hash::make($data['pwd']);
+            $data['pwd'] = bcrypt($data['pwd']);
         } else {
             $data = $request->validate([
                 'username' => [
@@ -249,7 +250,7 @@ class UserController extends Controller
             $data['photo'] = $request->file('photo')->hashName();
         }
         $user->update($data);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.update', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'user.update, ' . $id]);
+        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'user.update', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'user.update, ' . $id]);
         //return redirect(route('users'));
         //return response()->json(['success' => 'This User has been edited']);
         $users = User::All();
@@ -277,7 +278,7 @@ class UserController extends Controller
 
         $user->save();
 
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.photo.update', 'element' => getElementByName('users'), 'element_id' => $request->id, 'source' => 'user.photo.update, ' . $request->id]);
+        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'user.photo.update', 'element' => getElementByName('users'), 'element_id' => $request->id, 'source' => 'user.photo.update, ' . $request->id]);
         return response()->json(['success' => 'This user profile picture Updated', 'user' => $user]);
     }
 
@@ -292,7 +293,7 @@ class UserController extends Controller
         $user = User::find($id);
         $user->status = 0;
         if ($user->save()) {
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.delete', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'user.delete, ' . $id]);
+            Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'user.delete', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'user.delete, ' . $id]);
             return response()->json(['success' => 'This User has been Disabled !!!', 'user' => $user]);
         } else
             return response()->json(['error' => 'Failed to delete this user !!!']);
@@ -309,14 +310,17 @@ class UserController extends Controller
         $user = User::find($id);
         $user->status = 1;
         if ($user->save()) {
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.restore', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'user.restore, ' . $id]);
+            Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'user.restore', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'user.restore, ' . $id]);
             return response()->json(['success' => 'This User has been Actived !!!', 'user' => $user]);
         } else
             return response()->json(['error' => 'Failed to active this user !!!']);
     }
 
     /**
-     * pagination search 
+     * grid view of users with pagination, filter and search 
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
     public function getGridView(Request $request)
     {
@@ -324,11 +328,14 @@ class UserController extends Controller
         /*if ($request->ajax()) {*/
         $sort_by = $request->get('sortby');
         $sort_type = $request->get('sorttype');
-        $sort_type = 'asc';
+
         if ($sort_by == 'status') {
             if ($request->get('sorttype') == 'asc')
                 $sort_type = 'desc';
+            else
+                $sort_type = 'asc';
         }
+        
         $query = $request->get('query');
         $query = str_replace(" ", "%", $query);
         $users = User::where('id', 'like', '%' . $query . '%')
@@ -411,11 +418,11 @@ class UserController extends Controller
                 'same:pwd',
             ],
         ]);
-        $pwd = Hash::make($data['pwd']);
+        $pwd = bcrypt($data['pwd']);
         $user = User::find($request->id);
         $user->pwd = $pwd;
         $user->save();
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'user.password.update', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'password.update, ' . $request->id]);
+        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'user.password.update', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'password.update, ' . $request->id]);
         //return redirect(route('users'));
         return response()->json(['success' => 'This user password has been Updated']);
     }

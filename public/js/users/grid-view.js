@@ -33,7 +33,7 @@ $(document).ready(function() {
     });
 })
 
-function showViewGrid(sort_type = null, sort_by = null, query = null) {
+function showViewGrid(sort_type = null, sort_by = null, query = '') {
     $.ajax({
         url: "/users/grid-view?sortby=" + sort_by + "&sorttype=" + sort_type + "&query=" + query,
         success: function(data) {

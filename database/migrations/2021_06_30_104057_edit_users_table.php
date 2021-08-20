@@ -19,7 +19,7 @@ class EditUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->integer('id', true, true);
             $table->string('username', 128);
-            $table->string('login', 128);
+            $table->string('login', 128)->unique();
             $table->string('pwd', 255);
             $table->tinyInteger('role')->unsigned()->comment('1 : admin /n 2 : user /n 3 : visitor');
             $table->char('language', 2);

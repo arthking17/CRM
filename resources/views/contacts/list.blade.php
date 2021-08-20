@@ -38,6 +38,19 @@
     <link href="/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
     <link href="/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
 
+    <!-- send email modal -->
+    <link href="/css/contacts/data/send-mail.css" rel="stylesheet" type="text/css" />
+
+    <!-- jquery-ui 
+                        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+
+    <!-- quill css 
+                    <link href="/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
+                    <link href="/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />-->
+
+    <!-- Include Quill stylesheet -->
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+
     <!-- App css -->
     <link href="/css/config/creative/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
     <link href="/css/config/creative/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
@@ -223,142 +236,168 @@
                 </div>
             </div>
             <!-- end row -->
-            @include('contacts.create')
-            @include('contacts.search-modal')
-            @include('contacts.edit')
-            @include('contacts.data.create-phone')
-            @include('contacts.data.edit-phone')
-            @include('contacts.data.create')
-            @include('contacts.data.edit')
-            @include('notes.add_note-modal')
-            @include('notes.edit-note-ext')
-            <div id="notes-div">
-                @include('notes.notes-list-modal')
-            </div>
-            <div id="custom-fields-div">
-            </div>
-            @include('contacts.custom-fields.create')
-            @include('contacts.custom-fields.edit')
-            
-            @include('appointments.create')
-        @endsection
 
-        @section('js')
-            <!-- Vendor js -->
-            <script src="/js/vendor.min.js"></script>
+        </div> <!-- container -->
 
-            <!-- Plugin js-->
-            <script src="/libs/parsleyjs/parsley.min.js"></script>
+    </div> <!-- content -->
+    @include('contacts.create')
+    @include('contacts.search-modal')
+    @include('contacts.edit')
+    @include('contacts.data.create-phone')
+    @include('contacts.data.edit-phone')
+    @include('contacts.data.create')
+    @include('contacts.data.edit')
+    @include('notes.add_note-modal')
+    @include('notes.edit-note-ext')
+    <div id="notes-div">
+        @include('notes.notes-list-modal')
+    </div>
+    <div id="custom-fields-div">
+    </div>
+    @include('contacts.custom-fields.create')
+    @include('contacts.custom-fields.edit')
 
-            <!-- Sweet Alerts js -->
-            <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+    @include('appointments.create')
 
-            <!-- third party js -->
-            <script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-            <script src="/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-            <script src="/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-            <script src="/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
-            <script src="/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-            <!-- button pdf copy -->
-            <script src="/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
-            <!-- style button -->
-            <script src="/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
-            <!-- style button end -->
-            <!-- button print -->
-            <script src="/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
-            <!-- not use -->
-            <script src="/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
-            <script src="/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-            <script src="/libs/datatables.net-select/js/dataTables.select.min.js"></script>
-            <!-- not use end -->
-            <!-- pdf -->
-            <script src="/libs/pdfmake/build/pdfmake.min.js"></script>
-            <script src="/libs/pdfmake/build/vfs_fonts.js"></script>
-            <!-- third party js ends -->
+    @include('email_accounts.send-mail')
+@endsection
 
-            <!-- Plugins js-->
-            <script src="/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+@section('js')
+    <!-- Vendor js -->
+    <script src="/js/vendor.min.js"></script>
 
-            <script src="/twilio/js/intlTelInput.min.js"></script>
-            <script src="/twilio/js/intlTelInput-jquery.min.js"></script>
-            <script src="/twilio/js/utils.js"></script>
-            <script src="/twilio/js/data.min.js"></script>
+    <!-- Plugin js-->
+    <script src="/libs/parsleyjs/parsley.min.js"></script>
 
-            <!-- Plugins js -->
-            <script src="/libs/dropzone/min/dropzone.min.js"></script>
-            <script src="/libs/dropify/js/dropify.min.js"></script>
+    <!-- Sweet Alerts js -->
+    <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
 
-            <!-- Tippy js-->
-            <script src="/libs/tippy.js/tippy.all.min.js"></script>
+    <!-- third party js -->
+    <script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <!-- button pdf copy -->
+    <script src="/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <!-- style button -->
+    <script src="/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <!-- style button end -->
+    <!-- button print -->
+    <script src="/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <!-- not use -->
+    <script src="/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+    <!-- not use end -->
+    <!-- pdf -->
+    <script src="/libs/pdfmake/build/pdfmake.min.js"></script>
+    <script src="/libs/pdfmake/build/vfs_fonts.js"></script>
+    <!-- third party js ends -->
 
-            <!-- selectize js -->
-            <script type="text/javascript"
-                        src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js">
-            </script>
-            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/selectize.min.js">
-            </script>
+    <!-- Plugins js-->
+    <script src="/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 
-            <!-- picker js -->
-            <script src="/libs/spectrum-colorpicker2/spectrum.min.js"></script>
-            <script src="/libs/flatpickr/flatpickr.min.js"></script>
-            <script src="/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-            <script src="/js/form-pickers.init.js"></script>
+    <script src="/twilio/js/intlTelInput.min.js"></script>
+    <script src="/twilio/js/intlTelInput-jquery.min.js"></script>
+    <script src="/twilio/js/utils.js"></script>
+    <script src="/twilio/js/data.min.js"></script>
 
-            <!-- Edit contact companie logo js -->
-            <script src="/js/contacts/companie-logo.js"></script>
+    <!-- Plugins js -->
+    <script src="/libs/dropzone/min/dropzone.min.js"></script>
+    <script src="/libs/dropify/js/dropify.min.js"></script>
 
-            <!-- custom js files -->
-            <script src="/js/contacts/form-edit-wizard.js"></script>
-            <script src="/js/contacts/form-add-wizard.js"></script>
-            <script src="/js/contacts/contacts-validation.js"></script>
+    <!-- Tippy js-->
+    <script src="/libs/tippy.js/tippy.all.min.js"></script>
 
-            <script src="/js/contacts/datatable-contacts.init.js"></script>
-            <script src="/js/contacts/contacts-list.js"></script>
+    <!-- selectize js -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js">
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/selectize.min.js">
+    </script>
 
-            <script src="/js/contacts/country-select.js"></script>
+    <!-- picker js -->
+    <script src="/libs/spectrum-colorpicker2/spectrum.min.js"></script>
+    <script src="/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="/js/form-pickers.init.js"></script>
 
-            <script src="/js/custom-parsley.js"></script>
-            <script src="/js/helpers.js"></script>
+    <!-- Edit contact companie logo js -->
+    <script src="/js/contacts/companie-logo.js"></script>
 
-            <script src="/js/form-validation-laravel.js"></script>
+    <!-- custom js files -->
+    <script src="/js/contacts/form-edit-wizard.js"></script>
+    <script src="/js/contacts/form-add-wizard.js"></script>
+    <script src="/js/contacts/contacts-validation.js"></script>
 
-            <script src="/js/contacts/data/contact-data.js"></script>
-            <script src="/js/contacts/data/add-phone-data.js"></script>
-            <script src="/js/contacts/data/edit-phone-data.js"></script>
+    <script src="/js/contacts/datatable-contacts.init.js"></script>
+    <script src="/js/contacts/contacts-list.js"></script>
 
-            <script src="/js/notes/notes-module-ext.js"></script>
+    <script src="/js/contacts/country-select.js"></script>
 
-            <script src="/js/contacts/search/form-search-wizard.js"></script>
-            <script src="/js/contacts/search/search-module.js"></script>
+    <script src="/js/custom-parsley.js"></script>
+    <script src="/js/helpers.js"></script>
 
-            <script src="/js/contacts/custom-fields/form-create.js"></script>
-            <script src="/js/contacts/custom-fields/custom-fields.js"></script>
+    <script src="/js/form-validation-laravel.js"></script>
 
-            <!-- appointments -->
-            <script src="/js/appointments/ajax-crud.js"></script>
-            <script>
-                url_logo = '{{ URL::asset('/storage/images/logo/') }}';
-                url_custom_field = '{{ URL::asset('/storage/custom_field/') }}';
-                url_contact_image = '{{ URL::asset('images/contact_data/') }}';
-                url_jsfile = '{{ URL::asset('/js/contacts/') }}';
-                var form_create_errors = null
-                var form_edit_errors = null
-                var create_contact_data_errors = null
-                var edit_contact_data_errors = null
-                var create_note_errors = null
-                var edit_note_errors = null
-                var search_contact_errors = null
-                var errors_create_phone_data = null
-                var errors_edit_phone_data = null
-                var iti = null
-                var edit_iti = null
-                var skipErrors = 0
-                var errors_create_custom_field = null
-                var errors_edit_custom_field = null
-                var create_appointment_errors = null
-            </script>
-            <!-- custom js files end -->
+    <script src="/js/contacts/data/contact-data.js"></script>
+    <script src="/js/contacts/data/add-phone-data.js"></script>
+    <script src="/js/contacts/data/edit-phone-data.js"></script>
 
-            <!-- App js -->
-            <script src="/js/app.min.js"></script>
-        @endsection
+    <script src="/js/notes/notes-module-ext.js"></script>
+
+    <script src="/js/contacts/search/form-search-wizard.js"></script>
+    <script src="/js/contacts/search/search-module.js"></script>
+
+    <script src="/js/contacts/custom-fields/form-create.js"></script>
+    <script src="/js/contacts/custom-fields/custom-fields.js"></script>
+
+    <!-- appointments -->
+    <script src="/js/appointments/ajax-crud.js"></script>
+
+    <!-- send email modal -->
+    <script src="/js/contacts/data/send-mail.js"></script>
+
+    <!-- jquery-ui 
+                                <script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!-- Quill js 
+                            <script src="/libs/quill/quill.min.js"></script>-->
+
+    <!-- Include the Quill library -->
+    <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
+
+    <script>
+        url_logo = '{{ URL::asset('/storage/images/logo/') }}';
+        url_custom_field = '{{ URL::asset('/storage/custom_field/') }}';
+        url_contact_image = '{{ URL::asset('images/contact_data/') }}';
+        url_jsfile = '{{ URL::asset('/js/contacts/') }}';
+        var form_create_errors = null
+        var form_edit_errors = null
+        var create_contact_data_errors = null
+        var edit_contact_data_errors = null
+        var create_note_errors = null
+        var edit_note_errors = null
+        var search_contact_errors = null
+        var errors_create_phone_data = null
+        var errors_edit_phone_data = null
+        var iti = null
+        var edit_iti = null
+        var skipErrors = 0
+        var errors_create_custom_field = null
+        var errors_edit_custom_field = null
+        var create_appointment_errors = null
+    </script>
+
+    <script>
+        var editor = new Quill('#snow-editor', {
+            theme: 'snow'
+        });
+    </script>
+    <!-- custom js files end -->
+
+    <!-- App js -->
+    <script src="/js/app.min.js"></script>
+@endsection

@@ -35,7 +35,7 @@ $('#create-communication').submit(function(e) {
             console.log(response)
             $('#create-communication-modal').modal('toggle')
             Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
-            //$('#create-communication')[0].reset();
+            $('#create-communication')[0].reset();
 
             $('#view-list-communications').html(response.html);
             $.getScript(url_jsfile + "/datatable-communications.init.js")

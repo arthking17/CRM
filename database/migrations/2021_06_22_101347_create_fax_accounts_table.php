@@ -17,7 +17,7 @@ class CreateFaxAccountsTable extends Migration
         Schema::create('fax_accounts', function (Blueprint $table) {
             $table->integer('id', true, true);
             $table->tinyInteger('status')->unsigned()->default(1);
-            $table->date('start_date')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->integer('account_id')->unsigned();
             $table->index('account_id', 'account_id_idx');

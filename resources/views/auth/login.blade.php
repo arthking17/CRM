@@ -47,7 +47,7 @@
                                         </span>
                                     </a>
                                 </div>
-                                <p class="text-muted mb-4 mt-3">Enter your username and password to access admin panel.
+                                <p class="text-muted mb-4 mt-3">Enter your login and password to access admin panel.
                                 </p>
                             </div>
 
@@ -55,13 +55,13 @@
                                 data-parsley-validate="" novalidate>
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="login-form-username"
-                                        class="form-label">Username</label>
-                                    <input class="form-control @error('username') parsley-error @enderror" name="username" type="text" id="login-form-username"
-                                        required="" placeholder="Enter your username">
-                                    @error('username')
+                                    <label for="login-form-login"
+                                        class="form-label">Login</label>
+                                    <input class="form-control @error('login') parsley-error @enderror" name="login" type="text" id="login-form-login"
+                                        required="" placeholder="Enter your login" value="{{ old('login') }}">
+                                    @error('login')
                                         <ul class="parsley-errors-list filled" aria-hidden="false">
-                                            <li class="parsley-required">{{ $errors->first('username') }}</li>
+                                            <li class="parsley-required">{{ $errors->first('login') }}</li>
                                         </ul>
                                     @else
                                         <ul class="parsley-errors-list" aria-hidden="true"></ul>
@@ -82,7 +82,7 @@
                                 <div class="mb-3">
                                     <div class="form-check">
                                         <input type="checkbox" name="remember" class="form-check-input"
-                                            id="login-form-remember" checked>
+                                            id="login-form-remember" @if(old('remember'))checked @endif>
                                         <label class="form-check-label" for="login-form-remember">Remember me</label>
                                     </div>
                                 </div>

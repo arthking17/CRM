@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Users_Permission;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Users_PermissionController extends Controller
@@ -65,7 +66,7 @@ class Users_PermissionController extends Controller
                 $user_permission = Users_Permission::create(['user_id' => $request->user_id, 'code' => $element . '.' . $code, 'dependency' => $request->dependency, 'status' => 0]);
             }*/
         }
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users_permission.create', 'element' => getElementByName('users_permissions'), 'element_id' => $user_permission->id, 'source' => 'users_permission.create']);
+        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'users_permission.create', 'element' => getElementByName('users_permissions'), 'element_id' => $user_permission->id, 'source' => 'users_permission.create']);
         return response()->json(['user_id' => $request->user_id, 'success' => 'User permission added']);
     }
 
@@ -140,7 +141,7 @@ class Users_PermissionController extends Controller
         $users_permission = Users_Permission::where('id', $id)->update(['status' => 0]);
         if ($users_permission) {
             $users_permission = Users_Permission::where('id', $id)->first();
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'users_permission.delete', 'element' => getElementByName('users_permissions'), 'element_id' => $users_permission->user_id, 'source' => 'users_permission.delete, ["id":' . $users_permission->id . ']']);
+            Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'users_permission.delete', 'element' => getElementByName('users_permissions'), 'element_id' => $users_permission->user_id, 'source' => 'users_permission.delete, ["id":' . $users_permission->id . ']']);
             return response()->json(['success' => 'This user permission has been Disabled !!!', 'users_permission' => $users_permission]);
         }
     }

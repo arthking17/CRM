@@ -1,3 +1,8 @@
+function getElementByName(element) {
+    elements = ["accounts", "appointments", "communications", "contact_data", "contacts", "contacts_companies", "contacts_field", "contacts_persons", "custom_field", "email_accounts", "fax_accounts", "groups", "imports", "logs", "notes", "sip_accounts", "sms_accounts", "users", "users_permissions"];
+    return elements.indexOf(element);
+}
+
 function getContactTypeByClass(contactClass) {
     if (contactClass == 0)
         return "phone_number";

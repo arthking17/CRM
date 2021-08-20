@@ -195,116 +195,120 @@
                 </div>
             </div>
             <!-- end row -->
-            @include('users.create-modal')
-            @include('users.edit-modal')
-            @include('notes.add_note-modal')
-            @include('notes.edit-note-ext')
-            <div id="create-Permission-div">
-                @include('permissions.create-permission')
-            </div>
-            <div id="security-div">
-                @include('users.security')
-            </div>
-            <div id="notification-div">
-                @include('users.notification')
-            </div>
-            <div id="notes-div">
-                @include('notes.notes-list-modal')
-            </div>
-            <div id="logs-div">
-                @include('users.logs')
-            </div>
-            <div id="users_permissions-div">
-                @include('permissions.users_permissions')
-            </div>
-        @endsection
 
-        @section('js')
-            <!-- Vendor js -->
-            <script src="/js/vendor.min.js"></script>
+        </div> <!-- container -->
 
-            <!-- Plugin js-->
-            <script src="/libs/parsleyjs/parsley.min.js"></script>
+    </div> <!-- content -->
+    @include('users.create-modal')
+    @include('users.edit-modal')
+    @include('notes.add_note-modal')
+    @include('notes.edit-note-ext')
+    <div id="create-Permission-div">
+        @include('permissions.create-permission')
+    </div>
+    <div id="security-div">
+        @include('users.security')
+    </div>
+    <div id="notification-div">
+        @include('users.notification')
+    </div>
+    <div id="notes-div">
+        @include('notes.notes-list-modal')
+    </div>
+    <div id="logs-div">
+        @include('users.logs')
+    </div>
+    <div id="users_permissions-div">
+        @include('permissions.users_permissions')
+    </div>
+@endsection
 
-            <!-- Sweet Alerts js -->
-            <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+@section('js')
+    <!-- Vendor js -->
+    <script src="/js/vendor.min.js"></script>
 
-            <!-- third party js -->
-            <script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-            <script src="/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-            <script src="/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-            <script src="/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
-            <script src="/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-            <!-- button pdf copy -->
-            <script src="/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
-            <!-- style button -->
-            <script src="/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
-            <!-- style button end -->
-            <!-- button print -->
-            <script src="/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
-            <!-- not use -->
-            <script src="/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
-            <script src="/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-            <script src="/libs/datatables.net-select/js/dataTables.select.min.js"></script>
-            <!-- not use end -->
-            <!-- pdf -->
-            <script src="/libs/pdfmake/build/pdfmake.min.js"></script>
-            <script src="/libs/pdfmake/build/vfs_fonts.js"></script>
-            <!-- third party js ends -->
+    <!-- Plugin js-->
+    <script src="/libs/parsleyjs/parsley.min.js"></script>
 
-            <!-- Plugins js -->
-            <script src="/libs/dropzone/min/dropzone.min.js"></script>
-            <script src="/libs/dropify/js/dropify.min.js"></script>
+    <!-- Sweet Alerts js -->
+    <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
 
-            <!-- Tippy js-->
-            <script src="/libs/tippy.js/tippy.all.min.js"></script>
+    <!-- third party js -->
+    <script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <!-- button pdf copy -->
+    <script src="/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <!-- style button -->
+    <script src="/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <!-- style button end -->
+    <!-- button print -->
+    <script src="/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <!-- not use -->
+    <script src="/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+    <!-- not use end -->
+    <!-- pdf -->
+    <script src="/libs/pdfmake/build/pdfmake.min.js"></script>
+    <script src="/libs/pdfmake/build/vfs_fonts.js"></script>
+    <!-- third party js ends -->
 
-            <!-- Init js-->
-            <script src="/js/pages/form-fileuploads.init.js"></script>
+    <!-- Plugins js -->
+    <script src="/libs/dropzone/min/dropzone.min.js"></script>
+    <script src="/libs/dropify/js/dropify.min.js"></script>
 
-            <!-- custom js files -->
-            <script type="text/javascript">
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-            </script>
-            <script src="/js/users/users-ajax-list.js"></script>
-            <script src="/js/users/datatable-users.init.js"></script>
-            <script src="/js/custom-parsley.js"></script>
-            <script src="/js/form-validation-laravel.js"></script>
-            <script src="/js/users/users-select.js"></script>
-            <script src="/js/users/edit-password.js"></script>
+    <!-- Tippy js-->
+    <script src="/libs/tippy.js/tippy.all.min.js"></script>
 
-            <script src="/js/notes/notes-module-ext.js"></script>
+    <!-- Init js-->
+    <script src="/js/pages/form-fileuploads.init.js"></script>
 
-            <!-- Edit user photo js -->
-            <script src="/js/users/user-photo.js"></script>
+    <!-- custom js files -->
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
+    <script src="/js/users/users-ajax-list.js"></script>
+    <script src="/js/users/datatable-users.init.js"></script>
+    <script src="/js/custom-parsley.js"></script>
+    <script src="/js/form-validation-laravel.js"></script>
+    <script src="/js/users/users-select.js"></script>
+    <script src="/js/users/edit-password.js"></script>
 
-            <!-- users permissions js -->
-            <script src="/js/users/users-permissions.js"></script>
+    <script src="/js/notes/notes-module-ext.js"></script>
 
-            <!-- grid view js -->
-            <script src="/js/users/grid-view.js"></script>
+    <!-- Edit user photo js -->
+    <script src="/js/users/user-photo.js"></script>
 
-            <script>
-                $('.dropify').dropify();
-                $('document').ready(function() {
-                    $("#language").val($('#language-val').val()).attr("selected", "selected");
-                })
-                url_photo = '{{ URL::asset('/storage/images/users/') }}';
-                url_jsfile = '{{ URL::asset('/js/users/') }}';
-                var form_create_errors = null
-                var form_edit_errors = null
-                var create_note_errors = null
-                var edit_note_errors = null
-                var create_permission_errors = null
-                var edit_password_errors = null
-                elementSelect($('#create-permissions-element'))
-            </script>
-            <!-- custom js files end -->
+    <!-- users permissions js -->
+    <script src="/js/users/users-permissions.js"></script>
 
-            <!-- App js -->
-            <script src="/js/app.min.js"></script>
-        @endsection
+    <!-- grid view js -->
+    <script src="/js/users/grid-view.js"></script>
+
+    <script>
+        $('.dropify').dropify();
+        $('document').ready(function() {
+            $("#language").val($('#language-val').val()).attr("selected", "selected");
+        })
+        url_photo = '{{ URL::asset('/storage/images/users/') }}';
+        url_jsfile = '{{ URL::asset('/js/users/') }}';
+        var form_create_errors = null
+        var form_edit_errors = null
+        var create_note_errors = null
+        var edit_note_errors = null
+        var create_permission_errors = null
+        var edit_password_errors = null
+        elementSelect($('#create-permissions-element'))
+    </script>
+    <!-- custom js files end -->
+
+    <!-- App js -->
+    <script src="/js/app.min.js"></script>
+@endsection

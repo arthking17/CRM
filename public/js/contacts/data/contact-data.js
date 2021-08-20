@@ -1,5 +1,5 @@
 function displayFormContactData(formId, id, contactClass, data = null) {
-    $('#' + formId + '-element').val(5)
+    $('#' + formId + '-element').val(getElementByName('contacts'))
     $('#' + formId + '-element_id').val(id)
     $('#' + formId + '-class').val(contactClass)
     contactType = getContactTypeByClass(contactClass).replace('_', ' ')

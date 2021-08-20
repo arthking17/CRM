@@ -22,4 +22,6 @@ class Contact_data extends Model
      * @var bool
      */
     public $timestamps = false;
+
+    protected $table = 'Contact_data';
 }

@@ -517,7 +517,7 @@
                                             @endif
                                             <div class="row mb-3">
                                                 <label for="form_edit-{{ $custom_field->tag }}"
-                                                    class="col-4 col-xl-3 col-form-label">{{ $key }}
+                                                    class="col-4 col-xl-3 col-form-label">
                                                     @if ($custom_field->field_type !== 'checkbox')
                                                         {{ $custom_field->name }}
                                                     @endif

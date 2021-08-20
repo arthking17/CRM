@@ -21,7 +21,7 @@
         <h5 class="mb-3 mt-4 text-uppercase bg-light p-2"><i class="mdi mdi-account-circle me-1"></i>List of Users</h5>
         <div class="" id="group-info2" data-simplebar style="max-height: 400px;">
             @if(isset($group) and $users->count() > 0)
-                    @foreach ($users->where('account_id', $group->account_id) as $user)
+                    @foreach ($users as $user)
                         <img id="user-photo" class="d-flex me-3 rounded-circle avatar-lg"
                             src="{{ asset('storage/images/users/' . $user->photo) }}" alt="Generic placeholder image">
                         <div class="w-100" id="user-info1">

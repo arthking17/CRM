@@ -89,76 +89,79 @@
             </div>
             <!-- end row -->
 
-            @include('communications.create')
-            @include('communications.edit')
-            @if ($communications->count() > 0)
-            @include('notes.add_note-modal')
-            @include('notes.edit-note-ext')
-            <div id="notes-div">
-                @include('notes.notes-list-modal')
-            </div>
-            @endif
-        @endsection
+        </div> <!-- container -->
 
-        @section('js')
-            <!-- Vendor js -->
-            <script src="/js/vendor.min.js"></script>
+    </div> <!-- content -->
 
-            <!-- Plugin js-->
-            <script src="/libs/parsleyjs/parsley.min.js"></script>
+    @include('communications.create')
+    @include('communications.edit')
+    @include('notes.add_note-modal')
+    @include('notes.edit-note-ext')
+    <div id="notes-div">
+        @include('notes.notes-list-modal')
+    </div>
+    @if ($communications->count() > 0)
+    @endif
+@endsection
 
-            <!-- Sweet Alerts js -->
-            <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+@section('js')
+    <!-- Vendor js -->
+    <script src="/js/vendor.min.js"></script>
 
-            <!-- third party js -->
-            <script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-            <script src="/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-            <script src="/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-            <script src="/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
-            <script src="/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-            <!-- button pdf copy -->
-            <script src="/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
-            <!-- style button -->
-            <script src="/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
-            <!-- style button end -->
-            <!-- button print -->
-            <script src="/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
-            <!-- not use -->
-            <script src="/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
-            <script src="/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-            <script src="/libs/datatables.net-select/js/dataTables.select.min.js"></script>
-            <!-- not use end -->
-            <!-- pdf -->
-            <script src="/libs/pdfmake/build/pdfmake.min.js"></script>
-            <script src="/libs/pdfmake/build/vfs_fonts.js"></script>
-            <!-- third party js ends -->
+    <!-- Plugin js-->
+    <script src="/libs/parsleyjs/parsley.min.js"></script>
 
-            <!-- plugin js -->
-            <script src="/libs/moment/min/moment.min.js"></script>
-            <script src="/libs/fullcalendar/main.min.js"></script>
+    <!-- Sweet Alerts js -->
+    <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
 
-            <!-- picker js -->
-            <script src="/libs/spectrum-colorpicker2/spectrum.min.js"></script>
-            <script src="/libs/flatpickr/flatpickr.min.js"></script>
-            <script src="/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-            <script src="/js/form-pickers.init.js"></script>
+    <!-- third party js -->
+    <script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <!-- button pdf copy -->
+    <script src="/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <!-- style button -->
+    <script src="/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <!-- style button end -->
+    <!-- button print -->
+    <script src="/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <!-- not use -->
+    <script src="/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+    <!-- not use end -->
+    <!-- pdf -->
+    <script src="/libs/pdfmake/build/pdfmake.min.js"></script>
+    <script src="/libs/pdfmake/build/vfs_fonts.js"></script>
+    <!-- third party js ends -->
 
-            <!-- custom js files -->
-            <script src="/js/communications/datatable-communications.init.js"></script>
-            <script src="/js/communications/communications.js"></script>
-            <script src="/js/communications/ajax-crud.js"></script>
-            <script src="/js/form-validation-laravel.js"></script>
+    <!-- plugin js -->
+    <script src="/libs/moment/min/moment.min.js"></script>
+    <script src="/libs/fullcalendar/main.min.js"></script>
 
-            <script src="/js/notes/notes-module-ext.js"></script>
-            <script>
-                url_jsfile = '{{ URL::asset('/js/communications/') }}';
-                var create_communication_errors = null
-                var edit_communication_errors = null
-                var create_note_errors = null
-                var edit_note_errors = null
+    <!-- picker js -->
+    <script src="/libs/spectrum-colorpicker2/spectrum.min.js"></script>
+    <script src="/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="/js/form-pickers.init.js"></script>
 
-            </script>
+    <!-- custom js files -->
+    <script src="/js/communications/datatable-communications.init.js"></script>
+    <script src="/js/communications/communications.js"></script>
+    <script src="/js/communications/ajax-crud.js"></script>
+    <script src="/js/form-validation-laravel.js"></script>
 
-            <!-- App js-->
-            <script src="/js/app.min.js"></script>
-        @endsection
+    <script src="/js/notes/notes-module-ext.js"></script>
+    <script>
+        url_jsfile = '{{ URL::asset('/js/communications/') }}';
+        var create_communication_errors = null
+        var edit_communication_errors = null
+        var create_note_errors = null
+        var edit_note_errors = null
+    </script>
+
+    <!-- App js-->
+    <script src="/js/app.min.js"></script>
+@endsection

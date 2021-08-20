@@ -8,6 +8,7 @@ use App\Models\Custom_select_field;
 use App\Models\Log;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class CustomFieldController extends Controller
@@ -59,7 +60,7 @@ class CustomFieldController extends Controller
             }
         } else
             $custom_field = Custom_field::create($data);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'custom-field.create', 'element' => getElementByName('custom_fields'), 'element_id' => $custom_field->id, 'source' => 'custom-field.create']);
+        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'custom-field.create', 'element' => getElementByName('custom_fields'), 'element_id' => $custom_field->id, 'source' => 'custom-field.create']);
         return response()->json(['success' => 'This Custom Field has been added !!!', 'custom-field' => $custom_field]);
     }
 
@@ -125,7 +126,7 @@ class CustomFieldController extends Controller
             }
         } else
             $custom_field->update($data);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'custom-field.update', 'element' => getElementByName('custom_fields'), 'element_id' => $custom_field->id, 'source' => 'custom-field.update']);
+        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'custom-field.update', 'element' => getElementByName('custom_fields'), 'element_id' => $custom_field->id, 'source' => 'custom-field.update']);
         return response()->json(['success' => 'This Custom Field has been Updated !!!', 'custom-field' => $custom_field]);
     }
 
@@ -140,7 +141,7 @@ class CustomFieldController extends Controller
         $custom_field = Custom_field::find($id);
         $custom_field->status = 0;
         if ($custom_field->save()) {
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'custom-field.delete', 'element' => getElementByName('custom_fields'), 'element_id' => $id, 'source' => 'custom-field.delete, ' . $id]);
+            Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'custom-field.delete', 'element' => getElementByName('custom_fields'), 'element_id' => $id, 'source' => 'custom-field.delete, ' . $id]);
             return response()->json(['success' => 'This Custom Field has been Delete !!!', 'custom_field' => $custom_field]);
         } else
             return response()->json(['error' => 'Failed to disable this Field !!!']);
@@ -157,7 +158,7 @@ class CustomFieldController extends Controller
         $file = Contacts_field::find($id);
         Storage::delete('public/custom_field/' . $file->field_value);
         if ($file->delete()) {
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.delete', 'element' => getElementByName('contacts_fields'), 'element_id' => $id, 'source' => 'contacts_fields.delete, ' . $id]);
+            Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contacts_fields.delete', 'element' => getElementByName('contacts_fields'), 'element_id' => $id, 'source' => 'contacts_fields.delete, ' . $id]);
             return response()->json(['success' => 'This File has been Deleted !!!', 'file' => $file]);
         } else
             return response()->json(['error' => 'Failed to delete this file !!!']);

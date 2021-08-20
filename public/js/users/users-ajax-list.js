@@ -64,7 +64,8 @@ function restoreUser(id) {
 
 function viewInfoCardUser(id) {
     $.get('/users/get/' + id + '/0', function(data) {
-        $('#user-info-card').empty().html(data);
+        console.log(data)
+        $('#user-info-card').empty().html(data.html);
         tippy('[title]', {
             // change these to your liking
             arrow: true,
@@ -190,9 +191,7 @@ $(document).ready(function() {
                     //setTimeout(function () { window.location.href = route('accounts'); }, 1500);
                 $('#create-modal').modal('toggle')
 
-                showViewGrid('id', 'asc')
-
-                showViewGrid()
+                showViewGrid('asc', 'id')
 
                 $('#view-list').html(response.html);
                 $.getScript(url_jsfile + "/datatable-users.init.js")
@@ -231,7 +230,7 @@ $(document).ready(function() {
                 $('#view-list').html(response.html);
                 viewInfoCardUser(response.user.id)
 
-                showViewGrid('id', 'asc')
+                showViewGrid('asc', 'id')
 
                 $.getScript(url_jsfile + "/datatable-users.init.js")
                     .done(function(script, textStatus) {

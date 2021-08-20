@@ -1,5 +1,16 @@
 <?php
 
+if (!function_exists('setEnv')) {
+    function setEnv($key, $value)
+    {
+        file_put_contents(app()->environmentFilePath(), str_replace(
+            $key . '=' . env($key),
+            $key . '=' . $value,
+            file_get_contents(app()->environmentFilePath())
+        ));
+    }
+}
+
 if (!function_exists('page_title')) {
     function page_title(?string $title = null): string
     {
@@ -21,7 +32,7 @@ if (!function_exists('getElementByName')) {
     function getElementByName($element): int
     {
         $elements = ["accounts", "appointments", "communications", "contact_data", "contacts", "contacts_companies", "contacts_field", "contacts_persons", "custom_field", "email_accounts", "fax_accounts", "groups", "imports", "logs", "notes", "sip_accounts", "sms_accounts", "users", "users_permissions"];
-       return array_search(strtolower($element), $elements);
+        return array_search(strtolower($element), $elements);
     }
 }
 

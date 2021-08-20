@@ -28,20 +28,43 @@
                             {{ $accounts->find($contact->account_id)->name }}</p>
                         <p class="text-muted d-none"> {{ $contact->id }}</p>
 
-                        <a href="javascript: void(0);" class="btn- btn-xs btn-info" title="New Email"><i
-                                class="mdi mdi-email-edit-outline"></i></a>
-                        <a href="javascript: void(0);" class="btn- btn-xs btn-info" title="New Sms"><i
-                                class="mdi mdi-message-text-outline"></i></a>
-                        <a href="javascript: void(0);" class="btn- btn-xs btn-success" title="Call"><i
-                                class="fe-phone-call"></i></a>
-                        <a id="edit-{{ $contact->id }}" class="btn- btn-xs btn-primary" title="Edit Contact"
-                            href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-modal"
-                            onclick="editContact({{ $contact->id }});"><i class="mdi mdi-square-edit-outline"></i></a>
-                        <a id="delete-{{ $contact->id }}" class="btn- btn-xs btn-danger" title="Delete Contact"
-                            href="javascript: void(0);" onclick="deleteContact({{ $contact->id }});"><i
-                                class="mdi mdi-delete-circle"></i></a>
-                        <a class="btn- btn-xs btn-info" title="Add Appointment" data-bs-toggle="modal" data-bs-target="#create-appointment-modal"
-                            href="javascript: void(0);" onclick="viewFormCreateAppointment('{{ $contact->id }}', '4')"><i class="mdi mdi-calendar-plus"></i></a>
+                        <div class="btn-group mb-2">
+                            <a href="javascript: void(0);" class="btn- btn-xs btn-info btn-sm dropdown-toggle"
+                                title="New Email" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+                                    class="mdi mdi-email-edit-outline"></i></a>
+                            <div class="dropdown-menu">
+                                @foreach ($email_accounts as $key => $email)
+                                    <a class="dropdown-item" href="#send-mail-modal"
+                                    data-backdrop="false" data-bs-toggle="modal" onclick="sendEmail('{{ $email->id }}', '{{ $contact->id }}', {{ getElementByName('contacts') }}, '{{ $email->email }}')">
+                                    <img src="{{ asset('images/contact_data/email.png') }}"
+                                    alt="contact-data-logo" height="12" class="me-1">{{ $email->email }}</a>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="btn-group mb-2">
+                            <a href="javascript: void(0);" class="btn- btn-xs btn-info" title="New Sms"><i
+                                    class="mdi mdi-message-text-outline"></i></a>
+                        </div>
+                        <div class="btn-group mb-2">
+                            <a href="javascript: void(0);" class="btn- btn-xs btn-success" title="Call"><i
+                                    class="fe-phone-call"></i></a>
+                        </div>
+                        <div class="btn-group mb-2">
+                            <a id="edit-{{ $contact->id }}" class="btn- btn-xs btn-primary" title="Edit Contact"
+                                href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-modal"
+                                onclick="editContact({{ $contact->id }});"><i class="mdi mdi-square-edit-outline"></i></a>
+                        </div>
+                        <div class="btn-group mb-2">
+                            <a id="delete-{{ $contact->id }}" class="btn- btn-xs btn-danger" title="Delete Contact"
+                                href="javascript: void(0);" onclick="deleteContact({{ $contact->id }});"><i
+                                    class="mdi mdi-delete-circle"></i></a>
+                        </div>
+                        <div class="btn-group mb-2">
+                            <a class="btn- btn-xs btn-info" title="Add Appointment" data-bs-toggle="modal"
+                                data-bs-target="#create-appointment-modal" href="javascript: void(0);"
+                                onclick="viewFormCreateAppointment('{{ $contact->id }}', '4')"><i
+                                    class="mdi mdi-calendar-plus"></i></a>
+                        </div>
                     </div>
                 @endif
             @endisset
@@ -112,10 +135,10 @@
 
                                 <h4 class="font-13 text-muted text-uppercase mb-1">Creation Date :</h4>
                                 <p class="mb-3"> {{ $contact->creation_date }}</p>
-                                
-                                @if($contact->import_id)
-                                <h4 class="font-13 text-muted text-uppercase mb-1">Import Id :</h4>
-                                <p class="mb-3"> {{ $contact->import_id }}</p>
+
+                                @if ($contact->import_id)
+                                    <h4 class="font-13 text-muted text-uppercase mb-1">Import Id :</h4>
+                                    <p class="mb-3"> {{ $contact->import_id }}</p>
                                 @endif
                             @endif
                         @endisset
@@ -141,10 +164,12 @@
                             @foreach ($contact_field as $field)
                                 <h4 class="font-13 text-muted text-uppercase">{{ $field->name }} :</h4>
                                 @if ($field->field_type === 'file')
-                                <p class="mb-3"><a href="{{ asset('storage/custom_field/'.$field->field_value) }}" target="_blank">view {{ $field->tag }} content</a></p>
+                                    <p class="mb-3"><a
+                                            href="{{ asset('storage/custom_field/' . $field->field_value) }}"
+                                            target="_blank">view {{ $field->tag }} content</a></p>
                                 @elseif($field->field_type === 'checkbox')
-                                    @if($field->field_value === 'on')
-                                    <p class="mb-3"> Yes </p>
+                                    @if ($field->field_value === 'on')
+                                        <p class="mb-3"> Yes </p>
                                     @endif
                                 @elseif($field->field_type === 'select')
                                     <p class="mb-3"> {{ $field->option[0]->title }}</p>

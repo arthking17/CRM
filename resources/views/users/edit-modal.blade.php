@@ -160,7 +160,7 @@
                         <!-- end row-->
                         <button type="submit" id="btn-edit" class="btn btn-info waves-effect waves-light">Edit</button>
                         <button type="button" id="btn-delete" class="btn btn-danger waves-effect waves-light"
-                            onclick="deleteUser({{ $user->id }});">Delete</button>
+                            onclick="">Delete</button>
                     </form>
                 </div>
             </div><!-- /.modal-content -->

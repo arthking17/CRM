@@ -11,11 +11,13 @@ use App\Models\Contacts_field;
 use App\Models\Contacts_person;
 use App\Models\Custom_field;
 use App\Models\Custom_select_field;
+use App\Models\Email_account;
 use App\Models\Group;
 use App\Models\Import;
 use App\Models\Log;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
@@ -37,6 +39,7 @@ class ContactController extends Controller
         $contact = null;
         $contact_datas = [];
         $notes = [];
+        $email_accounts = Email_account::where('status', 1)->get();
         $imports = DB::table('imports')->select('id')->get();
         $custom_fields = Custom_field::where('status', 1)->get();
         $select_options = DB::table('custom_select_fields')->join('custom_fields', 'field_id', '=', 'custom_fields.id')->select('custom_select_fields.*')->where('status', 1)->get();
@@ -67,6 +70,7 @@ class ContactController extends Controller
             'contact_field' => $contact_field,
             'users' => $users,
             'elementClass' => getElementByName('contacts'),
+            'email_accounts' => $email_accounts,
         ]);
     }
 
@@ -108,6 +112,7 @@ class ContactController extends Controller
         $accounts = Account::all();
         $custom_fields = Custom_field::where('status', 1)->get();
         $contact_field = Contacts_field::join('custom_fields', 'field_id', '=', 'custom_fields.id')->where('contact_id', $id)->where('status', 1)->select('contacts_fields.id', 'field_type', 'custom_fields.tag', 'field_value', 'custom_fields.name')->get();
+        $email_accounts = Email_account::where('status', 1)->get();
         try {
             if ($contact->class == 1) {
                 $contacts_person = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')->where('contacts.id', $id)->get();
@@ -115,7 +120,7 @@ class ContactController extends Controller
                 if (!$contacts_person->isEmpty()) {
                     $contact = $contacts_person[0];
                     if ($modal == 0) {
-                        $returnHTML = view('contacts/contacts_person-info', compact('contact', 'accounts', 'contact_field'))->render();
+                        $returnHTML = view('contacts/contacts_person-info', compact('contact', 'accounts', 'contact_field', 'email_accounts'))->render();
                         return response()->json(['success' => 'Contact Person found', 'html' => $returnHTML, 'elementClass' => getElementByName('contacts')]);
                     } else if ($modal == 1)
                         return response()->json(['contact' => $contact, 'contact_field' => $contact_field, 'custom_fields' => $custom_fields]);
@@ -129,7 +134,7 @@ class ContactController extends Controller
                     $contact = $contacts_companie[0];
                     //dd($companie);
                     if ($modal == 0) {
-                        $returnHTML = view('contacts/contacts_companie-info', compact('contact', 'accounts', 'contact_field'))->render();
+                        $returnHTML = view('contacts/contacts_companie-info', compact('contact', 'accounts', 'contact_field', 'email_accounts'))->render();
                         return response()->json(['success' => 'Contact Companie found', 'html' => $returnHTML, 'elementClass' => getElementByName('contacts')]);
                     } else if ($modal == 1)
                         return response()->json(['contact' => $contact, 'contact_field' => $contact_field, 'custom_fields' => $custom_fields]);
@@ -198,16 +203,16 @@ class ContactController extends Controller
                 foreach ($custom_fields as $key => $custom_field) {
                     if ($request->input($custom_field->tag)) {
                         $contacts_field = Contacts_field::create(['contact_id' => $contact->id, 'field_id' => $custom_field->id, 'field_value' => $request->input($custom_field->tag)]);
-                        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
+                        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
                     }
                     if ($request->file($custom_field->tag)) {
                         $request->file($custom_field->tag)->storePublicly('public/custom_field');
                         $custom_file_name = $request->file($custom_field->tag)->hashName();
                         $contacts_field = Contacts_field::create(['contact_id' => $contact->id, 'field_id' => $custom_field->id, 'field_value' => $custom_file_name]);
-                        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
+                        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
                     }
                 }
-                Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact_person.create', 'element' => getElementByName('contacts'), 'element_id' => $contact->id, 'source' => 'contact_person.create']);
+                Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contact_person.create', 'element' => getElementByName('contacts'), 'element_id' => $contact->id, 'source' => 'contact_person.create']);
                 //return response()->json(['contact_person' => $contact_person, 'success' => 'This person contact has been added']);
                 $contact = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')->where('contacts.id', $contact->id)->get();
             } catch (Throwable $e) {
@@ -252,16 +257,16 @@ class ContactController extends Controller
                 foreach ($custom_fields as $key => $custom_field) {
                     if ($request->input($custom_field->tag)) {
                         $contacts_field = Contacts_field::create(['contact_id' => $contact->id, 'field_id' => $custom_field->id, 'field_value' => $request->input($custom_field->tag)]);
-                        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
+                        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
                     }
                     if ($request->file($custom_field->tag)) {
                         $request->file($custom_field->tag)->storePublicly('public/custom_field');
                         $custom_file_name = $request->file($custom_field->tag)->hashName();
                         $contacts_field = Contacts_field::create(['contact_id' => $contact->id, 'field_id' => $custom_field->id, 'field_value' => $custom_file_name]);
-                        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
+                        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
                     }
                 }
-                Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact_companie.create', 'element' => getElementByName('contacts'), 'element_id' => $contact->id, 'source' => 'contact_companie.create']);
+                Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contact_companie.create', 'element' => getElementByName('contacts'), 'element_id' => $contact->id, 'source' => 'contact_companie.create']);
                 //return response()->json(['contact_companie' => $contact_companie, 'success' => 'This companie contact has been added']);
                 $contact = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
                     ->select('contacts.*', 'contacts_companies.class as companies_class', 'contacts_companies.name', 'contacts_companies.registered_number', 'contacts_companies.logo', 'contacts_companies.activity', 'contacts_companies.country', 'contacts_companies.language')
@@ -343,7 +348,7 @@ class ContactController extends Controller
             $contact_person->birthdate = $person_data['birthdate'];
             $contact_person->save();
 
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact_person.update', 'element' => getElementByName('contacts'), 'element_id' => $request->input('id'), 'source' => 'contact_person.update']);
+            Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contact_person.update', 'element' => getElementByName('contacts'), 'element_id' => $request->input('id'), 'source' => 'contact_person.update']);
             //return response()->json(['contact' => $contact, 'success' => 'This person contact has been updated']);
             $contact = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')->where('contacts.id', $request->id)->get();
         } else if ($request->class == 2) //companies contact
@@ -379,7 +384,7 @@ class ContactController extends Controller
             }
             $contact_companie->save();
 
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contact_companie.update', 'element' => getElementByName('contacts'), 'element_id' => $request->input('id'), 'source' => 'contact_companie.update']);
+            Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contact_companie.update', 'element' => getElementByName('contacts'), 'element_id' => $request->input('id'), 'source' => 'contact_companie.update']);
             //return response()->json(['contact' => $contact, 'success' => 'This companie contact has been updated']);
             $contact = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
                 ->select('contacts.*', 'contacts_companies.class as companies_class', 'contacts_companies.name', 'contacts_companies.registered_number', 'contacts_companies.logo', 'contacts_companies.activity', 'contacts_companies.country', 'contacts_companies.language')
@@ -397,7 +402,7 @@ class ContactController extends Controller
                         $custom_file_name = $request->file($custom_field->tag)->hashName();
                         $contact_field->field_value = $custom_file_name;
                         $contact_field->save();
-                        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.update', 'element' => getElementByName('contacts_fields'), 'element_id' => $contact_field->id, 'source' => 'contacts_fields.update']);
+                        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contacts_fields.update', 'element' => getElementByName('contacts_fields'), 'element_id' => $contact_field->id, 'source' => 'contacts_fields.update']);
                     }
                 } else {
                     if ($custom_field->field_type != 'file') {
@@ -405,10 +410,10 @@ class ContactController extends Controller
                             if ($contact_field->field_value != $request->input($custom_field->tag)) {
                                 $contact_field->field_value = $request->input($custom_field->tag);
                                 $contact_field->save();
-                                Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.update', 'element' => getElementByName('contacts_fields'), 'element_id' => $contact_field->id, 'source' => 'contacts_fields.update']);
+                                Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contacts_fields.update', 'element' => getElementByName('contacts_fields'), 'element_id' => $contact_field->id, 'source' => 'contacts_fields.update']);
                             }
                         } else {
-                            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.delete', 'element' => getElementByName('contacts_fields'), 'element_id' => $contact_field->id, 'source' => 'contacts_fields.delete']);
+                            Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contacts_fields.delete', 'element' => getElementByName('contacts_fields'), 'element_id' => $contact_field->id, 'source' => 'contacts_fields.delete']);
                             $contact_field->delete();
                         }
                     }
@@ -416,13 +421,13 @@ class ContactController extends Controller
             } else {
                 if ($request->input($custom_field->tag)) {
                     $contacts_field = Contacts_field::create(['contact_id' => $request->id, 'field_id' => $custom_field->id, 'field_value' => $request->input($custom_field->tag)]);
-                    Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
+                    Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
                 }
                 if ($request->file($custom_field->tag)) {
                     $request->file($custom_field->tag)->storePublicly('public/custom_field');
                     $custom_file_name = $request->file($custom_field->tag)->hashName();
                     $contacts_field = Contacts_field::create(['contact_id' => $request->id, 'field_id' => $custom_field->id, 'field_value' => $custom_file_name]);
-                    Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
+                    Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contacts_fields.create', 'element' => getElementByName('contacts_fields'), 'element_id' => $contacts_field->id, 'source' => 'contacts_fields.create']);
                 }
             }
         }
@@ -453,7 +458,7 @@ class ContactController extends Controller
 
         $contact_companie->save();
 
-        Log::create(['user_id' => 2, 'log_date' => new DateTime(), 'action' => 'contact_companie.logo.update', 'element' => getElementByName('contacts'), 'element_id' => $request->id, 'source' => 'contact_companie.logo.update, ' . $request->id]);
+        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contact_companie.logo.update', 'element' => getElementByName('contacts'), 'element_id' => $request->id, 'source' => 'contact_companie.logo.update, ' . $request->id]);
         return response()->json(['success' => 'This contact companie logo Updated', 'contact' => $contact_companie]);
     }
 
@@ -472,7 +477,7 @@ class ContactController extends Controller
             $contact_1 = Contacts_companie::find($id);
         //$contact->status = 3;
         if ($contact->delete() && $contact_1->delete()) {
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts.delete', 'element' => getElementByName('contacts'), 'element_id' => $contact->id, 'source' => 'contacts.delete, ' . $id]);
+            Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contacts.delete', 'element' => getElementByName('contacts'), 'element_id' => $contact->id, 'source' => 'contacts.delete, ' . $id]);
             $contacts = Contact::All();
             $accounts = Account::All();
             $returnHTML = view('contacts/datatable-contacts', compact('contacts', 'accounts'))->render();
@@ -538,7 +543,7 @@ class ContactController extends Controller
         if ($request->class == 1) {
             $contacts = DB::table('contacts')
                 ->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
-                ->leftjoin('contact_datas', 'contacts.id', '=', 'contact_datas.element_id')
+                ->leftjoin('contact_data', 'contacts.id', '=', 'contact_data.element_id')
                 ->select('contacts.*', 'contacts_persons.*')
                 //contact
                 ->where(function ($query) use ($request) {
@@ -581,7 +586,7 @@ class ContactController extends Controller
         } else if ($request->class == 2) {
             $contacts = DB::table('contacts')
                 ->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
-                ->leftjoin('contact_datas', 'contacts.id', '=', 'contact_datas.element_id')
+                ->leftjoin('contact_data', 'contacts.id', '=', 'contact_data.element_id')
                 ->select(
                     'contacts.*',
                     'contacts_companies.class as companies_class',
@@ -629,7 +634,7 @@ class ContactController extends Controller
                 ->get();
         } else {
             $contacts = DB::table('contacts')
-                //->leftJoin('contact_datas', 'contacts.id', '=', 'contact_datas.element_id')
+                //->leftJoin('contact_data', 'contacts.id', '=', 'contact_data.element_id')
                 ->select('contacts.*')
                 ->where(function ($query) use ($request) {
                     if ($request->id)
@@ -717,7 +722,7 @@ class ContactController extends Controller
         return $sheetData = $spreadsheet->getActiveSheet()->toArray();*/
 
         $import = Import::create(['start_date' => new DateTime()]);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'contacts.import', 'element' => getElementByName('imports'), 'element_id' => $import->id, 'source' => 'contacts.import']);
+        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contacts.import', 'element' => getElementByName('imports'), 'element_id' => $import->id, 'source' => 'contacts.import']);
 
         if ($request->header) {
             $headings = (new HeadingRowImport())->toArray($file_path);

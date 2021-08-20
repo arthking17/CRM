@@ -9,6 +9,7 @@ use App\Models\Contacts_person;
 use App\Models\Log;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CommunicationController extends Controller
@@ -23,8 +24,9 @@ class CommunicationController extends Controller
         $communications = Communication::all();
         $contacts = Contact::all();
         $notes = [];
+        $contact_name = null;
         $users = DB::table('users')->select('id', 'username')->get();
-        if ($contacts->count() > 0) {
+        if ($communications->count() > 0) {
             $notes = DB::table('notes')->where('element_id', $communications->first()->id)->where('element', getElementByName('communications'))->get();
             $contact = Contact::find($communications->first()->contact_id);
             if ($contact->class == 1) {
@@ -87,7 +89,7 @@ class CommunicationController extends Controller
         //$user = array('user_id' => 4);
         //$data = array_merge($data,  $user);
         $communication = Communication::create($data);
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'communications.create', 'element' => getElementByName('communications'), 'element_id' => $communication->id, 'source' => 'communications.create']);
+        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'communications.create', 'element' => getElementByName('communications'), 'element_id' => $communication->id, 'source' => 'communications.create']);
 
         $communications = Communication::all();
         $returnHTML = view('communications/list', compact('communications'))->render();
@@ -151,7 +153,7 @@ class CommunicationController extends Controller
         $communication = Communication::find($request->id);
         $communication->update($data);
 
-        Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'communications.update', 'element' => getElementByName('communications'), 'element_id' => $communication->id, 'source' => 'communications.update']);
+        Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'communications.update', 'element' => getElementByName('communications'), 'element_id' => $communication->id, 'source' => 'communications.update']);
 
         $communications = Communication::all();
         $returnHTML = view('communications/list', compact('communications'))->render();
@@ -169,7 +171,7 @@ class CommunicationController extends Controller
         $communication = Communication::find($id);
         $communication->status = 0;
         if ($communication->save()) {
-            Log::create(['user_id' => 4, 'log_date' => new DateTime(), 'action' => 'communications.delete', 'element' => getElementByName('communications'), 'element_id' => $id, 'source' => 'communications.delete, ' . $id]);
+            Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'communications.delete', 'element' => getElementByName('communications'), 'element_id' => $id, 'source' => 'communications.delete, ' . $id]);
             return response()->json(['success' => 'communication Deleted !!!', 'communication' => $communication]);
         } else
             return response()->json(['error' => 'Failed to delete this communication !!!']);

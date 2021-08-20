@@ -119,68 +119,72 @@
                 </div>
             </div>
             <!-- end row -->
-            @include('groups.create')
-            @include('groups.edit')
-            @if ($groups->count() > 0)
-                <div id="users_permissions-div">
-                    @include('permissions.users_permissions')
-                </div>
-                <div id="create-Permission-div">
-                    @include('permissions.create-permission')
-                </div>
-            @endif
-        @endsection
 
-        @section('js')
-            <!-- Vendor js -->
-            <script src="/js/vendor.min.js"></script>
+        </div> <!-- container -->
 
-            <!-- Plugin js-->
-            <script src="/libs/parsleyjs/parsley.min.js"></script>
+    </div> <!-- content -->
+    @include('groups.create')
+    @include('groups.edit')
+    @if ($groups->count() > 0)
+        <div id="users_permissions-div">
+            @include('permissions.users_permissions')
+        </div>
+        <div id="create-Permission-div">
+            @include('permissions.create-permission')
+        </div>
+    @endif
+@endsection
 
-            <!-- Sweet Alerts js -->
-            <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+@section('js')
+    <!-- Vendor js -->
+    <script src="/js/vendor.min.js"></script>
 
-            <!-- third party js -->
-            <script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-            <script src="/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-            <script src="/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-            <script src="/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
-            <script src="/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-            <!-- button pdf copy -->
-            <script src="/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
-            <!-- style button -->
-            <script src="/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
-            <!-- style button end -->
-            <!-- button print -->
-            <script src="/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
-            <!-- not use -->
-            <script src="/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
-            <script src="/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-            <script src="/libs/datatables.net-select/js/dataTables.select.min.js"></script>
-            <!-- not use end -->
-            <!-- pdf -->
-            <script src="/libs/pdfmake/build/pdfmake.min.js"></script>
-            <script src="/libs/pdfmake/build/vfs_fonts.js"></script>
-            <!-- third party js ends -->
+    <!-- Plugin js-->
+    <script src="/libs/parsleyjs/parsley.min.js"></script>
 
-            <!-- custom js files -->
-            <script src="/js/form-validation-laravel.js"></script>
-            <script src="/js/groups/groups-list.js"></script>
-            <script src="/js/groups/groups-validation.js"></script>
-            <script src="/js/groups/datatable-groups.init.js"></script>
-            <script src="/js/users/users-select.js"></script>
+    <!-- Sweet Alerts js -->
+    <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
 
-            <!-- users permissions js -->
-            <script src="/js/users/users-permissions.js"></script>
-            <script>
-                url_jsfile = '{{ URL::asset('/js/groups/') }}';
-                var create_group_errors = null
-                var edit_group_errors = null
-                var create_permission_errors = null
-                elementSelect($('#create-permissions-element'))
-            </script>
+    <!-- third party js -->
+    <script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <script src="/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <!-- button pdf copy -->
+    <script src="/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <!-- style button -->
+    <script src="/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <!-- style button end -->
+    <!-- button print -->
+    <script src="/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <!-- not use -->
+    <script src="/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+    <!-- not use end -->
+    <!-- pdf -->
+    <script src="/libs/pdfmake/build/pdfmake.min.js"></script>
+    <script src="/libs/pdfmake/build/vfs_fonts.js"></script>
+    <!-- third party js ends -->
 
-            <!-- App js-->
-            <script src="/js/app.min.js"></script>
-        @endsection
+    <!-- custom js files -->
+    <script src="/js/form-validation-laravel.js"></script>
+    <script src="/js/groups/groups-list.js"></script>
+    <script src="/js/groups/groups-validation.js"></script>
+    <script src="/js/groups/datatable-groups.init.js"></script>
+    <script src="/js/users/users-select.js"></script>
+
+    <!-- users permissions js -->
+    <script src="/js/users/users-permissions.js"></script>
+    <script>
+        url_jsfile = '{{ URL::asset('/js/groups/') }}';
+        var create_group_errors = null
+        var edit_group_errors = null
+        var create_permission_errors = null
+        elementSelect($('#create-permissions-element'))
+    </script>
+
+    <!-- App js-->
+    <script src="/js/app.min.js"></script>
+@endsection

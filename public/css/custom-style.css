@@ -1,8 +1,19 @@
-.truncate {
-    max-width: 50px;
-    white-space: nowrap;
-    overflow: hidden;
+.truncate-td {
+    display: inline-block;
+    max-width: 200px;
     text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.truncate {
+    display: inline-block;
+    width: 70%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: middle;
 }
 
 
