@@ -24,7 +24,7 @@ class CreateEmailAccountsTable extends Migration
             $table->tinyInteger('smtpauth')->unsigned();
             $table->string('email', 128);
             $table->string('username', 128);
-            $table->string('pwd', 255);
+            $table->longText('pwd');
             $table->integer('port')->unsigned();
             $table->tinyInteger('smtpsecure')->unsigned()->comment('1 : tls\n2 : ssl\n3 : notls\n4 : starttls');
             $table->tinyInteger('type')->unsigned()->comment('1 : unitary\n0 : mass_marketing');

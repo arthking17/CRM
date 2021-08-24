@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use ipinfo\ipinfo\IPinfo;
 
 class LoginController extends Controller
 {
@@ -55,27 +56,33 @@ class LoginController extends Controller
         }*/
         //return $request->header('user-agent');
         //return explode("/", $request->header('user-agent'))[2];
-        
+
         if (Auth::attempt(['login' => $credentials['login'], 'password' => $credentials['pwd'], 'status' => 1], $request->has('remember'))) {
 
+            $access_token = '947e2827248fe2';
+            $client = new IPinfo($access_token, ['guzzle_opts' => ['verify' => false ] ]);
+            $details = $client->getDetails();
+
+            config(['app.timezone' => $details->timezone]);
+            
             $user = User::find(Auth::id());
             $user->timezone = config('app.timezone');
-            $user->ip_address = $request->ip();
+            $user->ip_address = $details->ip;
             $user->browser = explode("/", $request->header('user-agent'))[2];
             $user->last_auth = new DateTime();
             $user->save();
 
             $request->session()->regenerate();
-            
+
             return redirect()->intended();
         }
         //dd($request->header());
         //dd(config('app.timezone'));
         return back()
-        ->withInput($request->except('pwd'))
-        ->withErrors([
-            'login' => 'The provided credentials do not match our records.',
-        ]);
+            ->withInput($request->except('pwd'))
+            ->withErrors([
+                'login' => 'The provided credentials do not match our records.',
+            ]);
     }
 
     public function signOut()

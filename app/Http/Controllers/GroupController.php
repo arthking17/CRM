@@ -22,12 +22,12 @@ class GroupController extends Controller
     public function index()
     {
         $groups = Group::All();
-        $accounts = Account::All();
+        $accounts = Account::where('status', 1)->get();
         $user = null;
         $users_permissions = [];
         $users = [];
         if ($groups->count() > 0) {
-            $users = User::where('account_id', $groups->last()->account_id)->get();
+            $users = User::where('account_id', $groups->last()->account_id)->where('status', 1)->get();
             $user = $users->first();
             if ($user != null)
                 $users_permissions = Users_permission::all()

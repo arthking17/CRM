@@ -132,6 +132,10 @@ function deleteCommunication(id) {
                         $('#communicationid' + id + ' a:nth-child(1)').attr('onclick', '')
                         $('#communicationid' + id + ' a:nth-child(1)').attr('data-bs-toggle', '')
                         $('#communicationid' + id + ' a:nth-child(2)').attr('onclick', '')
+
+                        $('#edit-' + id).attr('onclick', '')
+                        $('#edit-' + id).attr('data-bs-toggle', '')
+                        $('#delete-' + id).attr('onclick', '')
                     },
                     error: function(error) {
                         console.log(error)

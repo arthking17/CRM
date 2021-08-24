@@ -30,15 +30,15 @@
                 <div class="row">
                     <div class="col-md-6">
                         <span class="text-muted">SMTPAuth : </span>
-                        @if ($email->smtpauth == 1) Yes
-                        @elseif($email->smtpauth == 0) No @endif
+                        @if ($email->smtpauth == 1) <span class="badge bg-info text-light">Yes</span>
+                        @elseif($email->smtpauth == 0) <span class="badge label-table bg-danger ">No</span> @endif
                     </div>
                     <div class="col-md-6">
                         <span class="text-muted">SMTPSecure : </span>
-                        @if ($email->smtpsecure == 1) TLS
-                        @elseif($email->smtpsecure == 2) SSL
-                        @elseif($email->smtpsecure == 3) NOTLS
-                        @elseif($email->smtpsecure == 4) STARTTLS @endif
+                        @if ($email->smtpsecure == 1) <span class="badge bg-success text-light">TLS</span>
+                        @elseif($email->smtpsecure == 2) <span class="badge bg-pink text-light">SSL</span>
+                        @elseif($email->smtpsecure == 3) <span class="badge label-table bg-warning ">NOTLS</span>
+                        @elseif($email->smtpsecure == 4) <span class="badge bg-blue text-light">STARTTLS</span> @endif
                     </div>
                 </div>
                 <div class="row">

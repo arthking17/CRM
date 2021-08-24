@@ -31,8 +31,8 @@ class UserController extends Controller
         $logs = [];
         $accounts = DB::table('accounts')
             ->orderBy('id', 'desc')
-            ->get();
-        $users = User::all();
+            ->where('status', 1)->get();
+        $users = User::where('status', 1)->get();
         $users_paginate = User::all()->take(9);
         //$users_paginate = DB::table('users')->paginate(8);
         if ($users->count() > 0) {
@@ -42,8 +42,7 @@ class UserController extends Controller
                 ->orderBy('id', 'asc')
                 ->take(20)
                 ->get();
-            $users_permissions = Users_permission::all()
-                ->where('user_id', $user->id);
+            $users_permissions = Users_permission::where('user_id', $user->id)->where('status', 1)->get();
             $notes = DB::table('notes')
                 ->where('element', getElementByName('users'))->where('element_id', $user->id)->get();
         }

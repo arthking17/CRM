@@ -260,6 +260,8 @@
     @include('appointments.create')
 
     @include('email_accounts.send-mail')
+
+    @include('sip_accounts.call')
 @endsection
 
 @section('js')
@@ -369,11 +371,15 @@
     <!-- Include the Quill library -->
     <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
 
+    <!-- call voip modal -->
+    <script src="/js/sip_accounts/sip_accounts.js"></script>
+
     <script>
         url_logo = '{{ URL::asset('/storage/images/logo/') }}';
         url_custom_field = '{{ URL::asset('/storage/custom_field/') }}';
         url_contact_image = '{{ URL::asset('images/contact_data/') }}';
         url_jsfile = '{{ URL::asset('/js/contacts/') }}';
+        url_audio = '{{ URL::asset('/audio') }}';
         var form_create_errors = null
         var form_edit_errors = null
         var create_contact_data_errors = null
@@ -389,6 +395,7 @@
         var errors_create_custom_field = null
         var errors_edit_custom_field = null
         var create_appointment_errors = null
+        var myTimer = null
     </script>
 
     <script>

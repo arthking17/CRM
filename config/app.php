@@ -233,6 +233,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Mailbox' => BeyondCode\Mailbox\Facades\Mailbox::class,
         'Client' => Webklex\IMAP\Facades\Client::class,
+        'IPinfo' => ipinfo\ipinfo\IPinfo::class,
 
     ],
 

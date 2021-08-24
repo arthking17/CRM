@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
+use App\Models\Channel;
 use App\Models\Email_account;
 use App\Models\Log;
+use App\Models\Sip_account;
 use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
@@ -20,8 +23,14 @@ class ProfileController extends Controller
     public function index()
     {
         $email_accounts = Email_account::where('status', 1)->get();
+        $sip_accounts = Sip_account::where('status', 1)->get();
+        $accounts = Account::where('status', 1)->get();
+        $channels = Channel::where('status', 1)->get();
         return view('auth.profile', [
             'email_accounts' => $email_accounts,
+            'sip_accounts' => $sip_accounts,
+            'accounts' => $accounts,
+            'channels' => $channels,
         ]);
     }
 

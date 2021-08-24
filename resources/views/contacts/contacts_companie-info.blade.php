@@ -16,7 +16,10 @@
                             </label>
                             <input id="form-edit-contact-companie-logo-file" type="file" name="logo"
                                 onchange="updateContactCompanieLogo(event)" />
-                        <img id="contact-companie-logo" class="rounded-circle avatar-lg" src="@if ($contact->logo) {{ asset('storage/images/logo/' . $contact->logo) }} @else
+                            <img id="contact-companie-logo" class="rounded-circle avatar-lg" src="
+                                          @if ($contact->logo)
+                            {{ asset('storage/images/logo/' . $contact->logo) }}
+                        @else
                             {{ asset('storage/images/logo/image-not-found.png') }} @endif" alt="contact
                             companie logo">
                         </div>
@@ -34,25 +37,36 @@
                                     class="mdi mdi-email-edit-outline"></i></a>
                             <div class="dropdown-menu">
                                 @foreach ($email_accounts as $key => $email)
-                                    <a class="dropdown-item" href="#send-mail-modal"
-                                    data-backdrop="false" data-bs-toggle="modal" onclick="sendEmail('{{ $email->id }}', '{{ $contact->id }}', {{ getElementByName('contacts') }}, '{{ $email->email }}')">
-                                    <img src="{{ asset('images/contact_data/email.png') }}"
-                                    alt="contact-data-logo" height="12" class="me-1">{{ $email->email }}</a>
+                                    <a class="dropdown-item" href="#send-mail-modal" data-backdrop="false"
+                                        data-bs-toggle="modal"
+                                        onclick="sendEmail('{{ $email->id }}', '{{ $contact->id }}', {{ getElementByName('contacts') }}, '{{ $email->email }}')">
+                                        <img src="{{ asset('images/contact_data/email.png') }}" alt="contact-data-logo"
+                                            height="12" class="me-1">{{ $email->email }}</a>
                                 @endforeach
                             </div>
                         </div>
                         <div class="btn-group mb-2">
-                            <a href="javascript: void(0);" class="btn- btn-xs btn-info" title="New Sms"><i
-                                    class="mdi mdi-message-text-outline"></i></a>
+                            <a href="javascript: void(0);" class="btn- btn-xs btn-info btn-sm dropdown-toggle"
+                                title="New Sms"><i class="mdi mdi-message-text-outline"></i></a>
                         </div>
                         <div class="btn-group mb-2">
-                            <a href="javascript: void(0);" class="btn- btn-xs btn-success" title="Call"><i
+                            <a href="javascript: void(0);" class="btn- btn-xs btn-success btn-sm dropdown-toggle"
+                                title="Call" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                                     class="fe-phone-call"></i></a>
+                            <div class="dropdown-menu">
+                                @foreach ($sip_accounts as $key => $sip_account)
+                                    <a id="button-call-one" class="dropdown-item" href="#call-one-modal" data-backdrop="false" data-bs-toggle="modal" 
+                                    data-sipaccount-username="{{ $sip_account->username }}">
+                                        <img src="{{ asset('images/contact_data/mobile.png') }}"
+                                            alt="contact-data-logo" height="12" class="me-1">{{ $sip_account->name }}</a>
+                                @endforeach
+                            </div>
                         </div>
                         <div class="btn-group mb-2">
                             <a id="edit-{{ $contact->id }}" class="btn- btn-xs btn-primary" title="Edit Contact"
                                 href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-modal"
-                                onclick="editContact({{ $contact->id }});"><i class="mdi mdi-square-edit-outline"></i></a>
+                                onclick="editContact({{ $contact->id }});"><i
+                                    class="mdi mdi-square-edit-outline"></i></a>
                         </div>
                         <div class="btn-group mb-2">
                             <a id="delete-{{ $contact->id }}" class="btn- btn-xs btn-danger" title="Delete Contact"
@@ -128,10 +142,10 @@
                                 <p class="mb-3"> {{ $contact->registered_number }}</p>
 
                                 <h4 class="font-13 text-muted text-uppercase mb-1">Country :</h4>
-                                <p class="mb-3"> {{ $contact->country }}</p>
+                                <p class="mb-3"> {{ getCountryName($contact->country) }}</p>
 
                                 <h4 class="font-13 text-muted text-uppercase mb-1">Language :</h4>
-                                <p class="mb-3"> {{ $contact->language }}</p>
+                                <p class="mb-3"> {{ getLanguageName($contact->language) }}</p>
 
                                 <h4 class="font-13 text-muted text-uppercase mb-1">Creation Date :</h4>
                                 <p class="mb-3"> {{ $contact->creation_date }}</p>

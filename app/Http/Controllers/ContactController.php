@@ -15,11 +15,14 @@ use App\Models\Email_account;
 use App\Models\Group;
 use App\Models\Import;
 use App\Models\Log;
+use App\Models\Sip_account;
+use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use ipinfo\ipinfo\IPinfo;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\HeadingRowImport;
 use Throwable;
@@ -39,7 +42,8 @@ class ContactController extends Controller
         $contact = null;
         $contact_datas = [];
         $notes = [];
-        $email_accounts = Email_account::where('status', 1)->get();
+        $email_accounts = Email_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $sip_accounts = Sip_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
         $imports = DB::table('imports')->select('id')->get();
         $custom_fields = Custom_field::where('status', 1)->get();
         $select_options = DB::table('custom_select_fields')->join('custom_fields', 'field_id', '=', 'custom_fields.id')->select('custom_select_fields.*')->where('status', 1)->get();
@@ -71,6 +75,7 @@ class ContactController extends Controller
             'users' => $users,
             'elementClass' => getElementByName('contacts'),
             'email_accounts' => $email_accounts,
+            'sip_accounts' => $sip_accounts,
         ]);
     }
 

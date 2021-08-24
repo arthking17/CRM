@@ -145,3 +145,13 @@ Route::post('/send_mail', 'EmailAccountController@sendMail')->name('send_mail')-
 Route::get('/mail', 'EmailAccountController@showMailTemplate')->name('mail.template')->middleware('auth');
 Route::get('/email_accounts/config/{id}/{email}', 'EmailAccountController@configEmailAccount')->name('email_accounts.config')->middleware('auth');
 Route::get('/mailbox', 'EmailAccountController@showMailBox')->name('mail.box')->middleware('auth');
+
+//route for sip_accounts
+Route::get('/sip_accounts', 'SipAccountController@index')->name('sip_accounts')->middleware('auth');
+Route::get('/sip_accounts/all', 'SipAccountController@getAllSipAccount')->name('sip_accounts.all')->middleware('auth');
+Route::get('/sip_accounts/get/{id}', 'SipAccountController@getSipAccount')->name('sip_accounts.get')->middleware('auth');
+Route::post('/sip_accounts/create', 'SipAccountController@store')->name('sip_accounts.create')->middleware('auth');
+Route::put('/sip_accounts/update', 'SipAccountController@update')->name('sip_accounts.update')->middleware('auth');
+Route::delete('/sip_accounts/delete/{id}', 'SipAccountController@destroy')->name('sip_accounts.delete')->middleware('auth');
+Route::get('/sip_accounts/show/{id}', 'SipAccountController@show')->name('sip_accounts.show')->middleware('auth');
+Route::get('/sip_accounts/calls/logs', 'SipAccountController@getAllCallsLogs')->name('sip_accounts.calls.logs')->middleware('auth');

@@ -83,7 +83,7 @@
                                     </span></p>
 
                                 <p class="text-muted mb-2 font-13"><strong>Language :</strong><span
-                                        class="ms-2">{{ Auth::user()->language }}</span></p>
+                                        class="ms-2">{{ getLanguageName(Auth::user()->language) }}</span></p>
 
                                 <p class="text-muted mb-2 font-13"><strong>Timezone :</strong> <span
                                         class="ms-2">{{ Auth::user()->timezone }}</span></p>
@@ -166,7 +166,8 @@
                                                         data-parsley-length="[2, 2]"
                                                         data-parsley-length-message="select a language">
                                                         <option>Select a language</option>
-                                                        <option value="ar" @if (Auth::user()->language == 'ar') selected @endif>Arabic - العربية</option>
+                                                        <option value="ar" @if (Auth::user()->language == 'ar') selected @endif>Arabic - العربية
+                                                        </option>
                                                         <option value="en" @if (Auth::user()->language == 'en') selected @endif>English</option>
                                                         <option value="fr" @if (Auth::user()->language == 'fr') selected @endif>French - français
                                                         </option>
@@ -238,23 +239,50 @@
                                     <div id="list-email-accounts">
                                         @include('email_accounts.list')
                                     </div>
+
+                                    <div class="row justify-content-between">
+                                        <div class="col-auto">
+                                            <h5 class="header-title"><i
+                                                    class="mdi mdi-phone-settings-outline me-1"></i>
+                                                SIP Account</h5>
+                                            <a href="{{ route('sip_accounts') }}">
+                                                <p class="sub-header">
+                                                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp click here to more details.
+                                                </p>
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="text-sm-end">
+                                                <button type="button" class="btn btn-danger waves-effect waves-light"
+                                                    data-bs-toggle="modal" data-bs-target="#create-sip_account-modal"><i
+                                                        class="mdi mdi-plus-circle me-1"></i> Add </button>
+                                            </div>
+                                        </div><!-- end col-->
+                                    </div>
+
+                                    <div id="list-sip-accounts">
+                                        @include('sip_accounts.list-redux')
+                                    </div>
                                 </div>
-                                <!-- end settings content-->
+                            </div>
+                            <!-- end settings content-->
 
-                            </div> <!-- end tab-content -->
-                        </div>
-                    </div> <!-- end card-->
+                        </div> <!-- end tab-content -->
+                    </div>
+                </div> <!-- end card-->
 
-                </div> <!-- end col -->
-            </div>
-            <!-- end row-->
+            </div> <!-- end col -->
+        </div>
+        <!-- end row-->
 
-        </div> <!-- container -->
+    </div> <!-- container -->
 
     </div> <!-- content -->
     @include('email_accounts.create')
     @include('email_accounts.edit')
     @include('users.security')
+    @include('sip_accounts.create')
+    @include('sip_accounts.edit')
 @endsection
 
 @section('js')
@@ -275,12 +303,16 @@
     <script src="/js/profile/profile.js"></script>
     <script src="/js/accounts/email_account.js"></script>
     <script src="/js/users/edit-password.js"></script>
+    <script src="/js/sip_accounts/ajax-crud.js"></script>
     <script>
         url_photo = '{{ URL::asset('/storage/images/users/') }}';
         var create_email_account_errors = null
         var edit_email_account_errors = null
         var edit_password_errors = null
         var profile_errors = null
+
+        var create_sip_account_errors = null
+        var edit_sip_account_errors = null
     </script>
     <!-- custom js files end -->
 

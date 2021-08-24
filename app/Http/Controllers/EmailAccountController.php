@@ -10,6 +10,7 @@ use BeyondCode\Mailbox\InboundEmail;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail as Mail;
 
@@ -68,7 +69,7 @@ class EmailAccountController extends Controller
             'type' => 'required|integer|digits_between:1,1',
         ]);
 
-        //$data['pwd'] = Hash::make($data['pwd']);
+        $data['pwd'] = Crypt::encryptString($data['pwd']);
 
         $account_id = array('account_id' => Auth::user()->account_id);
         $data = array_merge($data,  $account_id);
@@ -106,7 +107,7 @@ class EmailAccountController extends Controller
         ]);
 
         if ($request->pwd && $request->validate(['pwd' => 'required|string|max:255'])) {
-            $pwd = array('pwd' => $request->pwd);
+            $pwd = array('pwd' => Crypt::encryptString($request->pwd));
             //$pwd = array('pwd' => Hash::make($request->pwd));
             $data = array_merge($data,  $pwd);
         }
@@ -136,7 +137,7 @@ class EmailAccountController extends Controller
         $email_account->status = 0;
         $email_account->end_date = today();
         if ($email_account->save()) {
-            Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'communications.delete', 'element' => getElementByName('communications'), 'element_id' => $id, 'source' => 'communications.delete, ' . $id]);
+            Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'email_accounts.delete', 'element' => getElementByName('email_accounts'), 'element_id' => $id, 'source' => 'email_accounts.delete, ' . $id]);
 
             $email_accounts = email_account::where('status', 1)->get();
             $returnHTML = view('email_accounts/list', compact('email_accounts'))->render();
@@ -156,7 +157,7 @@ class EmailAccountController extends Controller
     {
         if ($email_account_id != -1) {
             $email_account = Email_account::find($email_account_id);
-        }else if($email != 'empty'){
+        } else if ($email != 'empty') {
             $email_account = Email_account::where('email', $email)->get();
             $email_account = Email_account::find($email_account[0]->id);
         }
@@ -167,16 +168,20 @@ class EmailAccountController extends Controller
         setEnv('MAIL_HOST', $email_account->host);
         setEnv('MAIL_PORT', $email_account->port);
         setEnv('MAIL_USERNAME', $email_account->username);
-        setEnv('MAIL_PASSWORD', $email_account->pwd);
+        setEnv('MAIL_PASSWORD', Crypt::decryptString($email_account->pwd));
 
-        if ($email_account->smtpsecure == 1)
-            setEnv('MAIL_ENCRYPTION', 'tls');
-        else if ($email_account->smtpsecure == 2)
-            setEnv('MAIL_ENCRYPTION', 'ssl');
-        else if ($email_account->smtpsecure == 3)
-            setEnv('MAIL_ENCRYPTION', 'notls');
-        else if ($email_account->smtpsecure == 4)
-            setEnv('MAIL_ENCRYPTION', 'starttls');
+        if ($email_account->smtpauth == 1) {
+            if ($email_account->smtpsecure == 1)
+                setEnv('MAIL_ENCRYPTION', 'tls');
+            else if ($email_account->smtpsecure == 2)
+                setEnv('MAIL_ENCRYPTION', 'ssl');
+            else if ($email_account->smtpsecure == 3)
+                setEnv('MAIL_ENCRYPTION', 'notls');
+            else if ($email_account->smtpsecure == 4)
+                setEnv('MAIL_ENCRYPTION', 'starttls');
+        } else {
+            setEnv('MAIL_ENCRYPTION', '');
+        }
 
         setEnv('MAIL_FROM_ADDRESS', $email_account->email);
 

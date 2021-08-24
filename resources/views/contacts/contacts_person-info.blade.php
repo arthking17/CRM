@@ -28,8 +28,17 @@
                                     class="mdi mdi-message-text-outline"></i></a>
                         </div>
                         <div class="btn-group mb-2">
-                            <a href="javascript: void(0);" class="btn- btn-xs btn-success js--tippy" title="Call"><i
+                            <a href="javascript: void(0);" class="btn- btn-xs btn-success btn-sm dropdown-toggle"
+                                title="Call" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                                     class="fe-phone-call"></i></a>
+                            <div class="dropdown-menu">
+                                @foreach ($sip_accounts as $key => $sip_account)
+                                    <a id="button-call-one" class="dropdown-item" href="#call-one-modal" data-backdrop="false" data-bs-toggle="modal" 
+                                    data-sipaccount-username="{{ $sip_account->username }}">
+                                        <img src="{{ asset('images/contact_data/mobile.png') }}"
+                                            alt="contact-data-logo" height="12" class="me-1">{{ $sip_account->name }}</a>
+                                @endforeach
+                            </div>
                         </div>
                         <div class="btn-group mb-2">
                             <a id="edit-{{ $contact->id }}" class="btn- btn-xs btn-primary js--tippy" title="Edit Contact"
@@ -127,10 +136,10 @@
                                 <p class="mb-3"> {{ $contact->birthdate }}</p>
 
                                 <h4 class="font-13 text-muted text-uppercase mb-1">Country :</h4>
-                                <p class="mb-3"> {{ $contact->country }}</p>
+                                <p class="mb-3"> {{ getCountryName($contact->country) }}</p>
 
                                 <h4 class="font-13 text-muted text-uppercase mb-1">Language :</h4>
-                                <p class="mb-3"> {{ $contact->language }}</p>
+                                <p class="mb-3"> {{ getLanguageName($contact->language) }}</p>
 
                                 <h4 class="font-13 text-muted text-uppercase mb-1">Creation Date :</h4>
                                 <p class="mb-3"> {{ $contact->creation_date }}</p>

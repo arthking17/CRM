@@ -25,7 +25,7 @@ class CommunicationController extends Controller
         $contacts = Contact::all();
         $notes = [];
         $contact_name = null;
-        $users = DB::table('users')->select('id', 'username')->get();
+        $users = DB::table('users')->select('id', 'username')->where('status', 1)->get();
         if ($communications->count() > 0) {
             $notes = DB::table('notes')->where('element_id', $communications->first()->id)->where('element', getElementByName('communications'))->get();
             $contact = Contact::find($communications->first()->contact_id);
