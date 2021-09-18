@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Imports\ContactImport;
 use App\Models\Account;
+use App\Models\Appointment;
+use App\Models\Communication;
 use App\Models\Contact;
 use App\Models\Contact_data;
 use App\Models\Contacts_companie;
@@ -16,6 +18,7 @@ use App\Models\Group;
 use App\Models\Import;
 use App\Models\Log;
 use App\Models\Sip_account;
+use App\Models\Sms_account;
 use App\Models\User;
 use DateTime;
 use Illuminate\Http\Request;
@@ -36,35 +39,29 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $contacts = Contact::All()->sortBy("id");
+        $contacts = Contact::all()->sortBy("id")->where('account_id', Auth::user()->account_id);
         $groups = Group::all();
         $accounts = Account::All();
-        $contact = null;
         $contact_datas = [];
         $notes = [];
         $email_accounts = Email_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
         $sip_accounts = Sip_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $sms_accounts = Sms_account::where('status', 1)->get();
         $imports = DB::table('imports')->select('id')->get();
-        $custom_fields = Custom_field::where('status', 1)->get();
-        $select_options = DB::table('custom_select_fields')->join('custom_fields', 'field_id', '=', 'custom_fields.id')->select('custom_select_fields.*')->where('status', 1)->get();
+        $custom_fields = Custom_field::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $select_options = DB::table('custom_select_fields')->join('custom_fields', 'field_id', '=', 'custom_fields.id')->select('custom_select_fields.*')->where('status', 1)->where('account_id', Auth::user()->account_id)->get();
         $contact_field = [];
-        $users = DB::table('users')->select('id', 'username')->get();
+        $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
         if ($contacts->count() > 0) {
             $contact_datas = Contact_data::all()->where('element_id', $contacts->first()->id);
-            $notes = DB::table('notes')->where('element_id', $contacts->first()->id)->where('element', getElementByName('contacts'))->get();
-            if ($contacts->first()->class == 1)
-                $contact = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')->where('contacts.id', $contacts->first()->id)->get();
-            else if ($contacts->first()->class == 2)
-                $contact = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
-                    ->select('contacts.*', 'contacts_companies.class as companies_class', 'contacts_companies.name', 'contacts_companies.registered_number', 'contacts_companies.logo', 'contacts_companies.activity', 'contacts_companies.country', 'contacts_companies.language')
-                    ->where('contacts.id', $contacts->first()->id)->get();
-            $contact = $contact[0];
-            $contact_field = Contacts_field::join('custom_fields', 'field_id', '=', 'custom_fields.id')->where('contact_id', $contact->id)->where('status', 1)->select('contacts_fields.id', 'field_type', 'custom_fields.tag', 'field_value', 'custom_fields.name')->get();
+            $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+                ->select('contacts.id', 'contacts_companies.name')->get();
+            $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
+                ->select('contacts.id', 'first_name', 'last_name')->get();
         }
         return view('contacts/list', [
             'contacts' => $contacts,
             'accounts' => $accounts,
-            'contact' => $contact,
             'contact_datas' => $contact_datas,
             'notes' => $notes,
             'groups' => $groups,
@@ -76,6 +73,9 @@ class ContactController extends Controller
             'elementClass' => getElementByName('contacts'),
             'email_accounts' => $email_accounts,
             'sip_accounts' => $sip_accounts,
+            'sms_accounts' => $sms_accounts,
+            'contacts_persons' => $contacts_persons,
+            'contacts_companies' => $contacts_companies,
         ]);
     }
 
@@ -112,12 +112,12 @@ class ContactController extends Controller
      */
     public function getContactJsonById(int $id, int $modal)
     {
-        $contact = Contact::all()
-            ->find($id);
+        $contact = Contact::find($id);
         $accounts = Account::all();
-        $custom_fields = Custom_field::where('status', 1)->get();
-        $contact_field = Contacts_field::join('custom_fields', 'field_id', '=', 'custom_fields.id')->where('contact_id', $id)->where('status', 1)->select('contacts_fields.id', 'field_type', 'custom_fields.tag', 'field_value', 'custom_fields.name')->get();
-        $email_accounts = Email_account::where('status', 1)->get();
+        $custom_fields = Custom_field::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $contact_field = Contacts_field::join('custom_fields', 'field_id', '=', 'custom_fields.id')->where('contact_id', $id)->where('status', 1)->where('account_id', Auth::user()->account_id)->select('contacts_fields.id', 'field_type', 'custom_fields.tag', 'field_value', 'custom_fields.name')->get();
+        $email_accounts = Email_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $sip_accounts = Sip_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
         try {
             if ($contact->class == 1) {
                 $contacts_person = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')->where('contacts.id', $id)->get();
@@ -125,7 +125,7 @@ class ContactController extends Controller
                 if (!$contacts_person->isEmpty()) {
                     $contact = $contacts_person[0];
                     if ($modal == 0) {
-                        $returnHTML = view('contacts/contacts_person-info', compact('contact', 'accounts', 'contact_field', 'email_accounts'))->render();
+                        $returnHTML = view('contacts/contacts_person-info', compact('contact', 'accounts', 'contact_field', 'email_accounts', 'sip_accounts'))->render();
                         return response()->json(['success' => 'Contact Person found', 'html' => $returnHTML, 'elementClass' => getElementByName('contacts')]);
                     } else if ($modal == 1)
                         return response()->json(['contact' => $contact, 'contact_field' => $contact_field, 'custom_fields' => $custom_fields]);
@@ -139,7 +139,7 @@ class ContactController extends Controller
                     $contact = $contacts_companie[0];
                     //dd($companie);
                     if ($modal == 0) {
-                        $returnHTML = view('contacts/contacts_companie-info', compact('contact', 'accounts', 'contact_field', 'email_accounts'))->render();
+                        $returnHTML = view('contacts/contacts_companie-info', compact('contact', 'accounts', 'contact_field', 'email_accounts', 'sip_accounts'))->render();
                         return response()->json(['success' => 'Contact Companie found', 'html' => $returnHTML, 'elementClass' => getElementByName('contacts')]);
                     } else if ($modal == 1)
                         return response()->json(['contact' => $contact, 'contact_field' => $contact_field, 'custom_fields' => $custom_fields]);
@@ -151,16 +151,6 @@ class ContactController extends Controller
             report($e);
             return response()->json(['error' => 'Contact Not Found !!!'], 300);
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -181,7 +171,6 @@ class ContactController extends Controller
                 'source_id' => 'required|integer|digits_between:0,10',
                 'source' => 'required|integer|digits_between:1,1',
                 'status' => 'required|integer|digits_between:1,1',
-                'account_id' => 'required|exists:App\Models\Account,id',
                 'first_name' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',
                 'nickname' => 'string|nullable|max:255',
@@ -191,6 +180,10 @@ class ContactController extends Controller
                 'person_country' => 'string|nullable|min:2|max:2',
                 'birthdate' => 'date|nullable|min:today',
             ]);
+
+            $account_id = array('account_id' => Auth::user()->account_id);
+            $person_data = array_merge($person_data,  $account_id);
+
             $contact = Contact::create(['class' => $request->class, 'source_id' => $person_data['source_id'], 'source' => $person_data['source'], 'status' => $person_data['status'], 'account_id' => $person_data['account_id']]);
             $contact_person = new Contacts_person();
             $contact_person->id = $contact->id;
@@ -204,7 +197,7 @@ class ContactController extends Controller
             $contact_person->birthdate = $person_data['birthdate'];
             try {
                 $contact_person->save();
-                $custom_fields = Custom_field::all();
+                $custom_fields = Custom_field::where('account_id', Auth::user()->account_id)->get();
                 foreach ($custom_fields as $key => $custom_field) {
                     if ($request->input($custom_field->tag)) {
                         $contacts_field = Contacts_field::create(['contact_id' => $contact->id, 'field_id' => $custom_field->id, 'field_value' => $request->input($custom_field->tag)]);
@@ -232,7 +225,6 @@ class ContactController extends Controller
                 'source_id' => 'required|integer|digits_between:0,10',
                 'source' => 'required|integer|digits_between:1,1',
                 'status' => 'required|integer|digits_between:1,1',
-                'account_id' => 'required|exists:App\Models\Account,id',
                 'companies_class' => 'required|integer|digits_between:1,1',
                 'name' => 'required|string|max:255',
                 'registered_number' => 'integer|nullable|digits_between:0,128',
@@ -241,6 +233,10 @@ class ContactController extends Controller
                 'companies_language' => 'nullable|string|min:2|max:2',
                 'companies_country' => 'nullable|string|min:2|max:2',
             ]);
+
+            $account_id = array('account_id' => Auth::user()->account_id);
+            $companies_data = array_merge($companies_data,  $account_id);
+
             $contact = Contact::create(['class' => $request->class, 'source_id' => $companies_data['source_id'], 'source' => $companies_data['source'], 'status' => $companies_data['status'], 'account_id' => $companies_data['account_id']]);
             $contact_companie = new Contacts_companie();
             $contact_companie->id = $contact->id;
@@ -258,7 +254,7 @@ class ContactController extends Controller
             }
             try {
                 $contact_companie->save();
-                $custom_fields = Custom_field::all();
+                $custom_fields = Custom_field::where('account_id', Auth::user()->account_id)->get();
                 foreach ($custom_fields as $key => $custom_field) {
                     if ($request->input($custom_field->tag)) {
                         $contacts_field = Contacts_field::create(['contact_id' => $contact->id, 'field_id' => $custom_field->id, 'field_value' => $request->input($custom_field->tag)]);
@@ -284,32 +280,10 @@ class ContactController extends Controller
             }
         }
 
-        $contacts = Contact::All();
-        $accounts = Account::All();
+        $contacts = Contact::where('account_id', Auth::user()->account_id)->get();
+        $account = Account::find(Auth::user()->account_id);
         $returnHTML = view('contacts/datatable-contacts', compact('contacts', 'accounts'))->render();
         return response()->json(['success' => 'This companie contact has been added', 'html' => $returnHTML, 'contact' => $contact[0]]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Contact  $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contact $contact)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Contact  $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Contact $contact)
-    {
-        //
     }
 
     /**
@@ -330,7 +304,6 @@ class ContactController extends Controller
                 'source_id' => 'required|integer|digits_between:0,10',
                 'source' => 'required|integer|digits_between:1,1',
                 'status' => 'required|integer|digits_between:1,1',
-                'account_id' => 'required|exists:App\Models\Account,id',
                 'first_name' => 'required|string|max:255',
                 'last_name' => 'required|string|max:255',
                 'nickname' => 'string|nullable|max:255',
@@ -340,6 +313,10 @@ class ContactController extends Controller
                 'person_country' => 'string|nullable|min:2|max:2',
                 'birthdate' => 'date|nullable|min:today',
             ]);
+
+            $account_id = array('account_id' => Auth::user()->account_id);
+            $person_data = array_merge($person_data,  $account_id);
+
             Contact::find($request->input('id'))->update(['class' => $request->class, 'source_id' => $person_data['source_id'], 'source' => $person_data['source'], 'status' => $person_data['status'], 'account_id' => $person_data['account_id']]);
             $contact = Contact::find($request->input('id'));
             $contact_person = Contacts_person::find($request->input('id'));
@@ -362,7 +339,6 @@ class ContactController extends Controller
                 'source_id' => 'required|integer|digits_between:0,10',
                 'source' => 'required|integer|digits_between:1,1',
                 'status' => 'required|integer|digits_between:1,1',
-                'account_id' => 'required|exists:App\Models\Account,id',
                 'companies_class' => 'required|integer|digits_between:1,1',
                 'name' => 'required|string|max:255',
                 'registered_number' => 'integer|nullable|digits_between:0,128',
@@ -371,6 +347,10 @@ class ContactController extends Controller
                 'companies_language' => 'nullable|string|min:2|max:2',
                 'companies_country' => 'nullable|string|min:2|max:2',
             ]);
+
+            $account_id = array('account_id' => Auth::user()->account_id);
+            $companies_data = array_merge($companies_data,  $account_id);
+
             Contact::find($request->input('id'))->update(['class' => $request->class, 'source_id' => $companies_data['source_id'], 'source' => $companies_data['source'], 'status' => $companies_data['status'], 'account_id' => $companies_data['account_id']]);
             $contact = Contact::find($request->input('id'));
             $contact_companie = Contacts_companie::find($request->input('id'));
@@ -396,7 +376,7 @@ class ContactController extends Controller
                 ->where('contacts.id', $request->id)->get();
         }
 
-        $custom_fields = Custom_field::all();
+        $custom_fields = Custom_field::where('account_id', Auth::user()->account_id)->get();
         foreach ($custom_fields as $key => $custom_field) {
             $contact_field = Contacts_field::where('contact_id', $request->id)->where('field_id', $custom_field->id)->first();
             if ($contact_field) {
@@ -500,12 +480,33 @@ class ContactController extends Controller
     public function searchForm()
     {
         $accounts = Account::all();
+        $contacts = DB::table('contacts')->select('id', 'class')->get();
         $groups = Group::all();
         $imports = DB::table('imports')->select('id')->get();
+        $custom_fields = Custom_field::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $select_options = DB::table('custom_select_fields')->join('custom_fields', 'field_id', '=', 'custom_fields.id')->select('custom_select_fields.*')->where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+            ->select('contacts.id', 'contacts_companies.name')->get();
+        $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
+            ->select('contacts.id', 'first_name', 'last_name')->get();
+            $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
+            $email_accounts = Email_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+            $sip_accounts = Sip_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+            $sms_accounts = Sms_account::where('status', 1)->get();
         return view('/contacts/search', [
             'accounts' => $accounts,
             'groups' => $groups,
             'imports' => $imports,
+            'custom_fields' => $custom_fields,
+            'select_options' => $select_options,
+            'contacts' => $contacts,
+            'contacts_persons' => $contacts_persons,
+            'contacts_companies' => $contacts_companies,
+            'users' => $users,
+            'email_accounts' => $email_accounts,
+            'email_accounts' => $email_accounts,
+            'sip_accounts' => $sip_accounts,
+            'sms_accounts' => $sms_accounts,
         ]);
     }
 
@@ -517,7 +518,7 @@ class ContactController extends Controller
      */
     public function search(Request $request)
     {
-        return $request;
+        //return $request;
         $request->validate([
             //validate contact
             'id' => 'nullable|string',
@@ -709,10 +710,15 @@ class ContactController extends Controller
     public function previewContactsImport(Request $request)
     {
         $data = $request->validate([
-            'account_id' => 'exists:App\Models\Account,id',
+            'account_id' => 'nullable|exists:App\Models\Account,id',
             'file' => 'required|mimes:csv,txt,xlsx,xls',
             'class' => 'required|integer|min:1|max:2',
         ]);
+
+        if (Auth::user()->role === 2) {
+            $account_id = array('account_id' => Auth::user()->account_id);
+            $data = array_merge($data,  $account_id);
+        }
 
         $class = $request->class;
 
@@ -878,5 +884,77 @@ class ContactController extends Controller
             Storage::delete($request->file_path);
             return response()->json(['success' => 'Successful Upload  !!!', 'import' => $data['import_id'], 'contacts' => $contacts, $column]);
         }
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @param int $id
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function view(int $id)
+    {
+        $groups = Group::all();
+        $accounts = Account::All();
+        $contact = Contact::find($id);
+        $contact_datas = [];
+        $notes = [];
+        $email_accounts = Email_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $sip_accounts = Sip_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $sms_accounts = Sms_account::where('status', 1)->get();
+        $custom_fields = Custom_field::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $select_options = DB::table('custom_select_fields')->join('custom_fields', 'field_id', '=', 'custom_fields.id')->select('custom_select_fields.*')->where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $contact_field = [];
+        $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
+        $contact_datas = Contact_data::all()->where('element_id', $contact->id);
+        $notes = DB::table('notes')->where('element_id', $contact->id)->where('element', getElementByName('contacts'))->get();
+        if ($contact->class == 1) {
+            $contact = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')->where('contacts.id', $contact->id)->get();
+            $name = $contact[0]->first_name;
+        } else if ($contact->class == 2) {
+            $contact = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+                ->select('contacts.*', 'contacts_companies.class as companies_class', 'contacts_companies.name', 'contacts_companies.registered_number', 'contacts_companies.logo', 'contacts_companies.activity', 'contacts_companies.country', 'contacts_companies.language')
+                ->where('contacts.id', $contact->id)->get();
+            $name = $contact[0]->name;
+        }
+        $contact = $contact[0];
+        $contact_field = Contacts_field::join('custom_fields', 'field_id', '=', 'custom_fields.id')->where('contact_id', $contact->id)->where('status', 1)->where('account_id', Auth::user()->account_id)->select('contacts_fields.id', 'field_type', 'custom_fields.tag', 'field_value', 'custom_fields.name')->get();
+
+        $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
+        $users_id = [];
+        foreach ($users as $user) {
+            array_push($users_id, $user->id);
+        }
+        $contacts = Contact::where('account_id', Auth::user()->account_id)->get();
+        $appointments = Appointment::whereIn('user_id', $users_id)->where('contact_id', $id)->where('status', 1)->get();
+        $communications = Communication::whereIn('user_id', $users_id)->where('contact_id', $id)->where('status', 1)->get();
+        $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+            ->select('contacts.id', 'contacts_companies.name')
+            ->where('contacts.id', $contact->id)->get();
+        $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
+            ->where('contacts.id', $contact->id)
+            ->select('contacts.id', 'first_name', 'last_name')->get();
+
+        return view('contacts/view', [
+            'name' => $name,
+            'accounts' => $accounts,
+            'contact' => $contact,
+            'contact_datas' => $contact_datas,
+            'notes' => $notes,
+            'groups' => $groups,
+            'custom_fields' => $custom_fields,
+            'select_options' => $select_options,
+            'contact_field' => $contact_field,
+            'users' => $users,
+            'elementClass' => getElementByName('contacts'),
+            'email_accounts' => $email_accounts,
+            'sip_accounts' => $sip_accounts,
+            'sms_accounts' => $sms_accounts,
+            'appointments' => $appointments,
+            'communications' => $communications,
+            'contacts' => $contacts,
+            'contacts_persons' => $contacts_persons,
+            'contacts_companies' => $contacts_companies,
+        ]);
     }
 }

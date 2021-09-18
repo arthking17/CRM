@@ -11,9 +11,9 @@
         </div>
 
         <div id="collapse-logs-info" class="collapse show" aria-labelledby="headingFour"
-            data-bs-parent="#custom-accordion-logs-info" data-simplebar style="max-height: 400px;">
+            data-bs-parent="#custom-accordion-logs-info" data-simplebar style="max-height: 500px;">
             <div class="card-body">
-                @isset($logs)
+                @if(isset($logs))
                     @if (count($logs) == 0)
                         <p class="text-center"> empty</p>
                     @endif
@@ -29,7 +29,9 @@
                             </div>
                         </div>
                     @endforeach
-                @endisset
+                @else
+                    <p class="text-center">click on a row of users in the table to view the activity of the row user in that side.</p>
+                @endif
             </div>
         </div>
     </div>

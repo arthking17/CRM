@@ -19,7 +19,12 @@ $(document).ready(function() {
         createdRow: function(row) {
             var td = $(row).find(".truncate-td");
             td.attr("title", td.html());
-        }
+        },
+        "columnDefs": [ {
+            "targets": 6,
+            "orderable": false,
+            "searchable": false
+            } ],
     });
     a.buttons().container().appendTo("#datatable-notes_wrapper .col-md-6:eq(0)"),
         $(".dataTables_length select").addClass("form-select form-select-sm"),

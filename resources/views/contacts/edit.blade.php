@@ -34,13 +34,6 @@
                                         <span class="d-none d-sm-inline">Custom Field</span>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="#edit-finish-2" data-bs-toggle="tab" data-toggle="tab"
-                                        class="nav-link rounded-0 pt-2 pb-2">
-                                        <i class="mdi mdi-checkbox-marked-circle-outline me-1"></i>
-                                        <span class="d-none d-sm-inline">Finish</span>
-                                    </a>
-                                </li>
                             </ul>
 
                             <div class="tab-content b-0 mb-0 pt-0">
@@ -129,23 +122,7 @@
                                                     class="col-4 col-xl-3 col-form-label">account<span
                                                         class="text-danger">*</span></label>
                                                 <div class="col-8 col-xl-9">
-                                                    <select
-                                                        class="form-select @error('account_id') parsley-error @enderror"
-                                                        name="account_id" id="form_edit-account_id" required
-                                                        data-parsley-type="integer" data-parsley-length="[1, 1]">
-                                                        @foreach ($accounts as $account)
-                                                            <option value="{{ $account->id }}">{{ $account->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('account_id')
-                                                        <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                            <li class="parsley-required">
-                                                                {{ $errors->first('account_id') }}</li>
-                                                        </ul>
-                                                    @else
-                                                        <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                    @enderror
+                                                    <input type="text" class="form-select" name="account_id" id="form_edit-account_id" disabled value="{{ Auth::user()->account[0]->name }}">
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
@@ -581,33 +558,6 @@
                                     </div> <!-- end row -->
                                 </div>
 
-                                <div class="tab-pane" id="edit-finish-2">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="text-center">
-                                                <div class="alert alert-warning d-none fade show">
-                                                    <h4 class="mt-0 text-warning">Oh snap!</h4>
-                                                    <p class="mb-0">This form seems to be invalid :(</p>
-                                                    <p class="mb-0">Go back and check your data</p>
-                                                </div>
-
-                                                <div class="alert alert-info d-none fade show">
-                                                    <h4 class="mt-0 text-info">Yay!</h4>
-                                                    <p class="mb-0">Everything seems to be ok :)</p>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <button type="submit" id="btn-edit"
-                                                        class="btn btn-info waves-effect waves-light">Save</button>
-                                                    <button type="button" id="btn-delete"
-                                                        class="btn btn-danger waves-effect waves-light"
-                                                        onclick="">Delete</button>
-                                                </div>
-                                            </div>
-                                        </div> <!-- end col -->
-                                    </div> <!-- end row -->
-                                </div>
-
                                 <ul class="list-inline mb-0 wizard">
                                     <li class="float-start">
                                         <a href="javascript: void(0);"
@@ -616,7 +566,8 @@
                                                 class="fe-x me-1"></i>Cancel</a>
                                     </li>
                                     <li class="next list-inline-item float-end">
-                                        <a href="javascript: void(0);" class="btn btn-secondary">Next</a>
+                                        <button type="submit" id="btn-edit"
+                                            class="btn btn-info waves-effect waves-light"><i class="mdi mdi-content-save"></i>Save</button>
                                     </li>
                                 </ul>
 

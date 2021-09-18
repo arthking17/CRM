@@ -13,6 +13,11 @@ $(document).ready(function() {
         drawCallback: function() {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
         },
+        "columnDefs": [ {
+            "targets": 6,
+            "orderable": false,
+            "searchable": false
+            } ],
     });
 
     $(".dataTables_length select").addClass("form-select form-select-sm"),

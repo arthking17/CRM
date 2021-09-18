@@ -6,9 +6,9 @@
                     <h4 class="modal-title" id="myCenterModalLabel">Add Group</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-4">
-                    <form class="form-horizontal" id="create-group" method="POST" action="#" data-parsley-validate=""
-                        novalidate enctype="multipart/form-data">
+                <form class="form-horizontal" id="create-group" method="POST" action="#" data-parsley-validate=""
+                    novalidate enctype="multipart/form-data">
+                    <div class="modal-body p-4">
                         <div class="row">
                             @csrf
                             <div class="col-12">
@@ -64,17 +64,17 @@
                                     @enderror
                                 </div>
                             </div>
-
-
-
                         </div>
                         <!-- end row-->
+                    </div>
+                    <div class="modal-footer bg-light">
                         <button type="submit" id="btn-create"
-                            class="btn btn-info waves-effect waves-light">Create</button>
-                        <button type="reset" class="btn btn-light waves-effect waves-light m-1"><i
+                            class="btn btn-info waves-effect waves-light"><i class="mdi mdi-plus-circle"></i>Create</button>
+                        <button type="reset" class="btn btn-secondary waves-effect waves-light m-1"><i
                                 class="fe-x me-1"></i>Reset</button>
-                    </form>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->

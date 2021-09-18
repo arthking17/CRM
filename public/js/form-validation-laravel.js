@@ -28,3 +28,10 @@ function showPassword(id) {
         $('#' + id).attr('type', 'password')
     }
 }
+
+$('#profile-settings').on('click', function() {
+    sessionStorage.setItem("profile-tab-panel", 'settings');
+})
+$('#profile-about').on('click', function() {
+    sessionStorage.setItem("profile-tab-panel", 'about');
+})

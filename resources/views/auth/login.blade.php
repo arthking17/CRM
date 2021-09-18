@@ -141,7 +141,7 @@
     <footer class="footer footer-alt">
         <script>
             document.write(new Date().getFullYear())
-        </script> &copy; UBold theme by <a href="#" class="text-white-50">Coderthemes</a>
+        </script> &copy; CRM by <a href="#" class="text-white-50">GCS</a>
     </footer>
 
     <!-- Vendor js -->

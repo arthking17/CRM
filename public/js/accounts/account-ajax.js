@@ -27,7 +27,7 @@ $(document).ready(function() {
             success: function(response) {
                 console.log("test : " + formData)
                 console.log(response)
-                $('#create-modal').modal('toggle')
+                $('#create-account-modal').modal('toggle')
                 Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                 $('#create-account')[0].reset();
 

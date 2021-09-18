@@ -6,9 +6,9 @@
                     <h4 class="modal-title" id="myCenterModalLabel">Edit Group</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-4">
-                    <form class="form-horizontal" id="edit-group" method="POST" action="#" data-parsley-validate=""
-                        novalidate enctype="multipart/form-data">
+                <form class="form-horizontal" id="edit-group" method="POST" action="#" data-parsley-validate=""
+                    novalidate enctype="multipart/form-data">
+                    <div class="modal-body p-4">
                         <div class="row">
                             @csrf
                             @method('PUT')
@@ -71,11 +71,14 @@
 
                         </div>
                         <!-- end row-->
-                        <button type="submit" id="btn-edit" class="btn btn-info waves-effect waves-light">Save</button>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="submit" id="btn-edit" class="btn btn-info waves-effect waves-light"><i
+                                class="mdi mdi-content-save"></i>Save</button>
                         <a href="javascript: void(0);" onclick="$('#edit-modal').modal('toggle')"
                             class="btn btn-light waves-effect waves-light m-1"><i class="fe-x me-1"></i>Cancel</a>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->

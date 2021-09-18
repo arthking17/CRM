@@ -88,6 +88,7 @@
                                                 class="col-4 col-xl-3 col-form-label">account<span
                                                     class="text-danger">*</span></label>
                                             <div class="col-8 col-xl-9">
+                                                @if(Auth::user()->role === 1)
                                                 <select class="form-select @error('account_id') parsley-error @enderror"
                                                     name="account_id" id="upload-contact-account_id" required
                                                     data-parsley-type="integer" data-parsley-length="[1, 1]">
@@ -105,6 +106,9 @@
                                                 @else
                                                     <ul class="parsley-errors-list" aria-hidden="true"></ul>
                                                 @enderror
+                                                @elseif(Auth::user()->role === 2)
+                                                <input type="text" class="form-select" name="account_id" id="upload-contact-account_id" disabled value="{{ Auth::user()->account[0]->name }}">
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -177,6 +181,29 @@
 
             <!-- Sweet Alerts js -->
             <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+
+            <!-- third party js -->
+            <script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+            <script src="/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+            <script src="/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+            <script src="/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+            <script src="/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+            <!-- button pdf copy -->
+            <script src="/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+            <!-- style button -->
+            <script src="/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+            <!-- style button end -->
+            <!-- button print -->
+            <script src="/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+            <!-- not use -->
+            <script src="/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
+            <script src="/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+            <script src="/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+            <!-- not use end -->
+            <!-- pdf -->
+            <script src="/libs/pdfmake/build/pdfmake.min.js"></script>
+            <script src="/libs/pdfmake/build/vfs_fonts.js"></script>
+            <!-- third party js ends -->
 
             <!-- Footable js -->
             <script src="/libs/footable/footable.all.min.js"></script>

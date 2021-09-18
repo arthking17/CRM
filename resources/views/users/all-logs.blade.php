@@ -59,14 +59,14 @@
                                 </div>
                             </div>
 
-                            <div class="table-responsive" data-simplebar>
+                            <div>
                                 <table id="datatable-logs"
                                     class="table activate-select dt-responsive nowrap w-100 table-hover">
                                     <thead>
                                         <tr>
                                             <th>id</th>
                                             <th>user</th>
-                                            <th>log_date</th>
+                                            <th>date</th>
                                             <th>action</th>
                                             <th>element</th>
                                             <th>element_id</th>
@@ -98,7 +98,7 @@
                                         <tr>
                                             <th>id</th>
                                             <th>user</th>
-                                            <th>log_date</th>
+                                            <th>date</th>
                                             <th class="select">action</th>
                                             <th class="select">element</th>
                                             <th>element_id</th>

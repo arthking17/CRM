@@ -2,13 +2,13 @@
     <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-light">
-                    <h4 class="modal-title" id="myCenterModalLabel">Edit User</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <form class="form-horizontal parsley-user" id="edit-user" method="POST" action="#"
-                        data-parsley-validate="" novalidate enctype="multipart/form-data">
+                <form class="form-horizontal parsley-user" id="edit-user" method="POST" action="#"
+                    data-parsley-validate="" novalidate enctype="multipart/form-data">
+                    <div class="modal-header bg-light">
+                        <h4 class="modal-title" id="myCenterModalLabel">Edit User</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
                         <div class="row">
                             @csrf
                             @method('PUT')
@@ -60,8 +60,10 @@
                                             <div class="input-group-text" data-password="false">
                                                 <span class="password-eye"></span>
                                             </div>
-                                            <input type="password" id="edit-user-pwd" name="pwd" class="form-control @error('pwd') parsley-error @enderror" 
-                                            placeholder="Enter your password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$"
+                                            <input type="password" id="edit-user-pwd" name="pwd"
+                                                class="form-control @error('pwd') parsley-error @enderror"
+                                                placeholder="Enter your password"
+                                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$"
                                                 data-parsley-pattern-message="This value should be a valid password">
                                             @error('pwd')
                                                 <div class="invalid-feedback">
@@ -120,24 +122,11 @@
                                     <label for="edit-user-account_id" class="col-4 col-xl-3 col-form-label">account<span
                                             class="text-danger">*</span></label>
                                     <div class="col-8 col-xl-9">
-                                        <select class="form-select @error('account_id') parsley-error @enderror"
-                                            name="account_id" id="edit-user-account_id" required
-                                            data-parsley-type="integer" data-parsley-length="[1, 10]">
-                                            @foreach ($accounts as $account)
-                                                <option value="{{ $account->id }}">{{ $account->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('account_id')
-                                            <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                <li class="parsley-required">{{ $errors->first('account_id') }}</li>
-                                            </ul>
-                                        @else
-                                            <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                        @enderror
+                                        <input type="text" class="form-select" name="account_id"
+                                            id="edit-user-account_id" disabled
+                                            value="{{ Auth::user()->account[0]->name }}">
                                     </div>
                                 </div>
-                                <input name="status" value="1" hidden>
                             </div>
                             <div class="row mb-3">
                                 <label for="edit-user-photo" class="col-4 col-xl-3 col-form-label">photo<span
@@ -158,11 +147,13 @@
                             </div>
                         </div>
                         <!-- end row-->
-                        <button type="submit" id="btn-edit" class="btn btn-info waves-effect waves-light">Edit</button>
-                        <button type="button" id="btn-delete" class="btn btn-danger waves-effect waves-light"
-                            onclick="">Delete</button>
-                    </form>
-                </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="submit" id="btn-edit" class="btn btn-info waves-effect waves-light"><i class="mdi mdi-content-save"></i>Save</button>
+                        <button type="button" class="btn btn-secondary waves-effect waves-light"
+                            onclick="$('#edit-modal').modal('toggle')">Cancel</button>
+                    </div>
+                </form>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->

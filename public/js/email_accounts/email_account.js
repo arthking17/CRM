@@ -1,15 +1,15 @@
-$(document).ready(function() {
-    $('#btn-edit-email-account').on('click', function() {
+$(document).ready(function () {
+    $('#btn-edit-email-account').on('click', function () {
         cleanErrorsInForm('edit-email-account', edit_email_account_errors)
         edit_email_account_errors = null
     });
 
-    $('#btn-create-email-account').on('click', function() {
+    $('#btn-create-email-account').on('click', function () {
         cleanErrorsInForm('create-email-account', create_email_account_errors)
         create_email_account_errors = null
     });
 
-    $('#create-email-account').submit(function(e) {
+    $('#create-email-account').submit(function (e) {
         e.preventDefault();
         cleanErrorsInForm('create-email-account', create_email_account_errors)
         $.ajax({
@@ -20,14 +20,23 @@ $(document).ready(function() {
             contentType: false,
             processData: false,
             cache: false,
-            success: function(response) {
+            success: function (response) {
                 console.log(response)
-                $('#create-modal').modal('toggle')
+                $('#create-email_account-modal').modal('toggle')
                 Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                 //$('#create-email-account')[0].reset();
-                setTimeout(function() { $('#list-email-accounts').empty().html(response.html) }, 1500);
+                setTimeout(function () {
+                    $('#list-email_accounts').html(response.html);
+                    $.getScript(url_jsfile_email_accounts + "/datatable-email_accounts.init.js")
+                        .done(function (script, textStatus) {
+                            console.log(textStatus);
+                        })
+                        .fail(function (jqxhr, settings, exception) {
+                            console.log("Triggered ajaxError handler.");
+                        });
+                }, 1500);
             },
-            error: function(error) {
+            error: function (error) {
                 console.log(error)
                 Swal.fire({ position: "top-end", icon: "error", title: "Error while adding that email-account", showConfirmButton: !1, timer: 1500 });
                 if (typeof error.responseJSON !== 'undefined' && typeof error.responseJSON.errors !== 'undefined') {
@@ -37,7 +46,7 @@ $(document).ready(function() {
             }
         });
     });
-    $('#edit-email-account').submit(function(e) {
+    $('#edit-email-account').submit(function (e) {
         e.preventDefault();
         cleanErrorsInForm('edit-email-account', edit_email_account_errors)
         $.ajax({
@@ -48,14 +57,23 @@ $(document).ready(function() {
             contentType: false,
             processData: false,
             cache: false,
-            success: function(response) {
+            success: function (response) {
                 console.log(response)
-                $('#edit-modal').modal('toggle')
+                $('#edit-email_account-modal').modal('toggle')
                 Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                 //$('#edit-email-account')[0].reset();
-                setTimeout(function() { $('#list-email-accounts').empty().html(response.html) }, 1500);
+                setTimeout(function () {
+                    $('#list-email_accounts').html(response.html);
+                    $.getScript(url_jsfile_email_accounts + "/datatable-email_accounts.init.js")
+                        .done(function (script, textStatus) {
+                            console.log(textStatus);
+                        })
+                        .fail(function (jqxhr, settings, exception) {
+                            console.log("Triggered ajaxError handler.");
+                        });
+                }, 1500);
             },
-            error: function(error) {
+            error: function (error) {
                 console.log(error)
                 Swal.fire({ position: "top-end", icon: "error", title: "Error while adding that email-account", showConfirmButton: !1, timer: 1500 });
                 if (typeof error.responseJSON !== 'undefined' && typeof error.responseJSON.errors !== 'undefined') {
@@ -70,7 +88,7 @@ $(document).ready(function() {
 
 
 function editEmailAccount(id) {
-    $.get('/email_accounts/get/' + id, function(data) {
+    $.get('/email_accounts/get/' + id, function (data) {
         console.log(data)
         $('#edit-email-account-id').val(id)
         $('#edit-email-account-host').val(data.email_account.host)
@@ -85,7 +103,7 @@ function editEmailAccount(id) {
 
 function deleteEmailAccount(id) {
     Swal.fire({ title: "Are you sure?", text: "This Email Account will be remove!", icon: "warning", showCancelButton: !0, confirmButtonColor: "#28bb4b", cancelButtonColor: "#f34e4e", confirmButtonText: "Yes, delete it!" }).then(
-        function(e) {
+        function (e) {
             e.value ?
                 $.ajax({
                     type: "DELETE",
@@ -94,12 +112,21 @@ function deleteEmailAccount(id) {
                         _token: $("input[name=_token]").val(),
                     },
                     dataType: "json",
-                    success: function(response) {
+                    success: function (response) {
                         Swal.fire({ icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
 
-                        setTimeout(function() { $('#list-email-accounts').empty().html(response.html) }, 1500);
+                        setTimeout(function () {
+                            $('#email_accountid' + id + ' td:nth-child(11)').html('<span class="badge bg-danger">Disabled</span>')
+                            $('#email_accountid' + id + ' a:nth-child(1)').attr('onclick', '')
+                            $('#email_accountid' + id + ' a:nth-child(1)').attr('data-bs-toggle', '')
+                            $('#email_accountid' + id + ' a:nth-child(2)').attr('onclick', '')
+
+                            $('#edit-' + id).attr('onclick', '')
+                            $('#edit-' + id).attr('data-bs-toggle', '')
+                            $('#delete-' + id).attr('onclick', '')
+                        }, 1500);
                     },
-                    error: function(error) {
+                    error: function (error) {
                         console.log(error)
                         Swal.fire({ icon: "error", title: response.error, showConfirmButton: !1, timer: 1500 });
                     }

@@ -1,5 +1,6 @@
 $(document).ready(function() {
-    dataTableCommunications = $('#datatable-communications').DataTable({
+    dataTableCommunications = 
+        $('#datatable-communications').DataTable({
             stateSave: 0,
             lengthChange: !0,
             buttons: [

@@ -68,7 +68,7 @@ class NoteController extends Controller
         $notes = Note::all()
             ->where('element_id', $element_id)
             ->where('element', $element);
-        return view('notes/notes-list-modal', compact('notes'))->render();
+        return view('notes/list-modal', compact('notes'))->render();
     }
 
     /**
@@ -99,17 +99,8 @@ class NoteController extends Controller
     public function show(int $element_id, int $element)
     {
         $notes = DB::table('notes')->where('element_id', $element_id)->where('element', $element)->get();
-        $elementClass = $element;
-        if ($element == 4) {
-            $contact = Contact::find($element_id);
-            return view('notes.notes-info-card', compact('notes', 'contact', 'elementClass'))->render();
-        } else if ($element == 17) {
-            $user = User::find($element_id);
-            return view('notes.notes-info-card', compact('notes', 'user', 'elementClass'))->render();
-        }else if($element == 2){
-            $element = Communication::find($element_id);
-            return view('notes.notes-info-card', compact('notes', 'element', 'elementClass'))->render();
-        }
+        $returnHTML = view('notes/datatable-notes', compact('notes'))->render();
+        return response()->json(['success' => 'Notes Found', 'html' => $returnHTML]);
     }
 
     /**

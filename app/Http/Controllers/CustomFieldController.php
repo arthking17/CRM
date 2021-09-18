@@ -20,18 +20,8 @@ class CustomFieldController extends Controller
      */
     public function index()
     {
-        $custom_fields = Custom_field::where('status', 1)->get();
+        $custom_fields = Custom_field::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
         return view('contacts/custom-fields/list', compact('custom_fields'))->render();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -44,11 +34,14 @@ class CustomFieldController extends Controller
     {
         //return $request;
         $data = $request->validate([
-            'account_id' => 'required|exists:App\Models\Account,id',
             'name' => 'required|string|max:128',
             'tag' => 'required|string|max:64',
             'field_type' => 'required|string|max:32',
         ]);
+
+        $account_id = array('account_id' => Auth::user()->account_id);
+        $data = array_merge($data,  $account_id);
+        
         if ($request->field_type == 'select') {
             $request->validate([
                 'select_option' => 'required|string',
@@ -62,17 +55,6 @@ class CustomFieldController extends Controller
             $custom_field = Custom_field::create($data);
         Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'custom-field.create', 'element' => getElementByName('custom_fields'), 'element_id' => $custom_field->id, 'source' => 'custom-field.create']);
         return response()->json(['success' => 'This Custom Field has been added !!!', 'custom-field' => $custom_field]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Custom_field  $custom_field
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Custom_field $custom_field)
-    {
-        //
     }
 
     /**
@@ -102,12 +84,14 @@ class CustomFieldController extends Controller
         //return $request;
         $data = $request->validate([
             'id' => 'required|exists:App\Models\Custom_field,id',
-            'account_id' => 'required|exists:App\Models\Account,id',
             'name' => 'required|string|max:128',
             'tag' => 'required|string|max:64',
             'field_type' => 'required|string|max:32',
         ]);
         $custom_field = Custom_field::find($request->id);
+
+        $account_id = array('account_id' => Auth::user()->account_id);
+        $data = array_merge($data,  $account_id);
 
         if ($request->field_type == 'select') {
             $request->validate([

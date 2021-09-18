@@ -1,5 +1,5 @@
     <!-- Modal -->
-    <div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="create-contact-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-light">
@@ -125,24 +125,9 @@
                                                     class="col-4 col-xl-3 col-form-label">account<span
                                                         class="text-danger">*</span></label>
                                                 <div class="col-8 col-xl-9">
-                                                    <select
-                                                        class="form-select @error('account_id') parsley-error @enderror"
-                                                        name="account_id" id="form_create-account_id" required
-                                                        data-parsley-type="integer" data-parsley-maxlength="10">
-                                                        <option value="">select an account</option>
-                                                        @foreach ($accounts as $account)
-                                                            <option value="{{ $account->id }}">{{ $account->name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('account_id')
-                                                        <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                            <li class="parsley-required">
-                                                                {{ $errors->first('account_id') }}</li>
-                                                        </ul>
-                                                    @else
-                                                        <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                    @enderror
+                                                    <input type="text" class="form-select" name="account_id"
+                                                        id="form_create-account_id" disabled
+                                                        value="{{ Auth::user()->account[0]->name }}">
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
@@ -506,7 +491,10 @@
 
                                 <div class="tab-pane" id="custom-fields">
                                     <div class="row">
-                                        @php $nbr_custom_fields = $custom_fields->count(); $key = -1; @endphp
+                                        @php
+                                            $nbr_custom_fields = $custom_fields->count();
+                                            $key = -1;
+                                        @endphp
                                         @foreach ($custom_fields as $custom_field)
                                             @php $key++; @endphp
                                             @if ($key === 0 || $key === (int) ($nbr_custom_fields / 2 + 1))
@@ -522,93 +510,96 @@
                                                 <div class="col-8 col-xl-9">
                                                     @if ($custom_field->field_type === 'text' || $custom_field->field_type === 'number' || $custom_field->field_type === 'url' || $custom_field->field_type === 'date' || $custom_field->field_type === 'datetime')
                                                         <input type="{{ $custom_field->field_type }}"
-                                                        class="form-control @if ($custom_field->field_type === 'datetime') datetimepicker @elseif($custom_field->field_type === 'date') datepicker @endif
-                                                        @error($custom_field->tag) parsley-error @enderror" name="{{ $custom_field->tag }}" id="form_create-{{ $custom_field->tag }}"
-                                                        placeholder="@if ($custom_field->field_type === 'datetime') yyyy-mm-dd hh:mm @elseif($custom_field->field_type === 'date') yyyy-mm-dd @else {{ $custom_field->name }} @endif">
-                                                        @elseif($custom_field->field_type === 'month')
-                                                            <input type="text" class="form-control"
-                                                                data-provide="datepicker" data-date-format="MM yyyy"
-                                                                placeholder="MM yyyy" data-date-min-view-mode="1"
+                                                            class="form-control @if ($custom_field->field_type === 'datetime') datetimepicker @elseif($custom_field->field_type === 'date') datepicker @endif
+                                                        @error($custom_field->tag) parsley-error @enderror"
+                                                            name="{{ $custom_field->tag }}"
+                                                            id="form_create-{{ $custom_field->tag }}"
+                                                            placeholder="@if ($custom_field->field_type === 'datetime') yyyy-mm-dd hh:mm @elseif($custom_field->field_type === 'date') yyyy-mm-dd @else {{ $custom_field->name }} @endif">
+                                                    @elseif($custom_field->field_type === 'month')
+                                                        <input type="text" class="form-control"
+                                                            data-provide="datepicker" data-date-format="MM yyyy"
+                                                            placeholder="MM yyyy" data-date-min-view-mode="1"
+                                                            name="{{ $custom_field->tag }}"
+                                                            id="form_create-{{ $custom_field->tag }}">
+                                                    @elseif($custom_field->field_type === 'color')
+                                                        <input type="text" class="form-control colorpicker"
+                                                            name="{{ $custom_field->tag }}"
+                                                            id="form_create-{{ $custom_field->tag }}">
+                                                    @elseif($custom_field->field_type === 'select')
+                                                        <select
+                                                            class="form-select @error($custom_field->tag) parsley-error @enderror"
+                                                            name="{{ $custom_field->tag }}"
+                                                            id="form_create-{{ $custom_field->tag }}">
+                                                            <option value="">Select ...</option>
+                                                            @foreach ($select_options->where('field_id', $custom_field->id) as $key => $opt)
+                                                                <option value="{{ $opt->id }}">
+                                                                    {{ $opt->title }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    @elseif($custom_field->field_type === 'checkbox')
+                                                        <div class="form-check">
+                                                            <label for="form_create-{{ $custom_field->tag }}"
+                                                                class="form-check-label">{{ $custom_field->name }}</label>
+                                                            <input type="checkbox" class="form-check-input"
                                                                 name="{{ $custom_field->tag }}"
                                                                 id="form_create-{{ $custom_field->tag }}">
-                                                        @elseif($custom_field->field_type === 'color')
-                                                            <input type="text" class="form-control colorpicker"
-                                                                name="{{ $custom_field->tag }}"
-                                                                id="form_create-{{ $custom_field->tag }}">
-                                                        @elseif($custom_field->field_type === 'select')
-                                                            <select
-                                                                class="form-select @error($custom_field->tag) parsley-error @enderror"
-                                                                name="{{ $custom_field->tag }}"
-                                                                id="form_create-{{ $custom_field->tag }}">
-                                                                <option value="">Select ...</option>
-                                                                @foreach ($select_options->where('field_id', $custom_field->id) as $key => $opt)
-                                                                    <option value="{{ $opt->id }}">
-                                                                        {{ $opt->title }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        @elseif($custom_field->field_type === 'checkbox')
-                                                            <div class="form-check">
-                                                                <label for="form_create-{{ $custom_field->tag }}"
-                                                                    class="form-check-label">{{ $custom_field->name }}</label>
-                                                                <input type="checkbox" class="form-check-input"
-                                                                    name="{{ $custom_field->tag }}"
-                                                                    id="form_create-{{ $custom_field->tag }}">
-                                                            </div>
-                                                        @elseif($custom_field->field_type === 'file')
-                                                            <input type="file" name="{{ $custom_field->tag }}"
-                                                                id="form_create-{{ $custom_field->tag }}"
-                                                                class="form-control @error($custom_field->tag) parsley-error @enderror">
-                                                        @endif
+                                                        </div>
+                                                    @elseif($custom_field->field_type === 'file')
+                                                        <input type="file" name="{{ $custom_field->tag }}"
+                                                            id="form_create-{{ $custom_field->tag }}"
+                                                            class="form-control @error($custom_field->tag) parsley-error @enderror">
+                                                    @endif
                                                 </div>
                                             </div>
                                             @if ($key === (int) ($nbr_custom_fields / 2) || $custom_field->id === $custom_fields->last()->id)
-                                                </div>
-                                            @endif
-                                        @endforeach
-                                    </div> <!-- end row -->
-                                </div>
+                                    </div>
+                                    @endif
+                                    @endforeach
+                                </div> <!-- end row -->
+                            </div>
 
-                                <div class="tab-pane" id="finish-2">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="text-center">
-                                                <div class="alert alert-warning d-none fade show">
-                                                    <h4 class="mt-0 text-warning">Oh snap!</h4>
-                                                    <p class="mb-0">This form seems to be invalid :(</p>
-                                                    <p class="mb-0">Go back and check your data</p>
-                                                </div>
-
-                                                <div class="alert alert-info d-none fade show">
-                                                    <h4 class="mt-0 text-info">Yay!</h4>
-                                                    <p class="mb-0">Everything seems to be ok :)</p>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <button type="submit" id="button-create"
-                                                        class="btn btn-info waves-effect waves-light">Create</button>
-                                                </div>
+                            <div class="tab-pane" id="finish-2">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="text-center">
+                                            <div class="alert alert-warning d-none fade show">
+                                                <h4 class="mt-0 text-warning">Oh snap!</h4>
+                                                <p class="mb-0">This form seems to be invalid :(</p>
+                                                <p class="mb-0">Go back and check your data</p>
                                             </div>
-                                        </div> <!-- end col -->
-                                    </div> <!-- end row -->
-                                </div>
 
-                                <ul class="list-inline mb-0 wizard">
-                                    <li class="float-start">
-                                        <button type="reset" class="btn btn-light waves-effect waves-light m-1"><i
-                                                class="fe-x me-1"></i>Reset</button>
-                                    </li>
-                                    <li class="previous list-inline-item">
-                                        <a href="javascript: void(0);" class="btn btn-secondary">Previous</a>
-                                    </li>
-                                    <li class="next list-inline-item float-end">
-                                        <a href="javascript: void(0);" class="btn btn-secondary">Next</a>
-                                    </li>
-                                </ul>
+                                            <div class="alert alert-info d-none fade show">
+                                                <h4 class="mt-0 text-info">Yay!</h4>
+                                                <p class="mb-0">Everything seems to be ok :)</p>
+                                            </div>
 
-                            </div> <!-- tab-content -->
-                        </div> <!-- end #contactwizard-->
-                    </form>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
+                                            <div class="mb-3">
+                                                <button type="submit" id="button-create"
+                                                    class="btn btn-primary waves-effect waves-light"><i
+                                                        class="mdi mdi-plus-circle"></i>Create</button>
+                                            </div>
+                                        </div>
+                                    </div> <!-- end col -->
+                                </div> <!-- end row -->
+                            </div>
+
+                            <ul class="list-inline mb-0 wizard">
+                                <li class="float-start">
+                                    <button type="reset" class="btn btn-light waves-effect waves-light m-1" title="reset all inputs in form"><i
+                                            class="fe-x me-1"></i>Reset</button>
+                                </li>
+                                <li class="previous list-inline-item">
+                                    <a href="javascript: void(0);" class="btn btn-secondary">Previous</a>
+                                </li>
+                                <li class="next list-inline-item float-end">
+                                    <a href="javascript: void(0);" class="btn btn-secondary">Next</a>
+                                </li>
+                            </ul>
+
+                        </div> <!-- tab-content -->
+                </div> <!-- end #contactwizard-->
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->

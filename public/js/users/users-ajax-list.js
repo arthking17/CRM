@@ -1,6 +1,6 @@
 function deleteUser(id) {
     Swal.fire({ title: "Are you sure?", text: "This user will be disabled!", icon: "warning", showCancelButton: !0, confirmButtonColor: "#28bb4b", cancelButtonColor: "#f34e4e", confirmButtonText: "Yes, delete it!" }).then(
-        function(e) {
+        function (e) {
             e.value ?
                 $.ajax({
                     type: "DELETE",
@@ -9,18 +9,17 @@ function deleteUser(id) {
                         _token: $("input[name=_token]").val(),
                     },
                     dataType: "json",
-                    success: function(response) {
-                        $('#edit-modal').modal('toggle')
+                    success: function (response) {
                         Swal.fire({ icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                         $('#btn-edit-' + id).addClass('disabled');
                         $('#btn-delete-' + id).text('Active');
-                        $('#btn-delete-' + id).attr("onclick", "restoreUser(" + id + ")");
+                        //$('#btn-delete-' + id).attr("onclick", "restoreUser(" + id + ")");
                         $('#userid' + id + ' td:nth-child(6)').html('<span class="badge label-table bg-danger">Disabled</span>')
-                        $('#user-info2 p:nth-of-type(6)').html('<span class="badge label-table bg-danger">Disabled</span>')
-                        $('#user-info1 a:nth-of-type(4)').attr('data-bs-toggle', '')
-                        $('#user-info1 a:nth-of-type(4)').attr('onClick', '')
+                        $('#user-status').html('<span class="badge label-table bg-danger">Disabled</span>')
+                        $('#btn-delete-' + id).attr('data-bs-toggle', '')
+                        $('#delete-' + id).attr('onClick', '')
                     },
-                    error: function(error) {
+                    error: function (error) {
                         console.log(error)
                         Swal.fire({ icon: "error", title: response.error, showConfirmButton: !1, timer: 1500 });
                     }
@@ -32,7 +31,7 @@ function deleteUser(id) {
 
 function restoreUser(id) {
     Swal.fire({ title: "Are you sure?", text: "This user will be actived !", icon: "warning", showCancelButton: !0, confirmButtonColor: "#28bb4b", cancelButtonColor: "#f34e4e", confirmButtonText: "Yes, restore it!" }).then(
-        function(e) {
+        function (e) {
             e.value ?
                 $.ajax({
                     type: "DELETE",
@@ -41,7 +40,7 @@ function restoreUser(id) {
                         _token: $("input[name=_token]").val(),
                     },
                     dataType: "json",
-                    success: function(response) {
+                    success: function (response) {
                         $('#edit-modal').modal('toggle')
                         Swal.fire({ icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                         $('#btn-edit-' + id).removeClass('disabled');
@@ -52,7 +51,7 @@ function restoreUser(id) {
                         $('#user-info1 a:nth-of-type(4)').attr('data-bs-toggle', 'modal')
                         $('#user-info1 a:nth-of-type(4)').attr('onClick', 'editUser(' + id + ');')
                     },
-                    error: function(error) {
+                    error: function (error) {
                         console.log(error)
                         Swal.fire({ icon: "error", title: response.error, showConfirmButton: !1, timer: 1500 });
                     }
@@ -63,7 +62,7 @@ function restoreUser(id) {
 }
 
 function viewInfoCardUser(id) {
-    $.get('/users/get/' + id + '/0', function(data) {
+    $.get('/users/get/' + id + '/0', function (data) {
         console.log(data)
         $('#user-info-card').empty().html(data.html);
         tippy('[title]', {
@@ -83,12 +82,22 @@ function viewInfoCardUser(id) {
                 reference.removeAttribute('title');
                 return title;
             },
+            interactive: "true",
+            hideOnClick: false, // if you want
+            onShow(instance) {
+                setTimeout(() => {
+                    instance.hide();
+                }, 1000);
+            }
+
         });
     })
 }
 
 function viewUser(id) {
-    $.get('/users/get/' + id + '/0', function(data) {
+    $.get('/users/get/' + id + '/0', function (data) {
+        $('#datatable-users tbody tr').removeClass('selected')
+        $('#userid' + id).addClass('selected')
         $('#user-info-card').empty().html(data.html);
         viewUsers_Permissions(id)
         viewLogsInCard(id)
@@ -110,18 +119,25 @@ function viewUser(id) {
                 reference.removeAttribute('title');
                 return title;
             },
+            interactive: "true",
+            hideOnClick: false, // if you want
+            onShow(instance) {
+                setTimeout(() => {
+                    instance.hide();
+                }, 1000);
+            }
+
         });
     })
 }
 
 function editUser(id) {
-    $.get('/users/get/' + id + '/1', function(user) {
+    $.get('/users/get/' + id + '/1', function (user) {
         $('#edit-user-id').val(id)
         $('#edit-user-username').val(user.username)
         $('#edit-user-login').val(user.login)
         $('#edit-user-role').val(user.role)
         $('#edit-user-language').val(user.language)
-        $('#edit-user-account_id').val(user.account_id)
         $('#edit-user-photo').attr('data-default-file', url_photo + '/' + user.photo)
         $('.dropify').dropify();
         $('#btn-delete').attr('onClick', 'deleteUser(' + id + ');')
@@ -129,28 +145,21 @@ function editUser(id) {
     })
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     /**
      * datatable js init
      */
-    dataTableLogs = $("#datatable-logs").DataTable({
-            stateSave: !0,
-            language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
-            drawCallback: function() {
-                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
-            },
-        }),
-        dataTableNotification = $("#datatable-notification").DataTable({
-            stateSave: !0,
-            language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
-            drawCallback: function() {
-                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
-            },
-        }),
+    dataTableNotification = $("#datatable-notification").DataTable({
+        stateSave: !0,
+        language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+        },
+    }),
         dataTableSecurity = $("#datatable-security").DataTable({
             stateSave: !0,
             language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
-            drawCallback: function() {
+            drawCallback: function () {
                 $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
             },
         }),
@@ -159,7 +168,7 @@ $(document).ready(function() {
         $(".dataTables_length select").removeClass("custom-select custom-select-sm"),
         $(".dataTables_length label").addClass("form-label");
     // Setup - add a text input to each footer cell
-    $('.disabled').each(function() {
+    $('.disabled').each(function () {
         $(this).html('');
     })
 
@@ -167,15 +176,15 @@ $(document).ready(function() {
      * end datatable js init
      */
 
-    $('#btn-create').on('click', function() {
+    $('#btn-create').on('click', function () {
         cleanErrorsInForm('create-user', form_create_errors)
         form_create_errors = null
     })
-    $('#btn-edit').on('click', function() {
+    $('#btn-edit').on('click', function () {
         cleanErrorsInForm('edit-user', form_edit_errors)
         form_edit_errors = null
     })
-    $('#create-user').submit(function(e) {
+    $('#create-user').submit(function (e) {
         e.preventDefault();
         $.ajax({
             type: "POST",
@@ -184,25 +193,25 @@ $(document).ready(function() {
             contentType: false,
             processData: false,
             cache: false,
-            success: function(response) {
+            success: function (response) {
                 console.log(response)
                 Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                 $('#create-user')[0].reset()
-                    //setTimeout(function () { window.location.href = route('accounts'); }, 1500);
-                $('#create-modal').modal('toggle')
+                //setTimeout(function () { window.location.href = route('accounts'); }, 1500);
+                $('#create-user-modal').modal('toggle')
 
                 showViewGrid('asc', 'id')
 
                 $('#view-list').html(response.html);
                 $.getScript(url_jsfile + "/datatable-users.init.js")
-                    .done(function(script, textStatus) {
+                    .done(function (script, textStatus) {
                         console.log(textStatus);
                     })
-                    .fail(function(jqxhr, settings, exception) {
+                    .fail(function (jqxhr, settings, exception) {
                         console.log("Triggered ajaxError handler.");
                     });
             },
-            error: function(error) {
+            error: function (error) {
                 console.log(error)
                 Swal.fire({ position: "top-end", icon: "error", title: "Error while adding this user", showConfirmButton: !1, timer: 1500 });
                 if (typeof error.responseJSON.errors !== 'undefined') {
@@ -213,7 +222,7 @@ $(document).ready(function() {
         });
     });
 
-    $('#edit-user').submit(function(e) {
+    $('#edit-user').submit(function (e) {
         e.preventDefault();
         $.ajax({
             type: "POST",
@@ -222,7 +231,7 @@ $(document).ready(function() {
             contentType: false,
             processData: false,
             cache: false,
-            success: function(response) {
+            success: function (response) {
                 console.log(response)
                 Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                 //setTimeout(function () { window.location.href = route('accounts'); }, 1500);
@@ -233,14 +242,14 @@ $(document).ready(function() {
                 showViewGrid('asc', 'id')
 
                 $.getScript(url_jsfile + "/datatable-users.init.js")
-                    .done(function(script, textStatus) {
+                    .done(function (script, textStatus) {
                         console.log(textStatus);
                     })
-                    .fail(function(jqxhr, settings, exception) {
+                    .fail(function (jqxhr, settings, exception) {
                         console.log("Triggered ajaxError handler.");
                     });
             },
-            error: function(error) {
+            error: function (error) {
                 console.log(error)
                 Swal.fire({ position: "top-end", icon: "error", title: "Error while saving that user", showConfirmButton: !1, timer: 1500 });
                 if (typeof error.responseJSON.errors !== 'undefined') {
@@ -271,6 +280,14 @@ $(document).ready(function() {
             reference.removeAttribute('title');
             return title;
         },
+        interactive: "true",
+        hideOnClick: false, // if you want
+        onShow(instance) {
+            setTimeout(() => {
+                instance.hide();
+            }, 1000);
+        }
+
     });
     /**
      * tippy initialisation end
@@ -279,24 +296,24 @@ $(document).ready(function() {
 
 
 function viewLogs(id) {
-    $.get('/users/logs/get/' + id + '/1', function(data) {
+    $.get('/users/logs/get/' + id + '/1', function (data) {
         dataTableLogs.destroy()
         $('#logs-div').empty().html(data);
         dataTableLogs = $('#datatable-logs').DataTable({
-                stateSave: 0,
-                language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
-                drawCallback: function() {
-                    $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
-                },
-            }),
-            $('#datatable-logs tfoot th').each(function() {
+            stateSave: 0,
+            language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
+            drawCallback: function () {
+                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+            },
+        }),
+            $('#datatable-logs tfoot th').each(function () {
                 var title = $(this).text();
                 $(this).html('<input class="form-control form-control-sm logs" type="text" placeholder="Search ' + title + '" />');
             });
-        dataTableLogs.columns().every(function() {
+        dataTableLogs.columns().every(function () {
             var that = this;
 
-            $('.logs', this.footer()).on('keyup change clear', function() {
+            $('.logs', this.footer()).on('keyup change clear', function () {
                 if (that.search() !== this.value) {
                     that
                         .search(this.value)
@@ -304,12 +321,12 @@ function viewLogs(id) {
                 }
             });
         });
-        dataTableLogs.columns().every(function() {
+        dataTableLogs.columns().every(function () {
             var column = this;
             if ($(column.footer()).hasClass('select')) {
                 var select = $('<select class="form-select"><option value=""></option></select>')
                     .appendTo($(column.footer()).empty())
-                    .on('change', function() {
+                    .on('change', function () {
                         var val = $.fn.dataTable.util.escapeRegex(
                             $(this).val()
                         );
@@ -318,7 +335,7 @@ function viewLogs(id) {
                             .search(val ? '^' + val + '$' : '', true, false)
                             .draw();
                     });
-                column.data().unique().sort().each(function(d, j) {
+                column.data().unique().sort().each(function (d, j) {
                     select.append('<option value="' + d + '">' + d + '</option>')
                 });
             }
@@ -328,22 +345,22 @@ function viewLogs(id) {
 }
 
 function viewNotification(id) {
-    $.get('/users/notification/get/' + id, function(data) {
+    $.get('/users/notification/get/' + id, function (data) {
         dataTableNotification.destroy()
         $('#notification-div').empty().html(data);
         dataTableNotification = $('#datatable-notification').DataTable({
-                stateSave: !0,
-                language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
-                drawCallback: function() {
-                    $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
-                },
-            }),
+            stateSave: !0,
+            language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
+            drawCallback: function () {
+                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+            },
+        }),
             $('#notification-modal').modal('toggle')
     })
 }
 
 function viewLogsInCard(id) {
-    $.get('/users/logs/get/' + id + '/0', function(data) {
+    $.get('/users/logs/get/' + id + '/0', function (data) {
         $('#logs-info-card').empty().html(data);
     })
 }

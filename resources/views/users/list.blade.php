@@ -39,158 +39,127 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
-                        <div class="page-title-right">
-                            <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ config('app.name') }}</a>
-                                </li>
-                                <li class="breadcrumb-item active">Users</li>
-                            </ol>
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
+                                <div class="text-sm-end">
+                                    <h4 class="page-title">Users &nbsp; &nbsp;
+                                        <a href="{{ route('users.groups') }}" class="btn- btn-xs btn-info">
+                                            <i class="mdi mdi-layers-outline"></i> Groups
+                                        </a>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a
+                                                href="{{ route('home') }}">{{ config('app.name') }}</a>
+                                        </li>
+                                        <li class="breadcrumb-item active">Users</li>
+                                    </ol>
+                                </div>
+                            </div><!-- end col-->
                         </div>
-                        <h4 class="page-title">Users</h4>
                     </div>
                 </div>
             </div>
             <!-- end page title -->
 
             <div class="row">
-                <div class="col-lg-2">
-                    <div class="card" id="notes-info-card">
-                        @include('notes.notes-info-card')
-                    </div>
-                    <div class="card" id="logs-info-card">
-                        @include('users.logs-info')
-                    </div>
-                </div>
-
-                <div class="col-lg-7">
+                <div class="col-lg-9">
                     <div class="card">
                         <div class="card-body">
-                            <div class="row justify-content-between">
-                                <div class="col-auto">
-                                    <button type="button" class="btn btn-danger btn-rounded waves-effect waves-light mb-3"
-                                        data-bs-toggle="modal" data-bs-target="#create-modal"><i
-                                            class="mdi mdi-plus-circle me-1"></i> Add User</button>
-                                </div>
-                                <div class="col-sm-6 col-auto">
-                                    <div class="text-sm-end">
-                                        <div class="btn-group mb-3 ms-2 d-none d-sm-inline-block">
-                                            <button type="button" id="button-view-list" class="btn btn-dark"><i
-                                                    class="mdi mdi-format-list-bulleted-type"></i></button>
-                                        </div>
-                                        <div class="btn-group mb-3 d-none d-sm-inline-block">
-                                            <button type="button" id="button-view-grid" class="btn btn-link text-dark"><i
-                                                    class="mdi mdi-apps"></i></button>
-                                        </div>
+
+                            <ul class="nav nav-tabs nav-bordered">
+                                <li class="nav-item">
+                                    <a href="#tab-list-view" data-bs-toggle="tab" aria-expanded="true"
+                                        class="nav-link active">
+                                        <i class="mdi mdi-format-list-bulleted-type"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#tab-grid-view" data-bs-toggle="tab" aria-expanded="false"
+                                        class="nav-link">
+                                        <i class="mdi mdi-apps"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane show active" id="tab-list-view">
+                                    <div id="view-list">
+                                        @include('users.datatable-users')
                                     </div>
-                                </div><!-- end col-->
-                            </div>
-
-
-                            <div class="row">
-                                <div class="row d-none" id="view-grid">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <div class="row justify-content-between">
-                                                        <div class="col-auto">
-                                                            <form class="d-flex flex-wrap align-items-center">
-                                                                <label for="inputPassword2"
-                                                                    class="visually-hidden">Search</label>
-                                                                <div class="me-3">
-                                                                    <input type="search" class="form-control my-1 my-lg-0"
-                                                                        id="view-grid-search" placeholder="Search...">
-                                                                </div>
-                                                                <label for="status-select" class="me-2">Sort By</label>
-                                                                <div class="me-sm-3">
-                                                                    <select class="form-select my-1 my-lg-0"
-                                                                        id="view-grid-sort">
-                                                                        <option value="id" selected>All</option>
-                                                                        <option value="username">Username</option>
-                                                                        <option value="role">Role</option>
-                                                                        <option value="status">Status</option>
-                                                                    </select>
-                                                                </div>
-                                                            </form>
+                                </div>
+                                <div class="tab-pane" id="tab-grid-view">
+                                    <div class="row" id="view-grid">
+                                        <div class="card-header">
+                                            <div class="row justify-content-between">
+                                                <div class="col-auto">
+                                                    <form class="d-flex flex-wrap align-items-center">
+                                                        <label for="inputPassword2" class="visually-hidden">Search</label>
+                                                        <div class="me-3">
+                                                            <input type="search" class="form-control my-1 my-lg-0"
+                                                                id="view-grid-search" placeholder="Search...">
                                                         </div>
-                                                    </div> <!-- end row -->
+                                                        <label for="status-select" class="me-2">Sort
+                                                            By</label>
+                                                        <div class="me-sm-3">
+                                                            <select class="form-select my-1 my-lg-0" id="view-grid-sort">
+                                                                <option value="id" selected>All</option>
+                                                                <option value="username">Username</option>
+                                                                <option value="role">Role</option>
+                                                                <option value="status">Status</option>
+                                                            </select>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                            </div> <!-- end card -->
-                                        </div> <!-- end col-->
-                                    </div>
-                                    <div id="view-grid-users">
-                                        @if (count($users) > 0)
-                                            @include('users.grid')
-                                        @else
-                                            <p class="text-center">No data available in table</p>
-                                        @endif
+                                            </div> <!-- end row -->
+                                        </div>
+                                        <div class="card-body">
+                                            <div id="view-grid-users">
+                                                @if (count($users) > 0)
+                                                    @include('users.grid')
+                                                @else
+                                                    <p class="text-center">No data available in table</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="card-footer">
+                                            <ul class="pagination pagination-rounded justify-content-end mb-3">
+                                                <li class="paginate_button page-item previous">
+                                                    <a class="page-link" href="javascript: void(0);"
+                                                        onclick="viewGridPagePreviousPage();" aria-label="Previous">
+                                                        <span aria-hidden="true">«</span>
+                                                        <span class="visually-hidden">Previous</span>
+                                                    </a>
+                                                </li>
+                                                @for ($i = 0; $i < $users->count(); $i += 8)
+                                                    <li class="page-item @if ($i / 8 < 1) active @endif"
+                                                        id="pageno{{ $i / 8 + 1 }}"><a class="page-link"
+                                                            href="javascript: void(0);"
+                                                            onclick="viewGridPageItem({{ $i / 8 + 1 }});">{{ $i / 8 + 1 }}</a>
+                                                    </li>
+                                                @endfor
+                                                <li class="page-item">
+                                                    <a class="page-link" href="javascript: void(0);"
+                                                        onclick="viewGridPageNextPage({{ $users->count() / 8 }});"
+                                                        aria-label="Next">
+                                                        <span aria-hidden="true">»</span>
+                                                        <span class="visually-hidden">Next</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="table-responsive" id="view-list" data-simplebar>
-                                <table id="datatable-users"
-                                    class="table table-center dt-responsive nowrap table-hover w-100">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-filter">Id</th>
-                                            <th class="text-filter">Username</th>
-                                            <th class="select-filter">role</th>
-                                            <th>photo</th>
-                                            <th class="select-filter">account</th>
-                                            <th class="select-filter">status</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        @foreach ($users as $user)
-                                            <tr id="userid{{ $user->id }}" onclick="viewUser({{ $user->id }});">
-                                                <td>{{ $user->id }}</td>
-                                                <td>{{ $user->username }}</td>
-                                                <td>
-                                                    @if ($user->role === 1) <span
-                                                            class="badge label-table bg-danger">Admin</span>
-                                                    @elseif($user->role === 2)
-                                                        <span class="badge bg-success">User</span>
-                                                    @elseif($user->role === 3)
-                                                        <span class="badge bg-blue text-light">Visitor</span>
-                                                    @endif
-                                                </td>
-                                                <td><img class="img-fluid avatar-sm rounded"
-                                                        src="{{ asset('storage/images/users/' . $user->photo) }}" /></td>
-                                                <td>{{ $user->account[0]->name }}</td>
-                                                <td>
-                                                    @if ($user->status === 1) <span
-                                                        class="badge bg-success">Active</span> @elseif ($user->status
-                                                        === 0)
-                                                        <span class="badge label-table bg-danger">Disabled</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>id</th>
-                                            <th>username</th>
-                                            <th class="select role">role</th>
-                                            <th class="disabled">photo</th>
-                                            <th class="select account">account</th>
-                                            <th class="select status">status</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
                             </div>
                         </div>
                     </div> <!-- end card -->
                 </div> <!-- end col -->
 
                 <div class="col-lg-3">
-                    <div class="card" id="user-info-card">
-                        @include('users.user-info')
-                    </div>
-                    <div class="card" id="user-permissions-info-card">
-                        @include('permissions.users-permissions-info')
+                    <div class="card" id="logs-info-card">
+                        @include('users.logs-info')
                     </div>
                 </div>
             </div>
@@ -201,26 +170,6 @@
     </div> <!-- content -->
     @include('users.create-modal')
     @include('users.edit-modal')
-    @include('notes.add_note-modal')
-    @include('notes.edit-note-ext')
-    <div id="create-Permission-div">
-        @include('permissions.create-permission')
-    </div>
-    <div id="security-div">
-        @include('users.security')
-    </div>
-    <div id="notification-div">
-        @include('users.notification')
-    </div>
-    <div id="notes-div">
-        @include('notes.notes-list-modal')
-    </div>
-    <div id="logs-div">
-        @include('users.logs')
-    </div>
-    <div id="users_permissions-div">
-        @include('permissions.users_permissions')
-    </div>
 @endsection
 
 @section('js')

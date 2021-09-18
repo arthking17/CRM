@@ -121,12 +121,14 @@
                         <div class="card-body">
                             <ul class="nav nav-pills nav-fill navtab-bg">
                                 <li class="nav-item">
-                                    <a href="#aboutme" data-bs-toggle="tab" aria-expanded="false" class="nav-link active">
+                                    <a id="aboutme-link" href="#aboutme" data-bs-toggle="tab" aria-expanded="false"
+                                        class="nav-link active">
                                         About Me
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#settings" data-bs-toggle="tab" aria-expanded="true" class="nav-link">
+                                    <a id="settings-link" href="#settings" data-bs-toggle="tab" aria-expanded="true"
+                                        class="nav-link">
                                         Settings
                                     </a>
                                 </li>
@@ -242,12 +244,11 @@
 
                                     <div class="row justify-content-between">
                                         <div class="col-auto">
-                                            <h5 class="header-title"><i
-                                                    class="mdi mdi-phone-settings-outline me-1"></i>
+                                            <h5 class="header-title"><i class="mdi mdi-phone-settings-outline me-1"></i>
                                                 SIP Account</h5>
                                             <a href="{{ route('sip_accounts') }}">
                                                 <p class="sub-header">
-                                                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp click here to more details.
+                                                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp click here for more details.
                                                 </p>
                                             </a>
                                         </div>
@@ -262,6 +263,24 @@
 
                                     <div id="list-sip-accounts">
                                         @include('sip_accounts.list-redux')
+                                    </div>
+
+                                    <div class="row justify-content-between">
+                                        <div class="col-auto">
+                                            <h5 class="mb-4 text-uppercase"><i class="mdi mdi-wechat me-1"></i>
+                                                SMS Account</h5>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="text-sm-end">
+                                                <button type="button" class="btn btn-danger waves-effect waves-light"
+                                                    data-bs-toggle="modal" data-bs-target="#create-sms_account-modal"><i
+                                                        class="mdi mdi-plus-circle me-1"></i> Add </button>
+                                            </div>
+                                        </div><!-- end col-->
+                                    </div>
+
+                                    <div id="list-sms_accounts">
+                                        @include('sms_accounts.list')
                                     </div>
                                 </div>
                             </div>
@@ -283,6 +302,8 @@
     @include('users.security')
     @include('sip_accounts.create')
     @include('sip_accounts.edit')
+    @include('sms_accounts.create')
+    @include('sms_accounts.edit')
 @endsection
 
 @section('js')
@@ -301,9 +322,10 @@
     <!-- custom js files -->
     <script src="/js/form-validation-laravel.js"></script>
     <script src="/js/profile/profile.js"></script>
-    <script src="/js/accounts/email_account.js"></script>
+    <script src="/js/email_accounts/email_account.js"></script>
     <script src="/js/users/edit-password.js"></script>
     <script src="/js/sip_accounts/ajax-crud.js"></script>
+    <script src="/js/sms_accounts/sms_account.js"></script>
     <script>
         url_photo = '{{ URL::asset('/storage/images/users/') }}';
         var create_email_account_errors = null
@@ -313,6 +335,24 @@
 
         var create_sip_account_errors = null
         var edit_sip_account_errors = null
+
+        var create_sms_account_errors = null
+        var edit_sms_account_errors = null
+    </script>
+    <script>
+        if (sessionStorage.getItem('profile-tab-panel') == 'settings') {
+            $('#aboutme-link').removeClass('active')
+            $('#settings-link').addClass('active')
+
+            $('#aboutme').removeClass('show active')
+            $('#settings').addClass('show active')
+        }
+        $('#settings-link').on('click', function() {
+            sessionStorage.setItem("profile-tab-panel", 'settings');
+        })
+        $('#aboutme-link').on('click', function() {
+            sessionStorage.setItem("profile-tab-panel", 'about');
+        })
     </script>
     <!-- custom js files end -->
 

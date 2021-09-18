@@ -24,8 +24,6 @@
 
         <div class="content-page">
             @yield('content')
-
-            @include('layouts.partials._footer')
         </div>
     </div>
 

@@ -21,13 +21,15 @@ class CommunicationController extends Controller
      */
     public function index()
     {
-        $communications = Communication::all();
-        $contacts = Contact::all();
-        $notes = [];
+        $contacts = Contact::where('account_id', Auth::user()->account_id)->get();
         $contact_name = null;
-        $users = DB::table('users')->select('id', 'username')->where('status', 1)->get();
+        $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
+        $users_id = [];
+        foreach ($users as $user) {
+            array_push($users_id, $user->id);
+        }
+        $communications = Communication::whereIn('user_id', [$users_id])->get();
         if ($communications->count() > 0) {
-            $notes = DB::table('notes')->where('element_id', $communications->first()->id)->where('element', getElementByName('communications'))->get();
             $contact = Contact::find($communications->first()->contact_id);
             if ($contact->class == 1) {
                 $contact = Contacts_person::find($communications->first()->contact_id);
@@ -35,15 +37,20 @@ class CommunicationController extends Controller
             } else if ($contact->class == 2)
                 $contact_name = Contacts_companie::find($communications->first()->contact_id)->name;
         }
+
+        $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+            ->select('contacts.id', 'contacts_companies.name')->get();
+        $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
+            ->select('contacts.id', 'first_name', 'last_name')->get();
+
         return view('/communications/index', [
             'communications' => $communications,
             'contacts' => $contacts,
             'users' => $users,
-            'notes' => $notes,
             'contact_name' => $contact_name,
-            'element' => $communications->first(),
-            'communication' => $communications->first(),
             'elementClass' => getElementByName('communications'),
+            'contacts_persons' => $contacts_persons,
+            'contacts_companies' => $contacts_companies,
         ]);
     }
 
@@ -91,7 +98,12 @@ class CommunicationController extends Controller
         $communication = Communication::create($data);
         Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'communications.create', 'element' => getElementByName('communications'), 'element_id' => $communication->id, 'source' => 'communications.create']);
 
-        $communications = Communication::all();
+        $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
+        $users_id = [];
+        foreach ($users as $user) {
+            array_push($users_id, $user->id);
+        }
+        $communications = Communication::whereIn('user_id', [$users_id])->get();
         $returnHTML = view('communications/list', compact('communications'))->render();
         return response()->json(['success' => 'communication Created', 'html' => $returnHTML, 'communication' => $communication]);
     }
@@ -144,7 +156,7 @@ class CommunicationController extends Controller
             'contact_id' => 'required|exists:App\Models\Contact,id',
             'class' => 'required|integer|digits_between:1,1',
             'channel' => 'required|integer|digits_between:1,10',
-            'start_date' => 'required|date|after_or_equal:today',
+            'start_date' => 'required|date',
             'qualification' => 'nullable|integer|digits_between:1,1',
         ]);
         //$user = array('user_id' => 4);
@@ -155,7 +167,12 @@ class CommunicationController extends Controller
 
         Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'communications.update', 'element' => getElementByName('communications'), 'element_id' => $communication->id, 'source' => 'communications.update']);
 
-        $communications = Communication::all();
+        $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
+        $users_id = [];
+        foreach ($users as $user) {
+            array_push($users_id, $user->id);
+        }
+        $communications = Communication::whereIn('user_id', [$users_id])->get();
         $returnHTML = view('communications/list', compact('communications'))->render();
         return response()->json(['success' => 'communication Updated', 'html' => $returnHTML, 'communication' => $communication]);
     }

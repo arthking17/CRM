@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendMail;
+use App\Models\Contact_data;
 use App\Models\Email_account;
 use App\Models\Log;
 use BeyondCode\Mailbox\Facades\Mailbox;
@@ -121,7 +122,7 @@ class EmailAccountController extends Controller
         Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'email_accounts.update', 'element' => getElementByName('email_accounts'), 'element_id' => $email_account->id, 'source' => 'email_accounts.update']);
 
         $email_accounts = email_account::where('status', 1)->get();
-        $returnHTML = view('email_accounts/list', compact('email_accounts'))->render();
+        $returnHTML = view('email_accounts/datatable-email_accounts', compact('email_accounts'))->render();
         return response()->json(['success' => 'Email Account Updated', 'html' => $returnHTML, 'email_account' => $email_account]);
     }
 
@@ -140,7 +141,7 @@ class EmailAccountController extends Controller
             Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'email_accounts.delete', 'element' => getElementByName('email_accounts'), 'element_id' => $id, 'source' => 'email_accounts.delete, ' . $id]);
 
             $email_accounts = email_account::where('status', 1)->get();
-            $returnHTML = view('email_accounts/list', compact('email_accounts'))->render();
+            $returnHTML = view('email_accounts/datatable-email_accounts', compact('email_accounts'))->render();
             return response()->json(['success' => 'Email Account Deleted !!!', 'html' => $returnHTML, 'email_account' => $email_account]);
         } else
             return response()->json(['error' => 'Failed to delete this Email Account !!!']);
@@ -150,17 +151,12 @@ class EmailAccountController extends Controller
      * configure a email_account for sending a mail.
      * 
      * @param int $email_account_id
-     * @param string $email
      * @return \Illuminate\Http\Response
      */
-    public function configEmailAccount(int $email_account_id, string $email)
+    public function configEmailAccount(int $email_account_id)
     {
-        if ($email_account_id != -1) {
-            $email_account = Email_account::find($email_account_id);
-        } else if ($email != 'empty') {
-            $email_account = Email_account::where('email', $email)->get();
-            $email_account = Email_account::find($email_account[0]->id);
-        }
+        $email_account = Email_account::find($email_account_id);
+
         if ($email_account == null) {
             return response()->json(['errors' => 'Transmitter Email Not Found'], 300);
         }
@@ -198,19 +194,32 @@ class EmailAccountController extends Controller
     {
         //return $request;
         $data = $request->validate([
-            'from' => 'required|email',
-            'to' => 'required|email',
+            'from' => 'required|exists:App\Models\Email_account,id',
+            'to' => 'required|string',
             'subject' => 'nullable|string|max:64',
             'content' => 'nullable|string',
         ]);
-        //return $data;
-        $mail = new SendMail($data);
+
+        $email_account = Email_account::find($data['from']);
+        $data['from'] = $email_account->email;
+
+        $emailTo = explode(",", $data['to']);
+        $emailToinStr = null;
+        foreach ($emailTo as $key => $value) {
+            $data['to'] = $value;
+            $mail = new SendMail($data);
+            Mail::to($data['to'])->send($mail);
+            if ($key == 0)
+                $emailToinStr .= $value;
+            else
+                $emailToinStr .= ', ' . $value;
+        }
+
         /* Mailbox::to($data['to'], function (InboundEmail $email, $mail) {
             return $email->reply($mail);
           });*/
-        Mail::to($data['to'])->send($mail);
 
-        return response()->json(['success' => 'Email Sent to ' . $data['to'], 'mail' => $mail]);
+        return response()->json(['success' => 'Email Sent to ' . $emailToinStr, 'mail' => $mail]);
     }
 
     /**

@@ -1,10 +1,10 @@
-<table id="datatable-contacts" class="table table-bordered toggle-circle mb-0" data-simplebar style="width: 100%">
+<table id="datatable-contacts" class="table table-center dt-responsive nowrap table-hover w-100" style="width: 100%" data-simplebar>
     <thead>
         <tr>
             <th></th>
             @if ($headings)
                 @for ($i = 0; $i < $columnCount; $i++)
-                    <th class="truncate" title="{{ $headings[0][0][$i] }}">
+                    <th class="truncate-td-upload" title="{{ $headings[0][0][$i] }}">
                         {{ $headings[0][0][$i] }}</th>
                 @endfor
             @endif
@@ -16,7 +16,7 @@
             @foreach ($contacts[0] as $i => $value)
                 <td>
                     <div class="col-8 col-xl-9">
-                        <select class="selectize-drop-header @error('column-' . $i) parsley-error @enderror"
+                        <select class="selectize-drop-header"
                             name="column-{{ $i }}" id="mapping-column-column-{{ $i }}">
                             <option value="">Select an column</option>
                             <option value="source" @if ($i === 0) selected @endif>source</option>
@@ -41,14 +41,6 @@
                                 <option value="language" @if ($i === 9) selected @endif>language</option>
                             @endif
                         </select>
-                        @error('column-' . $i)
-                            <ul class="parsley-errors-list filled" aria-hidden="false">
-                                <li class="parsley-required">
-                                    {{ $errors->first('column-' . $i) }}</li>
-                            </ul>
-                        @else
-                            <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                        @enderror
                     </div>
                 </td>
             @endforeach
@@ -59,13 +51,13 @@
                 @if ($headings)
                     @if ($headings[0][0][0] != $contact[0])
                         @for ($i = 0; $i < $columnCount; $i++)
-                            <td class="truncate" title="{{ $contact[$i] }}">
+                            <td class="truncate-td-upload" title="{{ $contact[$i] }}">
                                 {{ $contact[$i] }}</td>
                         @endfor
                     @endif
                 @else
                     @for ($i = 0; $i < $columnCount; $i++)
-                        <td class="truncate" title="{{ $contact[$i] }}">
+                        <td class="truncate-td-upload" title="{{ $contact[$i] }}">
                             {{ $contact[$i] }}</td>
                     @endfor
                 @endif

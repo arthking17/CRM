@@ -1,4 +1,4 @@
-<table id="datatable-sip_accounts" class="table table-center dt-responsive nowrap table-hover w-100">
+<table id="datatable-sip_accounts" class="table table-center dt-responsive nowrap w-100">
     <thead>
         <tr>
             <th>Id</th>
@@ -38,17 +38,20 @@
                 </td>
                 <td>
                     @if ($sip_account->status === 0)
-                        <a href="javascript:void(0);" class="action-icon"> <i
+                        <a href="javascript:void(0);" class="btn- btn-xs btn-info"> <i
                                 class="mdi mdi-square-edit-outline"></i></a>
-                        <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                        <a href="javascript:void(0);" class="btn- btn-xs btn-danger"> <i class="mdi mdi-delete-circle"></i></a>
                     @else
-                        <a href="javascript:void(0);" class="action-icon" data-bs-toggle="modal"
+                        <a href="javascript:void(0);" class="btn- btn-xs btn-info" data-bs-toggle="modal"
                             data-bs-target="#edit-sip_account-modal" onclick="editSipAccount({{ $sip_account->id }});"
                             data-toggle="modal"> <i class="mdi mdi-square-edit-outline"></i></a>
                         <a href="javascript:void(0);" onclick="deleteSipAccount({{ $sip_account->id }});"
-                            class="action-icon">
-                            <i class="mdi mdi-delete"></i></a>
+                            class="btn- btn-xs btn-danger">
+                            <i class="mdi mdi-delete-circle"></i></a>
                     @endif
+                    <a href="javascript: void(0);" class="btn- btn-xs btn-warning" title="Calls Logs"
+                    data-bs-toggle="" onclick="viewListCallLogs()"
+                    data-bs-target="#calls-logs-modal"><i class="mdi mdi-history"></i></a>
                 </td>
             </tr>
         @endforeach

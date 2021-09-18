@@ -5,6 +5,10 @@ $(document).ready(function() {
             drawCallback: function() {
                 $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
             },
+            "columnDefs": [ {
+                "targets": 8,
+                "orderable": false
+                } ],
         }),
         $('#datatable-appointments tfoot th').each(function() {
             if (!$(this).hasClass('disabled')) {

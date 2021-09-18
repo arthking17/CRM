@@ -38,18 +38,18 @@
     <link href="/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
     <link href="/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
 
-    <!-- send email modal -->
-    <link href="/css/contacts/data/send-mail.css" rel="stylesheet" type="text/css" />
-
     <!-- jquery-ui 
-                        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+                                    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
 
     <!-- quill css 
-                    <link href="/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
-                    <link href="/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />-->
+                                <link href="/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
+                                <link href="/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />-->
 
     <!-- Include Quill stylesheet -->
     <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+
+    <!-- phone call animation 
+                <link href="/css/phone_call_animation.css" rel="stylesheet">-->
 
     <!-- App css -->
     <link href="/css/config/creative/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
@@ -72,167 +72,50 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
-                        <div class="page-title-right">
-                            <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ config('app.name') }}</a>
-                                </li>
-                                <li class="breadcrumb-item active">Contacts</li>
-                            </ol>
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
+                                <div class="text-sm-end">
+                                    <h4 class="page-title">Contacts &nbsp;
+                                        <a href="{{ route('contacts.import') }}" class="btn- btn-xs btn-success">
+                                            <i class="mdi mdi-cloud-upload-outline"></i> Import
+                                        </a> &nbsp;
+                                        <a href="{{ route('contacts.search') }}" class="btn- btn-xs btn-secondary">
+                                            <i class="fe-search"></i> Search
+                                        </a>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a
+                                                href="{{ route('home') }}">{{ config('app.name') }}</a>
+                                        </li>
+                                        <li class="breadcrumb-item active">Contacts</li>
+                                    </ol>
+                                </div>
+                            </div><!-- end col-->
                         </div>
-                        <h4 class="page-title">Contacts</h4>
                     </div>
                 </div>
             </div>
             <!-- end page title -->
 
             <div class="row">
-                <div class="col-lg-2">
-                    <div class="card" id="contact_data-info-card">
-                        @include('contacts.contact_data')
-                    </div>
-                    <div class="card" id="notes-info-card">
-                        @include('notes.notes-info-card')
-                    </div>
-                </div>
-                <div class="col-lg-7">
+                <div class="col-lg-9">
                     <div class="card">
                         <div class="card-body">
-                            <div class="row justify-content-between">
-                                <div class="col-auto">
-                                    <div class="text-sm-end">
-                                        <button type="button"
-                                            class="btn btn-danger btn-rounded waves-effect waves-light mb-3"
-                                            data-bs-toggle="modal" data-bs-target="#create-modal"><i
-                                                class="mdi mdi-plus-circle me-1"></i> Add Contact</button>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="text-sm-end">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#create-custom-field-modal"
-                                            class="btn btn-light mb-2 me-1" title="Create Custom Field"><i
-                                                class="fe-plus"></i>
-                                        </a>
-                                        <a href="#" data-bs-toggle="" data-bs-target="#custom-fields-modal"
-                                            onclick="viewCustomFields()" class="btn btn-light mb-2 me-1">View Custom Fields
-                                        </a>
-                                        <a href="{{ route('contacts.import') }}" data-bs-toggle=""
-                                            data-bs-target="#upload-modal" class="btn btn-success mb-2 me-1">
-                                            <i class="mdi mdi-cloud-upload-outline"></i>
-                                        </a>
-                                        <a href="{{ route('contacts.search') }}" data-bs-toggle="modal"
-                                            data-bs-target="#search-modal" class="btn btn-light mb-2 me-1">
-                                            <i class="fe-search"></i>
-                                        </a>
-                                    </div>
-                                </div><!-- end col-->
-                            </div>
-                            <div id="contacts-result" data-simplebar>
-                                <table id="datatable-contacts"
-                                    class="table table-center dt-responsive nowrap table-hover w-100">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-filter">Id</th>
-                                            <th class="select-filter">Account</th>
-                                            <th class="select-filter">Class</th>
-                                            <th class="select-filter">Source</th>
-                                            <th class="text-filter">Creation Date</th>
-                                            <th class="select-filter">Status</th>
-                                            <th class="text-filter">Source Id</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        @foreach ($contacts as $contact_itr)
-                                            <tr id="contactid{{ $contact_itr->id }}"
-                                                onclick="viewContact({{ $contact_itr->id }}, {{ $contact_itr->class }});">
-                                                <td>{{ $contact_itr->id }}</td>
-                                                <td>{{ $contact_itr->account[0]->name }}</td>
-                                                <td>
-                                                    @if ($contact_itr->class === 2)
-                                                        <span class="badge bg-success">Company</span>
-                                                    @elseif($contact_itr->class === 1)
-                                                        <span class="badge bg-blue text-light">Person</span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($contact_itr->source === 1)
-                                                        <span class="badge label-table bg-danger">Telephone
-                                                            prospecting</span>
-                                                    @elseif($contact_itr->source === 2)
-                                                        <span class="badge bg-warning">Landing pages</span>
-                                                    @elseif($contact_itr->source === 3)
-                                                        <span class="badge bg-success">Affiliation</span>
-                                                    @elseif($contact_itr->source === 4)
-                                                        <span class="badge bg-blue text-light">Database purchased</span>
-                                                    @endif
-                                                </td>
-                                                <td>{{ $contact_itr->creation_date }}</td>
-                                                <td>
-                                                    @if ($contact_itr->status === 1)
-                                                        <span class="badge label-table bg-success">Lead</span>
-                                                    @elseif($contact_itr->status === 2)
-                                                        <span class="badge bg-blue text-light">Customer</span>
-                                                    @elseif($contact_itr->status === 3)
-                                                        <span class="badge bg-danger">Not interested</span>
-                                                    @endif
-                                                </td>
-                                                <td>{{ $contact_itr->source_id }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th class="">Id</th>
-                                            <th class="select account">Account</th>
-                                            <th class="select">Class</th>
-                                            <th class="select">Source</th>
-                                            <th class="">Creation Date</th>
-                                            <th class="select">Status</th>
-                                            <th class="">Source Id</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                            <div id="contacts-result">
+                                @include('contacts.datatable-contacts')
                             </div>
                         </div>
                     </div> <!-- end card -->
                 </div> <!-- end col -->
-                @if (isset($contact))
-                    <div class="col-lg-3 @if ($contact->class !== 1) d-none @endif" id="contacts_person-info-card">
-                        @include('contacts.contacts_person-info')
-                    </div>
-                    <div class="col-lg-3 @if ($contact->class !== 2) d-none @endif" id="contacts_companie-info-card">
-                        @include('contacts.contacts_companie-info')
-                    </div>
-                @endif
-                <div class="col-lg-3 @if (isset($contact)) d-none @endif"
-                    id="contacts_info_not_found">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex align-items-start mb-3">
-                            </div>
-                            <div class="accordion custom-accordion" id="custom-accordion-contacts-person-info">
-                                <div class="card mb-0">
-                                    <div id="heading-contacts-person-info">
-                                        <a class="custom-accordion-title text-reset d-block" data-bs-toggle="collapse"
-                                            href="#collapse-contacts-person-info" aria-expanded="true"
-                                            aria-controls="collapse-contacts-person-info">
-                                            <h5 class="mb-3 mt-4 text-uppercase bg-light p-2"><i
-                                                    class="mdi mdi-account-circle me-1"></i>
-                                                Personal Information<i class="mdi mdi-chevron-down accordion-arrow"></i>
-                                            </h5>
-                                        </a>
-                                    </div>
-                                    <div id="collapse-contacts-person-info" class="collapse show"
-                                        aria-labelledby="headingFour"
-                                        data-bs-parent="#custom-accordion-contacts-person-info">
-                                        <div class="card-body">
-                                            <p class="text-center">empty</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-lg-3" id="contacts_person-info-card">
+                    @include('contacts.contacts_person-info')
+                </div>
+                <div class="col-lg-3 d-none" id="contacts_companie-info-card">
+                    @include('contacts.contacts_companie-info')
                 </div>
             </div>
             <!-- end row -->
@@ -247,8 +130,8 @@
     @include('contacts.data.edit-phone')
     @include('contacts.data.create')
     @include('contacts.data.edit')
-    @include('notes.add_note-modal')
-    @include('notes.edit-note-ext')
+    @include('notes.create-ext')
+    @include('notes.edit-ext')
     <div id="notes-div">
         @include('notes.notes-list-modal')
     </div>
@@ -262,6 +145,8 @@
     @include('email_accounts.send-mail')
 
     @include('sip_accounts.call')
+
+    @include('sms_accounts.sms')
 @endsection
 
 @section('js')
@@ -356,23 +241,26 @@
     <script src="/js/contacts/custom-fields/custom-fields.js"></script>
 
     <!-- appointments -->
-    <script src="/js/appointments/ajax-crud.js"></script>
+    <script src="/js/appointments/create-ext.js"></script>
 
     <!-- send email modal -->
-    <script src="/js/contacts/data/send-mail.js"></script>
+    <script src="/js/email_accounts/send-mail.js"></script>
 
     <!-- jquery-ui 
-                                <script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+                                            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <!-- Quill js 
-                            <script src="/libs/quill/quill.min.js"></script>-->
+                                        <script src="/libs/quill/quill.min.js"></script>-->
 
     <!-- Include the Quill library -->
     <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
 
     <!-- call voip modal -->
     <script src="/js/sip_accounts/sip_accounts.js"></script>
+
+    <!-- send sms modal -->
+    <script src="/js/sms_accounts/sms.js"></script>
 
     <script>
         url_logo = '{{ URL::asset('/storage/images/logo/') }}';
@@ -396,6 +284,14 @@
         var errors_edit_custom_field = null
         var create_appointment_errors = null
         var myTimer = null
+        
+        url_jsfile_appointments = '{{ URL::asset('/js/appointments/') }}';
+        var create_appointment_errors = null
+        var edit_appointment_errors = null
+        
+        url_jsfile_communications = '{{ URL::asset('/js/communications/') }}';
+        var create_communication_errors = null
+        var edit_communication_errors = null
     </script>
 
     <script>

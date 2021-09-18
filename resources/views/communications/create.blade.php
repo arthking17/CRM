@@ -6,9 +6,9 @@
                     <h4 class="modal-title" id="myCenterModalLabel">Add Communication</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-4">
-                    <form class="form-horizontal" id="create-communication" method="POST" action="#" data-parsley-validate=""
-                        novalidate>
+                <form class="form-horizontal" id="create-communication" method="POST" action="#" data-parsley-validate=""
+                    novalidate>
+                    <div class="modal-body p-4">
                         <div class="row">
                             @csrf
                             <div class="col-12">
@@ -26,7 +26,8 @@
                                 </div>
                             </div> <!-- end col -->
                             <div class="row mb-3">
-                                <label for="create-communication-contact_id" class="col-4 col-xl-3 col-form-label">Contact<span
+                                <label for="create-communication-contact_id"
+                                    class="col-4 col-xl-3 col-form-label">Contact<span
                                         class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">
                                     <select class="form-select @error('contact_id') parsley-error @enderror"
@@ -34,19 +35,27 @@
                                         data-parsley-type="integer" data-parsley-length="[1, 10]">
                                         <option value="">choose a contact</option>
                                         @foreach ($contacts as $contact)
-                                            <option value="{{ $contact->id }}">{{ $contact->id }}
+                                            <option value="{{ $contact->id }}">
+                                                @if ($contact->class === 1)
+                                                    (Person)
+                                                    {{ $contacts_persons->where('id', $contact->id)->first()->first_name . ' ' . $contacts_persons->where('id', $contact->id)->first()->last_name }}
+                                                @elseif($contact->class === 2)
+                                                    (Companie)
+                                                    {{ $contacts_companies->where('id', $contact->id)->first()->name }}
+                                                @endif
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="create-communication-user_id" class="col-4 col-xl-3 col-form-label">User<span
+                                <label for="create-communication-user_id"
+                                    class="col-4 col-xl-3 col-form-label">User<span
                                         class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">
-                                    <select class="form-select @error('user_id') parsley-error @enderror"
-                                        name="user_id" id="create-communication-user_id" required
-                                        data-parsley-type="integer" data-parsley-length="[1, 10]">
+                                    <select class="form-select @error('user_id') parsley-error @enderror" name="user_id"
+                                        id="create-communication-user_id" required data-parsley-type="integer"
+                                        data-parsley-length="[1, 10]">
                                         <option value="">choose an user</option>
                                         @foreach ($users as $user)
                                             <option value="{{ $user->id }}">{{ $user->username }}
@@ -59,9 +68,9 @@
                                 <label for="create-communication-class" class="col-4 col-xl-3 col-form-label">Class<span
                                         class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">
-                                    <select class="form-select @error('class') parsley-error @enderror"
-                                        name="class" id="create-communication-class" required
-                                        data-parsley-type="integer" data-parsley-length="[1, 1]">
+                                    <select class="form-select @error('class') parsley-error @enderror" name="class"
+                                        id="create-communication-class" required data-parsley-type="integer"
+                                        data-parsley-length="[1, 1]">
                                         <option value="1">Call</option>
                                         <option value="2">Email</option>
                                         <option value="3">Sms</option>
@@ -69,7 +78,8 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="create-communication-channel" class="col-4 col-xl-3 col-form-label">Channel<span
+                                <label for="create-communication-channel"
+                                    class="col-4 col-xl-3 col-form-label">Channel<span
                                         class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">
                                     <input type="number" class="form-control @error('channel') parsley-error @enderror"
@@ -78,29 +88,38 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="create-communication-start_date" class="col-4 col-xl-3 col-form-label">Start Date<span
-                                        class="text-danger">*</span></label>
+                                <label for="create-communication-start_date" class="col-4 col-xl-3 col-form-label">Start
+                                    Date<span class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">
-                                    <input type="text" class="form-control datetimepicker @error('start_date') parsley-error @enderror"
-                                        name="start_date" id="create-communication-start_date" placeholder="Y-m-d H:i" required>
+                                    <input type="text"
+                                        class="form-control datetimepicker @error('start_date') parsley-error @enderror"
+                                        name="start_date" id="create-communication-start_date" placeholder="Y-m-d H:i"
+                                        required>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="create-communication-qualification" class="col-4 col-xl-3 col-form-label">Qualification</label>
+                                <label for="create-communication-qualification"
+                                    class="col-4 col-xl-3 col-form-label">Qualification</label>
                                 <div class="col-8 col-xl-9">
-                                    <input type="number" class="form-control @error('qualification') parsley-error @enderror"
-                                        name="qualification" id="create-communication-qualification" placeholder="Qualification"
+                                    <select class="form-select @error('qualification') parsley-error @enderror"
+                                        name="qualification" id="create-communication-qualification" required
                                         data-parsley-type="integer" data-parsley-length="[1, 1]">
+                                        <option value="1">completed with success</option>
+                                        <option value="2">interruption during call</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                         <!-- end row-->
+                    </div>
+                    <div class="modal-footer bg-light">
                         <button type="submit" id="btn-create-communication"
-                            class="btn btn-info waves-effect waves-light">Create</button>
-                        <button type="reset" class="btn btn-light waves-effect waves-light m-1"><i
+                            class="btn btn-primary waves-effect waves-light"><i
+                                class="mdi mdi-plus-circle"></i>Create</button>
+                        <button type="reset" class="btn btn-secondary waves-effect waves-light m-1"><i
                                 class="fe-x me-1"></i>Reset</button>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->

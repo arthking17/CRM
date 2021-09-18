@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Channel;
+use App\Models\Communication;
 use App\Models\Log;
 use App\Models\Sip_account;
 use DateTime;
@@ -23,14 +24,10 @@ class SipAccountController extends Controller
         $sip_accounts = Sip_account::all();
         $accounts = Account::where('status', 1)->get();
         $channels = Channel::where('status', 1)->get();
-        $logs = Log::all();
-        $sip_account = $sip_accounts->first();
         return view('/sip_accounts/index', [
             'sip_accounts' => $sip_accounts,
-            'sip_account' => $sip_account,
             'accounts' => $accounts,
             'channels' => $channels,
-            'logs' => $logs,
         ]);
     }
 
@@ -57,6 +54,7 @@ class SipAccountController extends Controller
 
         $account_id = array('account_id' => Auth::user()->account_id);
         $data = array_merge($data,  $account_id);
+        
         $start_date = array('start_date' => today());
         $data = array_merge($data,  $start_date);
 
@@ -94,7 +92,7 @@ class SipAccountController extends Controller
     {
         $sip_account = Sip_account::find($id);
 
-        $returnHTML = view('sip_accounts/info', compact('sip_account'))->render();
+        $returnHTML = view('sip_accounts/info-tab', compact('sip_account'))->render();
         return response()->json(['success' => 'SIP Accounts found', 'html' => $returnHTML]);
     }
 
@@ -132,10 +130,7 @@ class SipAccountController extends Controller
         
         $sip_accounts = Sip_account::all();
         $returnHTML = view('sip_accounts/list', compact('sip_accounts'))->render();
-
-        $sip_accounts = Sip_account::where('status', 1)->get();
-        $returnHTMLRedux = view('sip_accounts/list-redux', compact('sip_accounts'))->render();
-        return response()->json(['success' => 'SIP Account Updated', 'html' => $returnHTML, 'htmlRedux' => $returnHTMLRedux, 'sip_account' => $sip_account]);
+        return response()->json(['success' => 'SIP Account Updated', 'html' => $returnHTML, 'sip_account' => $sip_account]);
     }
 
     /**
@@ -166,9 +161,9 @@ class SipAccountController extends Controller
      */
     public function getAllCallsLogs()
     {
-        $logs = Log::all();
+        $call_logs = Communication::where('class', 1)->get();
 
-        $returnHTML = view('sip_accounts/list-calls-logs', compact('logs'))->render();
+        $returnHTML = view('sip_accounts/list-calls-logs', compact('call_logs'))->render();
         return response()->json(['success' => 'Calls Logs found', 'html' => $returnHTML]);
     }
 }

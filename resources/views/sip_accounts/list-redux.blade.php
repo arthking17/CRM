@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-body" data-simplebar style="max-height: 300px;">
+    <div class="" data-simplebar style="max-height: 300px;">
         @foreach ($sip_accounts as $key => $sip_account)
             <div class="card product-box">
                 <div class="product-action">

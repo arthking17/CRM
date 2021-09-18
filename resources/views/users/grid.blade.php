@@ -1,17 +1,40 @@
-
 @if ($users->count() > 0)
     @php
         $j = 0;
     @endphp
     @foreach ($users as $user)
         @if ($j % 8 == 0)
-            <div class="row @if ($j / 8 + 1 !=1) d-none @endif"
-                id="page{{ $j / 8 + 1 }}">
+            <div class="row @if ($j / 8 + 1 != 1) d-none @endif" id="page{{ $j / 8 + 1 }}">
         @endif
         <div id="grid-view-userid{{ $user->id }}" class="col-md-6 col-xl-3" onclick="viewUser({{ $user->id }});">
             <div class="card product-box" style="height: 300px">
+                <div class="product-action">
+                    <a href="javascript: void(0);" class="btn btn-info btn-xs waves-effect waves-light" title="New Email"><i
+                            class="mdi mdi-email-edit-outline"></i></a>
+                    <a href="javascript: void(0);" class="btn btn-info btn-xs waves-effect waves-light" title="New Sms"><i
+                            class="mdi mdi-message-text-outline"></i></a>
+                    <a href="javascript: void(0);" class="btn btn-success btn-xs waves-effect waves-light" title="Call"><i
+                            class="fe-phone-call"></i></a>
+                    @if ($user->status == 0)
+                        <a id="button-edit-{{ $user->id }}" class="btn btn-primary btn-xs waves-effect waves-light"
+                            href="javascript: void(0);" data-bs-toggle="" data-bs-target="#edit-modal" title="Edit"
+                            onclick="#"><i class="mdi mdi-square-edit-outline"></i></a>
+                    @else
+                        <a id="button-edit-{{ $user->id }}" class="btn btn-primary btn-xs waves-effect waves-light"
+                            href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-modal" title="Edit"
+                            onclick="editUser({{ $user->id }});"><i class="mdi mdi-square-edit-outline"></i></a>
+                    @endif
+                    @if ($user->status == 0)
+                        <a id="button-delete-{{ $user->id }}" class="btn btn-danger btn-xs waves-effect waves-light"
+                            href="javascript: void(0);" title="Delete"
+                            onclick="#"><i class="mdi mdi-delete-circle"></i></a>
+                    @else
+                        <a id="button-delete-{{ $user->id }}" class="btn btn-danger btn-xs waves-effect waves-light"
+                            href="javascript: void(0);" title="Delete"
+                            onclick="deleteUser({{ $user->id }});"><i class="mdi mdi-delete-circle"></i></a>
+                    @endif
+                </div>
                 <div class="card-body">
-
                     <div class="pt-2 pb-2 bg-light text-center">
                         <img src="{{ asset('storage/images/users/' . $user->photo) }}" alt="user-photo"
                             class="img-fluid rounded-circle avatar-xl" />
@@ -52,25 +75,3 @@
 @endif
 <input type="hidden" value="1" id="activepage">
 <input type="hidden" value="{{ $users->count() / 8 }}" id="numberofpage">
-<div class="row">
-    <div class="col-12">
-        <ul class="pagination pagination-rounded justify-content-end mb-3">
-            <li class="paginate_button page-item previous">
-                <a class="page-link" href="javascript: void(0);" onclick="viewGridPagePreviousPage();" aria-label="Previous">
-                    <span aria-hidden="true">«</span>
-                    <span class="visually-hidden">Previous</span>
-                </a>
-            </li>
-            @for ($i = 0; $i < $users->count(); $i += 8)
-                <li class="page-item @if ($i / 8 < 1) active @endif" id="pageno{{ $i / 8 + 1 }}"><a class="page-link"
-                        href="javascript: void(0);" onclick="viewGridPageItem({{ $i / 8 + 1 }});">{{ $i / 8 + 1 }}</a></li>
-            @endfor
-            <li class="page-item">
-                <a class="page-link" href="javascript: void(0);" onclick="viewGridPageNextPage({{ $users->count() / 8 }});" aria-label="Next">
-                    <span aria-hidden="true">»</span>
-                    <span class="visually-hidden">Next</span>
-                </a>
-            </li>
-        </ul>
-    </div> <!-- end col-->
-</div>

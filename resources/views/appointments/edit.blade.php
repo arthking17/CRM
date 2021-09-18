@@ -6,9 +6,9 @@
                     <h4 class="modal-title" id="modal-title">Edit an appointment</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-4">
-                    <form class="form-horizontal" id="edit-appointment" method="POST" action="#" data-parsley-validate=""
-                        novalidate>
+                <form class="form-horizontal" id="edit-appointment" method="POST" action="#" data-parsley-validate=""
+                    novalidate>
+                    <div class="modal-body p-4">
                         <div class="row">
                             @csrf
                             @method('put')
@@ -28,7 +28,8 @@
                                 </div>
                             </div> <!-- end col -->
                             <div class="row mb-3">
-                                <label for="edit-appointment-contact_id" class="col-4 col-xl-3 col-form-label">Contact<span
+                                <label for="edit-appointment-contact_id"
+                                    class="col-4 col-xl-3 col-form-label">Contact<span
                                         class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">
                                     <select class="form-select @error('contact_id') parsley-error @enderror"
@@ -36,7 +37,14 @@
                                         data-parsley-type="integer" data-parsley-length="[1, 10]">
                                         <option value="">choose a contact</option>
                                         @foreach ($contacts as $contact)
-                                            <option value="{{ $contact->id }}">{{ $contact->id }}
+                                            <option value="{{ $contact->id }}">
+                                                @if ($contact->class === 1)
+                                                    (Person)
+                                                    {{ $contacts_persons->where('id', $contact->id)->first()->first_name . ' ' . $contacts_persons->where('id', $contact->id)->first()->last_name }}
+                                                @elseif($contact->class === 2)
+                                                    (Companie)
+                                                    {{ $contacts_companies->where('id', $contact->id)->first()->name }}
+                                                @endif
                                             </option>
                                         @endforeach
                                     </select>
@@ -46,9 +54,9 @@
                                 <label for="edit-appointment-user_id" class="col-4 col-xl-3 col-form-label">User<span
                                         class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">
-                                    <select class="form-select @error('user_id') parsley-error @enderror"
-                                        name="user_id" id="edit-appointment-user_id" required
-                                        data-parsley-type="integer" data-parsley-length="[1, 10]">
+                                    <select class="form-select @error('user_id') parsley-error @enderror" name="user_id"
+                                        id="edit-appointment-user_id" required data-parsley-type="integer"
+                                        data-parsley-length="[1, 10]">
                                         <option value="">choose an user</option>
                                         @foreach ($users as $user)
                                             <option value="{{ $user->id }}">{{ $user->username }}
@@ -61,9 +69,9 @@
                                 <label for="edit-appointment-class" class="col-4 col-xl-3 col-form-label">Class<span
                                         class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">
-                                    <select class="form-select @error('class') parsley-error @enderror"
-                                        name="class" id="edit-appointment-class" required
-                                        data-parsley-type="integer" data-parsley-length="[1, 10]">
+                                    <select class="form-select @error('class') parsley-error @enderror" name="class"
+                                        id="edit-appointment-class" required data-parsley-type="integer"
+                                        data-parsley-length="[1, 10]">
                                         <option value="1">Simple</option>
                                         <option value="2">Urgent</option>
                                     </select>
@@ -80,29 +88,34 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="edit-appointment-start_date" class="col-4 col-xl-3 col-form-label">Start Date<span
-                                        class="text-danger">*</span></label>
+                                <label for="edit-appointment-start_date" class="col-4 col-xl-3 col-form-label">Start
+                                    Date<span class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">
-                                    <input type="text" class="form-control datetimepicker @error('start_date') parsley-error @enderror"
-                                        name="start_date" id="edit-appointment-start_date" placeholder="Y-m-d H:i" required>
+                                    <input type="text"
+                                        class="form-control datetimepicker @error('start_date') parsley-error @enderror"
+                                        name="start_date" id="edit-appointment-start_date" placeholder="Y-m-d H:i"
+                                        required>
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label for="edit-appointment-end_date" class="col-4 col-xl-3 col-form-label">End Date<span
-                                        class="text-danger">*</span></label>
+                                <label for="edit-appointment-end_date" class="col-4 col-xl-3 col-form-label">End
+                                    Date<span class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">
-                                    <input type="text" class="form-control datetimepicker @error('end_date') parsley-error @enderror"
+                                    <input type="text"
+                                        class="form-control datetimepicker @error('end_date') parsley-error @enderror"
                                         name="end_date" id="edit-appointment-end_date" placeholder="Y-m-d H:i" required>
                                 </div>
                             </div>
                         </div>
                         <!-- end row-->
+                    </div>
+                    <div class="modal-footer bg-light">
                         <button type="submit" id="btn-edit-appointment"
-                            class="btn btn-info waves-effect waves-light">edit</button>
-                        <button type="reset" class="btn btn-light waves-effect waves-light m-1"><i
-                                class="fe-x me-1"></i>Reset</button>
-                    </form>
-                </div>
+                            class="btn btn-info waves-effect waves-light"><i class="mdi mdi-content-save"></i>Save</button>
+                        <button type="button" class="btn btn-secondary waves-effect waves-light m-1"
+                            onclick="$('#edit-appointment-modal').modal('toggle')"><i class="fe-x me-1"></i>Cancel</button>
+                    </div>
+                </form>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->

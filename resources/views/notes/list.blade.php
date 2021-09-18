@@ -49,77 +49,19 @@
             <!-- end page title -->
 
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="row justify-content-between">
-                                <div class="col-auto">
-                                    <div class="text-sm-end">
-                                        <button type="button"
-                                            class="btn btn-danger btn-rounded waves-effect waves-light mb-3"
-                                            data-bs-toggle="modal" data-bs-target="#create-modal"><i
-                                                class="mdi mdi-plus-circle me-1"></i> Add Note</button>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="text-sm-end">
-
-                                    </div>
-                                </div><!-- end col-->
-                            </div>
-
-                            <div class="table-responsive" id="view-list" data-simplebar>
-                                <table id="datatable-notes"
-                                    class="table table-center dt-responsive nowrap table-hover w-100">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-filter">Id</th>
-                                            <th class="select-filter">Class</th>
-                                            <th class="select-filter">Visibility</th>
-                                            <th class="select-filter">Element</th>
-                                            <th class="text-filter">Element Id</th>
-                                            <th class="text-filter">Content</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($notes as $note)
-                                            <tr id="noteid{{ $note->id }}" onclick="viewNote({{ $note->id }});">
-                                                <td>{{ $note->id }}</td>
-                                                <td>{{ getNoteClassName($note->class) }}</td>
-                                                <td>
-                                                    @if ($note->visibility === 1) <span
-                                                            class="badge bg-success">Visible for all</span>
-                                                    @elseif ($note->visibility === 0)
-                                                        <span class="badge label-table bg-danger">Visible only for
-                                                            admin</span>
-                                                    @endif
-                                                </td>
-                                                <td>{{ getElementName($note->element) }}</td>
-                                                <td>{{ $note->element_id }}</td>
-                                                <td>{{ $note->content }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Id</th>
-                                            <th class="select account">Class</th>
-                                            <th class="select">Visibility</th>
-                                            <th class="select account">Element</th>
-                                            <th>Element Id</th>
-                                            <th>Content</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+            
+                            <div id="notes">
+                                @include('notes.datatable-notes')
                             </div>
                         </div>
                     </div> <!-- end card -->
                 </div> <!-- end col -->
-                <div class="col-lg-4" id="note-info-card">
-                    @include('notes.note-info')
-                </div>
             </div>
             <!-- end row -->
+            
 
         </div> <!-- container -->
 
@@ -163,13 +105,16 @@
     <script src="/libs/pdfmake/build/vfs_fonts.js"></script>
     <!-- third party js ends -->
 
+    <!-- Tippy js-->
+    <script src="/libs/tippy.js/tippy.all.min.js"></script>
+
     <!-- custom js files -->
     <script src="/js/notes/notes-list.js"></script>
     <script src="/js/notes/datatable-notes.init.js"></script>
     <script src="/js/notes/notes-validation.js"></script>
     <script src="/js/form-validation-laravel.js"></script>
     <script>
-        url_jsfile = '{{ URL::asset('/js/notes/') }}';
+        url_jsfile_notes = '{{ URL::asset('/js/notes/') }}';
         var create_note_errors = null
         var edit_note_errors = null
     </script>

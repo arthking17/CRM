@@ -36,7 +36,7 @@
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ config('app.name') }}</a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="{{ route('contacts') }}">Contacts</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('settings') }}">Settings</a></li>
                                 <li class="breadcrumb-item active">Sip Accounts</li>
                             </ol>
                         </div>
@@ -47,11 +47,8 @@
             <!-- end page title -->
 
             <div class="row">
-                <div class="col-lg-3" id="logs-info-card">
-                    @include('users.logs-info')
-                </div>
 
-                <div class="col-lg-6">
+                <div class="col-lg-10">
                     <div class="card">
                         <div class="card-body">
                             <div class="row justify-content-between">
@@ -66,13 +63,13 @@
                                         <a href="javascript: void(0);" class="btn btn-warning" title="Calls Logs"
                                             data-bs-toggle="" onclick="viewListCallLogs()"
                                             data-bs-target="#calls-logs-modal"><i class="mdi mdi-history"></i></a>
-                                        <button type="button" class="btn btn-danger waves-effect waves-light"
+                                        <button type="button" class="btn btn-primary waves-effect waves-light"
                                             data-bs-toggle="modal" data-bs-target="#create-sip_account-modal">
                                             <i class="mdi mdi-plus-circle me-1"></i> Add Sip Account</button>
                                     </div>
                                 </div><!-- end col-->
                             </div>
-                            <div class="table-responsive" id="view-list-sip_accounts" data-simplebar>
+                            <div id="view-list-sip_accounts">
                                 @include('sip_accounts.list')
                             </div>
                         </div> <!-- end card-body -->

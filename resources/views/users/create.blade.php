@@ -168,22 +168,7 @@
                                             <label for="create-user-account_id" class="col-4 col-xl-3 col-form-label">account<span
                                                     class="text-danger">*</span></label>
                                             <div class="col-8 col-xl-9">
-                                                <select
-                                                    class="form-select @error('account_id') parsley-error @enderror"
-                                                    name="account_id" id="create-user-account_id" required data-parsley-type="integer" data-parsley-length="[1, 10]">
-                                                    <option value="">select an account</option>
-                                                    @foreach ($accounts as $account)
-                                                        <option value="{{ $account->id }}">{{ $account->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('account_id')
-                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                        <li class="parsley-required">{{ $errors->first('account_id') }}</li>
-                                                    </ul>
-                                                @else
-                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                @enderror
+                                                <input type="text" class="form-select" name="account_id" id="create-user-account_id" disabled value="{{ Auth::user()->account[0]->name }}">
                                             </div>
                                         </div>
                                     </div>

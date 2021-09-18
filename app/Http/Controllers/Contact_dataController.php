@@ -75,14 +75,22 @@ class Contact_dataController extends Controller
      *
      * @param int $element_id
      * @param int $element
+     * @param string $class
      * @return \Illuminate\Http\Response
      */
-    public function getContactDataByElement(int $element_id, int $element)
+    public function getContactDataByElement(int $element_id, int $element, string $class)
     {
+        if ($class == 'sms')
+            $class = [0, 1];
+        else if ($class == 'email')
+            $class = [3];
+        else if ($class == 'call')
+            $class = [0, 1, 2];
+
         if ($element == -1 || $element_id == -1) {
-            $contact_datas = Contact_data::where('class', 3)->get();
-        }else{
-            $contact_datas = Contact_data::where('element_id', $element_id)->where('element', $element)->get();
+            $contact_datas = Contact_data::whereIn('class', $class)->get();
+        } else {
+            $contact_datas = Contact_data::where('element_id', $element_id)->where('element', $element)->whereIn('class', $class)->get();
         }
 
         return response()->json([$contact_datas]);

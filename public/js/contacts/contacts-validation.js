@@ -25,7 +25,7 @@ $(document).ready(function() {
                 cache: false,
                 success: function(response) {
                     console.log(response)
-                    $('#create-modal').modal('toggle')
+                    $('#create-contact-modal').modal('toggle')
                     Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                     $('#form_create')[0].reset();
 

@@ -3,12 +3,12 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-light">
-                    <h4 class="modal-title" id="modal-title">Edit an sip_account</h4>
+                    <h4 class="modal-title" id="modal-title">Edit an SIP Account</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-4">
-                    <form class="form-horizontal" id="edit-sip_account" method="POST" action="#"
-                        data-parsley-validate="" novalidate>
+                <form class="form-horizontal" id="edit-sip_account" method="POST" action="#" data-parsley-validate=""
+                    novalidate>
+                    <div class="modal-body p-4">
                         <div class="row">
                             @csrf
                             @method('put')
@@ -31,14 +31,9 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="edit-sip_account-account_id" class="form-label">Account</label>
-                                        <select class="form-select"
-                                            name="account_id" id="edit-sip_account-account_id" disabled>
-                                            <option value="">choose an account</option>
-                                            @foreach ($accounts as $account)
-                                                <option value="{{ $account->id }}" @if (Auth::user()->account_id == $account->id) selected @endif>{{ $account->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <input type="text" class="form-select" name="account_id"
+                                            id="edit-sip_account-account_id" disabled
+                                            value="{{ Auth::user()->account[0]->name }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -68,8 +63,8 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="edit-sip_account-port" class="form-label">Port</label>
-                                        <input type="number" class="form-control" id="edit-sip_account-port" name="port"
-                                            placeholder="Port" required>
+                                        <input type="number" class="form-control" id="edit-sip_account-port"
+                                            name="port" placeholder="Port" required>
                                     </div>
                                 </div> <!-- end col -->
                             </div> <!-- end row -->
@@ -85,8 +80,8 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="edit-sip_account-pwd" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="edit-sip_account-pwd" name="pwd"
-                                            placeholder="Password" required>
+                                        <input type="password" class="form-control" id="edit-sip_account-pwd"
+                                            name="pwd" placeholder="Password">
                                     </div>
                                 </div> <!-- end col -->
                             </div> <!-- end row -->
@@ -115,15 +110,16 @@
                                 </div> <!-- end col -->
                             </div> <!-- end row -->
 
-                            <div class="text-end">
-                                <button type="submit" id="btn-edit-sip_account"
-                                    class="btn btn-info waves-effect waves-light">edit</button>
-                                <button type="reset" class="btn btn-light waves-effect waves-light m-1"><i
-                                        class="fe-x me-1"></i>Reset</button>
-                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="submit" id="btn-edit-sip_account"
+                            class="btn btn-info waves-effect waves-light"><i class="mdi mdi-content-save"></i>Save</button>
+                        <button type="button" class="btn btn-secondary waves-effect waves-light m-1"
+                            onclick="$('#edit-sip_account-modal').modal('toggle')"><i
+                                class="fe-x me-1"></i>Cancel</button>
+                    </div>
+                </form>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->

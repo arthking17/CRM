@@ -1,14 +1,14 @@
     <!-- Modal -->
-    <div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="create-note-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-light">
                     <h4 class="modal-title" id="myCenterModalLabel">Add Note</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-4">
-                    <form class="form-horizontal" id="create-note" method="POST" action="#"
-                        data-parsley-validate="" novalidate>
+                <form class="form-horizontal" id="create-note" method="POST" action="#" data-parsley-validate=""
+                    novalidate>
+                    <div class="modal-body p-4">
                         <div class="row">
                             @csrf
                             <div class="row mb-3">
@@ -17,7 +17,8 @@
                                 <div class="col-8 col-xl-9">
                                     <input type="number"
                                         class="form-control @error('element_id') parsley-error @enderror"
-                                        name="element_id" id="create-note-element_id" placeholder="Identifier of Element" required data-parsley-type="integer"
+                                        name="element_id" id="create-note-element_id"
+                                        placeholder="Identifier of Element" required data-parsley-type="integer"
                                         data-parsley-maxlength="10">
                                     @error('element_id')
                                         <ul class="parsley-errors-list filled" aria-hidden="false">
@@ -36,23 +37,28 @@
                                     <select class="form-select @error('element') parsley-error @enderror" name="element"
                                         id="create-note-element" required data-parsley-type="integer"
                                         data-parsley-length="[1, 2]">
-                                        <option value="1">Account</option>
-                                        <option value="2">Appointments</option>
-                                        <option value="3">Communications</option>
-                                        <option value="4">contact_data</option>
-                                        <option value="5">contacts</option>
-                                        <option value="6">contacts_companies</option>
-                                        <option value="7">contacts_persons</option>
-                                        <option value="8">email_accounts</option>
-                                        <option value="9">fax_accounts</option>
-                                        <option value="10">groups</option>
-                                        <option value="11">imports</option>
-                                        <option value="12">logs</option>
-                                        <option value="13">notes</option>
-                                        <option value="14">sip_accounts</option>
-                                        <option value="15">sms_accounts</option>
-                                        <option value="16">users</option>
-                                        <option value="17">users_permissions</option>
+                                        <option value="{{ getElementByName('accounts') }}">Account</option>
+                                        <option value="{{ getElementByName('appointments') }}">Appointment</option>
+                                        <option value="{{ getElementByName('communications') }}">Communication
+                                        </option>
+                                        <option value="{{ getElementByName('contact_data') }}">Contact Data</option>
+                                        <option value="{{ getElementByName('contacts') }}">Contact</option>
+                                        <option value="{{ getElementByName('contacts_companies') }}">Contacts Companie
+                                        </option>
+                                        <option value="{{ getElementByName('contacts_persons') }}">Contacts Person
+                                        </option>
+                                        <option value="{{ getElementByName('email_accounts') }}">Email Account
+                                        </option>
+                                        <option value="{{ getElementByName('fax_accounts') }}">Fax Account</option>
+                                        <option value="{{ getElementByName('groups') }}">Group</option>
+                                        <option value="{{ getElementByName('imports') }}">Import</option>
+                                        <option value="{{ getElementByName('logs') }}">Log</option>
+                                        <option value="{{ getElementByName('notes') }}">Note</option>
+                                        <option value="{{ getElementByName('sip_accounts') }}">Sip Account</option>
+                                        <option value="{{ getElementByName('sms_accounts') }}">Sms Account</option>
+                                        <option value="{{ getElementByName('users') }}">User</option>
+                                        <option value="{{ getElementByName('users_permissions') }}">Users Permission
+                                        </option>
                                     </select>
                                     @error('element')
                                         <ul class="parsley-errors-list filled" aria-hidden="false">
@@ -120,10 +126,14 @@
                             </div>
                         </div>
                         <!-- end row-->
+                    </div>
+                    <div class="modal-footer bg-light">
                         <button type="submit" id="btn-create"
-                            class="btn btn-info waves-effect waves-light">Create</button>
-                    </form>
-                </div>
+                            class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-plus-circle"></i>Create</button>
+                            <button type="reset" class="btn btn-secondary waves-effect waves-light m-1"><i
+                                    class="fe-x me-1"></i>Reset</button>
+                    </div>
+                </form>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->

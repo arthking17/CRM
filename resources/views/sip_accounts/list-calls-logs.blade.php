@@ -8,44 +8,54 @@
                 </div>
                 <div class="modal-body p-4">
                     
-                    <div class="table-responsive" data-simplebar>
-                        <table
-                            class="table activate-select dt-responsive nowrap w-100 table-hover"
-                            id="datatable-calls-logs">
-                            <thead>
+                    <table
+                        class="table activate-select dt-responsive nowrap w-100 table-hover"
+                        id="datatable-calls-logs">
+                        <thead>
+                            <tr>
+                                <th>Destination</th>
+                                <th>Contact ID</th>
+                                <th>Contact Name</th>
+                                <th>Contact Phone number</th>
+                                <th>Status</th>
+                                <th>Extension</th>
+                                <th>User</th>
+                                <th>Duration</th>
+                                <th>Recorded call</th>
+                                <th>Qualification</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($call_logs as $log)
                                 <tr>
-                                    <th>Id</th>
-                                    <th>Call Date</th>
-                                    <th>Action</th>
-                                    <th>Element</th>
-                                    <th>Element Id</th>
-                                    <th>Source</th>
+                                    <td>{{ $log->id }}</td>
+                                    <td>{{ $log->log_date }}</td>
+                                    <td>{{ $log->action }}</td>
+                                    <td>{{ $log->id }}</td>
+                                    <td>{{ $log->element_id }}</td>
+                                    <td>{{ $log->source }}</td>
+                                    <td>{{ $log->action }}</td>
+                                    <td>{{ $log->id }}</td>
+                                    <td>{{ $log->element_id }}</td>
+                                    <td>{{ $log->source }}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($logs as $log)
-                                    <tr>
-                                        <td>{{ $log->id }}</td>
-                                        <td>{{ $log->log_date }}</td>
-                                        <td>{{ $log->action }}</td>
-                                        <td>{{ getElementName($log->element) }}</td>
-                                        <td>{{ $log->element_id }}</td>
-                                        <td>{{ $log->source }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>id</th>
-                                    <th>log_date</th>
-                                    <th class="select">action</th>
-                                    <th class="select">element</th>
-                                    <th>element_id</th>
-                                    <th class="select">source</th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th class="select with-span">Destination</th>
+                                <th>Contact ID</th>
+                                <th>Contact Name</th>
+                                <th>Contact Phone number</th>
+                                <th class="select with-span">Status</th>
+                                <th>Extension</th>
+                                <th>User</th>
+                                <th>Duration</th>
+                                <th>Recorded call</th>
+                                <th class="select">Qualification</th>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

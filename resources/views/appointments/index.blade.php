@@ -58,49 +58,35 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="row justify-content-between">
-                                <div class="col-auto">
-                                    <h4 class="header-title">List of Appointments</h4>
-                                    <p class="sub-header">
-                                        All appointments are mentioned here.
-                                    </p>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="text-sm-end">
-                                        <button type="button" class="btn btn-danger waves-effect waves-light"
-                                            data-bs-toggle="modal" data-bs-target="#create-appointment-modal">
-                                            <i class="mdi mdi-plus-circle me-1"></i> Add Appointments</button>
+                            <ul class="nav nav-tabs nav-bordered">
+                                <li class="nav-item">
+                                    <a href="#list-view" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                                        List
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#calendar-view" data-bs-toggle="tab" aria-expanded="true" class="nav-link active">
+                                        Calendar
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane" id="list-view">
+                                    <div id="view-list-appointments">
+                                        @include('appointments.list')
                                     </div>
-                                </div><!-- end col-->
-                            </div>
-                            <div class="table-responsive" id="view-list-appointments" data-simplebar>
-                                @include('appointments.list')
+                                </div>
+                                <div class="tab-pane show active" id="calendar-view">
+                                    <div class="row">
+                                        <div id="calendar"></div>
+                                    </div> <!-- end row -->
+                                </div>
                             </div>
                         </div> <!-- end card-body -->
                     </div> <!-- end card -->
                 </div><!-- end col -->
-
-                <div class="col-lg-3" id="appointments-info-card">
-                    @include('appointments.info')
-                </div>
             </div>
             <!-- end row -->
-
-            <div class="row">
-                <div class="col-12">
-
-
-
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div id="calendar"></div>
-                            </div> <!-- end row -->
-                        </div> <!-- end card body-->
-                    </div> <!-- end card -->
-                </div>
-                <!-- end col-12 -->
-            </div> <!-- end row -->
 
         </div> <!-- container -->
 
@@ -160,10 +146,11 @@
     <script src="/js/appointments/calendar.init.js"></script>
     <script src="/js/appointments/datatable-appointments.init.js"></script>
     <script src="/js/appointments/appointments.js"></script>
-    <script src="/js/appointments/ajax-crud.js"></script>
+    <script src="/js/appointments/create.js"></script>
+    <script src="/js/appointments/edit.js"></script>
     <script src="/js/form-validation-laravel.js"></script>
     <script>
-        url_jsfile = '{{ URL::asset('/js/appointments/') }}';
+        url_jsfile_appointments = '{{ URL::asset('/js/appointments/') }}';
         var create_appointment_errors = null
         var edit_appointment_errors = null
     </script>

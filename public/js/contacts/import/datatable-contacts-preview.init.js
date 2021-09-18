@@ -1,12 +1,10 @@
 $(window).on("load", function() {
-    $("#datatable-contacts").footable(),
-        $("#demo-foo-accordion")
-        .footable()
-        .on("footable_row_expanded", function(o) {
-            $("#demo-foo-accordion tbody tr.footable-detail-show")
-                .not(o.row)
-                .each(function() {
-                    $("#demo-foo-accordion").data("footable").toggleDetail(this);
-                });
-        });
+    dataTablecontacts = $('#datatable-contacts').DataTable({
+        stateSave: 0,
+        lengthChange: !0,
+        language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
+        drawCallback: function() {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+        },
+    });
 });

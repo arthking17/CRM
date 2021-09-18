@@ -68,8 +68,8 @@
                                     class="mdi mdi-delete-circle"></i></a>
                         @endif
                     </div>
-                    @else
-                    <p class="text-center"> empty</p>
+                @else
+                    <p class="text-center"> click on a table sip accounts row to view more details in that side.</p>
                 @endif
             </div>
         </div>

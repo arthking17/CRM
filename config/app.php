@@ -164,6 +164,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         BeyondCode\Mailbox\MailboxServiceProvider::class,
         Webklex\IMAP\Providers\LaravelServiceProvider::class,
+        JoshuaChinemezu\SmsGlobal\SmsGlobalServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -234,6 +235,7 @@ return [
         'Mailbox' => BeyondCode\Mailbox\Facades\Mailbox::class,
         'Client' => Webklex\IMAP\Facades\Client::class,
         'IPinfo' => ipinfo\ipinfo\IPinfo::class,
+        'SmsGlobal' => JoshuaChinemezu\SmsGlobal\Facades\SmsGlobal::class,
 
     ],
 

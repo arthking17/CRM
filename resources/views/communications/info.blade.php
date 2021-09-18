@@ -10,7 +10,7 @@
             </h5>
         </div>
 
-        <div id="collapse-communications-info" class="collapse show" aria-labelledby="headingFour"
+        <div id="collapse-communications-info" class="collapse" aria-labelledby="headingFour"
             data-bs-parent="#custom-accordion-communications-info">
             <div class="card-body">
                 @if(isset($communication))
@@ -37,7 +37,13 @@
                         <p class="mb-3">{{ $communication->channel }}</p>
     
                         <h4 class="font-13 text-muted text-uppercase mb-1">Qualification :</h4>
-                        <p class="mb-3">{{ $communication->qualification }}</p>
+                        <p class="mb-3">
+                            @if ($communication->qualification === 1)
+                                <span class="badge label-table bg-success">completed with success</span>
+                            @elseif($communication->qualification === 2)
+                                <span class="badge bg-info text-light">interruption during call</span>
+                            @endif
+                        </p>
     
                         <h4 class="font-13 text-muted text-uppercase mb-1">Status :</h4>
                         <p class="mb-3">
@@ -48,7 +54,7 @@
                             @endif
                         </p>
                         @if ($communication->status === 1)
-                            <a id="edit-{{ $communication->id }}" class="btn- btn-xs btn-primary js--tippy"
+                            <a id="edit-{{ $communication->id }}" class="btn- btn-xs btn-info js--tippy"
                                 title="Edit communication" href="javascript: void(0);" data-bs-toggle="modal"
                                 data-bs-target="#edit-communication-modal"
                                 onclick="editCommunication({{ $communication->id }});"><i
@@ -59,8 +65,8 @@
                                     class="mdi mdi-delete-circle"></i></a>
                         @endif
                     </div>
-                    @else
-                    <p class="text-center"> empty</p>
+                @else
+                    <p class="text-center">click on a table communications row to view more details in that side.</p>
                 @endif
             </div>
         </div>

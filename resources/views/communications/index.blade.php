@@ -16,6 +16,9 @@
     <link href="/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
     <link href="/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
 
+    <!-- custom style -->
+    <link href="/css/custom-style.css" rel="stylesheet" type="text/css" />
+
     <!-- App css -->
     <link href="/css/config/creative/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
     <link href="/css/config/creative/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
@@ -52,39 +55,24 @@
             <!-- end page title -->
 
             <div class="row">
-                <div class="col-lg-3">
-                    <div class="card" id="notes-info-card">
-                        @include('notes.notes-info-card')
-                    </div>
-                </div>
 
-                <div class="col-lg-7">
+                <div class="col-lg-9">
                     <div class="card">
                         <div class="card-body">
-                            <div class="row justify-content-between">
-                                <div class="col-auto">
-                                    <h4 class="header-title">List of Communications</h4>
-                                    <p class="sub-header">
-                                        All communications are mentioned here.
-                                    </p>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="text-sm-end">
-                                        <button type="button" class="btn btn-danger waves-effect waves-light"
-                                            data-bs-toggle="modal" data-bs-target="#create-communication-modal">
-                                            <i class="mdi mdi-plus-circle me-1"></i> Add Communications</button>
-                                    </div>
-                                </div><!-- end col-->
-                            </div>
-                            <div class="table-responsive" id="view-list-communications" data-simplebar>
+                            <div id="view-list-communications">
                                 @include('communications.list')
                             </div>
                         </div> <!-- end card-body -->
                     </div> <!-- end card -->
                 </div><!-- end col -->
 
-                <div class="col-lg-2" id="communications-info-card">
-                    @include('communications.info')
+                <div class="col-lg-3">
+                    <div class="card" id="communications-info-card">
+                        @include('communications.info')
+                    </div>
+                    <div class="card" id="notes-info-card">
+                        @include('notes.notes-info-ext')
+                    </div>
                 </div>
             </div>
             <!-- end row -->
@@ -95,10 +83,9 @@
 
     @include('communications.create')
     @include('communications.edit')
-    @include('notes.add_note-modal')
-    @include('notes.edit-note-ext')
+    @include('notes.create-ext')
+    @include('notes.edit-ext')
     <div id="notes-div">
-        @include('notes.notes-list-modal')
     </div>
     @if ($communications->count() > 0)
     @endif
@@ -147,15 +134,19 @@
     <script src="/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
     <script src="/js/form-pickers.init.js"></script>
 
+    <!-- Tippy js-->
+    <script src="/libs/tippy.js/tippy.all.min.js"></script>
+
     <!-- custom js files -->
     <script src="/js/communications/datatable-communications.init.js"></script>
     <script src="/js/communications/communications.js"></script>
-    <script src="/js/communications/ajax-crud.js"></script>
+    <script src="/js/communications/create.js"></script>
+    <script src="/js/communications/edit.js"></script>
     <script src="/js/form-validation-laravel.js"></script>
 
     <script src="/js/notes/notes-module-ext.js"></script>
     <script>
-        url_jsfile = '{{ URL::asset('/js/communications/') }}';
+        url_jsfile_communications = '{{ URL::asset('/js/communications/') }}';
         var create_communication_errors = null
         var edit_communication_errors = null
         var create_note_errors = null

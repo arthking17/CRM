@@ -15,6 +15,11 @@ $(document).ready(function() {
         drawCallback: function() {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
         },
+        "columnDefs": [ {
+            "targets": 7,
+            "orderable": false,
+            "searchable": false
+            } ],
     });
     a.buttons().container().appendTo("#datatable-contacts_wrapper .col-md-6:eq(0)"),
         $(".dataTables_length select").addClass("form-select form-select-sm"),

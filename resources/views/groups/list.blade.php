@@ -94,7 +94,7 @@
                                                                 class="mdi mdi-square-edit-outline"></i></a>
                                                         <a href="javascript:void(0);" class="action-icon"
                                                             onclick="deleteGroup({{ $group->id }});"> <i
-                                                                class="mdi mdi-delete"></i></a>
+                                                                class="mdi mdi-delete-circle"></i></a>
                                                     </div>
                                                 </td>
                                             </tr>

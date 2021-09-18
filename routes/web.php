@@ -42,6 +42,8 @@ Route::delete('/users/delete/{id}', 'UserController@destroy')->name('user.delete
 Route::delete('/users/restore/{id}', 'UserController@restore')->name('user.restore')->middleware('auth');
 //route for retreive users
 Route::get('/users', 'UserController@index')->name('users')->middleware('auth');
+//route for retreive user
+Route::get('/users/view/{id}', 'UserController@view')->name('users.view')->middleware('auth');
 //route to get user in format json
 Route::get('/users/get/{id}/{modal}', 'UserController@getUserJsonById')->name('user.get')->middleware('auth');
 //route to get user permissions in format json
@@ -63,6 +65,7 @@ Route::get('/users/logs', 'UserController@getAllLogs')->name('users.logs')->midd
 
 //route for module contact 
 Route::get('/contacts', 'ContactController@index')->name('contacts')->middleware('auth');
+Route::get('/contacts/view/{id}', 'ContactController@view')->name('contacts.view')->middleware('auth');
 Route::post('/contacts/create', 'ContactController@store')->name('contacts.create')->middleware('auth');
 Route::get('/contacts/get/{id}/{modal}', 'ContactController@getContactJsonById')->name('contacts.get')->middleware('auth');
 Route::put('/contacts/update', 'ContactController@update')->name('contacts.update')->middleware('auth');
@@ -89,7 +92,7 @@ Route::get('/contacts/data/get/{id}', 'Contact_dataController@getContactDataJson
 Route::get('/contacts/data/edit/{id}', 'Contact_dataController@edit')->name('contacts.data.edit')->middleware('auth');
 Route::put('/contacts/data/update', 'Contact_dataController@update')->name('contacts.data.update')->middleware('auth');
 Route::delete('/contacts/data/delete/{id}', 'Contact_dataController@destroy')->name('contacts.data.delete')->middleware('auth');
-Route::get('/contacts/data/get/{element_id}/{element}', 'Contact_dataController@getContactDataByElement')->name('contacts.data.element.get')->middleware('auth');
+Route::get('/contacts/data/get/{element_id}/{element}/{class}', 'Contact_dataController@getContactDataByElement')->name('contacts.data.element.get')->middleware('auth');
 
 //route for note module
 Route::get('/notes', 'NoteController@index')->name('notes')->middleware('auth');
@@ -119,8 +122,8 @@ Route::get('signout', 'LoginController@signOut')->name('signout');
 Route::get('/appointments', 'AppointmentController@index')->name('appointments')->middleware('auth');
 Route::get('/appointments/all', 'AppointmentController@getAllAppointments')->name('appointments.all')->middleware('auth');
 Route::get('/appointments/get/{id}', 'AppointmentController@getAppointment')->name('appointments.get')->middleware('auth');
-Route::post('/appointments/create', 'AppointmentController@store')->name('appointments.create')->middleware('auth');
-Route::put('/appointments/update', 'AppointmentController@update')->name('appointments.update')->middleware('auth');
+Route::post('/appointments/create/{type}', 'AppointmentController@store')->name('appointments.create')->middleware('auth');
+Route::put('/appointments/update/{type}', 'AppointmentController@update')->name('appointments.update')->middleware('auth');
 Route::delete('/appointments/delete/{id}', 'AppointmentController@destroy')->name('appointments.delete')->middleware('auth');
 
 //route for communications
@@ -134,6 +137,7 @@ Route::delete('/communications/delete/{id}', 'CommunicationController@destroy')-
 //route for profile user
 Route::get('/profile', 'ProfileController@index')->name('profile')->middleware('auth');
 Route::put('/profile/update', 'ProfileController@update')->name('profile.update')->middleware('auth');
+Route::get('/settings', 'ProfileController@settings')->name('settings')->middleware('auth');
 
 //route for email account
 Route::post('/email_accounts/create', 'EmailAccountController@store')->name('email_accounts.create')->middleware('auth');
@@ -143,7 +147,7 @@ Route::delete('/email_accounts/delete/{id}', 'EmailAccountController@destroy')->
 Route::get('/email_accounts/get', 'EmailAccountController@getAllEmailAccount')->name('email_accounts')->middleware('auth');
 Route::post('/send_mail', 'EmailAccountController@sendMail')->name('send_mail')->middleware('auth');
 Route::get('/mail', 'EmailAccountController@showMailTemplate')->name('mail.template')->middleware('auth');
-Route::get('/email_accounts/config/{id}/{email}', 'EmailAccountController@configEmailAccount')->name('email_accounts.config')->middleware('auth');
+Route::get('/email_accounts/config/{id}', 'EmailAccountController@configEmailAccount')->name('email_accounts.config')->middleware('auth');
 Route::get('/mailbox', 'EmailAccountController@showMailBox')->name('mail.box')->middleware('auth');
 
 //route for sip_accounts
@@ -155,3 +159,12 @@ Route::put('/sip_accounts/update', 'SipAccountController@update')->name('sip_acc
 Route::delete('/sip_accounts/delete/{id}', 'SipAccountController@destroy')->name('sip_accounts.delete')->middleware('auth');
 Route::get('/sip_accounts/show/{id}', 'SipAccountController@show')->name('sip_accounts.show')->middleware('auth');
 Route::get('/sip_accounts/calls/logs', 'SipAccountController@getAllCallsLogs')->name('sip_accounts.calls.logs')->middleware('auth');
+
+//route for sms account
+Route::post('/sms_accounts/create', 'SMSAccountController@store')->name('sms_accounts.create')->middleware('auth');
+Route::put('/sms_accounts/update', 'SMSAccountController@update')->name('sms_accounts.update')->middleware('auth');
+Route::get('/sms_accounts/get/{id}', 'SMSAccountController@getSMSAccount')->name('sms_accounts.get')->middleware('auth');
+Route::delete('/sms_accounts/delete/{id}', 'SMSAccountController@destroy')->name('sms_accounts.delete')->middleware('auth');
+Route::get('/sms_accounts/get', 'SMSAccountController@getAllSMSAccount')->name('sms_accounts')->middleware('auth');
+Route::get('/sms', 'SMSAccountController@chat')->name('chat')->middleware('auth');
+Route::post('/sms/send', 'SMSAccountController@sendSMS')->name('sms.send')->middleware('auth');

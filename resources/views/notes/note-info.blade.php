@@ -2,7 +2,7 @@
     <div class="card-body" id="card-note">
         <h4 class="mb-1 mt-1 text-uppercase bg-light p-1"><i class="mdi mdi-note-text-outline me-1"></i>Note</h4>
         <br>
-        @if ($notes->count() > 0)
+        @if (isset($note))
             <p class="mb-3">Element :
                 {{ getElementName($note->element) }}
             </p>
@@ -32,12 +32,14 @@
                     </div>
                 </div>
             @endif
-            <a id="btn-edit" class="btn- btn-xs btn-success" href="javascript: void(0);" data-bs-toggle="modal"
+            <a id="btn-edit" class="btn- btn-xs btn-info" href="javascript: void(0);" data-bs-toggle="modal"
                 data-bs-target="#edit-modal" onclick="editNote({{ $note->id }});">Edit</a>
             <a id="btn-delete" class="btn- btn-xs btn-danger" href="javascript: void(0);"
                 onclick="deleteNote({{ $note->id }});">Delete</a>
         @else
-            <p class="text-center">empty</p>
+            <p class="text-center">
+                click on a table notes row to view more details in that side.
+            </p>
         @endif
     </div>
 </div>

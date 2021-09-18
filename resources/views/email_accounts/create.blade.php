@@ -1,13 +1,13 @@
     <!-- Modal -->
-    <div class="modal fade" id="create-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="create-email_account-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-light">
                     <h4 class="modal-title" id="myCenterModalLabel">Add Email Account</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-4">
-                    <form id="create-email-account" method="POST" action="#" data-parsley-validate="" novalidate>
+                <form id="create-email-account" method="POST" action="#" data-parsley-validate="" novalidate>
+                    <div class="modal-body p-4">
                         @csrf
                         <div class="row">
                             <div class="col-md-6">
@@ -20,8 +20,8 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="create-email-account-email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="create-email-account-email" name="email"
-                                        placeholder="Email" required>
+                                    <input type="email" class="form-control" id="create-email-account-email"
+                                        name="email" placeholder="Email" required>
                                 </div>
                             </div> <!-- end col -->
                         </div> <!-- end row -->
@@ -46,7 +46,8 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="create-email-account-smtpauth" class="form-label">Do you want a SMTPAuth ?</label>
+                                    <label for="create-email-account-smtpauth" class="form-label">Do you want a
+                                        SMTPAuth ?</label>
                                     <select class="form-select @error('smtpauth') parsley-error @enderror"
                                         name="smtpauth" id="create-email-account-smtpauth" required
                                         data-parsley-length="[1, 1]">
@@ -57,7 +58,8 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="create-email-account-smtpsecure" class="form-label">SMTPSecure</label>
+                                    <label for="create-email-account-smtpsecure"
+                                        class="form-label">SMTPSecure</label>
                                     <select class="form-select @error('smtpsecure') parsley-error @enderror"
                                         name="smtpsecure" id="create-email-account-smtpsecure" required
                                         data-parsley-length="[1, 1]" data-parsley-length-message="select a SMTPSecure">
@@ -87,19 +89,20 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="create-email-account-port" class="form-label">Port</label>
-                                    <input type="number" class="form-control" id="create-email-account-port" name="port"
-                                        placeholder="Port" required>
+                                    <input type="number" class="form-control" id="create-email-account-port"
+                                        name="port" placeholder="Port" required>
                                 </div>
                             </div> <!-- end col -->
                         </div> <!-- end row -->
 
-                        <div class="text-end">
-                            <button type="submit" id="btn-create-email-account"
-                                class="btn btn-success waves-effect waves-light mt-2"><i
-                                    class="mdi mdi-plus-circle"></i> Create</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="submit" id="btn-create-email-account"
+                            class="btn btn-primary waves-effect waves-light"><i class="mdi mdi-plus-circle"></i>Create</button>
+                        <button type="reset" class="btn btn-secondary waves-effect waves-light m-1"><i
+                                class="fe-x me-1"></i>Reset</button>
+                    </div>
+                </form>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->

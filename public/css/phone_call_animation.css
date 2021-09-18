@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+:root {
+    /* --app-theme: #5e17ec; */
+    --app-theme: #17eca5;
+    --card-shadow: 0px 5px 22px rgba(0, 0, 0, 0.3);
+    --overlay-background: rgba(0, 0, 0, 0.7);
+    --white-back: #fff;
+}
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: #222;
+    /* background: linear-gradient(#17eca5, #06c); */
+    /* background: linear-gradient(#17eca5, #d12828); */
+    display: grid;
+    place-items: center;
+    color: var(--white-back);
+}
+
+.call-avatar-box {
+    width: 200px;
+    height: 200px;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 5 !important;
+}
+
+.call-avatar-box img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.call-avatar-box::before,
+.call-avatar-box::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    background-color: #17eca5;
+    border-radius: 50%;
+}
+
+.call-avatar-box::before {
+    animation: 2s ease-out buzzAnimate infinite;
+}
+
+.call-avatar-box::after {
+    animation: 2s 1s ease-out buzzAnimate infinite;
+}
+
+.call-avatar {
+    width: 200px;
+    height: 200px;
+    background-color: #fff;
+    border-radius: 50%;
+}
+
+.call-avatar::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-color: var(--app-theme);
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    border-radius: 50%;
+    animation: 2s 0.5s ease-out buzzAnimate infinite;
+}
+
+@keyframes buzzAnimate {
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+section {
+    width: 100%;
+    min-width: 200px;
+    min-height: 200px;
+}
+
+.call-user {
+    width: 100%;
+    font-family: Montserrat, sans-serif;
+    text-align: center;
+    transform: translateY(200px);
+    padding-top: 70px;
+    font-size: 20px;
+}

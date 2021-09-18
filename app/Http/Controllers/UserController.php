@@ -3,8 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Appointment;
+use App\Models\Communication;
+use App\Models\Contact;
+use App\Models\Contact_data;
+use App\Models\Email_account;
 use App\Models\Log;
 use App\Models\Note;
+use App\Models\Sip_account;
+use App\Models\Sms_account;
 use App\Models\User;
 use App\Models\Users_permission;
 use DateTime;
@@ -32,16 +39,14 @@ class UserController extends Controller
         $accounts = DB::table('accounts')
             ->orderBy('id', 'desc')
             ->where('status', 1)->get();
-        $users = User::where('status', 1)->get();
-        $users_paginate = User::all()->take(9);
-        //$users_paginate = DB::table('users')->paginate(8);
+
+        $email_accounts = Email_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $sip_accounts = Sip_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $sms_accounts = Sms_account::where('status', 1)->get();
+
+        $users = User::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
         if ($users->count() > 0) {
             $user = $users->last();
-            $logs = DB::table('logs')
-                ->where('user_id', $user->id)
-                ->orderBy('id', 'asc')
-                ->take(20)
-                ->get();
             $users_permissions = Users_permission::where('user_id', $user->id)->where('status', 1)->get();
             $notes = DB::table('notes')
                 ->where('element', getElementByName('users'))->where('element_id', $user->id)->get();
@@ -51,13 +56,13 @@ class UserController extends Controller
 
         return view('users.list', [
             'users' => $users,
-            'user' => $user,
-            'users_paginate' => $users_paginate,
-            'logs' => $logs,
             'users_permissions' => $users_permissions,
             'notes' => $notes,
             'accounts' => $accounts,
             'elementClass' => getElementByName('users'),
+            'email_accounts' => $email_accounts,
+            'sip_accounts' => $sip_accounts,
+            'sms_accounts' => $sms_accounts,
         ]);
     }
 
@@ -100,8 +105,11 @@ class UserController extends Controller
             'role' => 'required|integer|min:1|max:3',
             'language' => 'required|string|min:2|max:5',
             'photo' => 'required|mimes:jpg,png,jpeg',
-            'account_id' => 'required|exists:App\Models\Account,id',
         ]);
+
+        $account_id = array('account_id' => Auth::user()->account_id);
+        $data = array_merge($data,  $account_id);
+
         $request->file('photo')->storePublicly('public/images/users');
         $data['photo'] = $request->file('photo')->hashName();
         $data['pwd'] = bcrypt($data['pwd']);
@@ -109,7 +117,7 @@ class UserController extends Controller
         Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'user.create', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'user.create']);
         //return redirect(route('users'));
         //return response()->json(['user' => $user, 'success' => 'This User has been added']);
-        $users = User::All();
+        $users = User::where('account_id', Auth::user()->account_id)->get();
         $returnHTML = view('users/datatable-users', compact('users'))->render();
         return response()->json(['success' => 'This user has been added', 'html' => $returnHTML, 'user' => $user]);
     }
@@ -135,8 +143,7 @@ class UserController extends Controller
         $accounts = DB::table('accounts')
             ->orderBy('id', 'desc')
             ->get();
-        $user = User::all()
-            ->find($id);
+        $user = User::find($id);
 
         return view('users.edit', [
             'user' => $user,
@@ -153,8 +160,7 @@ class UserController extends Controller
      */
     public function getUserJsonById(int $id, int $modal)
     {
-        $user = User::all()
-            ->find($id);
+        $user = User::find($id);
         $accounts = DB::table('accounts')
             ->orderBy('id', 'desc')
             ->get();
@@ -215,8 +221,6 @@ class UserController extends Controller
                 'role' => 'required|integer|min:1|max:3',
                 'language' => 'required|string|min:2|max:5',
                 'photo' => 'mimes:jpg,png,jpeg',
-                'account_id' => 'required|exists:App\Models\Account,id',
-                'status' => 'required|integer|min:0|max:3',
             ]);
             $data['pwd'] = bcrypt($data['pwd']);
         } else {
@@ -238,8 +242,6 @@ class UserController extends Controller
                 'role' => 'required|integer|min:1|max:3',
                 'language' => 'required|string|min:2|max:5',
                 'photo' => 'mimes:jpg,png,jpeg',
-                'account_id' => 'required|exists:App\Models\Account,id',
-                'status' => 'required|integer|min:0|max:3',
             ]);
         }
         $user = User::find($id);
@@ -252,7 +254,7 @@ class UserController extends Controller
         Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'user.update', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'user.update, ' . $id]);
         //return redirect(route('users'));
         //return response()->json(['success' => 'This User has been edited']);
-        $users = User::All();
+        $users = User::where('account_id', Auth::user()->account_id)->get();
         $returnHTML = view('users/datatable-users', compact('users'))->render();
         return response()->json(['success' => 'This user has been Updated', 'html' => $returnHTML, 'user' => $user]);
     }
@@ -334,10 +336,11 @@ class UserController extends Controller
             else
                 $sort_type = 'asc';
         }
-        
+
         $query = $request->get('query');
         $query = str_replace(" ", "%", $query);
-        $users = User::where('id', 'like', '%' . $query . '%')
+        $users = User::where('account_id', Auth::user()->account_id)
+            ->where('id', 'like', '%' . $query . '%')
             ->orWhere('username', 'like', '%' . $query . '%')
             ->orWhere('role', 'like', '%' . $query . '%')
             ->orWhere('status', 'like', '%' . $query . '%')
@@ -424,5 +427,70 @@ class UserController extends Controller
         Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'user.password.update', 'element' => getElementByName('users'), 'element_id' => $user->id, 'source' => 'password.update, ' . $request->id]);
         //return redirect(route('users'));
         return response()->json(['success' => 'This user password has been Updated']);
+    }
+    /**
+     * Display an user.
+     *
+     * @param int $id
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function view(int $id)
+    {
+        $user = User::find($id);
+        $users_permissions = [];
+        $notes = [];
+        $logs = [];
+        $accounts = DB::table('accounts')
+            ->orderBy('id', 'desc')
+            ->where('status', 1)->get();
+        $logs = DB::table('logs')
+            ->where('user_id', $user->id)
+            ->orderBy('id', 'asc')
+            ->take(20)
+            ->get();
+        $users_permissions = Users_permission::where('user_id', $user->id)->where('status', 1)->get();
+        $notes = DB::table('notes')
+            ->where('element', getElementByName('users'))->where('element_id', $user->id)->get();
+
+        $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
+        $users_id = [];
+        foreach ($users as $u) {
+            array_push($users_id, $u->id);
+        }
+        $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
+        $contacts = Contact::where('account_id', Auth::user()->account_id)->get();
+        $appointments = Appointment::whereIn('user_id', $users_id)->where('contact_id', $id)->where('status', 1)->get();
+        $communications = Communication::whereIn('user_id', $users_id)->where('contact_id', $id)->where('status', 1)->get();
+        $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+            ->select('contacts.id', 'contacts_companies.name')
+            ->where('account_id', $user->account_id)->get();
+        $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
+            ->where('account_id', $user->account_id)
+            ->select('contacts.id', 'first_name', 'last_name')->get();
+
+        $email_accounts = Email_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $sip_accounts = Sip_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $sms_accounts = Sms_account::where('status', 1)->get();
+        $contact_datas = Contact_data::all();
+        
+        return view('users.view', [
+            'user' => $user,
+            'logs' => $logs,
+            'users_permissions' => $users_permissions,
+            'notes' => $notes,
+            'accounts' => $accounts,
+            'elementClass' => getElementByName('users'),
+            'appointments' => $appointments,
+            'communications' => $communications,
+            'contacts' => $contacts,
+            'contacts_persons' => $contacts_persons,
+            'contacts_companies' => $contacts_companies,
+            'users' => $users,
+            'email_accounts' => $email_accounts,
+            'sip_accounts' => $sip_accounts,
+            'sms_accounts' => $sms_accounts,
+            'contact_datas' => $contact_datas,
+        ]);
     }
 }

@@ -2,7 +2,7 @@
     <div class="modal fade" id="logs-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-full-width">
             <div class="modal-content">
-                <div class="modal-header bg-warning">
+                <div class="modal-header bg-light">
                     <h4 class="modal-title" id="myCenterModalLabel">Logs Activity</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -15,7 +15,7 @@
                             <thead>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Log Date</th>
+                                    <th>Date</th>
                                     <th>Action</th>
                                     <th>Element</th>
                                     <th>Element Id</th>

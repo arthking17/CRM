@@ -1,4 +1,4 @@
-<table id="datatable-communications" class="table table-center dt-responsive nowrap table-hover w-100">
+<table id="datatable-communications" class="table table-center dt-responsive nowrap w-100">
     <thead>
         <tr>
             <th>Id</th>
@@ -7,6 +7,7 @@
             <th>Class</th>
             <th>Channel</th>
             <th>Start Date</th>
+            <th style="width: 90px;">Action</th>
         </tr>
     </thead>
 
@@ -30,6 +31,27 @@
                 </td>
                 <td>{{ $communication->channel }}</td>
                 <td>{{ $communication->start_date }}</td>
+                <td>
+                    @if ($communication->status === 0)
+                        <a href="javascript:void(0);" class="btn- btn-xs btn-info"> <i
+                                class="mdi mdi-square-edit-outline"></i></a>
+                    @else
+                        <a href="javascript:void(0);" class="btn- btn-xs btn-info"
+                            data-bs-toggle="modal" data-bs-target="#edit-communication-modal"
+                            id="edit-{{ $communication->id }}"
+                            onclick="editCommunication({{ $communication->id }});"
+                            data-toggle="modal"> <i
+                                class="mdi mdi-square-edit-outline"></i></a>
+                    @endif
+                    @if ($communication->status === 0)
+                        <a href="javascript:void(0);" class="btn- btn-xs btn-danger"> <i
+                                class="mdi mdi-delete-circle"></i></a>
+                    @else
+                        <a href="javascript:void(0);" id="delete-{{ $communication->id }}"
+                            onclick="deleteCommunication({{ $communication->id }});"
+                            class="btn- btn-xs btn-danger"> <i class="mdi mdi-delete-circle"></i></a>
+                    @endif
+                </td>
             </tr>
         @endforeach
     </tbody>
@@ -41,6 +63,7 @@
             <th class="select with-span">Class</th>
             <th>Channel</th>
             <th>Start Date</th>
+            <th class="disabled" style="width: 90px;">Action</th>
         </tr>
     </tfoot>
 </table>

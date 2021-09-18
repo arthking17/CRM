@@ -6,9 +6,9 @@
                     <h4 class="modal-title" id="myCenterModalLabel">Add Sip Account</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-4">
-                    <form class="form-horizontal" id="create-sip_account" method="POST" action="#"
-                        data-parsley-validate="" novalidate>
+                <form class="form-horizontal" id="create-sip_account" method="POST" action="#" data-parsley-validate=""
+                    novalidate>
+                    <div class="modal-body p-4">
                         <div class="row">
                             @csrf
                             <div class="col-12">
@@ -28,20 +28,17 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="create-sip_account-account_id" class="form-label">Account</label>
-                                        <select class="form-select"
-                                            name="account_id" id="create-sip_account-account_id" disabled>
-                                            <option value="">choose an account</option>
-                                            @foreach ($accounts as $account)
-                                                <option value="{{ $account->id }}" @if(Auth::user()->account_id == $account->id) selected @endif>{{ $account->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <label for="create-sip_account-account_id"
+                                            class="form-label">Account</label>
+                                        <input type="text" class="form-select" name="account_id"
+                                            id="create-sip_account-account_id" disabled
+                                            value="{{ Auth::user()->account[0]->name }}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
-                                        <label for="create-sip_account-channel_id" class="form-label">Channel</label>
+                                        <label for="create-sip_account-channel_id"
+                                            class="form-label">Channel</label>
                                         <select class="form-select @error('channel_id') parsley-error @enderror"
                                             name="channel_id" id="create-sip_account-channel_id" required
                                             data-parsley-type="integer" data-parsley-length="[1, 10]">
@@ -59,8 +56,8 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="create-sip_account-host" class="form-label">Host</label>
-                                        <input type="text" class="form-control" id="create-sip_account-host" name="host"
-                                            placeholder="Host" required>
+                                        <input type="text" class="form-control" id="create-sip_account-host"
+                                            name="host" placeholder="Host" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -93,8 +90,8 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label for="create-sip_account-name" class="form-label">Name</label>
-                                        <input type="name" class="form-control" id="create-sip_account-name" name="name"
-                                            placeholder="Name" required>
+                                        <input type="name" class="form-control" id="create-sip_account-name"
+                                            name="name" placeholder="Name" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -113,15 +110,16 @@
                                 </div> <!-- end col -->
                             </div> <!-- end row -->
 
-                            <div class="text-end">
-                                <button type="submit" id="btn-create-sip_account"
-                                    class="btn btn-info waves-effect waves-light">Create</button>
-                                <button type="reset" class="btn btn-light waves-effect waves-light m-1"><i
-                                        class="fe-x me-1"></i>Reset</button>
-                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="submit" id="btn-create-sip_account"
+                            class="btn btn-primary waves-effect waves-light"><i
+                                class="mdi mdi-plus-circle"></i>Create</button>
+                        <button type="reset" class="btn btn-secondary waves-effect waves-light m-1"><i
+                                class="fe-x me-1"></i>Reset</button>
+                    </div>
+                </form>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->

@@ -16,6 +16,12 @@
     vertical-align: middle;
 }
 
+.truncate-td-upload {
+    max-width: 50px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 /* workaround*/
 
@@ -36,4 +42,9 @@
     border-top-right-radius: 0;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 0;
+}
+
+.nav-link .active {
+    color: #3e7adb; /* <----- change your color here*/
+    background-color: transparent;
 }

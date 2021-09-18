@@ -5,6 +5,11 @@ $(document).ready(function() {
             drawCallback: function() {
                 $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
             },
+            "columnDefs": [ {
+                "targets": 7,
+                "orderable": false,
+                "searchable": false
+                } ],
         }),
         $('#datatable-sip_accounts tfoot th').each(function() {
             if (!$(this).hasClass('disabled')) {

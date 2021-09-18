@@ -1,4 +1,4 @@
-<table id="datatable-notes" class="table table-center dt-responsive nowrap table-hover w-100">
+<table id="datatable-notes" class="table table-center table-striped dt-responsive nowrap w-100">
     <thead>
         <tr>
             <th class="text-filter">Id</th>
@@ -7,16 +7,17 @@
             <th class="select-filter">Element</th>
             <th class="text-filter">Element Id</th>
             <th class="text-filter">Content</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($notes as $note)
-            <tr id="noteid{{ $note->id }}" onclick="viewNote({{ $note->id }});">
+            <tr id="noteid{{ $note->id }}">
                 <td>{{ $note->id }}</td>
                 <td>{{ getNoteClassName($note->class) }}</td>
                 <td>
-                    @if ($note->visibility === 1) <span
-                            class="badge bg-success">Visible for all</span>
+                    @if ($note->visibility === 1) <span class="badge bg-success">Visible
+                            for all</span>
                     @elseif ($note->visibility === 0)
                         <span class="badge label-table bg-danger">Visible only for
                             admin</span>
@@ -24,7 +25,16 @@
                 </td>
                 <td>{{ getElementName($note->element) }}</td>
                 <td>{{ $note->element_id }}</td>
-                <td>{{ $note->content }}</td>
+                <td id="note-content" data-bind="text: text()" class="text-truncate" style="max-width: 200px"
+                    title="{{ $note->content }}">{{ $note->content }}</td>
+                <td>
+                    <a href="javascript:void(0);" class="btn- btn-xs btn-info" data-bs-toggle="modal"
+                        data-bs-target="#edit-note-modal" onclick="editNote({{ $note->id }});" data-toggle="modal"> <i
+                            class="mdi mdi-square-edit-outline"></i></a>
+                    <a href="javascript:void(0);" onclick="deleteNote({{ $note->id }});"
+                        class="btn- btn-xs btn-danger">
+                        <i class="mdi mdi-delete-circle"></i></a>
+                </td>
             </tr>
         @endforeach
     </tbody>
@@ -36,6 +46,7 @@
             <th class="select account">Element</th>
             <th>Element Id</th>
             <th>Content</th>
+            <th class="disabled"></th>
         </tr>
     </tfoot>
 </table>

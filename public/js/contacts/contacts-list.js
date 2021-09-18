@@ -16,6 +16,14 @@ $(document).ready(function() {
             reference.removeAttribute('title');
             return title;
         },
+        interactive:"true",
+        hideOnClick: false, // if you want
+        onShow(instance) {
+          setTimeout(() => {
+            instance.hide();
+          }, 1000);
+        }
+      
     });
 })
 
@@ -53,6 +61,14 @@ function viewInfoCardContact(id, type) {
                     reference.removeAttribute('title');
                     return title;
                 },
+                interactive:"true",
+                hideOnClick: false, // if you want
+                onShow(instance) {
+                  setTimeout(() => {
+                    instance.hide();
+                  }, 1000);
+                }
+              
             });
         } catch (e) {
             Swal.fire({ icon: "error", title: 'error !!!', showConfirmButton: !1, timer: 1500 });
@@ -64,6 +80,10 @@ function viewInfoCardContact(id, type) {
 
 function viewContact(id, type) {
     $.get('/contacts/get/' + id + '/0', function(response) {
+
+        $('#datatable-contacts tbody tr').removeClass('selected')
+        $('#contactid'+id).addClass('selected')
+
         console.log(response)
         try {
             if (type == 1) {
@@ -96,6 +116,14 @@ function viewContact(id, type) {
                     reference.removeAttribute('title');
                     return title;
                 },
+                interactive:"true",
+                hideOnClick: false, // if you want
+                onShow(instance) {
+                  setTimeout(() => {
+                    instance.hide();
+                  }, 1000);
+                }
+              
             });
             viewNotes(id, response.elementClass)
         } catch (e) {
@@ -118,7 +146,6 @@ function editContact(id) {
     $.get('/contacts/get/' + id + '/1', function(data) {
         console.log(data)
         $('#form_edit-id').val(id)
-        $('#form_edit-account_id').val(data.contact.account_id)
         $('#form_edit-class').val(data.contact.class)
         $('#form_edit-class-disabled').val(data.contact.class)
         $('#form_edit-source').val(data.contact.source)
