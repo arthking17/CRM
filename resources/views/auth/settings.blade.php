@@ -14,8 +14,9 @@
     <!-- Edit user photo css -->
     <link href="/css/users/user-photo.css" rel="stylesheet" type="text/css" />
 
-    <!-- custom style -->
-    <link href="/css/custom-style.css" rel="stylesheet" type="text/css" />
+    <!-- selectize js -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.bootstrap4.min.css" />
 
     <!-- App css -->
     <link href="/css/config/creative/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
@@ -26,6 +27,11 @@
 
     <!-- icons -->
     <link href="/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- custom style css files -->
+    <link rel="stylesheet" href="build/css/countrySelect.css">
+    <link rel="stylesheet" href="/css/custom-style.css">
+    <!-- custom style css files end -->
 @endsection
 
 @section('content')
@@ -73,6 +79,18 @@
                                     SMS Account
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a id="shortcodes-link" href="#shortcodes" data-bs-toggle="tab" aria-expanded="true"
+                                    class="nav-link">
+                                    ShortCode
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="custom_fields-link" href="#custom_fields" data-bs-toggle="tab" aria-expanded="true"
+                                    class="nav-link">
+                                    Custom Field
+                                </a>
+                            </li>
                         </ul>
                         <div class="tab-content">
 
@@ -99,6 +117,22 @@
                                 </div>
                             </div><!-- end tab-pane -->
                             <!-- end sms account section content -->
+
+                            <div class="tab-pane" id="shortcodes">
+
+                                <div id="list-shortcodes">
+                                    @include('shortcodes.list')
+                                </div>
+                            </div><!-- end tab-pane -->
+                            <!-- end shortcodes section content -->
+
+                            <div class="tab-pane" id="custom_fields">
+
+                                <div id="list-custom_fields">
+                                    @include('custom-fields.list')
+                                </div>
+                            </div><!-- end tab-pane -->
+                            <!-- end custom-fields section content -->
                         </div>
                         <!-- end settings content-->
 
@@ -113,16 +147,19 @@
     </div> <!-- content -->
     @include('email_accounts.create')
     @include('email_accounts.edit')
-    
+
     @include('sip_accounts.create')
     @include('sip_accounts.edit')
-    <div class="" id="calls-logs-div"></div>
-    @if ($sip_accounts->count() > 0)
-
-    @endif
+    <div class="" id=" calls-logs-div"></div>
 
     @include('sms_accounts.create')
     @include('sms_accounts.edit')
+
+    @include('shortcodes.create')
+    @include('shortcodes.edit')
+
+    @include('custom-fields.create')
+    @include('custom-fields.edit')
 @endsection
 
 @section('js')
@@ -158,6 +195,13 @@
     <script src="/libs/pdfmake/build/vfs_fonts.js"></script>
     <!-- third party js ends -->
 
+    <!-- selectize js -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js">
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/selectize.min.js">
+    </script>
+
     <!-- Edit user photo js -->
     <script src="/js/users/user-photo.js"></script>
 
@@ -173,11 +217,22 @@
 
     <script src="/js/sms_accounts/datatable-sms_accounts.init.js"></script>
     <script src="/js/sms_accounts/sms_account.js"></script>
+
+    <script src="/js/contacts/country-select.js"></script>
+
+    <script src="/js/shortcodes/datatable-shortcodes.init.js"></script>
+    <script src="/js/shortcodes/shortcodes.js"></script>
+
+    <script src="/js/custom-fields/datatable-custom_fields.init.js"></script>
+    <script src="/js/custom-fields/custom-fields.js"></script>
+    <script src="/js/custom-fields/form-create.js"></script>
+
     <script>
         url_photo = '{{ URL::asset('/storage/images/users/') }}';
         url_jsfile_sip_accounts = '{{ URL::asset('/js/sip_accounts/') }}';
         url_jsfile_email_accounts = '{{ URL::asset('/js/email_accounts/') }}';
         url_jsfile_sms_accounts = '{{ URL::asset('/js/sms_accounts/') }}';
+        url_jsfile_shortcodes = '{{ URL::asset('/js/shortcodes/') }}';
 
         var create_email_account_errors = null
         var edit_email_account_errors = null
@@ -187,6 +242,14 @@
 
         var create_sms_account_errors = null
         var edit_sms_account_errors = null
+
+        var create_shortcode_errors = null
+        var edit_shortcode_errors = null
+
+        var create_custom_field_errors = null
+        var edit_custom_field_errors = null
+
+        var url_jsfile_custom_fields = '{{ URL::asset('/js/custom-fields/') }}';
     </script>
     <!-- custom js files end -->
 

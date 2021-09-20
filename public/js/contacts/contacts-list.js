@@ -1,30 +1,5 @@
 $(document).ready(function() {
-    tippy('[title]', {
-        // change these to your liking
-        arrow: true,
-        placement: 'bottom', // top, right, bottom, left
-        duration: [600, 300], //ms
-        distance: 15, //px or string
-        maxWidth: 300, //px or string
-        animation: 'perspective',
-        // leave these as they are
-        allowHTML: true,
-        theme: 'custom',
-        ignoreAttributes: true,
-        content(reference) {
-            const title = reference.getAttribute('title');
-            reference.removeAttribute('title');
-            return title;
-        },
-        interactive:"true",
-        hideOnClick: false, // if you want
-        onShow(instance) {
-          setTimeout(() => {
-            instance.hide();
-          }, 1000);
-        }
-      
-    });
+    setTippyOnButton();
 })
 
 function viewInfoCardContact(id, type) {
@@ -44,32 +19,6 @@ function viewInfoCardContact(id, type) {
                 }
                 $('#contacts_companie-info-card').empty().html(response.html);
             }
-            tippy('[title]', {
-                // change these to your liking
-                arrow: true,
-                placement: 'bottom', // top, right, bottom, left
-                duration: [600, 300], //ms
-                distance: 15, //px or string
-                maxWidth: 300, //px or string
-                animation: 'perspective',
-                // leave these as they are
-                allowHTML: true,
-                theme: 'custom',
-                ignoreAttributes: true,
-                content(reference) {
-                    const title = reference.getAttribute('title');
-                    reference.removeAttribute('title');
-                    return title;
-                },
-                interactive:"true",
-                hideOnClick: false, // if you want
-                onShow(instance) {
-                  setTimeout(() => {
-                    instance.hide();
-                  }, 1000);
-                }
-              
-            });
         } catch (e) {
             Swal.fire({ icon: "error", title: 'error !!!', showConfirmButton: !1, timer: 1500 });
         }
@@ -99,33 +48,6 @@ function viewContact(id, type) {
 
                 $('#contacts_companie-info-card').empty().html(response.html);
             }
-            tippy('[title]', {
-                // change these to your liking
-                arrow: true,
-                placement: 'bottom', // top, right, bottom, left
-                duration: [600, 300], //ms
-                distance: 15, //px or string
-                maxWidth: 300, //px or string
-                animation: 'perspective',
-                // leave these as they are
-                allowHTML: true,
-                theme: 'custom',
-                ignoreAttributes: true,
-                content(reference) {
-                    const title = reference.getAttribute('title');
-                    reference.removeAttribute('title');
-                    return title;
-                },
-                interactive:"true",
-                hideOnClick: false, // if you want
-                onShow(instance) {
-                  setTimeout(() => {
-                    instance.hide();
-                  }, 1000);
-                }
-              
-            });
-            viewNotes(id, response.elementClass)
         } catch (e) {
             Swal.fire({ icon: "error", title: 'error !!!', showConfirmButton: !1, timer: 1500 });
             $('#contacts_info_not_found').removeClass('d-none')
@@ -139,7 +61,6 @@ function viewContact(id, type) {
         $('#contacts_person-info-card').addClass('d-none')
         $('#contacts_companie-info-card').addClass('d-none')
     })
-    viewContactData(id)
 }
 
 function editContact(id) {
@@ -148,6 +69,7 @@ function editContact(id) {
         $('#form_edit-id').val(id)
         $('#form_edit-class').val(data.contact.class)
         $('#form_edit-class-disabled').val(data.contact.class)
+        $('#form_edit-account_id').val(data.contact.account_id)
         $('#form_edit-source').val(data.contact.source)
         $('#form_edit-status').val(data.contact.status)
         $('#form_edit-source_id').val(data.contact.source_id)
@@ -260,16 +182,11 @@ function deleteContact(id) {
                             .fail(function(jqxhr, settings, exception) {
                                 console.log("Triggered ajaxError handler.");
                             });
-                        $('#btn-edit').addClass('disabled');
-                        $('#btn-delete').addClass('disabled');
-                        //person
-                        $('#contacts-person-info1 a:nth-of-type(4)').attr('data-bs-toggle', '')
-                        $('#contacts-person-info1 a:nth-of-type(4)').attr('onClick', '')
-                        $('#contacts-person-info1 a:nth-of-type(5)').attr('onClick', '')
-                            //companie
-                        $('#contacts-companie-info1 a:nth-of-type(4)').attr('data-bs-toggle', '')
-                        $('#contacts-companie-info1 a:nth-of-type(4)').attr('onClick', '')
-                        $('#contacts-companie-info1 a:nth-of-type(5)').attr('onClick', '')
+
+                            $('#contacts_info_not_found').addClass('d-none')
+                            $('#contacts_companie-info-card').addClass('d-none')
+                            $('#contacts_person-info-card').removeClass('d-none')
+                            $('#contacts_person-info-card').empty().html(response.infoCard);
                     },
                     error: function(error) {
                         console.log(error)
@@ -284,4 +201,33 @@ function deleteContact(id) {
 function viewFormCreateAppointment(contact_id, user_id) {
     $('#create-appointment-contact_id').val(contact_id)
     $('#create-appointment-user_id').val(user_id)
+}
+
+function setTippyOnButton(){
+    tippy('.btn-xs', {
+        // change these to your liking
+        arrow: true,
+        placement: 'bottom', // top, right, bottom, left
+        duration: [600, 300], //ms
+        distance: 15, //px or string
+        maxWidth: 300, //px or string
+        animation: 'perspective',
+        // leave these as they are
+        allowHTML: true,
+        theme: 'custom',
+        ignoreAttributes: true,
+        content(reference) {
+            const title = reference.getAttribute('title');
+            reference.removeAttribute('title');
+            return title;
+        },
+        interactive: "true",
+        hideOnClick: false, // if you want
+        onShow(instance) {
+            setTimeout(() => {
+                instance.hide();
+            }, 1000);
+        }
+
+    });
 }

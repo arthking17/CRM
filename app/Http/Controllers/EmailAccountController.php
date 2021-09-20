@@ -60,6 +60,7 @@ class EmailAccountController extends Controller
     {
         //return $request;
         $data = $request->validate([
+            'account_id' => 'required|exists:App\Models\Account,id',
             'host' => 'required|string|max:128',
             'email' => 'required|string|max:128',
             'username' => 'required|string|max:128',
@@ -71,9 +72,7 @@ class EmailAccountController extends Controller
         ]);
 
         $data['pwd'] = Crypt::encryptString($data['pwd']);
-
-        $account_id = array('account_id' => Auth::user()->account_id);
-        $data = array_merge($data,  $account_id);
+        
         $start_date = array('start_date' => today());
         $data = array_merge($data,  $start_date);
 
@@ -98,6 +97,7 @@ class EmailAccountController extends Controller
         //return $request;
         $data = $request->validate([
             'id' => 'required|exists:App\Models\Email_account,id',
+            'account_id' => 'required|exists:App\Models\Account,id',
             'host' => 'required|string|max:128',
             'email' => 'required|string|max:128',
             'username' => 'required|string|max:128',
@@ -112,9 +112,6 @@ class EmailAccountController extends Controller
             //$pwd = array('pwd' => Hash::make($request->pwd));
             $data = array_merge($data,  $pwd);
         }
-
-        $account_id = array('account_id' => Auth::user()->account_id);
-        $data = array_merge($data,  $account_id);
 
         $email_account = Email_account::find($request->id);
         $email_account->update($data);

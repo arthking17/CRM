@@ -75,22 +75,22 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#appointments" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                            <a id="appointments-link" href="#appointments" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
                                 Appointments
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#communications" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                            <a id="communications-link" href="#communications" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
                                 Communications
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#permissions" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                            <a id="permissions-link" href="#permissions" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
                                 Permissions
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#notes" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                            <a id="notes-link" href="#notes" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
                                 Notes
                             </a>
                         </li>
@@ -98,13 +98,6 @@
                             <a href="#notifications" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
                                 Notification
                             </a>
-                        </li>
-                        <li>
-                            <div id="tab-pane-btn-add" class="d-none"></div>
-                            <button id="btn-add-note" type="button" class="btn btn-primary waves-effect waves-light d-none"
-                                data-bs-toggle="modal" data-bs-target="#create-note-modal"
-                                onclick="viewFomAddNote({{ $user->id }}, {{ getElementByName('users') }})">
-                                <i class="mdi mdi-plus-circle me-1"></i>Add Note</button>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -118,7 +111,7 @@
                             @include('users.notification')
                         </div>
                         <div class="tab-pane" id="permissions">
-                            @include('permissions.users-permissions-info')
+                            @include('permissions.users_permissions')
                         </div>
                         <div class="tab-pane" id="appointments">
                             @include('appointments.list')
@@ -221,6 +214,7 @@
     <script src="/js/users/users-ajax-list.js"></script>
     <script src="/js/users/datatable-users.init.js"></script>
     <script src="/js/custom-parsley.js"></script>
+    <script src="/js/helpers.js"></script>
     <script src="/js/form-validation-laravel.js"></script>
     <script src="/js/users/users-select.js"></script>
     <script src="/js/users/edit-password.js"></script>
@@ -231,9 +225,6 @@
     <!-- Edit user photo js -->
     <script src="/js/users/user-photo.js"></script>
 
-    <!-- users permissions js -->
-    <script src="/js/users/users-permissions.js"></script>
-
     <!-- grid view js -->
     <script src="/js/users/grid-view.js"></script>
 
@@ -242,14 +233,7 @@
     <!-- send email modal -->
     <script src="/js/email_accounts/send-mail.js"></script>
 
-    <!-- jquery-ui 
-                                                                    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-    <!-- Quill js 
-                                                                <script src="/libs/quill/quill.min.js"></script>-->
-
-    <!-- Include the Quill library -->
     <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
 
     <!-- call voip modal -->
@@ -260,11 +244,18 @@
 
     <script src="/js/appointments/datatable-appointments.init.js"></script>
     <script src="/js/appointments/appointments.js"></script>
+    <script src="/js/appointments/create-ext.js"></script>
+    <script src="/js/appointments/edit-ext.js"></script>
 
     <script src="/js/communications/datatable-communications.init.js"></script>
     <script src="/js/communications/communications.js"></script>
+    <script src="/js/communications/create.js"></script>
+    <script src="/js/communications/edit.js"></script>
 
     <script src="/js/users/tab-pane.js"></script>
+
+    <!-- users permissions js -->
+    <script src="/js/permissions/users_permissions.js"></script>
 
     <script>
         $('.dropify').dropify();
@@ -275,12 +266,14 @@
         url_jsfile = '{{ URL::asset('/js/users/') }}';
         url_jsfile_notes = '{{ URL::asset('/js/notes/') }}';
         url_audio = '{{ URL::asset('/audio') }}';
+
         var form_create_errors = null
         var form_edit_errors = null
+
         var create_note_errors = null
         var edit_note_errors = null
-        var create_permission_errors = null
-        var edit_password_errors = null
+
+        var edit_permission_errors = null
 
         var myTimer = null
 
@@ -292,10 +285,6 @@
         var create_communication_errors = null
         var edit_communication_errors = null
 
-        elementSelect($('#create-permissions-element'))
-    </script>
-
-    <script>
         var editor = new Quill('#snow-editor', {
             theme: 'snow'
         });

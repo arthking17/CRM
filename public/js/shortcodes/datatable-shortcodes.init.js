@@ -1,22 +1,26 @@
-$(document).ready(function () {
-    dataTableCustomFields = $('#datatable-custom-fields').DataTable({
-        stateSave: 0,
-        "pageLength": 5,
-        language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
-        drawCallback: function () {
-            $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
-        },
-    }),
-        $('#datatable-custom-fields tfoot th').each(function () {
+$(document).ready(function() {
+    dataTableSmsAccounts = $('#datatable-shortcodes').DataTable({
+            stateSave: 0,
+            language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
+            drawCallback: function() {
+                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+            },
+            "columnDefs": [ {
+                "targets": 7,
+                "orderable": false,
+                "searchable": false
+                } ],
+        }),
+        $('#datatable-shortcodes tfoot th').each(function() {
             if (!$(this).hasClass('disabled')) {
                 var title = $(this).text();
-                $(this).html('<input class="form-control form-control-sm custom-fields" type="text" placeholder="Search ' + title + '" />');
+                $(this).html('<input class="form-control form-control-sm shortcodes" type="text" placeholder="Search ' + title + '" />');
             }
         });
-    dataTableCustomFields.columns().every(function () {
+    dataTableSmsAccounts.columns().every(function() {
         var that = this;
 
-        $('.custom-fields', this.footer()).on('keyup change clear', function () {
+        $('.shortcodes', this.footer()).on('keyup change clear', function() {
             if (that.search() !== this.value) {
                 that
                     .search(this.value)
@@ -24,12 +28,12 @@ $(document).ready(function () {
             }
         });
     });
-    dataTableCustomFields.columns().every(function () {
+    dataTableSmsAccounts.columns().every(function() {
         var column = this;
         if ($(column.footer()).hasClass('select')) {
             var select = $('<select class="form-select"><option value=""></option></select>')
                 .appendTo($(column.footer()).empty())
-                .on('change', function () {
+                .on('change', function() {
                     var val = $.fn.dataTable.util.escapeRegex(
                         $(this).val()
                     );
@@ -39,12 +43,12 @@ $(document).ready(function () {
                         .draw();
                 });
             if ($(column.footer()).hasClass('with-span')) {
-                column.data().unique().sort().each(function (d, j) {
+                column.data().unique().sort().each(function(d, j) {
                     d = d.slice(d.indexOf(">") + 1, d.indexOf("<", 1))
                     select.append('<option value="' + d + '">' + d + '</option>')
                 });
             } else {
-                column.data().unique().sort().each(function (d, j) {
+                column.data().unique().sort().each(function(d, j) {
                     select.append('<option value="' + d + '">' + d + '</option>')
                 });
             }

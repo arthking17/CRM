@@ -9,20 +9,6 @@
             </div>
             <div class="modal-body">
                 <div id="contacts-to-call">
-                    @foreach ($contact_datas->whereIn('class', [0, 1, 2]) as $contact_data)
-                        <a href="javascript: void(0);" class="" data-bs-toggle=" modal" data-bs-target="#call-two-modal"
-                            data-bs-dismiss="modal"
-                            onclick="call({{ $contact_data->id }}, '{{ $contact_data->data }}');">
-                            <div class="card product-box" id="{{ $contact_data->id }}">
-                                <br>
-                                <h4 class="card-title text-success text-center">
-                                    <img src="{{ asset('images/contact_data/' . getContactTypeByClass($contact_data->class) . '.png') }}"
-                                        alt="contact-data-logo" height="12"
-                                        class="me-1">{{ $contact_data->data }}
-                                </h4>
-                            </div>
-                        </a>
-                    @endforeach
                 </div>
             </div>
         </div>

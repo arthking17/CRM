@@ -44,7 +44,7 @@
     border-bottom-right-radius: 0;
 }
 
-.nav-link .active {
+.custom-active {
     color: #3e7adb; /* <----- change your color here*/
     background-color: transparent;
 }

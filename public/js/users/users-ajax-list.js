@@ -61,79 +61,18 @@ function restoreUser(id) {
     );
 }
 
-function viewInfoCardUser(id) {
-    $.get('/users/get/' + id + '/0', function (data) {
-        console.log(data)
-        $('#user-info-card').empty().html(data.html);
-        tippy('[title]', {
-            // change these to your liking
-            arrow: true,
-            placement: 'bottom', // top, right, bottom, left
-            duration: [600, 300], //ms
-            distance: 15, //px or string
-            maxWidth: 300, //px or string
-            animation: 'perspective',
-            // leave these as they are
-            allowHTML: true,
-            theme: 'custom',
-            ignoreAttributes: true,
-            content(reference) {
-                const title = reference.getAttribute('title');
-                reference.removeAttribute('title');
-                return title;
-            },
-            interactive: "true",
-            hideOnClick: false, // if you want
-            onShow(instance) {
-                setTimeout(() => {
-                    instance.hide();
-                }, 1000);
-            }
-
-        });
-    })
-}
-
 function viewUser(id) {
     $.get('/users/get/' + id + '/0', function (data) {
         $('#datatable-users tbody tr').removeClass('selected')
         $('#userid' + id).addClass('selected')
-        $('#user-info-card').empty().html(data.html);
-        viewUsers_Permissions(id)
         viewLogsInCard(id)
-        viewNotes(id, data.elementClass)
-        tippy('[title]', {
-            // change these to your liking
-            arrow: true,
-            placement: 'bottom', // top, right, bottom, left
-            duration: [600, 300], //ms
-            distance: 15, //px or string
-            maxWidth: 300, //px or string
-            animation: 'perspective',
-            // leave these as they are
-            allowHTML: true,
-            theme: 'custom',
-            ignoreAttributes: true,
-            content(reference) {
-                const title = reference.getAttribute('title');
-                reference.removeAttribute('title');
-                return title;
-            },
-            interactive: "true",
-            hideOnClick: false, // if you want
-            onShow(instance) {
-                setTimeout(() => {
-                    instance.hide();
-                }, 1000);
-            }
-
-        });
     })
 }
 
 function editUser(id) {
     $.get('/users/get/' + id + '/1', function (user) {
         $('#edit-user-id').val(id)
+        $('#edit-user-account_id').val(user.account_id)
         $('#edit-user-username').val(user.username)
         $('#edit-user-login').val(user.login)
         $('#edit-user-role').val(user.role)
@@ -146,36 +85,6 @@ function editUser(id) {
 }
 
 $(document).ready(function () {
-    /**
-     * datatable js init
-     */
-    dataTableNotification = $("#datatable-notification").DataTable({
-        stateSave: !0,
-        language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
-        drawCallback: function () {
-            $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
-        },
-    }),
-        dataTableSecurity = $("#datatable-security").DataTable({
-            stateSave: !0,
-            language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
-            drawCallback: function () {
-                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
-            },
-        }),
-
-        $(".dataTables_length select").addClass("form-select form-select-sm"),
-        $(".dataTables_length select").removeClass("custom-select custom-select-sm"),
-        $(".dataTables_length label").addClass("form-label");
-    // Setup - add a text input to each footer cell
-    $('.disabled').each(function () {
-        $(this).html('');
-    })
-
-    /**
-     * end datatable js init
-     */
-
     $('#btn-create').on('click', function () {
         cleanErrorsInForm('create-user', form_create_errors)
         form_create_errors = null
@@ -260,38 +169,7 @@ $(document).ready(function () {
         });
     });
 
-    /**
-     * tippy initialisation
-     */
-    tippy('[title]', {
-        // change these to your liking
-        arrow: true,
-        placement: 'bottom', // top, right, bottom, left
-        duration: [600, 300], //ms
-        distance: 15, //px or string
-        maxWidth: 300, //px or string
-        animation: 'perspective',
-        // leave these as they are
-        allowHTML: true,
-        theme: 'custom',
-        ignoreAttributes: true,
-        content(reference) {
-            const title = reference.getAttribute('title');
-            reference.removeAttribute('title');
-            return title;
-        },
-        interactive: "true",
-        hideOnClick: false, // if you want
-        onShow(instance) {
-            setTimeout(() => {
-                instance.hide();
-            }, 1000);
-        }
-
-    });
-    /**
-     * tippy initialisation end
-     */
+    setTippyOnButton();
 })
 
 
@@ -363,4 +241,33 @@ function viewLogsInCard(id) {
     $.get('/users/logs/get/' + id + '/0', function (data) {
         $('#logs-info-card').empty().html(data);
     })
+}
+
+function setTippyOnButton(){
+    tippy('.btn-xs', {
+        // change these to your liking
+        arrow: true,
+        placement: 'bottom', // top, right, bottom, left
+        duration: [600, 300], //ms
+        distance: 15, //px or string
+        maxWidth: 300, //px or string
+        animation: 'perspective',
+        // leave these as they are
+        allowHTML: true,
+        theme: 'custom',
+        ignoreAttributes: true,
+        content(reference) {
+            const title = reference.getAttribute('title');
+            reference.removeAttribute('title');
+            return title;
+        },
+        interactive: "true",
+        hideOnClick: false, // if you want
+        onShow(instance) {
+            setTimeout(() => {
+                instance.hide();
+            }, 1000);
+        }
+
+    });
 }

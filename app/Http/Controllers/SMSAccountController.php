@@ -99,9 +99,6 @@ class SMSAccountController extends Controller
             $data = array_merge($data,  $pwd);
         }
 
-        $account_id = array('account_id' => Auth::user()->account_id);
-        $data = array_merge($data,  $account_id);
-
         $sms_account = Sms_account::find($request->id);
         $sms_account->update($data);
 
@@ -109,7 +106,7 @@ class SMSAccountController extends Controller
 
         $sms_accounts = Sms_account::where('status', 1)->get();
         $returnHTML = view('sms_accounts/datatable-sms_accounts', compact('sms_accounts'))->render();
-        return response()->json(['success' => 'Email Account Updated', 'html' => $returnHTML, 'sms_account' => $sms_account]);
+        return response()->json(['success' => 'SMS Account Updated', 'html' => $returnHTML, 'sms_account' => $sms_account]);
     }
 
     /**

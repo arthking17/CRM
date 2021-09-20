@@ -68,7 +68,7 @@ Route::get('/contacts', 'ContactController@index')->name('contacts')->middleware
 Route::get('/contacts/view/{id}', 'ContactController@view')->name('contacts.view')->middleware('auth');
 Route::post('/contacts/create', 'ContactController@store')->name('contacts.create')->middleware('auth');
 Route::get('/contacts/get/{id}/{modal}', 'ContactController@getContactJsonById')->name('contacts.get')->middleware('auth');
-Route::put('/contacts/update', 'ContactController@update')->name('contacts.update')->middleware('auth');
+Route::put('/contacts/update/{page_name}', 'ContactController@update')->name('contacts.update')->middleware('auth');
 Route::put('/contacts/logo/update', 'ContactController@updateContactCompanieLogo')->name('contacts.logo.update')->middleware('auth');
 Route::delete('/contacts/delete/{id}', 'ContactController@destroy')->name('contacts.delete')->middleware('auth');
 Route::get('/contacts/id/{id}', 'ContactController@findContactId')->name('contacts.id')->middleware('auth');
@@ -168,3 +168,10 @@ Route::delete('/sms_accounts/delete/{id}', 'SMSAccountController@destroy')->name
 Route::get('/sms_accounts/get', 'SMSAccountController@getAllSMSAccount')->name('sms_accounts')->middleware('auth');
 Route::get('/sms', 'SMSAccountController@chat')->name('chat')->middleware('auth');
 Route::post('/sms/send', 'SMSAccountController@sendSMS')->name('sms.send')->middleware('auth');
+
+//route for shortcodes settings
+Route::post('/shortcodes/create', 'ShortCodeController@store')->name('shortcodes.create')->middleware('auth');
+Route::put('/shortcodes/update', 'ShortCodeController@update')->name('shortcodes.update')->middleware('auth');
+Route::get('/shortcodes/get/{id}', 'ShortCodeController@get')->name('shortcodes.get')->middleware('auth');
+Route::delete('/shortcodes/delete/{id}', 'ShortCodeController@destroy')->name('shortcodes.delete')->middleware('auth');
+Route::get('/shortcodes/get', 'ShortCodeController@getAllShortCodes')->name('shortcodes')->middleware('auth');

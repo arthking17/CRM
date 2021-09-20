@@ -21,7 +21,7 @@ class CustomFieldController extends Controller
     public function index()
     {
         $custom_fields = Custom_field::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
-        return view('contacts/custom-fields/list', compact('custom_fields'))->render();
+        return view('custom-fields/list', compact('custom_fields'))->render();
     }
 
     /**
@@ -37,10 +37,8 @@ class CustomFieldController extends Controller
             'name' => 'required|string|max:128',
             'tag' => 'required|string|max:64',
             'field_type' => 'required|string|max:32',
+            'account_id' => 'required|exists:App\Models\Account,id',
         ]);
-
-        $account_id = array('account_id' => Auth::user()->account_id);
-        $data = array_merge($data,  $account_id);
         
         if ($request->field_type == 'select') {
             $request->validate([
@@ -53,8 +51,15 @@ class CustomFieldController extends Controller
             }
         } else
             $custom_field = Custom_field::create($data);
+            
+        if (Auth::user()->role == 1) {
+            $custom_fields = Custom_field::all();
+        }else if (Auth::user()->role == 2){
+            $custom_fields = Custom_field::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        }
+        $returnHTML = view('custom-fields/list', compact('custom_fields'))->render();
         Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'custom-field.create', 'element' => getElementByName('custom_fields'), 'element_id' => $custom_field->id, 'source' => 'custom-field.create']);
-        return response()->json(['success' => 'This Custom Field has been added !!!', 'custom-field' => $custom_field]);
+        return response()->json(['success' => 'This Custom Field has been added !!!', 'html' => $returnHTML, 'custom_field' => $custom_field]);
     }
 
     /**
@@ -87,11 +92,9 @@ class CustomFieldController extends Controller
             'name' => 'required|string|max:128',
             'tag' => 'required|string|max:64',
             'field_type' => 'required|string|max:32',
+            'account_id' => 'required|exists:App\Models\Account,id',
         ]);
         $custom_field = Custom_field::find($request->id);
-
-        $account_id = array('account_id' => Auth::user()->account_id);
-        $data = array_merge($data,  $account_id);
 
         if ($request->field_type == 'select') {
             $request->validate([
@@ -110,8 +113,9 @@ class CustomFieldController extends Controller
             }
         } else
             $custom_field->update($data);
+            $custom_field->account = $custom_field->account[0];
         Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'custom-field.update', 'element' => getElementByName('custom_fields'), 'element_id' => $custom_field->id, 'source' => 'custom-field.update']);
-        return response()->json(['success' => 'This Custom Field has been Updated !!!', 'custom-field' => $custom_field]);
+        return response()->json(['success' => 'This Custom Field has been Updated !!!', 'custom_field' => $custom_field]);
     }
 
     /**

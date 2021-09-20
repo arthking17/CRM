@@ -125,9 +125,23 @@
                                                     class="col-4 col-xl-3 col-form-label">account<span
                                                         class="text-danger">*</span></label>
                                                 <div class="col-8 col-xl-9">
-                                                    <input type="text" class="form-select" name="account_id"
-                                                        id="form_create-account_id" disabled
-                                                        value="{{ Auth::user()->account[0]->name }}">
+                                                    @if (Auth::user()->role == 2)
+                                                        <input type="text" class="form-select d-none" name="account_id"
+                                                            id="form_create-account_id"
+                                                            value="{{ Auth::user()->account_id }}">
+                                                    @endif
+                                                    <select
+                                                        class="form-select @error('account_id') parsley-error @enderror"
+                                                        name="account_id" @if (Auth::user()->role === 2) id="form_create-account_id-disabled" @elseif (Auth::user()->role === 1) id="form_create-account_id" @endif required
+                                                        data-parsley-length="[1, 10]"
+                                                        data-parsley-length-message="select an account"
+                                                        @if (Auth::user()->role == 2) disabled value="{{ Auth::user()->account_id }}" @endif>
+                                                        <option>select an account</option>
+                                                        @foreach ($accounts as $key => $account)
+                                                            <option value="{{ $account->id }}">{{ $account->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
@@ -585,8 +599,8 @@
 
                             <ul class="list-inline mb-0 wizard">
                                 <li class="float-start">
-                                    <button type="reset" class="btn btn-light waves-effect waves-light m-1" title="reset all inputs in form"><i
-                                            class="fe-x me-1"></i>Reset</button>
+                                    <button type="reset" class="btn btn-light waves-effect waves-light m-1"
+                                        title="reset all inputs in form"><i class="fe-x me-1"></i>Reset</button>
                                 </li>
                                 <li class="previous list-inline-item">
                                     <a href="javascript: void(0);" class="btn btn-secondary">Previous</a>

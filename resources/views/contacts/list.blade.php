@@ -11,11 +11,6 @@
     <link href="/libs/datatables.net-select-bs4/css/select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <!-- third party css end -->
 
-    <!-- country select css files -->
-    <link rel="stylesheet" href="build/css/countrySelect.css">
-    <link rel="stylesheet" href="/css/custom-style.css">
-    <!-- country select css files end -->
-
     <!-- plugin css select with country flag -->
     <link rel="stylesheet" href="/twilio/css/intlTelInput.min.css">
 
@@ -60,6 +55,11 @@
 
     <!-- icons -->
     <link href="/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- custom style css files -->
+    <link rel="stylesheet" href="build/css/countrySelect.css">
+    <link rel="stylesheet" href="/css/custom-style.css">
+    <!-- custom style css files end -->
 @endsection
 
 @section('content')
@@ -124,21 +124,10 @@
 
     </div> <!-- content -->
     @include('contacts.create')
-    @include('contacts.search-modal')
     @include('contacts.edit')
-    @include('contacts.data.create-phone')
-    @include('contacts.data.edit-phone')
-    @include('contacts.data.create')
-    @include('contacts.data.edit')
+
     @include('notes.create-ext')
     @include('notes.edit-ext')
-    <div id="notes-div">
-        @include('notes.notes-list-modal')
-    </div>
-    <div id="custom-fields-div">
-    </div>
-    @include('contacts.custom-fields.create')
-    @include('contacts.custom-fields.edit')
 
     @include('appointments.create')
 
@@ -216,7 +205,6 @@
     <!-- custom js files -->
     <script src="/js/contacts/form-edit-wizard.js"></script>
     <script src="/js/contacts/form-add-wizard.js"></script>
-    <script src="/js/contacts/contacts-validation.js"></script>
 
     <script src="/js/contacts/datatable-contacts.init.js"></script>
     <script src="/js/contacts/contacts-list.js"></script>
@@ -227,18 +215,6 @@
     <script src="/js/helpers.js"></script>
 
     <script src="/js/form-validation-laravel.js"></script>
-
-    <script src="/js/contacts/data/contact-data.js"></script>
-    <script src="/js/contacts/data/add-phone-data.js"></script>
-    <script src="/js/contacts/data/edit-phone-data.js"></script>
-
-    <script src="/js/notes/notes-module-ext.js"></script>
-
-    <script src="/js/contacts/search/form-search-wizard.js"></script>
-    <script src="/js/contacts/search/search-module.js"></script>
-
-    <script src="/js/contacts/custom-fields/form-create.js"></script>
-    <script src="/js/contacts/custom-fields/custom-fields.js"></script>
 
     <!-- appointments -->
     <script src="/js/appointments/create-ext.js"></script>

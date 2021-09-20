@@ -1,22 +1,30 @@
 $(document).ready(function () {
-    $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
-        
-        $('#btn-add-contact_data').addClass('d-none')
-        $('#tab-pane-btn-add').addClass('d-none')
-        $('#btn-add-note').addClass('d-none')
-
-        var target = $(e.target).attr("href") // activated tab
-
-        if (target == '#notes') {
-            $('#btn-add-note').removeClass('d-none')
-        } else if (target == '#communications') {
-            $('#tab-pane-btn-add').empty().html('<button id="btn-add-communication" type="button" class="btn btn-primary waves-effect waves-light"'+
-            'data-bs-toggle="modal" data-bs-target="#create-communication-modal"><i class="mdi mdi-plus-circle me-1"></i> Add Communication</button>')
-            $('#tab-pane-btn-add').removeClass('d-none')
-        } else if (target == '#appointments') {
-            $('#tab-pane-btn-add').empty().html('<button id="btn-add-appointment" type="button" class="btn btn-primary waves-effect waves-light"'+
-            'data-bs-toggle="modal" data-bs-target="#create-appointment-modal"><i class="mdi mdi-plus-circle me-1"></i> Add Appointment</button>')
-            $('#tab-pane-btn-add').removeClass('d-none')
-        }
-    });
+    $('.nav-link').on('click', function () {
+        $('#global-btn-add').addClass('d-none')
+        $('#global-btn-add').attr('onclick', '#')
+        $('#global-btn-add').attr('data-bs-toggle', 'modal')
+    })
+    $('#appointments-link').on('click', function () {
+        $('#global-btn-add').attr('data-bs-target', '#create-appointment-modal')
+        $('#global-btn-add').html('<i class="mdi mdi-plus-circle me-1"></i> Add Appointment ')
+        $('#global-btn-add').removeClass('d-none')
+    })
+    $('#communications-link').on('click', function () {
+        $('#global-btn-add').attr('data-bs-target', '#create-communication-modal')
+        $('#global-btn-add').html('<i class="mdi mdi-plus-circle me-1"></i> Add Communication ')
+        $('#global-btn-add').removeClass('d-none')
+    })
+    $('#notes-link').on('click', function () {
+        $('#global-btn-add').attr('data-bs-target', '#create-note-modal')
+        $('#global-btn-add').html('<i class="mdi mdi-plus-circle me-1"></i> Add Note ')
+        $('#global-btn-add').attr('onclick', 'viewFomAddNote(' + $('#user_id').html() + ', ' + getElementByName('users') + ')')
+        $('#global-btn-add').removeClass('d-none')
+    })
+    $('#permissions-link').on('click', function () {
+        $('#global-btn-add').attr('data-bs-target', '')
+        $('#global-btn-add').attr('data-bs-toggle', '')
+        $('#global-btn-add').attr('onclick', 'updatePermissions();')
+        $('#global-btn-add').html('<i class="mdi mdi-content-save me-1"></i> Update Permissions ')
+        $('#global-btn-add').removeClass('d-none')
+    })
 });

@@ -6,8 +6,8 @@ $(document).ready(function() {
             $('#create-custom-field-options').addClass('d-none')
     })
     $('#btn-edit-custom-field').on('click', function() {
-        cleanErrorsInForm('edit-custom-field', errors_edit_custom_field)
-        errors_edit_custom_field = null
+        cleanErrorsInForm('edit-custom-field', edit_custom_field_errors)
+        edit_custom_field_errors = null
     })
 
     $('#create-custom-field-select_option').selectize({
@@ -16,7 +16,7 @@ $(document).ready(function() {
 
     $('#edit-custom-field').submit(function(e) {
         e.preventDefault();
-        cleanErrorsInForm('edit-custom-field', errors_edit_custom_field)
+        cleanErrorsInForm('edit-custom-field', edit_custom_field_errors)
         $.ajax({
             type: "POST",
             url: route('custom-fields.update'),
@@ -30,13 +30,20 @@ $(document).ready(function() {
                 $('#edit-custom-field-modal').modal('toggle')
                 Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
 
-                viewCustomFields()
+                //viewCustomFields()
+                var custom_field = response.custom_field;
+                setTimeout(function() { 
+                    $('#custom_fieldid' + custom_field.id + ' td:nth-child(2)').html(custom_field.account[0].name)
+                    $('#custom_fieldid' + custom_field.id + ' td:nth-child(3)').html(custom_field.name)
+                    $('#custom_fieldid' + custom_field.id + ' td:nth-child(4)').html(custom_field.tag)
+                    $('#custom_fieldid' + custom_field.id + ' td:nth-child(5)').html(custom_field.url)
+                 }, 1500);
             },
             error: function(error) {
                 console.log(error)
                 Swal.fire({ position: "top-end", icon: "error", title: "Error while updating that Custom Field", showConfirmButton: !1, timer: 1500 });
                 if (typeof error.responseJSON !== 'undefined' && typeof error.responseJSON.errors !== 'undefined') {
-                    errors_edit_custom_field = error.responseJSON.errors
+                    edit_custom_field_errors = error.responseJSON.errors
                     laravelValidation('edit-custom-field', error.responseJSON.errors)
                 }
             }
@@ -110,7 +117,7 @@ function editCustomField(id) {
     $.get('/contacts/custom-fields/get/' + id, function(data) {
         console.log(data)
         $('#edit-custom-field-id').val(id)
-        $('#edit-custom-field-acccount_id').val(data.custom_field.acccount_id)
+        $('#edit-custom-field-account_id').val(data.custom_field.account_id)
         $('#edit-custom-field-name').val(data.custom_field.name)
         $('#edit-custom-field-field_type').val(data.custom_field.field_type)
         $('#edit-custom-field-tag').val(data.custom_field.tag)
@@ -139,25 +146,38 @@ function editCustomField(id) {
 }
 
 function deleteCustomField(id) {
-    $.ajax({
-        type: "DELETE",
-        url: route('custom-fields.delete', id),
-        data: {
-            _token: $("input[name=_token]").val(),
-        },
-        dataType: "json",
-        success: function(response) {
-            Swal.fire({ icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
+    Swal.fire({ title: "Are you sure?", text: "This Custom Field will be remove!", icon: "warning", showCancelButton: !0, confirmButtonColor: "#28bb4b", cancelButtonColor: "#f34e4e", confirmButtonText: "Yes, delete it!" }).then(
+        function(e) {
+            e.value ?
+                $.ajax({
+                    type: "DELETE",
+                    url: route('custom-fields.delete', id),
+                    data: {
+                        _token: $("input[name=_token]").val(),
+                    },
+                    dataType: "json",
+                    success: function(response) {
+                        Swal.fire({ icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
 
-            $('#custom-field' + id + ' a:nth-child(1)').attr('onclick', '')
-            $('#custom-field' + id + ' a:nth-child(1)').attr('data-bs-toggle', '')
-            $('#custom-field' + id + ' a:nth-child(2)').attr('onclick', '')
-        },
-        error: function(error) {
-            console.log(error)
-            Swal.fire({ icon: "error", title: response.error, showConfirmButton: !1, timer: 1500 });
+                        setTimeout(function () {
+                            $('#custom_fieldid' + id + ' td:nth-child(6)').html('<span class="badge bg-danger">Disabled</span>')
+                            $('#custom_fieldid' + id + ' a:nth-child(1)').attr('onclick', '')
+                            $('#custom_fieldid' + id + ' a:nth-child(1)').attr('data-bs-toggle', '')
+                            $('#custom_fieldid' + id + ' a:nth-child(2)').attr('onclick', '')
+
+                            $('#edit-' + id).attr('onclick', '')
+                            $('#edit-' + id).attr('data-bs-toggle', '')
+                            $('#delete-' + id).attr('onclick', '')
+                        }, 1500);
+                    },
+                    error: function(error) {
+                        console.log(error)
+                        Swal.fire({ icon: "error", title: response.error, showConfirmButton: !1, timer: 1500 });
+                    }
+                }) :
+                e.dismiss === Swal.DismissReason.cancel && Swal.fire({ title: "Cancelled", text: "Operation canceled :)", icon: "error", confirmButtonColor: "#4a4fea" });
         }
-    })
+    );
 }
 
 function deleteContactFieldFile(id, tag) {

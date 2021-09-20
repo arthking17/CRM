@@ -32,22 +32,17 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = null;
-        $users_permissions = [];
-        $notes = [];
-        $logs = [];
         $accounts = DB::table('accounts')
-            ->orderBy('id', 'desc')
-            ->where('status', 1)->get();
+            ->orderBy('id', 'desc')->get();
 
-        $email_accounts = Email_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
-        $sip_accounts = Sip_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $email_accounts = Email_account::where('status', 1)->get();
+        $sip_accounts = Sip_account::where('status', 1)->get();
         $sms_accounts = Sms_account::where('status', 1)->get();
 
-        $users = User::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $users = User::all();
         if ($users->count() > 0) {
             $user = $users->last();
-            $users_permissions = Users_permission::where('user_id', $user->id)->where('status', 1)->get();
+            $users_permissions = Users_permission::where('user_id', $user->id)->get();
             $notes = DB::table('notes')
                 ->where('element', getElementByName('users'))->where('element_id', $user->id)->get();
         }
@@ -442,26 +437,25 @@ class UserController extends Controller
         $notes = [];
         $logs = [];
         $accounts = DB::table('accounts')
-            ->orderBy('id', 'desc')
-            ->where('status', 1)->get();
+            ->orderBy('id', 'desc')->get();
         $logs = DB::table('logs')
             ->where('user_id', $user->id)
             ->orderBy('id', 'asc')
             ->take(20)
             ->get();
-        $users_permissions = Users_permission::where('user_id', $user->id)->where('status', 1)->get();
+        $users_permissions = Users_permission::where('user_id', $user->id)->get();
         $notes = DB::table('notes')
             ->where('element', getElementByName('users'))->where('element_id', $user->id)->get();
 
-        $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
+        $users = DB::table('users')->select('id', 'username')->get();
         $users_id = [];
         foreach ($users as $u) {
             array_push($users_id, $u->id);
         }
-        $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
+        $users = DB::table('users')->select('id', 'username')->get();
         $contacts = Contact::where('account_id', Auth::user()->account_id)->get();
-        $appointments = Appointment::whereIn('user_id', $users_id)->where('contact_id', $id)->where('status', 1)->get();
-        $communications = Communication::whereIn('user_id', $users_id)->where('contact_id', $id)->where('status', 1)->get();
+        $appointments = Appointment::where('user_id', $user->id)->get();
+        $communications = Communication::where('user_id', $user->id)->get();
         $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
             ->select('contacts.id', 'contacts_companies.name')
             ->where('account_id', $user->account_id)->get();
@@ -469,10 +463,12 @@ class UserController extends Controller
             ->where('account_id', $user->account_id)
             ->select('contacts.id', 'first_name', 'last_name')->get();
 
-        $email_accounts = Email_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
-        $sip_accounts = Sip_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+        $email_accounts = Email_account::where('status', 1)->get();
+        $sip_accounts = Sip_account::where('status', 1)->get();
         $sms_accounts = Sms_account::where('status', 1)->get();
-        $contact_datas = Contact_data::all();
+        $contact_datas = Contact_data::where('status', 1)->get();
+        
+        $users_permissions = Users_permission::where('user_id', $user->id)->where('status', 1)->get();
         
         return view('users.view', [
             'user' => $user,
@@ -491,6 +487,7 @@ class UserController extends Controller
             'sip_accounts' => $sip_accounts,
             'sms_accounts' => $sms_accounts,
             'contact_datas' => $contact_datas,
+            'users_permissions' => $users_permissions,
         ]);
     }
 }

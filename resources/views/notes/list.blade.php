@@ -11,9 +11,6 @@
     <link href="/libs/datatables.net-select-bs4/css/select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <!-- third party css end -->
 
-    <!-- custom style -->
-    <link href="/css/custom-style.css" rel="stylesheet" type="text/css" />
-
     <!-- App css -->
     <link href="/css/config/creative/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
     <link href="/css/config/creative/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
@@ -23,6 +20,9 @@
 
     <!-- icons -->
     <link href="/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- custom style -->
+    <link href="/css/custom-style.css" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('content')

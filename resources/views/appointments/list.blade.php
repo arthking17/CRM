@@ -29,7 +29,8 @@
                         <span class="badge bg-danger text-light">Urgent</span>
                     @endif
                 </td>
-                <td>{{ $appointment->subject }}</td>
+                <td data-bind="text: text()" class="text-truncate" style="max-width: 200px"
+                title="{{ $appointment->subject }}">{{ $appointment->subject }}</td>
                 <td>{{ $appointment->start_date }}</td>
                 <td>{{ $appointment->end_date }}</td>
                 <td>

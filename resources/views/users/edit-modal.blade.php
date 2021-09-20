@@ -122,9 +122,19 @@
                                     <label for="edit-user-account_id" class="col-4 col-xl-3 col-form-label">account<span
                                             class="text-danger">*</span></label>
                                     <div class="col-8 col-xl-9">
-                                        <input type="text" class="form-select" name="account_id"
-                                            id="edit-user-account_id" disabled
-                                            value="{{ Auth::user()->account[0]->name }}">
+                                        @if (Auth::user()->role == 2)
+                                            <input type="text" class="form-select d-none" name="account_id"
+                                                id="edit-user-account_id" value="{{ Auth::user()->account_id }}">
+                                        @endif
+                                        <select class="form-select @error('account_id') parsley-error @enderror"
+                                            name="account_id" @if (Auth::user()->role === 2) id="edit-user-account_id-disabled" @elseif (Auth::user()->role === 1) id="edit-user-account_id" @endif
+                                            required data-parsley-length="[1, 10]"
+                                            data-parsley-length-message="select an account" @if (Auth::user()->role == 2) disabled value="{{ Auth::user()->account_id }}" @endif>
+                                            <option>select an account</option>
+                                            @foreach ($accounts as $key => $account)
+                                                <option value="{{ $account->id }}">{{ $account->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>

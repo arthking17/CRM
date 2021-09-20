@@ -23,7 +23,7 @@ if (!function_exists('page_title')) {
 if (!function_exists('getElementName')) {
     function getElementName($element): string
     {
-        $elements = ["accounts", "appointments", "communications", "contact_data", "contacts", "contacts_companies", "contacts_field", "contacts_persons", "custom_field", "email_accounts", "fax_accounts", "groups", "imports", "logs", "notes", "sip_accounts", "sms_accounts", "users", "users_permissions"];
+        $elements = ["accounts", "appointments", "communications", "contact_data", "contacts", "contacts_companies", "contacts_field", "contacts_persons", "custom_field", "email_accounts", "fax_accounts", "groups", "imports", "logs", "notes", "sip_accounts", "sms_accounts", "users", "users_permissions", "shortcodes"];
         return $elements[$element];
     }
 }
@@ -31,7 +31,7 @@ if (!function_exists('getElementName')) {
 if (!function_exists('getElementByName')) {
     function getElementByName($element): int
     {
-        $elements = ["accounts", "appointments", "communications", "contact_data", "contacts", "contacts_companies", "contacts_field", "contacts_persons", "custom_field", "email_accounts", "fax_accounts", "groups", "imports", "logs", "notes", "sip_accounts", "sms_accounts", "users", "users_permissions"];
+        $elements = ["accounts", "appointments", "communications", "contact_data", "contacts", "contacts_companies", "contacts_field", "contacts_persons", "custom_field", "email_accounts", "fax_accounts", "groups", "imports", "logs", "notes", "sip_accounts", "sms_accounts", "users", "users_permissions", "shortcodes"];
         return array_search(strtolower($element), $elements);
     }
 }

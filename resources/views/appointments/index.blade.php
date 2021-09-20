@@ -142,6 +142,9 @@
     <script src="/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
     <script src="/js/form-pickers.init.js"></script>
 
+    <!-- Tippy js-->
+    <script src="/libs/tippy.js/tippy.all.min.js"></script>
+
     <!-- custom js files -->
     <script src="/js/appointments/calendar.init.js"></script>
     <script src="/js/appointments/datatable-appointments.init.js"></script>

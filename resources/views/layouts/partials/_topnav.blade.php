@@ -54,12 +54,13 @@
                 </div>
                 @php
                     $list_add = ['user', 'account', 'contact', 'appointment', 'communication', 'note', 'sip_account'];
-                    $entity = substr($title, 0, -1);
+                    $entity = substr($title ?? null, 0, -1);
                 @endphp
-                <div class="d-flex flex-row-reverse @if (!in_array(strtolower($entity), $list_add) && strtolower($title) != 'settings') d-none @endif">
-                    <button id="global-btn-add" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#create-{{ strtolower($entity) }}-modal"><i
+                <div class="d-flex flex-row-reverse">
+                    <button id="global-btn-add" type="button" class="btn btn-primary @if (!in_array(strtolower($entity), $list_add) && strtolower($title ?? null) != 'settings') d-none @endif"
+                        data-bs-toggle="modal" data-bs-target="#create-{{ strtolower($entity) }}-modal"><i
                             class="mdi mdi-plus-circle me-1"></i> Add {{ $entity }} </button>
+                    <div id="div-global-btn-add"></div>
                 </div>
             </div> <!-- end .collapsed-->
         </nav>

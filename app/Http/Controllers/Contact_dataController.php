@@ -151,11 +151,11 @@ class Contact_dataController extends Controller
     public function destroy(int $id)
     {
         $contact_data = Contact_data::find($id);
-        //$contact->status = 3;
-        if ($contact_data->delete()) {
+        $contact_data->status = 0;
+        if ($contact_data->save()) {
             Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'contacts.data.delete', 'element' => getElementByName('contact_data'), 'element_id' => $id, 'source' => 'contacts.data.delete, ' . $id]);
             return response()->json(['success' => 'This contact data has been Disabled !!!', 'contact_data' => $contact_data]);
         } else
-            return response()->json(['error' => 'Failed to delete this contact !!!']);
+            return response()->json(['error' => 'Failed to delete this contact data !!!']);
     }
 }

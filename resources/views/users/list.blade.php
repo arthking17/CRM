@@ -235,9 +235,6 @@
     <!-- Edit user photo js -->
     <script src="/js/users/user-photo.js"></script>
 
-    <!-- users permissions js -->
-    <script src="/js/users/users-permissions.js"></script>
-
     <!-- grid view js -->
     <script src="/js/users/grid-view.js"></script>
 
@@ -252,9 +249,7 @@
         var form_edit_errors = null
         var create_note_errors = null
         var edit_note_errors = null
-        var create_permission_errors = null
         var edit_password_errors = null
-        elementSelect($('#create-permissions-element'))
     </script>
     <!-- custom js files end -->
 

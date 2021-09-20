@@ -23,7 +23,7 @@
                     <p class="text-muted">{{ $user->login }}</p>
                     <p class="text-muted"><i class="mdi mdi-office-building"></i>
                         {{ $user->account[0]->name }}</p>
-                    <p class="text-muted d-none"> {{ $user->id }}</p>
+                    <p id="user_id" class="text-muted d-none"> {{ $user->id }}</p>
 
                     <a href="javascript: void(0);" class="btn- btn-xs btn-info" title="New Email"><i
                             class="mdi mdi-email-edit-outline"></i></a>

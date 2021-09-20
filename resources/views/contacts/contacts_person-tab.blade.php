@@ -16,7 +16,7 @@
                         @endif
                     </p>
                     <p class="text-muted"><i class="mdi mdi-office-building"></i>Account :
-                        {{ $accounts->find($contact->account_id)->name }}</p>
+                        {{ $contact->account_id }}</p>
                     <p class="text-muted d-none" id="contact_id">{{ $contact->id }}</p>
 
                     <div class="btn-group mb-2">

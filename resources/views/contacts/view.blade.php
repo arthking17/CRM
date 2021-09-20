@@ -39,17 +39,17 @@
     <link href="/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
 
     <!-- jquery-ui 
-                                                    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+                                                            <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
 
     <!-- quill css 
-                                                <link href="/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
-                                                <link href="/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />-->
+                                                        <link href="/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
+                                                        <link href="/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />-->
 
     <!-- Include Quill stylesheet -->
     <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
 
     <!-- phone call animation 
-                                <link href="/css/phone_call_animation.css" rel="stylesheet">-->
+                                        <link href="/css/phone_call_animation.css" rel="stylesheet">-->
 
     <!-- App css -->
     <link href="/css/config/creative/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
@@ -80,7 +80,9 @@
                                 <li class="breadcrumb-item active">{{ $name }}</li>
                             </ol>
                         </div>
-                        <h4 class="page-title">Contact</h4>
+                        <h4 class="page-title">Contact @if ($contact->class === 2) Company
+                            @elseif($contact->class === 1) Person @endif
+                        </h4>
                     </div>
                 </div>
             </div>
@@ -95,58 +97,28 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#appointments" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                            <a id="appointments-link" href="#appointments" data-bs-toggle="tab" aria-expanded="false"
+                                class="nav-link">
                                 Appointments
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#communications" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                            <a id="communications-link" href="#communications" data-bs-toggle="tab" aria-expanded="false"
+                                class="nav-link">
                                 Communications
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#contact_data" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                            <a id="contact_data-link" href="#contact_data" data-bs-toggle="tab" aria-expanded="false"
+                                class="nav-link">
                                 Contact Data
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#notes" data-bs-toggle="tab" aria-expanded="false" class="nav-link">
+                            <a id="notes-link" href="#notes" data-bs-toggle="tab" aria-expanded="false"
+                                class="nav-link">
                                 Notes
                             </a>
-                        </li>
-                        <li>
-                            <div id="tab-pane-btn-add" class="d-none"></div>
-                            <button id="btn-add-note" type="button" class="btn btn-primary waves-effect waves-light d-none"
-                                data-bs-toggle="modal" data-bs-target="#create-note-modal"
-                                onclick="viewFomAddNote({{ $contact->id }}, {{ getElementByName('contacts') }})">
-                                <i class="mdi mdi-plus-circle me-1"></i>Add Note</button>
-                            <div class="d-none" id="btn-add-contact_data">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false"><i
-                                            class="mdi mdi-plus-circle me-1"></i>Add Contact Data<i
-                                            class="mdi mdi-chevron-down"></i></button>
-                                    <div class="dropdown-menu">
-                                        @for ($i = 0; $i < 10; $i++)
-                                            @if ($i == 0 or $i == 1 or $i == 2 or $i == 7)
-                                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#create-phone-data-modal" onclick="displayFormContactData('create-phone-data', {{ $contact->id }},
-                                                        {{ $i }});"><img
-                                                        src="{{ asset('images/contact_data/' . getContactTypeByClass($i) . '.png') }}"
-                                                        alt="phone-data-logo" height="12"
-                                                        class="me-1">{{ str_replace('_', ' ', getContactTypeByClass($i)) }}</a>
-                                            @else
-                                                <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                                    data-bs-target="#create-contact-data-modal" onclick="displayFormContactData('create-contact-data', {{ $contact->id }},
-                                                        {{ $i }});"><img
-                                                        src="{{ asset('images/contact_data/' . getContactTypeByClass($i) . '.png') }}"
-                                                        alt="contact-data-logo" height="12"
-                                                        class="me-1">{{ str_replace('_', ' ', getContactTypeByClass($i)) }}</a>
-                                            @endif
-                                        @endfor
-                                    </div>
-                                </div><!-- /btn-group -->
-                            </div>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -189,8 +161,6 @@
     @include('contacts.data.edit')
     @include('notes.create-ext')
     @include('notes.edit-ext')
-    @include('contacts.custom-fields.create')
-    @include('contacts.custom-fields.edit')
 
     @include('email_accounts.send-mail')
 
@@ -200,10 +170,42 @@
 
     <!-- missing modal create && edit communication -->
 
+    @include('communications.create')
+    @include('communications.edit')
+
 
     <!-- missing modal create && edit appointment -->
 
+    @include('appointments.create')
+    @include('appointments.edit')
 
+
+    <div class="d-none" id="btn-add-contact_data">
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false"><i class="mdi mdi-plus-circle me-1"></i>Add Contact Data<i
+                    class="mdi mdi-chevron-down"></i></button>
+            <div class="dropdown-menu">
+                @for ($i = 0; $i < 10; $i++)
+                    @if ($i == 0 or $i == 1 or $i == 2 or $i == 7)
+                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#create-phone-data-modal"
+                            onclick="displayFormContactData('create-phone-data', {{ $contact->id }},
+                                        {{ $i }});"><img
+                                src="{{ asset('images/contact_data/' . getContactTypeByClass($i) . '.png') }}"
+                                alt="phone-data-logo" height="12"
+                                class="me-1">{{ str_replace('_', ' ', getContactTypeByClass($i)) }}</a>
+                    @else
+                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                            data-bs-target="#create-contact-data-modal" onclick="displayFormContactData('create-contact-data', {{ $contact->id }},
+                                        {{ $i }});"><img
+                                src="{{ asset('images/contact_data/' . getContactTypeByClass($i) . '.png') }}"
+                                alt="contact-data-logo" height="12"
+                                class="me-1">{{ str_replace('_', ' ', getContactTypeByClass($i)) }}</a>
+                    @endif
+                @endfor
+            </div>
+        </div><!-- /btn-group -->
+    </div>
 @endsection
 
 @section('js')
@@ -286,19 +288,15 @@
     <script src="/js/contacts/data/add-phone-data.js"></script>
     <script src="/js/contacts/data/edit-phone-data.js"></script>
 
-    <script src="/js/contacts/custom-fields/form-create.js"></script>
-    <script src="/js/contacts/custom-fields/custom-fields.js"></script>
-    <script src="/js/contacts/custom-fields/datatable-custom_fields.js"></script>
-
     <!-- send email modal -->
     <script src="/js/email_accounts/send-mail.js"></script>
 
     <!-- jquery-ui 
-                                                            <script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+                                                                    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <!-- Quill js 
-                                                        <script src="/libs/quill/quill.min.js"></script>-->
+                                                                <script src="/libs/quill/quill.min.js"></script>-->
 
     <!-- Include the Quill library -->
     <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
@@ -311,14 +309,14 @@
 
     <script src="/js/appointments/datatable-appointments.init.js"></script>
     <script src="/js/appointments/appointments.js"></script>
-    <!--<script src="/js/appointments/create-ext.js"></script>
-                    <script src="/js/appointments/edit-ext.js"></script>-->
+    <script src="/js/appointments/create-ext.js"></script>
+    <script src="/js/appointments/edit-ext.js"></script>
     <script src="/js/appointments/appointments-ext.js"></script>
 
     <script src="/js/communications/datatable-communications.init.js"></script>
     <script src="/js/communications/communications.js"></script>
-    <!--<script src="/js/communications/create.js"></script>
-                    <script src="/js/communications/edit.js"></script>-->
+    <script src="/js/communications/create.js"></script>
+    <script src="/js/communications/edit.js"></script>
     <script src="/js/communications/communications-ext.js"></script>
 
     <script src="/js/notes/datatable-notes.init.js"></script>

@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     setTippyOnNoteContent();
 
     $('#btn-create-note').on('click', function () {
