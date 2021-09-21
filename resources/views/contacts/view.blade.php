@@ -206,6 +206,8 @@
             </div>
         </div><!-- /btn-group -->
     </div>
+    
+    <div id="notes-div"></div>
 @endsection
 
 @section('js')

@@ -33,16 +33,14 @@ function viewContact(id, type) {
         $('#datatable-contacts tbody tr').removeClass('selected')
         $('#contactid'+id).addClass('selected')
 
-        console.log(response)
+        //console.log(response)
         try {
             if (type == 1) {
-                $('#contacts_info_not_found').addClass('d-none')
                 $('#contacts_companie-info-card').addClass('d-none')
                 $('#contacts_person-info-card').removeClass('d-none')
 
                 $('#contacts_person-info-card').empty().html(response.html);
             } else if (type == 2) {
-                $('#contacts_info_not_found').addClass('d-none')
                 $('#contacts_person-info-card').addClass('d-none')
                 $('#contacts_companie-info-card').removeClass('d-none')
 
@@ -50,14 +48,12 @@ function viewContact(id, type) {
             }
         } catch (e) {
             Swal.fire({ icon: "error", title: 'error !!!', showConfirmButton: !1, timer: 1500 });
-            $('#contacts_info_not_found').removeClass('d-none')
             $('#contacts_person-info-card').addClass('d-none')
             $('#contacts_companie-info-card').addClass('d-none')
         }
     }).fail(function(error) {
         console.log(error)
         Swal.fire({ icon: "error", title: 'error !!!', showConfirmButton: !1, timer: 1500 });
-        $('#contacts_info_not_found').removeClass('d-none')
         $('#contacts_person-info-card').addClass('d-none')
         $('#contacts_companie-info-card').addClass('d-none')
     })
@@ -168,25 +164,15 @@ function deleteContact(id) {
                     },
                     dataType: "json",
                     success: function(response) {
-                        //$('#edit-modal').modal('toggle')
-                        if ($('#edit-modal').is(':visible')) {
-                            $('#edit-modal').modal('toggle')
-                        }
                         Swal.fire({ icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
-                        $('#contacts-result').html(response.html);
 
-                        $.getScript(url_jsfile + "/datatable-contacts.init.js")
-                            .done(function(script, textStatus) {
-                                console.log(textStatus);
-                            })
-                            .fail(function(jqxhr, settings, exception) {
-                                console.log("Triggered ajaxError handler.");
-                            });
-
-                            $('#contacts_info_not_found').addClass('d-none')
-                            $('#contacts_companie-info-card').addClass('d-none')
-                            $('#contacts_person-info-card').removeClass('d-none')
-                            $('#contacts_person-info-card').empty().html(response.infoCard);
+                        setTimeout(function () {
+                            $('#contactid' + id + ' td:nth-child(6)').html('<span class="badge bg-danger">Disabled</span>')
+                            for (let i = 1; i <= 6; i++) {
+                                $('#contactid' + id + ' a:nth-child('+i+')').attr('onclick', '')
+                                $('#contactid' + id + ' a:nth-child('+i+')').attr('data-bs-toggle', '')
+                            }
+                        }, 1500);
                     },
                     error: function(error) {
                         console.log(error)

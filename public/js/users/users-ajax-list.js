@@ -11,13 +11,14 @@ function deleteUser(id) {
                     dataType: "json",
                     success: function (response) {
                         Swal.fire({ icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
-                        $('#btn-edit-' + id).addClass('disabled');
-                        $('#btn-delete-' + id).text('Active');
-                        //$('#btn-delete-' + id).attr("onclick", "restoreUser(" + id + ")");
-                        $('#userid' + id + ' td:nth-child(6)').html('<span class="badge label-table bg-danger">Disabled</span>')
-                        $('#user-status').html('<span class="badge label-table bg-danger">Disabled</span>')
-                        $('#btn-delete-' + id).attr('data-bs-toggle', '')
-                        $('#delete-' + id).attr('onClick', '')
+
+                        setTimeout(function () {
+                            $('#userid' + id + ' td:nth-child(6)').html('<span class="badge bg-danger">Disabled</span>')
+                            for (let i = 1; i <= 6; i++) {
+                                $('#userid' + id + ' a:nth-child(' + i + ')').attr('onclick', '')
+                                $('#userid' + id + ' a:nth-child(' + i + ')').attr('data-bs-toggle', '')
+                            }
+                        }, 1500);
                     },
                     error: function (error) {
                         console.log(error)
@@ -77,8 +78,8 @@ function editUser(id) {
         $('#edit-user-login').val(user.login)
         $('#edit-user-role').val(user.role)
         $('#edit-user-language').val(user.language)
-        $('#edit-user-photo').attr('data-default-file', url_photo + '/' + user.photo)
-        $('.dropify').dropify();
+        //$('#edit-user-photo').attr('data-default-file', url_photo + '/' + user.photo)
+        //$('.dropify').dropify();
         $('#btn-delete').attr('onClick', 'deleteUser(' + id + ');')
         $('#edit-user-photo-img').attr('src', url_photo + '/' + user.photo)
     })
@@ -103,7 +104,7 @@ $(document).ready(function () {
             processData: false,
             cache: false,
             success: function (response) {
-                console.log(response)
+                //console.log(response)
                 Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                 $('#create-user')[0].reset()
                 //setTimeout(function () { window.location.href = route('accounts'); }, 1500);
@@ -133,9 +134,19 @@ $(document).ready(function () {
 
     $('#edit-user').submit(function (e) {
         e.preventDefault();
+        cleanErrorsInForm('edit-user', form_edit_errors)
+
+        var currentUrl = window.location.href;
+        var urlTable = currentUrl.split('/');
+        if (typeof urlTable[4] !== 'undefined') {
+            var page_name = 'page_view';
+        } else {
+            var page_name = 'page_list';
+        }
+
         $.ajax({
             type: "POST",
-            url: route('user.update', $('#edit-user-id').val()),
+            url: route('user.update', page_name),
             data: new FormData(this),
             contentType: false,
             processData: false,
@@ -145,18 +156,26 @@ $(document).ready(function () {
                 Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                 //setTimeout(function () { window.location.href = route('accounts'); }, 1500);
                 $('#edit-modal').modal('toggle')
-                $('#view-list').html(response.html);
-                viewInfoCardUser(response.user.id)
 
-                showViewGrid('asc', 'id')
-
-                $.getScript(url_jsfile + "/datatable-users.init.js")
-                    .done(function (script, textStatus) {
-                        console.log(textStatus);
-                    })
-                    .fail(function (jqxhr, settings, exception) {
-                        console.log("Triggered ajaxError handler.");
-                    });
+                console.log(page_name)
+                setTimeout(function () {
+                    if (page_name == 'page_list') {
+                        var user = response.user;
+                        $('#userid' + user.id + ' td:nth-child(2)').html(user.username)
+                        var html;
+                        if (user.role == 1)
+                            html = '<span class="badge label-table bg-danger">Admin</span>'
+                        else if (user.role == 2)
+                            html = '<span class="badge bg-success">User</span>'
+                        else if (user.role == 3)
+                            html = '<span class="badge bg-blue text-light">Visitor</span>'
+                        $('#userid' + user.id + ' td:nth-child(3)').html(html)
+                        $('#userid' + user.id + ' td:nth-child(4)').html('<img class="img-fluid avatar-sm rounded" src="'+url_photo+'/'+user.photo+'" />')
+                        $('#userid' + user.id + ' td:nth-child(5)').html(user.account[0].name)
+                    } else if (page_name == 'page_view') {
+                        $('#user-info').html(response.html)
+                    }
+                }, 1500);
             },
             error: function (error) {
                 console.log(error)
@@ -243,7 +262,7 @@ function viewLogsInCard(id) {
     })
 }
 
-function setTippyOnButton(){
+function setTippyOnButton() {
     tippy('.btn-xs', {
         // change these to your liking
         arrow: true,

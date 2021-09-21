@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use App\Models\Contact;
+use App\Models\Contacts_companie;
+use App\Models\Contacts_person;
 use App\Models\Log;
 use App\Models\User;
 use DateTime;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,19 +23,37 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        $contacts = Contact::where('account_id', Auth::user()->account_id)->get();
-        $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
-        $users_id = [];
-        foreach ($users as $user) {
-            array_push($users_id, $user->id);
-        }
-        $appointments = Appointment::whereIn('user_id', $users_id)->where('status', 1)->get();
+        if (Auth::user()->role == 1) {
+            $contacts = DB::table('contacts')->select('id', 'class')->get();
+            $users = DB::table('users')->select('id', 'username')->get();
+            $appointments = Appointment::all();
 
-        $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
-            ->select('contacts.id', 'contacts_companies.name')->get();
-        $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
-            ->select('contacts.id', 'first_name', 'last_name')->get();
-            
+            $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+                ->select('contacts.id', 'contacts_companies.name')->get();
+            $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
+                ->select('contacts.id', 'first_name', 'last_name')->get();
+        } else if (Auth::user()->role == 2) {
+            //retrieve all the contacts and users belonging to the account id of the logged in user
+            $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
+            $contacts = DB::table('contacts')->select('id', 'class')->where('account_id', Auth::user()->account_id)->get();
+            $users_id = [];
+            foreach ($users as $user) {
+                array_push($users_id, $user->id);
+            }
+            $contact_id = [];
+            foreach ($contacts as $contact) {
+                array_push($contact_id, $contact->id);
+            }
+            $appointments = Appointment::whereIn('user_id', $users_id)->whereIn('contact_id', $contact_id)->where('status', 1)->get();
+
+            $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+                ->where('account_id', Auth::user()->account_id)
+                ->select('contacts.id', 'contacts_companies.name')->get();
+            $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
+                ->where('account_id', Auth::user()->account_id)
+                ->select('contacts.id', 'first_name', 'last_name')->get();
+        }
+
         return view('/appointments/index', [
             'appointments' => $appointments,
             'contacts' => $contacts,
@@ -90,7 +111,24 @@ class AppointmentController extends Controller
             $appointments = Appointment::whereIn('user_id', $users_id)->where('status', 1)->get();
         else
             $appointments = Appointment::whereIn('user_id', $users_id)->where('contact_id', $appointment->contact_id)->where('status', 1)->get();
-        $returnHTML = view('appointments/list', compact('appointments'))->render();
+
+        if (Auth::user()->role == 1) {
+            $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+                ->select('contacts.id', 'contacts_companies.name')->get();
+            $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
+                ->select('contacts.id', 'first_name', 'last_name')->get();
+        } else if (Auth::user()->role == 2) {
+            $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+                ->where('account_id', Auth::user()->account_id)
+                ->select('contacts.id', 'contacts_companies.name')->get();
+            $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
+                ->where('account_id', Auth::user()->account_id)
+                ->select('contacts.id', 'first_name', 'last_name')->get();
+        } else {
+            return response()->json(['message' => 'you do not have the necessary rights'], 300);
+        }
+
+        $returnHTML = view('appointments/list', compact('appointments', 'contacts_persons', 'contacts_companies'))->render();
         return response()->json(['success' => 'Appointment Created', 'html' => $returnHTML, 'appointment' => $appointment]);
     }
 
@@ -104,17 +142,6 @@ class AppointmentController extends Controller
     {
         $appointment = Appointment::find($id);
         return response()->json(['appointment' => $appointment]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Appointment  $appointment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Appointment $appointment)
-    {
-        //
     }
 
     /**
@@ -143,17 +170,14 @@ class AppointmentController extends Controller
         $appointment->update($data);
         Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'appointments.update', 'element' => getElementByName('appointments'), 'element_id' => $appointment->id, 'source' => 'appointments.update']);
 
-        $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
-        $users_id = [];
-        foreach ($users as $user) {
-            array_push($users_id, $user->id);
+        $appointment->user = $appointment->user[0];
+        $appointment->contact = $appointment->contact[0];
+        if($appointment->contact->class == 1){
+            $contact_name = Contacts_person::find($appointment->contact->id)->first_name .' '.Contacts_person::find($appointment->contact->id)->last_name;
+        }else if($appointment->contact->class == 2){
+            $contact_name = Contacts_companie::find($appointment->contact->id)->name;
         }
-        if ($type == 1)
-            $appointments = Appointment::whereIn('user_id', $users_id)->where('status', 1)->get();
-        else
-            $appointments = Appointment::whereIn('user_id', $users_id)->where('contact_id', $appointment->contact_id)->where('status', 1)->get();
-        $returnHTML = view('appointments/list', compact('appointments'))->render();
-        return response()->json(['success' => 'Appointment Updated', 'html' => $returnHTML, 'appointment' => $appointment]);
+        return response()->json(['success' => 'Appointment Updated', 'appointment' => $appointment, 'contact_name' => $contact_name]);
     }
 
     /**

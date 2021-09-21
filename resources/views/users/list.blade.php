@@ -18,6 +18,9 @@
     <link href="/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
     <link href="/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
 
+    <!-- Include Quill stylesheet -->
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+
     <!-- App css -->
     <link href="/css/config/creative/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
     <link href="/css/config/creative/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
@@ -170,6 +173,12 @@
     </div> <!-- content -->
     @include('users.create-modal')
     @include('users.edit-modal')
+
+    @include('email_accounts.send-mail')
+
+    @include('sip_accounts.call')
+
+    @include('sms_accounts.sms')
 @endsection
 
 @section('js')
@@ -215,6 +224,13 @@
     <!-- Init js-->
     <script src="/js/pages/form-fileuploads.init.js"></script>
 
+    <!-- selectize js -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js">
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/selectize.min.js">
+    </script>
+
     <!-- custom js files -->
     <script type="text/javascript">
         $.ajaxSetup({
@@ -237,6 +253,18 @@
 
     <!-- grid view js -->
     <script src="/js/users/grid-view.js"></script>
+
+    <!-- send email modal -->
+    <script src="/js/email_accounts/send-mail.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
+
+    <!-- call voip modal -->
+    <script src="/js/sip_accounts/sip_accounts.js"></script>
+
+    <!-- send sms modal -->
+    <script src="/js/sms_accounts/sms.js"></script>
 
     <script>
         $('.dropify').dropify();

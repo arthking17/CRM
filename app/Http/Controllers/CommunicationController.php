@@ -21,36 +21,43 @@ class CommunicationController extends Controller
      */
     public function index()
     {
-        $contacts = Contact::where('account_id', Auth::user()->account_id)->get();
-        $contact_name = null;
-        $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
-        $users_id = [];
-        foreach ($users as $user) {
-            array_push($users_id, $user->id);
-        }
-        $communications = Communication::whereIn('user_id', [$users_id])->get();
-        if ($communications->count() > 0) {
-            $contact = Contact::find($communications->first()->contact_id);
-            if ($contact->class == 1) {
-                $contact = Contacts_person::find($communications->first()->contact_id);
-                $contact_name = $contact->first_name . ' ' . $contact->last_name;
-            } else if ($contact->class == 2)
-                $contact_name = Contacts_companie::find($communications->first()->contact_id)->name;
-        }
+        if (Auth::user()->role == 1) {
+            $users = DB::table('users')->select('id', 'username')->get();
+            $communications = Communication::all();
+            $contacts = DB::table('contacts')->select('id', 'class')->get();
 
-        $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
-            ->select('contacts.id', 'contacts_companies.name')->get();
-        $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
-            ->select('contacts.id', 'first_name', 'last_name')->get();
+            $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+                ->select('contacts.id', 'contacts_companies.name')->get();
+            $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
+                ->select('contacts.id', 'first_name', 'last_name')->get();
+        } else if (Auth::user()->role == 2) {
+            $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
+            $contacts = DB::table('contacts')->select('id', 'class')->where('account_id', Auth::user()->account_id)->get();
+            $contact_id = [];
+            foreach ($contacts as $contact) {
+                array_push($contact_id, $contact->id);
+            }
+            $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
+            $users_id = [];
+            foreach ($users as $user) {
+                array_push($users_id, $user->id);
+            }
+            $communications = Communication::whereIn('user_id', [$users_id])->whereIn('contact_id', [$contact_id])->get();
+
+            $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+                ->where('account_id', Auth::user()->account_id)
+                ->select('contacts.id', 'contacts_companies.name')->get();
+            $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
+                ->where('account_id', Auth::user()->account_id)
+                ->select('contacts.id', 'first_name', 'last_name')->get();
+        }
 
         return view('/communications/index', [
             'communications' => $communications,
-            'contacts' => $contacts,
-            'users' => $users,
-            'contact_name' => $contact_name,
-            'elementClass' => getElementByName('communications'),
             'contacts_persons' => $contacts_persons,
             'contacts_companies' => $contacts_companies,
+            'contacts' => $contacts,
+            'users' => $users,
         ]);
     }
 
@@ -67,22 +74,13 @@ class CommunicationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
+     * @param  string $page_name
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, string $page_name)
     {
         //return $request;
         $data = $request->validate([
@@ -98,13 +96,64 @@ class CommunicationController extends Controller
         $communication = Communication::create($data);
         Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'communications.create', 'element' => getElementByName('communications'), 'element_id' => $communication->id, 'source' => 'communications.create']);
 
-        $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
-        $users_id = [];
-        foreach ($users as $user) {
-            array_push($users_id, $user->id);
+        if ($page_name == 'page_communications') {
+            if (Auth::user()->role == 1) {
+                $communications = Communication::all();
+            } else if (Auth::user()->role == 2) {
+                $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
+                $users_id = [];
+                foreach ($users as $user) {
+                    array_push($users_id, $user->id);
+                }
+                $communications = Communication::whereIn('user_id', [$users_id])->get();
+            } else {
+                return response()->json(['message' => 'you do not have the necessary rights'], 300);
+            }
+        } else if ($page_name == 'page_users') {
+            if (Auth::user()->role == 1) {
+                $communications = Communication::where('user_id', $data['user_id'])->get();
+            } else if (Auth::user()->role == 2) {
+                $contacts = DB::table('contacts')->select('id')->where('account_id', Auth::user()->account_id)->get();
+                $contact_id = [];
+                foreach ($contacts as $contact) {
+                    array_push($contact_id, $contact->id);
+                }
+                $communications = Communication::whereIn('contact_id', [$contact_id])->get();
+            } else {
+                return response()->json(['message' => 'you do not have the necessary rights'], 300);
+            }
+        } else if ($page_name == 'page_contacts') {
+            if (Auth::user()->role == 1) {
+                $communications = Communication::where('contact_id', $data['contact_id'])->get();
+            } else if (Auth::user()->role == 2) {
+                $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
+                $users_id = [];
+                foreach ($users as $user) {
+                    array_push($users_id, $user->id);
+                }
+                $communications = Communication::where('contact_id', $data['contact_id'])->whereIn('user_id', [$users_id])->get();
+            } else {
+                return response()->json(['message' => 'you do not have the necessary rights'], 300);
+            }
         }
-        $communications = Communication::whereIn('user_id', [$users_id])->get();
-        $returnHTML = view('communications/list', compact('communications'))->render();
+
+        if (Auth::user()->role == 1) {
+            $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+                ->select('contacts.id', 'contacts_companies.name')->get();
+            $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
+                ->select('contacts.id', 'first_name', 'last_name')->get();
+        } else if (Auth::user()->role == 2) {
+            $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+                ->where('account_id', Auth::user()->account_id)
+                ->select('contacts.id', 'contacts_companies.name')->get();
+            $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
+                ->where('account_id', Auth::user()->account_id)
+                ->select('contacts.id', 'first_name', 'last_name')->get();
+        } else {
+            return response()->json(['message' => 'you do not have the necessary rights'], 300);
+        }
+
+        $returnHTML = view('communications/list', compact('communications', 'contacts_persons', 'contacts_companies'))->render();
         return response()->json(['success' => 'communication Created', 'html' => $returnHTML, 'communication' => $communication]);
     }
 
@@ -167,14 +216,14 @@ class CommunicationController extends Controller
 
         Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'communications.update', 'element' => getElementByName('communications'), 'element_id' => $communication->id, 'source' => 'communications.update']);
 
-        $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
-        $users_id = [];
-        foreach ($users as $user) {
-            array_push($users_id, $user->id);
+        $communication->user = $communication->user[0];
+        $communication->contact = $communication->contact[0];
+        if($communication->contact->class == 1){
+            $contact_name = Contacts_person::find($communication->contact->id)->first_name .' '.Contacts_person::find($communication->contact->id)->last_name;
+        }else if($communication->contact->class == 2){
+            $contact_name = Contacts_companie::find($communication->contact->id)->name;
         }
-        $communications = Communication::whereIn('user_id', [$users_id])->get();
-        $returnHTML = view('communications/list', compact('communications'))->render();
-        return response()->json(['success' => 'communication Updated', 'html' => $returnHTML, 'communication' => $communication]);
+        return response()->json(['success' => 'communication Updated', 'communication' => $communication, 'contact_name' => $contact_name]);
     }
 
     /**

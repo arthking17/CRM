@@ -15,12 +15,22 @@
 
     <tbody>
         @foreach ($communications as $communication)
-            <tr id="communicationid{{ $communication->id }}" onclick="viewCommunication({{ $communication->id }})">
+            <tr id="communicationid{{ $communication->id }}">
                 <td>{{ $communication->id }}</td>
-                <td>{{ $communication->contact_id }}</td>
-                <td>
-                    @if ($communication->user->count() > 0)
-                        {{ $communication->user[0]->username }}@else Empty @endif
+                <td><a href="{{ route('contacts.view', $communication->contact_id) }}">
+                        @if ($communication->contact[0]->class === 1)
+                            (Person)
+                            {{ $contacts_persons->where('id', $communication->contact_id)->first()->first_name . ' ' . $contacts_persons->where('id', $communication->contact_id)->first()->last_name }}
+                        @elseif($communication->contact[0]->class === 2)
+                            (Companie)
+                            {{ $contacts_companies->where('id', $communication->contact_id)->first()->name }}
+                        @endif
+                    </a>
+                </td>
+                <td><a href="{{ route('users.view', $communication->user_id) }}">
+                        @if ($communication->user->count() > 0)
+                            {{ $communication->user[0]->username }}@else Empty @endif
+                    </a>
                 </td>
                 <td>
                     @if ($communication->class === 1)
@@ -51,20 +61,21 @@
                     @if ($communication->status === 0)
                         <a href="javascript:void(0);" class="btn- btn-xs btn-info"> <i
                                 class="mdi mdi-square-edit-outline"></i></a>
-                    @else
-                        <a href="javascript:void(0);" class="btn- btn-xs btn-info" data-bs-toggle="modal"
-                            data-bs-target="#edit-communication-modal" id="edit-{{ $communication->id }}"
-                            onclick="editCommunication({{ $communication->id }});" data-toggle="modal"> <i
-                                class="mdi mdi-square-edit-outline"></i></a>
-                    @endif
-                    @if ($communication->status === 0)
                         <a href="javascript:void(0);" class="btn- btn-xs btn-danger"> <i
                                 class="mdi mdi-delete-circle"></i></a>
                     @else
+                        <a href="javascript:void(0);" class="btn- btn-xs btn-info" data-bs-toggle="modal"
+                            data-bs-target="#edit-communication-modal" id="edit-{{ $communication->id }}"
+                            onclick="editCommunication({{ $communication->id }});"> <i
+                                class="mdi mdi-square-edit-outline"></i></a>
                         <a href="javascript:void(0);" id="delete-{{ $communication->id }}"
                             onclick="deleteCommunication({{ $communication->id }});" class="btn- btn-xs btn-danger">
                             <i class="mdi mdi-delete-circle"></i></a>
                     @endif
+                    <a href="javascript:void(0);" class="btn- btn-xs btn-secondary" data-bs-toggle=""
+                        data-bs-target="#notes-modal"
+                        onclick="viewDatatableNotes({{ $communication->id }}, 'communications');"> <i
+                            class="mdi mdi-notebook-outline"></i></a>
                 </td>
             </tr>
         @endforeach

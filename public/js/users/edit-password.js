@@ -3,7 +3,6 @@ $(document).ready(function() {
         cleanErrorsInForm('edit-user-password', edit_password_errors)
         e.preventDefault();
         formData = $('#edit-user-password').serialize();
-        console.log($('#edit-user-password-pwd').val())
         $.ajax({
             type: "POST",
             url: route('password.update'),

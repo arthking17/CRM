@@ -12,6 +12,7 @@ $(document).ready(function() {
             drawCallback: function() {
                 $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
             },
+            "aaSorting": [],
         }),
         $('#datatable-communications tfoot th').each(function() {
             if (!$(this).hasClass('disabled')) {

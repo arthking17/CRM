@@ -17,9 +17,14 @@ $(document).ready(function () {
     $('#create-communication').submit(function (e) {
         e.preventDefault();
         cleanErrorsInForm('create-communication', create_communication_errors)
+
+        var currentUrl = window.location.href;
+        var urlTable = currentUrl.split('/');
+        var page_name = 'page_'+urlTable[3];
+
         $.ajax({
             type: "POST",
-            url: route('communications.create'),
+            url: route('communications.create', page_name),
             data: new FormData(this),
             dataType: "json",
             contentType: false,

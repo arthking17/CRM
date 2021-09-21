@@ -7,7 +7,7 @@
                         <h4 class="mt-0 mb-1">{{ $contact->first_name . ' ' . $contact->last_name }}</h4>
                         <p class="text-muted">{{ $contact->nickname }}</p>
                         <p class="text-muted"><i class="mdi mdi-office-building"></i>
-                            {{ $accounts->find($contact->account_id)->name }}</p>
+                            {{ $account_name }}</p>
                         <p class="text-muted d-none"> {{ $contact->id }}</p>
                     </div>
                 @endif

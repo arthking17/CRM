@@ -56,7 +56,7 @@
 
             <div class="row">
 
-                <div class="col-lg-9">
+                <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
                             <div id="view-list-communications">
@@ -65,15 +65,6 @@
                         </div> <!-- end card-body -->
                     </div> <!-- end card -->
                 </div><!-- end col -->
-
-                <div class="col-lg-3">
-                    <div class="card" id="communications-info-card">
-                        @include('communications.info')
-                    </div>
-                    <div class="card" id="notes-info-card">
-                        @include('notes.notes-info-ext')
-                    </div>
-                </div>
             </div>
             <!-- end row -->
 

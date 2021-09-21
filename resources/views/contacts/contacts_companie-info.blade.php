@@ -28,7 +28,7 @@
                         <h4 class="mt-0 mb-1">{{ $contact->name }}</h4>
                         <p class="text-muted">{{ getCompanieClassName($contact->class) }}</p>
                         <p class="text-muted"><i class="mdi mdi-office-building"></i>
-                            {{ $accounts->find($contact->account_id)->name }}</p>
+                            {{ $account_name }}</p>
                         <p class="text-muted d-none"> {{ $contact->id }}</p>
 
                     </div>

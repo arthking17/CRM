@@ -1,19 +1,20 @@
-$(document).ready(function() {
+$(document).ready(function () {
     var a = $("#datatable-accounts").DataTable({
         language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
-        drawCallback: function() {
+        drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
         },
         stateSave: 0,
         language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
-        drawCallback: function() {
+        drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
         },
-        "columnDefs": [ {
+        "columnDefs": [{
             "targets": 6,
             "orderable": false,
             "searchable": false
-            } ],
+        }],
+        "aaSorting": [],
     });
     a.buttons().container().appendTo("#datatable-accounts_wrapper .col-md-6:eq(0)"),
         $(".dataTables_length select").addClass("form-select form-select-sm"),
@@ -22,18 +23,18 @@ $(document).ready(function() {
 
 
     // Setup - add a text input to each footer cell
-    $('#datatable-accounts tfoot th').each(function() {
+    $('#datatable-accounts tfoot th').each(function () {
         var title = $(this).text();
         $(this).html('<input class="form-control form-control-sm" type="text" placeholder="Search ' + title + '" />');
     });
-    $('.disabled').each(function() {
-            $(this).html('');
-        })
-        // DataTable filter
-    a.columns('.text-filter').every(function() {
+    $('.disabled').each(function () {
+        $(this).html('');
+    })
+    // DataTable filter
+    a.columns('.text-filter').every(function () {
         var that = this;
 
-        $('input', this.footer()).on('keyup change clear', function() {
+        $('input', this.footer()).on('keyup change clear', function () {
             if (that.search() !== this.value) {
                 that
                     .search(this.value)
@@ -41,12 +42,12 @@ $(document).ready(function() {
             }
         });
     });
-    a.columns().every(function() {
+    a.columns().every(function () {
         var column = this;
         if ($(column.footer()).hasClass('select')) {
             var select = $('<select class="form-select"><option value=""></option></select>')
                 .appendTo($(column.footer()).empty())
-                .on('change', function() {
+                .on('change', function () {
                     var val = $.fn.dataTable.util.escapeRegex(
                         $(this).val()
                     );
@@ -56,11 +57,11 @@ $(document).ready(function() {
                         .draw();
                 });
             if ($(column.footer()).hasClass('account')) {
-                column.data().unique().sort().each(function(d, j) {
+                column.data().unique().sort().each(function (d, j) {
                     select.append('<option value="' + d + '">' + d + '</option>')
                 });
             } else {
-                column.data().unique().sort().each(function(d, j) {
+                column.data().unique().sort().each(function (d, j) {
                     d = d.slice(d.indexOf(">") + 1, d.indexOf("<", 1))
                     select.append('<option value="' + d + '">' + d + '</option>')
                 });

@@ -27,7 +27,7 @@
                                     </div>
                                 </div>
                             </div> <!-- end col -->
-                            <div class="row mb-3">
+                            <div class="row mb-3" id="edit-communication-row-contact_id">
                                 <label for="edit-communication-contact_id" class="col-4 col-xl-3 col-form-label">Contact<span
                                         class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">
@@ -55,7 +55,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            <div class="row mb-3">
+                            <div class="row mb-3" id="edit-communication-row-user_id">
                                 <label for="edit-communication-user_id" class="col-4 col-xl-3 col-form-label">User<span
                                         class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">

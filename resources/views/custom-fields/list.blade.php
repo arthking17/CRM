@@ -31,7 +31,7 @@
                             <a href="javascript:void(0);" class="btn- btn-xs btn-info"> <i
                                     class="mdi mdi-square-edit-outline"></i></a>
                             <a href="javascript:void(0);" class="btn- btn-xs btn-danger"> <i
-                                    class="mdi mdi-delete"></i></a>
+                                    class="mdi mdi-delete-circle"></i></a>
                         @else
                             <a id="edit-{{ $custom_field->id }}" href="javascript:void(0);"
                                 class="btn- btn-xs btn-info" data-bs-toggle="modal"
@@ -40,7 +40,7 @@
                                     class="mdi mdi-square-edit-outline"></i></a>
                             <a id="delete-{{ $custom_field->id }}" href="javascript:void(0);"
                                 onclick="deleteCustomField({{ $custom_field->id }});" class="btn- btn-xs btn-danger">
-                                <i class="mdi mdi-delete"></i></a>
+                                <i class="mdi mdi-delete-circle"></i></a>
                         @endif
                     </td>
                 </tr>

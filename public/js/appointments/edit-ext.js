@@ -30,15 +30,21 @@ $(document).ready(function () {
                 $('#edit-appointment-modal').modal('toggle')
                 Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                 //$('#edit-appointment')[0].reset();
-    
-                $('#view-list-appointments').html(response.html);
-                $.getScript(url_jsfile_appointments + "/datatable-appointments.init.js")
-                    .done(function(script, textStatus) {
-                        console.log(textStatus);
-                    })
-                    .fail(function(jqxhr, settings, exception) {
-                        console.log("Triggered ajaxError handler.");
-                    });
+
+                var appointment = response.appointment;
+                setTimeout(function () {
+                    $('#appointmentid' + appointment.id + ' td:nth-child(2)').html('<a href="'+route('contacts.view', appointment.contact_id)+'">'+response.contact_name+'</a>')
+                    $('#appointmentid' + appointment.id + ' td:nth-child(3)').html('<a href="'+route('contacts.view', appointment.user_id)+'">'+appointment.user[0].username+'</a>')
+                    var html;
+                    if (appointment.class == 1)
+                        html = '<span class="badge bg-success">Simple</span>'
+                    else if (appointment.class == 2)
+                        html = '<span class="badge bg-danger text-light">Urgent</span>'
+                    $('#appointmentid' + appointment.id + ' td:nth-child(4)').html(html)
+                    $('#appointmentid' + appointment.id + ' td:nth-child(5)').html(appointment.subject)
+                    $('#appointmentid' + appointment.id + ' td:nth-child(6)').html(appointment.start_date)
+                    $('#appointmentid' + appointment.id + ' td:nth-child(6)').html(appointment.end_date)
+                }, 1500);
             },
             error: function(error) {
                 console.log(error)

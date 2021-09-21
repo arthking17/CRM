@@ -44,7 +44,9 @@
                     @elseif($contact->status === 2)
                         <span class="badge bg-blue text-light">Customer</span>
                     @elseif($contact->status === 3)
-                        <span class="badge bg-danger">Not interested</span>
+                        <span class="badge bg-secondary">Not interested</span>
+                    @elseif($contact->status === 0)
+                        <span class="badge bg-danger">Disabled</span>
                     @endif
                 </td>
                 <td>{{ $contact->source_id }}</td>
@@ -70,7 +72,8 @@
                             @foreach ($sip_accounts as $key => $sip_account)
                                 <a id="button-call-one" class="dropdown-item" href="#call-one-modal"
                                     data-backdrop="false" data-bs-toggle="modal"
-                                    data-sipaccount-username="{{ $sip_account->username }}" onclick="setContactDataValues({{ getElementByName('contacts') }}, {{ $contact->id }});">
+                                    data-sipaccount-username="{{ $sip_account->username }}"
+                                    onclick="setContactDataValues({{ getElementByName('contacts') }}, {{ $contact->id }});">
                                     <img src="{{ asset('images/contact_data/mobile.png') }}" alt="contact-data-logo"
                                         height="12" class="me-1">{{ $sip_account->name }}</a>
                             @endforeach
@@ -83,9 +86,9 @@
                                 class="mdi mdi-calendar-plus"></i></a>
                     </div>
                     <div class="btn-group mb-2">
-                        <a id="edit-{{ $contact->id }}" class="btn- btn-xs btn-info js--tippy"
-                            title="Edit Contact" href="javascript: void(0);" data-bs-toggle="modal"
-                            data-bs-target="#edit-modal" onclick="editContact({{ $contact->id }});"><i
+                        <a id="edit-{{ $contact->id }}" class="btn- btn-xs btn-info js--tippy" title="Edit Contact"
+                            href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-modal"
+                            onclick="editContact({{ $contact->id }});"><i
                                 class="mdi mdi-square-edit-outline"></i></a>
                     </div>
                     <div class="btn-group mb-2">

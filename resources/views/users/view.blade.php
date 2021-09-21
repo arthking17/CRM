@@ -152,6 +152,8 @@
     @include('sip_accounts.call')
 
     @include('sms_accounts.sms')
+
+    <div id="notes-div"></div>
 @endsection
 
 @section('js')
@@ -202,6 +204,13 @@
 
     <!-- Init js-->
     <script src="/js/pages/form-fileuploads.init.js"></script>
+
+    <!-- selectize js -->
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js">
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/selectize.min.js">
+    </script>
 
     <!-- custom js files -->
     <script type="text/javascript">
@@ -274,6 +283,8 @@
         var edit_note_errors = null
 
         var edit_permission_errors = null
+
+        var edit_password_errors = null
 
         var myTimer = null
 

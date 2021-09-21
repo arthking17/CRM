@@ -25,7 +25,7 @@
                                     </div>
                                 </div>
                             </div> <!-- end col -->
-                            <div class="row mb-3">
+                            <div class="row mb-3" id="create-appointment-row-contact_id">
                                 <label for="create-appointment-contact_id"
                                     class="col-4 col-xl-3 col-form-label">Contact<span
                                         class="text-danger">*</span></label>
@@ -48,7 +48,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="row mb-3">
+                            <div class="row mb-3" id="create-appointment-row-user_id">
                                 <label for="create-appointment-user_id" class="col-4 col-xl-3 col-form-label">User<span
                                         class="text-danger">*</span></label>
                                 <div class="col-8 col-xl-9">

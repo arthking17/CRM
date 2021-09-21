@@ -132,12 +132,16 @@
                                                         name="account_id" @if (Auth::user()->role === 2) id="form_edit-account_id-disabled" @elseif (Auth::user()->role === 1) id="form_edit-account_id" @endif required
                                                         data-parsley-length="[1, 10]"
                                                         data-parsley-length-message="select an account"
-                                                        @if (Auth::user()->role == 2) disabled value="{{ Auth::user()->account_id }}" @endif>
+                                                        @if (Auth::user()->role == 2) disabled @endif>
                                                         <option>select an account</option>
                                                         @foreach ($accounts as $key => $account)
                                                             <option value="{{ $account->id }}">{{ $account->name }}
                                                             </option>
                                                         @endforeach
+                                                        @if (Auth::user()->role == 2)
+                                                            <option value="{{ Auth::user()->account_id }}" selected>
+                                                                {{ Auth::user()->account[0]->name }}</option>
+                                                        @endif
                                                     </select>
                                                 </div>
                                             </div>

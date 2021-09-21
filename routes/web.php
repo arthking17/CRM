@@ -34,7 +34,7 @@ Route::get('/users/create', 'UserController@create')->name('user.create');
 Route::post('/users/create', 'UserController@store')->name('user.create');
 //route for update user
 Route::get('/users/edit/{id}', 'UserController@getUserById')->name('user.edit')->middleware('auth');
-Route::put('/users/update/{id}', 'UserController@update')->name('user.update')->middleware('auth');
+Route::put('/users/update/{page_name}', 'UserController@update')->name('user.update')->middleware('auth');
 Route::put('/users/photo/update', 'UserController@updatePhoto')->name('user.photo.update')->middleware('auth');
 Route::put('/users/password/update', 'UserController@updatePassword')->name('password.update')->middleware('auth');
 //route for delete user
@@ -123,14 +123,14 @@ Route::get('/appointments', 'AppointmentController@index')->name('appointments')
 Route::get('/appointments/all', 'AppointmentController@getAllAppointments')->name('appointments.all')->middleware('auth');
 Route::get('/appointments/get/{id}', 'AppointmentController@getAppointment')->name('appointments.get')->middleware('auth');
 Route::post('/appointments/create/{type}', 'AppointmentController@store')->name('appointments.create')->middleware('auth');
-Route::put('/appointments/update/{type}', 'AppointmentController@update')->name('appointments.update')->middleware('auth');
+Route::put('/appointments/update', 'AppointmentController@update')->name('appointments.update')->middleware('auth');
 Route::delete('/appointments/delete/{id}', 'AppointmentController@destroy')->name('appointments.delete')->middleware('auth');
 
 //route for communications
 Route::get('/communications', 'CommunicationController@index')->name('communications')->middleware('auth');
 Route::get('/communications/get/{id}', 'CommunicationController@getCommunication')->name('communications.get')->middleware('auth');
 Route::get('/communications/show/{id}', 'CommunicationController@show')->name('communications.show')->middleware('auth');
-Route::post('/communications/create', 'CommunicationController@store')->name('communications.create')->middleware('auth');
+Route::post('/communications/create/{page_name}', 'CommunicationController@store')->name('communications.create')->middleware('auth');
 Route::put('/communications/update', 'CommunicationController@update')->name('communications.update')->middleware('auth');
 Route::delete('/communications/delete/{id}', 'CommunicationController@destroy')->name('communications.delete')->middleware('auth');
 

@@ -127,6 +127,7 @@ function viewNotes(element_id, element) {
 
 function viewDatatableNotes(element_id, element) {
     $.get('/notes/get/element/' + element_id + '/' + element, function (data) {
+        console.log(data)
         if (typeof dataTableNotes !== 'undefined')
             dataTableNotes.destroy()
         $('#notes-div').empty().html(data);

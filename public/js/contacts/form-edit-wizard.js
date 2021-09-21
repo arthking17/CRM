@@ -57,36 +57,49 @@ $(document).ready(function () {
                 console.log(response)
                 $('#edit-modal').modal('toggle')
                 Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
-                if (response.page_name == 'page_list') {
-                    $('#contacts-result').html(response.html);
-                    viewInfoCardContact(response.contact.id, response.contact.class)
 
-                    $.getScript(url_jsfile + "/datatable-contacts.init.js")
-                        .done(function (script, textStatus) {
-                            console.log(textStatus);
-                        })
-                        .fail(function (jqxhr, settings, exception) {
-                            console.log("Triggered ajaxError handler.");
-                        });
-                    $('#edit-contactwizard').find("a[href*='edit-contact-class']").trigger('click');
+                console.log(page_name)
+                setTimeout(function () {
+                    if (page_name == 'page_list') {
+                        var contact = response.contact;
+                        $('#contactid' + contact.id + ' td:nth-child(2)').html(contact.account_id)
+                        var html;
 
-                    $(".datepicker").flatpickr({
-                        dateFormat: "Y-m-d",
-                        altInput: true,
-                        defaultDate: null,
-                    });
-                    $(".datetimepicker").flatpickr({
-                        enableTime: true,
-                        altInput: true,
-                        defaultDate: null,
-                        dateFormat: "Y-m-d H:i",
-                    });
-                } else if (response.page_name == 'page_view') {
-                    if (response.contact.class == 1)
-                        $('#contacts_person-info-card').html(response.html);
-                    else if (response.contact.class == 2)
-                        $('#contacts_companie-info-card').html(response.html);
-                }
+                        if (contact.class == 1)
+                            html = '<span class="badge bg-blue text-light">Person</span>'
+                        else if (contact.class == 2)
+                            html = '<span class="badge bg-success">Company</span>'
+                        $('#contactid' + contact.id + ' td:nth-child(3)').html(html)
+
+                        if (contact.source == 1)
+                            html = '<span class="badge label-table bg-danger">Telephone prospecting</span>'
+                        else if (contact.source == 2)
+                            html = '<span class="badge bg-warning">Landing pages</span>'
+                        else if (contact.source == 3)
+                            html = '<span class="badge bg-success">Affiliation</span>'
+                        else if (contact.source == 4)
+                            html = '<span class="badge bg-blue text-light">Database purchased</span>'
+                        $('#contactid' + contact.id + ' td:nth-child(4)').html(html)
+
+                        if (contact.status == 1)
+                            html = '<span class="badge label-table bg-success">Lead</span>'
+                        else if (contact.status == 2)
+                            html = '<span class="badge bg-blue text-light">Customer</span>'
+                        else if (contact.status == 3)
+                            html = '<span class="badge bg-secondary">Not interested</span>'
+                        else if (contact.status == 4)
+                            html = '<span class="badge bg-danger">Disabled</span>'
+                        $('#contactid' + contact.id + ' td:nth-child(6)').html(html)
+                        
+                        $('#contactid' + contact.id + ' td:nth-child(7)').html(contact.source_id)
+
+                    } else if (page_name == 'page_view') {
+                        if (response.contact.class == 1)
+                            $('#contacts_person-info-card').html(response.html);
+                        else if (response.contact.class == 2)
+                            $('#contacts_companie-info-card').html(response.html);
+                    }
+                }, 1500);
             },
             error: function (error) {
                 console.log(error)

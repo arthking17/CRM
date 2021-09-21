@@ -17,10 +17,19 @@
         @foreach ($appointments as $appointment)
             <tr id="appointmentid{{ $appointment->id }}">
                 <td>{{ $appointment->id }}</td>
-                <td>{{ $appointment->contact_id }}</td>
-                <td>
-                    @if ($appointment->user->count() > 0)
-                        {{ $appointment->user[0]->username }}@else Empty @endif
+                <td><a href="{{ route('contacts.view', $appointment->contact_id) }}">
+                        @if ($appointment->contact[0]->class === 1)
+                            (Person)
+                            {{ $contacts_persons->where('id', $appointment->contact_id)->first()->first_name . ' ' . $contacts_persons->where('id', $appointment->contact_id)->first()->last_name }}
+                        @elseif($appointment->contact[0]->class === 2)
+                            (Companie) {{ $contacts_companies->where('id', $appointment->contact_id)->first()->name }}
+                        @endif
+                    </a>
+                </td>
+                <td><a href="{{ route('users.view', $appointment->user_id) }}">
+                        @if ($appointment->user->count() > 0)
+                            {{ $appointment->user[0]->username }}@else Empty @endif
+                    </a>
                 </td>
                 <td>
                     @if ($appointment->class === 1)
@@ -30,7 +39,7 @@
                     @endif
                 </td>
                 <td data-bind="text: text()" class="text-truncate" style="max-width: 200px"
-                title="{{ $appointment->subject }}">{{ $appointment->subject }}</td>
+                    title="{{ $appointment->subject }}">{{ $appointment->subject }}</td>
                 <td>{{ $appointment->start_date }}</td>
                 <td>{{ $appointment->end_date }}</td>
                 <td>
@@ -44,7 +53,8 @@
                     @if ($appointment->status === 0)
                         <a href="javascript:void(0);" class="btn- btn-xs btn-info"> <i
                                 class="mdi mdi-square-edit-outline"></i></a>
-                        <a href="javascript:void(0);" class="btn- btn-xs btn-danger"> <i class="mdi mdi-delete-circle"></i></a>
+                        <a href="javascript:void(0);" class="btn- btn-xs btn-danger"> <i
+                                class="mdi mdi-delete-circle"></i></a>
                     @else
                         <a href="javascript:void(0);" class="btn- btn-xs btn-info" data-bs-toggle="modal"
                             data-bs-target="#edit-appointment-modal"

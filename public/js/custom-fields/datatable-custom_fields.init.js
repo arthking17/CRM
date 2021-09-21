@@ -6,11 +6,12 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
         },
-        "columnDefs": [ {
+        "columnDefs": [{
             "targets": 6,
             "orderable": false,
             "searchable": false
-            } ],
+        }],
+        "aaSorting": [],
     }),
         $('#datatable-custom-fields tfoot th').each(function () {
             if (!$(this).hasClass('disabled')) {

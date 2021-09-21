@@ -135,12 +135,16 @@
                                                         name="account_id" @if (Auth::user()->role === 2) id="form_create-account_id-disabled" @elseif (Auth::user()->role === 1) id="form_create-account_id" @endif required
                                                         data-parsley-length="[1, 10]"
                                                         data-parsley-length-message="select an account"
-                                                        @if (Auth::user()->role == 2) disabled value="{{ Auth::user()->account_id }}" @endif>
+                                                        @if (Auth::user()->role == 2) disabled @endif>
                                                         <option>select an account</option>
                                                         @foreach ($accounts as $key => $account)
                                                             <option value="{{ $account->id }}">{{ $account->name }}
                                                             </option>
                                                         @endforeach
+                                                        @if (Auth::user()->role == 2)
+                                                            <option value="{{ Auth::user()->account_id }}" selected>
+                                                                {{ Auth::user()->account[0]->name }}</option>
+                                                        @endif
                                                     </select>
                                                 </div>
                                             </div>
@@ -544,7 +548,7 @@
                                                             class="form-select @error($custom_field->tag) parsley-error @enderror"
                                                             name="{{ $custom_field->tag }}"
                                                             id="form_create-{{ $custom_field->tag }}">
-                                                            <option value="">Select ...</option>
+                                                            <option value="">Select {{ $custom_field->tag }}</option>
                                                             @foreach ($select_options->where('field_id', $custom_field->id) as $key => $opt)
                                                                 <option value="{{ $opt->id }}">
                                                                     {{ $opt->title }}</option>
