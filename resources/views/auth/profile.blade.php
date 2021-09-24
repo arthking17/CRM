@@ -5,20 +5,20 @@
     <link rel="shortcut icon" href="https://coderthemes.com/ubold/layouts/assets/images/favicon.ico">
 
     <!-- Edit user photo css -->
-    <link href="/css/users/user-photo.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/users/user-photo.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- custom style -->
-    <link href="/css/custom-style.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/custom-style.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- App css -->
-    <link href="/css/config/creative/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
-    <link href="/css/config/creative/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
+    <link href="{{ asset('css/config/creative/bootstrap.min.css') }}" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
+    <link href="{{ asset('css/config/creative/app.min.css') }}" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
 
-    <link href="/css/config/creative/bootstrap-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
-    <link href="/css/config/creative/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
+    <link href="{{ asset('css/config/creative/bootstrap-dark.min.css') }}" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
+    <link href="{{ asset('css/config/creative/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
 
     <!-- icons -->
-    <link href="/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('content')
@@ -308,24 +308,24 @@
 
 @section('js')
     <!-- Vendor js -->
-    <script src="/js/vendor.min.js"></script>
+    <script src="{{ asset('js/vendor.min.js') }}"></script>
 
     <!-- Plugin js-->
-    <script src="/libs/parsleyjs/parsley.min.js"></script>
+    <script src="{{ asset('libs/parsleyjs/parsley.min.js') }}"></script>
 
     <!-- Sweet Alerts js -->
-    <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="{{ asset('libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
     <!-- Edit user photo js -->
-    <script src="/js/users/user-photo.js"></script>
+    <script src="{{ asset('js/users/user-photo.js') }}"></script>
 
     <!-- custom js files -->
-    <script src="/js/form-validation-laravel.js"></script>
-    <script src="/js/profile/profile.js"></script>
-    <script src="/js/email_accounts/email_account.js"></script>
-    <script src="/js/users/edit-password.js"></script>
-    <script src="/js/sip_accounts/ajax-crud.js"></script>
-    <script src="/js/sms_accounts/sms_account.js"></script>
+    <script src="{{ asset('js/form-validation-laravel.js') }}"></script>
+    <script src="{{ asset('js/profile/profile.js') }}"></script>
+    <script src="{{ asset('js/email_accounts/email_account.js') }}"></script>
+    <script src="{{ asset('js/users/edit-password.js') }}"></script>
+    <script src="{{ asset('js/sip_accounts/ajax-crud.js') }}"></script>
+    <script src="{{ asset('js/sms_accounts/sms_account.js') }}"></script>
     <script>
         url_photo = '{{ URL::asset('/storage/images/users/') }}';
         var create_email_account_errors = null
@@ -357,5 +357,5 @@
     <!-- custom js files end -->
 
     <!-- App js -->
-    <script src="/js/app.min.js"></script>
+    <script src="{{ asset('js/app.min.js') }}"></script>
 @endsection

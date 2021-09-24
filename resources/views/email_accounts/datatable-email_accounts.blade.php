@@ -54,12 +54,12 @@
                 </td>
                 <td>
                     @if ($email_account->status === 0)
-                        <a href="javascript:void(0);" class="btn- btn-xs btn-info"> <i
+                        <a href="javascript:void(0);" class="btn- btn-xs btn-secondary"> <i
                                 class="mdi mdi-square-edit-outline"></i></a>
                         <a href="javascript:void(0);" class="btn- btn-xs btn-danger"> <i
                                 class="mdi mdi-delete-circle"></i></a>
                     @else
-                        <a href="javascript:void(0);" class="btn- btn-xs btn-info" data-bs-toggle="modal"
+                        <a href="javascript:void(0);" class="btn- btn-xs btn-secondary" data-bs-toggle="modal"
                             data-bs-target="#edit-email_account-modal"
                             onclick="editEmailAccount({{ $email_account->id }});" data-toggle="modal"> <i
                                 class="mdi mdi-square-edit-outline"></i></a>

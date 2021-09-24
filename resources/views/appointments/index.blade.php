@@ -5,29 +5,29 @@
     <link rel="shortcut icon" href="https://coderthemes.com/ubold/layouts/assets/images/favicon.ico">
 
     <!-- Plugin css -->
-    <link href="/libs/fullcalendar/main.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/fullcalendar/main.min.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- third party css -->
-    <link href="/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-    <link href="/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-    <link href="/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-    <link href="/libs/datatables.net-select-bs4/css/select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/datatables.net-select-bs4/css/select.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- third party css end -->
 
     <!-- picker css -->
-    <link href="/libs/spectrum-colorpicker2/spectrum.min.css" rel="stylesheet" type="text/css">
-    <link href="/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
-    <link href="/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/spectrum-colorpicker2/spectrum.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- App css -->
-    <link href="/css/config/creative/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
-    <link href="/css/config/creative/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
+    <link href="{{ asset('css/config/creative/bootstrap.min.css') }}" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
+    <link href="{{ asset('css/config/creative/app.min.css') }}" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
 
-    <link href="/css/config/creative/bootstrap-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
-    <link href="/css/config/creative/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
+    <link href="{{ asset('css/config/creative/bootstrap-dark.min.css') }}" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
+    <link href="{{ asset('css/config/creative/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
 
     <!-- icons -->
-    <link href="/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('content')
@@ -101,57 +101,57 @@
 
 @section('js')
     <!-- Vendor js -->
-    <script src="/js/vendor.min.js"></script>
+    <script src="{{ asset('js/vendor.min.js') }}"></script>
 
     <!-- Plugin js-->
-    <script src="/libs/parsleyjs/parsley.min.js"></script>
+    <script src="{{ asset('libs/parsleyjs/parsley.min.js') }}"></script>
 
     <!-- Sweet Alerts js -->
-    <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="{{ asset('libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
     <!-- third party js -->
-    <script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
-    <script src="/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="{{ asset('libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
     <!-- button pdf copy -->
-    <script src="/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="{{ asset('libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
     <!-- style button -->
-    <script src="/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="{{ asset('libs/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
     <!-- style button end -->
     <!-- button print -->
-    <script src="/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="{{ asset('libs/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
     <!-- not use -->
-    <script src="/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
-    <script src="/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-    <script src="/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+    <script src="{{ asset('libs/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables.net-keytable/js/dataTables.keyTable.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables.net-select/js/dataTables.select.min.js') }}"></script>
     <!-- not use end -->
     <!-- pdf -->
-    <script src="/libs/pdfmake/build/pdfmake.min.js"></script>
-    <script src="/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="{{ asset('libs/pdfmake/build/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('libs/pdfmake/build/vfs_fonts.js') }}"></script>
     <!-- third party js ends -->
 
     <!-- plugin js -->
-    <script src="/libs/moment/min/moment.min.js"></script>
-    <script src="/libs/fullcalendar/main.min.js"></script>
+    <script src="{{ asset('libs/moment/min/moment.min.js') }}"></script>
+    <script src="{{ asset('libs/fullcalendar/main.min.js') }}"></script>
 
     <!-- picker js -->
-    <script src="/libs/spectrum-colorpicker2/spectrum.min.js"></script>
-    <script src="/libs/flatpickr/flatpickr.min.js"></script>
-    <script src="/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-    <script src="/js/form-pickers.init.js"></script>
+    <script src="{{ asset('libs/spectrum-colorpicker2/spectrum.min.js') }}"></script>
+    <script src="{{ asset('libs/flatpickr/flatpickr.min.js') }}"></script>
+    <script src="{{ asset('libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('js/form-pickers.init.js') }}"></script>
 
     <!-- Tippy js-->
-    <script src="/libs/tippy.js/tippy.all.min.js"></script>
+    <script src="{{ asset('libs/tippy.js/tippy.all.min.js') }}"></script>
 
     <!-- custom js files -->
-    <script src="/js/appointments/calendar.init.js"></script>
-    <script src="/js/appointments/datatable-appointments.init.js"></script>
-    <script src="/js/appointments/appointments.js"></script>
-    <script src="/js/appointments/create.js"></script>
-    <script src="/js/appointments/edit.js"></script>
-    <script src="/js/form-validation-laravel.js"></script>
+    <script src="{{ asset('js/appointments/calendar.init.js') }}"></script>
+    <script src="{{ asset('js/appointments/datatable-appointments.init.js') }}"></script>
+    <script src="{{ asset('js/appointments/appointments.js') }}"></script>
+    <script src="{{ asset('js/appointments/create.js') }}"></script>
+    <script src="{{ asset('js/appointments/edit.js') }}"></script>
+    <script src="{{ asset('js/form-validation-laravel.js') }}"></script>
     <script>
         url_jsfile_appointments = '{{ URL::asset('/js/appointments/') }}';
         var create_appointment_errors = null
@@ -159,5 +159,5 @@
     </script>
 
     <!-- App js-->
-    <script src="/js/app.min.js"></script>
+    <script src="{{ asset('js/app.min.js') }}"></script>
 @endsection

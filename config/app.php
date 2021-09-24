@@ -162,8 +162,6 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-        BeyondCode\Mailbox\MailboxServiceProvider::class,
-        Webklex\IMAP\Providers\LaravelServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -231,7 +229,6 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        'Mailbox' => BeyondCode\Mailbox\Facades\Mailbox::class,
         'Client' => Webklex\IMAP\Facades\Client::class,
         'IPinfo' => ipinfo\ipinfo\IPinfo::class,
 

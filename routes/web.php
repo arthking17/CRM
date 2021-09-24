@@ -167,7 +167,7 @@ Route::get('/sms_accounts/get/{id}', 'SMSAccountController@getSMSAccount')->name
 Route::delete('/sms_accounts/delete/{id}', 'SMSAccountController@destroy')->name('sms_accounts.delete')->middleware('auth');
 Route::get('/sms_accounts/get', 'SMSAccountController@getAllSMSAccount')->name('sms_accounts')->middleware('auth');
 Route::get('/sms', 'SMSAccountController@chat')->name('chat')->middleware('auth');
-Route::post('/sms/send', 'SMSAccountController@sendSMS')->name('sms.send')->middleware('auth');
+Route::post('/sms/send', 'PHloController@sendSMS')->name('sms.send')->middleware('auth');
 
 //route for shortcodes settings
 Route::post('/shortcodes/create', 'ShortCodeController@store')->name('shortcodes.create')->middleware('auth');

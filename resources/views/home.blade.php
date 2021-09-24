@@ -5,18 +5,18 @@
     <link rel="shortcut icon" href="https://coderthemes.com/ubold/layouts/assets/images/favicon.ico">
 
     <!-- Plugins css -->
-    <link href="/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
-    <link href="/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/selectize/css/selectize.bootstrap3.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- App css -->
-    <link href="/css/config/creative/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
-    <link href="/css/config/creative/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
+    <link href="{{ asset('css/config/creative/bootstrap.min.css') }}" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
+    <link href="{{ asset('css/config/creative/app.min.css') }}" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
 
-    <link href="/css/config/creative/bootstrap-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
-    <link href="/css/config/creative/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
+    <link href="{{ asset('css/config/creative/bootstrap-dark.min.css') }}" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
+    <link href="{{ asset('css/config/creative/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
 
     <!-- icons -->
-    <link href="/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('content')
@@ -244,7 +244,7 @@
                                     <tbody>
                                         <tr>
                                             <td style="width: 36px;">
-                                                <img src="/images/users/user-2.jpg" alt="contact-img"
+                                                <img src="{{ asset('images/users/user-2.jpg') }}" alt="contact-img"
                                                     title="contact-img" class="rounded-circle avatar-sm" />
                                             </td>
 
@@ -275,7 +275,7 @@
 
                                         <tr>
                                             <td style="width: 36px;">
-                                                <img src="/images/users/user-3.jpg" alt="contact-img"
+                                                <img src="{{ asset('images/users/user-3.jpg') }}" alt="contact-img"
                                                     title="contact-img" class="rounded-circle avatar-sm" />
                                             </td>
 
@@ -305,7 +305,7 @@
                                         </tr>
                                         <tr>
                                             <td style="width: 36px;">
-                                                <img src="/images/users/user-4.jpg" alt="contact-img"
+                                                <img src="{{ asset('images/users/user-4.jpg') }}" alt="contact-img"
                                                     title="contact-img" class="rounded-circle avatar-sm" />
                                             </td>
 
@@ -335,7 +335,7 @@
                                         </tr>
                                         <tr>
                                             <td style="width: 36px;">
-                                                <img src="/images/users/user-5.jpg" alt="contact-img"
+                                                <img src="{{ asset('images/users/user-5.jpg') }}" alt="contact-img"
                                                     title="contact-img" class="rounded-circle avatar-sm" />
                                             </td>
 
@@ -365,7 +365,7 @@
                                         </tr>
                                         <tr>
                                             <td style="width: 36px;">
-                                                <img src="/images/users/user-6.jpg" alt="contact-img"
+                                                <img src="{{ asset('images/users/user-6.jpg') }}" alt="contact-img"
                                                     title="contact-img" class="rounded-circle avatar-sm" />
                                             </td>
 
@@ -589,18 +589,18 @@
 @section('js')
 
     <!-- Vendor js -->
-    <script src="/js/vendor.min.js"></script>
+    <script src="{{ asset('js/vendor.min.js') }}"></script>
 
     <!-- Plugins js-->
-    <script src="/libs/flatpickr/flatpickr.min.js"></script>
-    <script src="/libs/apexcharts/apexcharts.min.js"></script>
+    <script src="{{ asset('libs/flatpickr/flatpickr.min.js') }}"></script>
+    <script src="{{ asset('libs/apexcharts/apexcharts.min.js') }}"></script>
 
-    <script src="/libs/selectize/js/standalone/selectize.min.js"></script>
+    <script src="{{ asset('libs/selectize/js/standalone/selectize.min.js') }}"></script>
 
     <!-- Dashboar 1 init js-->
-    <script src="/js/pages/dashboard-1.init.js"></script>
+    <script src="{{ asset('js/pages/dashboard-1.init.js') }}"></script>
 
     <!-- App js-->
-    <script src="/js/app.min.js"></script>
+    <script src="{{ asset('js/app.min.js') }}"></script>
 
 @endsection

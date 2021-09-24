@@ -1,22 +1,22 @@
-$(document).ready(function() {
-    $('#search-contact-class').on('change', function() {
+$(document).ready(function () {
+    $('#search-contact-class').on('change', function () {
         if ($(this).val() == "1") {
             $('#search-nav-tab-info a:nth-of-type(1)').attr('href', '#search-person-contact')
-                //disable validation on companies contact tab
+            //disable validation on companies contact tab
             $('#search-contact .companie-required').attr('required', false)
-                //active validation on person contact tab
+            //active validation on person contact tab
             $('#search-contact .person-required').attr('required', true)
         } else if ($(this).val() == "2") {
             $('#search-nav-tab-info a:nth-of-type(1)').attr('href', '#search-companie-contact')
-                //active validation on companies contact tab
+            //active validation on companies contact tab
             $('#search-contact .companie-required').attr('required', true)
-                //disable validation on person contact tab
+            //disable validation on person contact tab
             $('#search-contact .person-required').attr('required', false)
         }
     })
 
     $("#search-contact-wizard").bootstrapWizard({
-        onTabShow: function(t, r, a) {
+        onTabShow: function (t, r, a) {
             var o = ((a + 1) / r.find("li").length) * 100;
             $("#search-contact-wizard")
                 .find(".bar")
@@ -28,15 +28,15 @@ $(document).ready(function() {
     for (var i = 0; i < 10; i++) {
         if (i == 0 || i == 1 || i == 2 || i == 7) {
             input = $('#search-contact-' + getContactTypeByClass(i))
-            var iti = input.intlTelInput(input, {
+            input.intlTelInput({
                 initialCountry: "auto",
-                geoIpLookup: function(callback) {
-                    $.get('https://ipinfo.io', function() {}, "jsonp").always(function(resp) {
-                        var countryCode = (resp && resp.country) ? resp.country : "tn";
+                geoIpLookup: function (callback) {
+                    $.get('https://ipinfo.io?token=947e2827248fe2', function () { }, "jsonp").always(function (resp) {
+                        var countryCode = (resp && resp.country) ? resp.country : "TN";
                         callback(countryCode);
                     });
                 },
-                utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@16.0.3/build/js/utils.js" // just for formatting/placeholders etc
+                utilsScript: "/twilio/js/utils.js?1613236686837" // just for formatting/placeholders etc
             });
         }
     }
@@ -59,10 +59,10 @@ $(document).ready(function() {
                 contentType: false,
                 processData: false,
                 cache: false,
-                success: function(response) {
+                success: function (response) {
                     callback(response)
                 },
-                error: function() {
+                error: function () {
                     callback()
                 }
             })
@@ -76,16 +76,10 @@ $(document).ready(function() {
     });
 
     $("#search-contact-status").selectize({
-        //options: ['lead', 'customer', 'not interrested'],
-        valueField: 'value',
-        labelField: 'id',
-        //searchField: ['id'],
-        maxItems: null,
+        maxItems: 3,
         create: false,
         closeAfterSelect: true,
         placeholder: 'Status',
-        loadingClass: 'form-select',
-        copyClassesToDropdown: true,
     });
 
     $("#search-contact-account_id").selectize({
@@ -120,14 +114,56 @@ $(document).ready(function() {
                 contentType: false,
                 processData: false,
                 cache: false,
-                success: function(response) {
+                success: function (response) {
                     callback(response)
                 },
-                error: function() {
+                error: function () {
                     callback()
                 }
             })
         },
         placeholder: 'Source id',
+    });
+
+    $("#search-contact-profile").selectize({
+        maxItems: null,
+        create: false,
+        closeAfterSelect: true,
+        placeholder: 'Profile',
+    });
+
+    $("#search-contact-person_country").selectize({
+        maxItems: null,
+        create: false,
+        closeAfterSelect: true,
+        placeholder: 'Country',
+    });
+
+    $("#search-contact-person_language").selectize({
+        maxItems: null,
+        create: false,
+        closeAfterSelect: true,
+        placeholder: 'Language',
+    });
+
+    $("#search-contact-activity").selectize({
+        maxItems: null,
+        create: false,
+        closeAfterSelect: true,
+        placeholder: 'Activity',
+    });
+
+    $("#search-contact-companies_country").selectize({
+        maxItems: null,
+        create: false,
+        closeAfterSelect: true,
+        placeholder: 'Country',
+    });
+
+    $("#search-contact-companies_language").selectize({
+        maxItems: null,
+        create: false,
+        closeAfterSelect: true,
+        placeholder: 'Language',
     });
 })

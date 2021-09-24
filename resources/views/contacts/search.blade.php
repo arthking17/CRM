@@ -5,64 +5,63 @@
     <link rel="shortcut icon" href="https://coderthemes.com/ubold/layouts/assets/images/favicon.ico">
 
     <!-- third party css -->
-    <link href="/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-    <link href="/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-    <link href="/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
-    <link href="/libs/datatables.net-select-bs4/css/select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/datatables.net-select-bs4/css/select.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
     <!-- third party css end -->
 
     <!-- country select css files -->
-    <link rel="stylesheet" href="build/css/countrySelect.css">
-    <link rel="stylesheet" href="/css/custom-style.css">
+    <link rel="stylesheet" href="{{ asset('css/custom-style.css') }}">
     <!-- country select css files end -->
 
     <!-- plugin css select with country flag -->
-    <link rel="stylesheet" href="/twilio/css/intlTelInput.min.css">
+    <link rel="stylesheet" href="{{ asset('twilio/css/intlTelInput.min.css') }}">
 
     <!-- Edit contact companie logo css -->
-    <link href="/css/contacts/companie-logo.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/contacts/companie-logo.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- Jquery Toast css -->
-    <link href="/libs/jquery-toast-plugin/jquery.toast.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/jquery-toast-plugin/jquery.toast.min.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- selectize js -->
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.bootstrap4.min.css" />
 
     <!-- picker css -->
-    <link href="/libs/spectrum-colorpicker2/spectrum.min.css" rel="stylesheet" type="text/css">
-    <link href="/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
-    <link href="/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/spectrum-colorpicker2/spectrum.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- Plugins css -->
-    <link href="/libs/dropzone/min/dropzone.min.css" rel="stylesheet" type="text/css" />
-    <link href="/libs/dropify/css/dropify.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/dropzone/min/dropzone.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/dropify/css/dropify.min.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- send email modal -->
-    <link href="/css/contacts/data/send-mail.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/contacts/data/send-mail.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- jquery-ui 
-                                                        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
+                                                                            <link rel="stylesheet" href="{{ asset('/code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
 
     <!-- quill css 
-                                                    <link href="/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
-                                                    <link href="/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />-->
+                                                                        <link href="{{ asset('libs/quill/quill.core.css') }}" rel="stylesheet" type="text/css" />
+                                                                        <link href="{{ asset('libs/quill/quill.snow.css') }}" rel="stylesheet" type="text/css" />-->
 
     <!-- Include Quill stylesheet -->
-    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css') }}" rel="stylesheet">
 
     <!-- phone call animation 
-                                    <link href="/css/phone_call_animation.css" rel="stylesheet">-->
+                                                        <link href="{{ asset('css/phone_call_animation.css') }}" rel="stylesheet">-->
 
     <!-- App css -->
-    <link href="/css/config/creative/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
-    <link href="/css/config/creative/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
+    <link href="{{ asset('css/config/creative/bootstrap.min.css') }}" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
+    <link href="{{ asset('css/config/creative/app.min.css') }}" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
 
-    <link href="/css/config/creative/bootstrap-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
-    <link href="/css/config/creative/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
+    <link href="{{ asset('css/config/creative/bootstrap-dark.min.css') }}" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
+    <link href="{{ asset('css/config/creative/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
 
     <!-- icons -->
-    <link href="/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('content')
@@ -129,26 +128,30 @@
                                                             <label for="search-contact-account_id"
                                                                 class="col-4 col-xl-3 col-form-label">account</label>
                                                             <div class="col-8 col-xl-9">
+                                                                @if (Auth::user()->role == 2)
+                                                                    <input type="text" class="form-select d-none"
+                                                                        name="account_id" id="search-contact-account_id"
+                                                                        value="{{ Auth::user()->account_id }}">
+                                                                @endif
                                                                 <select
-                                                                    class="form-select @error('account_id') parsley-error @enderror"
-                                                                    name="account_id" id="search-contact-account_id"
-                                                                    data-parsley-type="integer"
-                                                                    data-parsley-length="[1, 10]">
-                                                                    <option value="">no choice</option>
+                                                                    class="@if (Auth::user()->role === 2) form-select @endif @error('account_id') parsley-error @enderror"
+                                                                    name="account_id" @if (Auth::user()->role === 2)
+                                                                    id="search-contact-account_id-disabled" disabled
+                                                                @elseif (Auth::user()->role === 1)
+                                                                    id="search-contact-account_id"
+                                                                    @endif multiple>
+                                                                    <option value="">all</option>
                                                                     @foreach ($accounts as $account)
                                                                         <option value="{{ $account->id }}">
                                                                             {{ $account->name }}
                                                                         </option>
                                                                     @endforeach
+                                                                    @if (Auth::user()->role == 2)
+                                                                        <option value="{{ Auth::user()->account_id }}"
+                                                                            selected>
+                                                                            {{ Auth::user()->account[0]->name }}</option>
+                                                                    @endif
                                                                 </select>
-                                                                @error('account_id')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('account_id') }}</li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -156,18 +159,8 @@
                                                                 class="col-4 col-xl-3 col-form-label">Contact
                                                                 Id</label>
                                                             <div class="col-8 col-xl-9">
-                                                                <input type="number"
-                                                                    class="form-control @error('id') parsley-error @enderror"
+                                                                <input type="text" class="form-control @error('id') parsley-error @enderror"
                                                                     id="search-contact-id" name="id" placeholder="id">
-                                                                @error('id')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('id') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -175,46 +168,30 @@
                                                                 class="col-4 col-xl-3 col-form-label">Source
                                                                 Id</label>
                                                             <div class="col-8 col-xl-9">
-                                                                <input type="number"
-                                                                    class="form-control @error('source_id') parsley-error @enderror"
-                                                                    name="source_id" id="search-contact-source_id"
-                                                                    placeholder="Identifier of Source"
-                                                                    data-parsley-type="integer" data-parsley-maxlength="10">
-                                                                @error('source_id')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('source_id') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
+                                                                <select class=" @error('source_id') parsley-error @enderror"
+                                                                    name="source_id" id="search-contact-source_id">
+                                                                    <option value="">all</option>
+                                                                    @foreach ($contacts_1 as $contact_1)
+                                                                        <option value="{{ $contact_1->source_id }}">
+                                                                            {{ $contact_1->source_id }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
                                                             <label for="search-contact-group_id"
                                                                 class="col-4 col-xl-3 col-form-label">Group Name</label>
                                                             <div class="col-8 col-xl-9">
-                                                                <select
-                                                                    class="form-select @error('group_id') parsley-error @enderror"
-                                                                    name="group_id" id="search-contact-group_id"
-                                                                    data-parsley-type="integer"
-                                                                    data-parsley-length="[1, 10]">
-                                                                    <option value="">no choice</option>
+                                                                <select class=" @error('group_id') parsley-error @enderror"
+                                                                    name="group_id" id="search-contact-group_id">
+                                                                    <option value="">all</option>
                                                                     @foreach ($groups as $group)
                                                                         <option value="{{ $group->id }}">
                                                                             {{ $group->name }}
                                                                         </option>
                                                                     @endforeach
                                                                 </select>
-                                                                @error('group_id')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('group_id') }}</li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -223,7 +200,7 @@
                                                             <div class="col-8 col-xl-9">
                                                                 <input class="form-check-input" type="radio"
                                                                     name="adding_method" id="adding_method" checked=""
-                                                                    value="">
+                                                                    value="0">
                                                                 <label class="form-check-label" for="adding_method">no
                                                                     choice</label>
 
@@ -237,15 +214,6 @@
                                                                     name="adding_method" id="adding_method2" value="2">
                                                                 <label class="form-check-label"
                                                                     for="adding_method2">Import</label>
-                                                                @error('adding_method')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('adding_method') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                     </div>
@@ -254,25 +222,13 @@
                                                             <label for="search-contact-status"
                                                                 class="col-4 col-xl-3 col-form-label">Status</label>
                                                             <div class="col-8 col-xl-9">
-                                                                <select
-                                                                    class="form-select @error('status') parsley-error @enderror"
-                                                                    name="status" id="search-contact-status"
-                                                                    data-parsley-type="integer"
-                                                                    data-parsley-length="[1, 1]">
-                                                                    <option value="">no choice</option>
+                                                                <select  multiple
+                                                                    name="status" id="search-contact-status">
+                                                                    <option value="">all</option>
                                                                     <option value="1">Lead</option>
                                                                     <option value="2">Customer</option>
                                                                     <option value="3">Not interested</option>
                                                                 </select>
-                                                                @error('status')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('status') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -285,19 +241,10 @@
                                                                     name="class" id="search-contact-class"
                                                                     data-parsley-type="integer"
                                                                     data-parsley-length="[1, 1]">
-                                                                    <option value="">no choice</option>
+                                                                    <option value="">all</option>
                                                                     <option value="1">Person</option>
                                                                     <option value="2">Company</option>
                                                                 </select>
-                                                                @error('class')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('class') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -310,39 +257,21 @@
                                                                     name="source" id="search-contact-source"
                                                                     data-parsley-type="integer"
                                                                     data-parsley-length="[1, 1]">
-                                                                    <option value="">no choice</option>
+                                                                    <option value="">all</option>
                                                                     <option value="1">Telephone prospecting</option>
                                                                     <option value="2">Landing pages</option>
                                                                     <option value="3">Affiliation</option>
                                                                     <option value="4">Database purchased</option>
                                                                 </select>
-                                                                @error('source')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('source') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
                                                             <label for="search-contact-creation_date"
                                                                 class="col-4 col-xl-3 col-form-label">Creation Date</label>
                                                             <div class="col-8 col-xl-9">
-                                                                <input
-                                                                    class="form-control @error('creation_date') parsley-error @enderror"
+                                                                <input class="form-control @error('creation_date') parsley-error @enderror"
                                                                     type="text" name="creation_date"
-                                                                    id="search-contact-creation_date">
-                                                                @error('creation_date')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('creation_date') }}</li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
+                                                                    id="search-contact-creation_date" placeholder="Creation Date">
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -350,20 +279,16 @@
                                                                 class="col-4 col-xl-3 col-form-label">Import
                                                                 Id</label>
                                                             <div class="col-8 col-xl-9">
-                                                                <input type="number"
-                                                                    class="form-control @error('import_id') parsley-error @enderror"
+                                                                <select
+                                                                    class="form-select @error('import_id') parsley-error @enderror"
                                                                     name="import_id" id="search-contact-import_id"
-                                                                    placeholder="Identifier of Import"
-                                                                    data-parsley-type="integer" data-parsley-maxlength="10">
-                                                                @error('import_id')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('import_id') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
+                                                                    data-parsley-type="integer" data-parsley-length="[1, 10]">
+                                                                    <option value="">all</option>
+                                                                    @foreach ($imports as $import)
+                                                                        <option value="{{ $import->id }}">{{ $import->id }}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -379,8 +304,7 @@
                                                 <a class="custom-accordion-title text-reset collapsed d-block"
                                                     data-bs-toggle="collapse" href="#collapseFive" aria-expanded="false"
                                                     aria-controls="collapseFive">
-                                                    Contact Person Info <i
-                                                        class="mdi mdi-chevron-down accordion-arrow"></i>
+                                                    Contact Person Info <i class="mdi mdi-chevron-down accordion-arrow"></i>
                                                 </a>
                                             </h5>
                                         </div>
@@ -399,14 +323,6 @@
                                                                     class="form-control @error('first_name') parsley-error @enderror"
                                                                     name="first_name" id="search-contact-first_name"
                                                                     placeholder="First Name" data-parsley-minlength="2">
-                                                                @error('first_name')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('first_name') }}</li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -417,15 +333,6 @@
                                                                     class="form-control @error('nickname') parsley-error @enderror"
                                                                     name="nickname" id="search-contact-nickname"
                                                                     placeholder="Nickname" data-parsley-minlength="2">
-                                                                @error('nickname')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('nickname') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -433,18 +340,9 @@
                                                                 class="col-4 col-xl-3 col-form-label">Birthdate</label>
                                                             <div class="col-8 col-xl-9">
                                                                 <input
-                                                                    class="form-control @error('birthdate') parsley-error @enderror"
-                                                                    type="date" name="birthdate"
-                                                                    id="search-contact-birthdate"
-                                                                    data-parsley-maxdate="{{ date('m/d/Y') }}">
-                                                                @error('birthdate')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('birthdate') }}</li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
+                                                                    class="form-control datepicker @error('birthdate') parsley-error @enderror"
+                                                                    type="text" name="birthdate" id="search-contact-birthdate"
+                                                                    data-parsley-maxdate="{{ date('m/d/Y') }}" placeholder="Birthdate">
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -452,21 +350,10 @@
                                                                 class="col-4 col-xl-3 col-form-label">country</label>
                                                             <div class="col-8 col-xl-9">
                                                                 <select
-                                                                    class="form-select country @error('person_country') parsley-error @enderror"
-                                                                    name="person_country" id="search-contact-person_country"
-                                                                    data-parsley-length="[2, 2]">
-                                                                    <option value="">no choice</option>
-                                                                    <option value="">Select a country</option>
+                                                                    class=" country @error('person_country') parsley-error @enderror"
+                                                                    name="person_country" id="search-contact-person_country">
+                                                                    <option value="">all</option>
                                                                 </select>
-                                                                @error('person_country')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('person_country') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                     </div>
@@ -480,63 +367,34 @@
                                                                     class="form-control @error('last_name') parsley-error @enderror"
                                                                     name="last_name" id="search-contact-last_name"
                                                                     placeholder="Last Name" data-parsley-minlength="2">
-                                                                @error('last_name')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('last_name') }}</li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
                                                             <label for="search-contact-profile"
                                                                 class="col-4 col-xl-3 col-form-label">profile</label>
                                                             <div class="col-8 col-xl-9">
-                                                                <select
-                                                                    class="form-select @error('profile') parsley-error @enderror"
-                                                                    name="profile" id="search-contact-profile"
-                                                                    data-parsley-type="integer"
-                                                                    data-parsley-length="[1, 1]">
-                                                                    <option value="">no choice</option>
+                                                                <select class=" @error('profile') parsley-error @enderror"
+                                                                    name="profile" id="search-contact-profile">
+                                                                    <option value="">all</option>
                                                                     <option value="1">Engineer</option>
                                                                     <option value="2">Designer</option>
                                                                     <option value="3">Businessman</option>
                                                                 </select>
-                                                                @error('profile')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('profile') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
                                                             <label for="search-contact-gender"
                                                                 class="col-4 col-xl-3 col-form-label">gender</label>
                                                             <div class="col-8 col-xl-9">
-                                                                <select
-                                                                    class="form-select @error('gender') parsley-error @enderror"
-                                                                    name="gender" id="search-contact-gender"
-                                                                    data-parsley-type="integer"
-                                                                    data-parsley-length="[1, 1]">
-                                                                    <option value="">no choice</option>
-                                                                    <option value="1">Male</option>
-                                                                    <option value="2">Female</option>
-                                                                </select>
-                                                                @error('gender')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('gender') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
+                                                                <input type="radio" id="search-contact-gender-both"
+                                                                    name="search-contact-gender" class="form-check-input"
+                                                                    value="0" checked>Both
+                                                                <input type="radio" id="search-contact-gender-male"
+                                                                    name="search-contact-gender"
+                                                                    class="form-check-input" value="1" >Male
+                                                                <input type="radio" id="search-contact-gender-female"
+                                                                    name="search-contact-gender"
+                                                                    class="form-check-input" value="2" >Female
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -544,25 +402,15 @@
                                                                 class="col-4 col-xl-3 col-form-label">language</label>
                                                             <div class="col-8 col-xl-9">
                                                                 <select
-                                                                    class="form-select @error('person_language') parsley-error @enderror"
+                                                                    class=" @error('person_language') parsley-error @enderror"
                                                                     name="person_language"
-                                                                    id="search-contact-person_language"
-                                                                    data-parsley-length="[2, 2]">
-                                                                    <option value="">no choice</option>
+                                                                    id="search-contact-person_language">
+                                                                    <option value="">all</option>
                                                                     <option value="ar">Arabic - العربية</option>
                                                                     <option value="en">English</option>
                                                                     <option value="fr">French - français</option>
                                                                     <option value="es">Spanish - español</option>
                                                                 </select>
-                                                                @error('person_language')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('person_language') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                     </div><!-- end col -->
@@ -599,7 +447,7 @@
                                                                     id="search-contact-companies_class"
                                                                     data-parsley-type="integer"
                                                                     data-parsley-length="[1, 1]">
-                                                                    <option value="">no choice</option>
+                                                                    <option value="">all</option>
                                                                     <option value="1">One Person Companies</option>
                                                                     <option value="2">Private Companies</option>
                                                                     <option value="3">Public Companies</option>
@@ -607,15 +455,6 @@
                                                                     </option>
                                                                     <option value="5">Associate Companies</option>
                                                                 </select>
-                                                                @error('companies_class')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('companies_class') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -626,15 +465,6 @@
                                                                     class="form-control @error('name') parsley-error @enderror"
                                                                     name="name" placeholder="Name" id="search-contact-name"
                                                                     data-parsley-minlength="2">
-                                                                @error('name')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('name') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -648,15 +478,6 @@
                                                                     id="search-contact-registered_number"
                                                                     placeholder="Registered number"
                                                                     data-parsley-maxlength="128">
-                                                                @error('registered_number')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('registered_number') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                     </div>
@@ -665,20 +486,10 @@
                                                             <label for="search-contact-activity"
                                                                 class="col-4 col-xl-3 col-form-label">Activity</label>
                                                             <div class="col-8 col-xl-9">
-                                                                <input type="number"
+                                                                <input type="text"
                                                                     class="form-control @error('activity') parsley-error @enderror"
                                                                     name="activity" id="search-contact-activity"
-                                                                    placeholder="Identifier of activity"
-                                                                    data-parsley-type="integer" data-parsley-maxlength="10">
-                                                                @error('activity')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('activity') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
+                                                                    placeholder="Identifier of activity">
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -686,21 +497,11 @@
                                                                 class="col-4 col-xl-3 col-form-label">country</label>
                                                             <div class="col-8 col-xl-9">
                                                                 <select
-                                                                    class="form-select country @error('companies_country') parsley-error @enderror"
+                                                                    class=" country @error('companies_country') parsley-error @enderror"
                                                                     name="companies_country"
-                                                                    id="search-contact-companies_country"
-                                                                    data-parsley-length="[2, 2]">
-                                                                    <option value="">no choice</option>
+                                                                    id="search-contact-companies_country">
+                                                                    <option value="">all</option>
                                                                 </select>
-                                                                @error('companies_country')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('companies_country') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -708,25 +509,15 @@
                                                                 class="col-4 col-xl-3 col-form-label">language</label>
                                                             <div class="col-8 col-xl-9">
                                                                 <select
-                                                                    class="form-select @error('companies_language') parsley-error @enderror"
+                                                                    class=" @error('companies_language') parsley-error @enderror"
                                                                     name="companies_language"
-                                                                    id="search-contact-companies_language"
-                                                                    data-parsley-length="[2, 2]">
-                                                                    <option value="">no choice</option>
+                                                                    id="search-contact-companies_language">
+                                                                    <option value="">all</option>
                                                                     <option value="ar">Arabic - العربية</option>
                                                                     <option value="en">English</option>
                                                                     <option value="fr">French - français</option>
                                                                     <option value="es">Spanish - español</option>
                                                                 </select>
-                                                                @error('companies_language')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('companies_language') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                     </div><!-- end col -->
@@ -753,23 +544,12 @@
                                                     <h3 class="mt-0 text-muted text-center">Contact Data</h3>
                                                     <div class="col-lg-6">
                                                         <div class="row mb-3">
-                                                            <label for="search-contact-phone"
+                                                            <label for="search-contact-phone_number"
                                                                 class="col-4 col-xl-3 col-form-label">Phone Number</label>
                                                             <div class="col-8 col-xl-9">
-                                                                <input type="number"
-                                                                    class="form-control @error('phone') parsley-error @enderror"
-                                                                    name="phone" id="search-contact-phone"
-                                                                    placeholder="Identifier of phone"
-                                                                    data-parsley-type="integer">
-                                                                @error('phone')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('phone') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
+                                                                <input type="tel"
+                                                                    class="form-control @error('phone_number') parsley-error @enderror"
+                                                                    name="phone_number" id="search-contact-phone_number">
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -780,15 +560,6 @@
                                                                     class="form-control @error('email') parsley-error @enderror"
                                                                     name="email" placeholder="Email Address"
                                                                     id="search-contact-email">
-                                                                @error('email')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('email') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -799,15 +570,6 @@
                                                                     class="form-control @error('facebook') parsley-error @enderror"
                                                                     name="facebook" placeholder="Facebook account name"
                                                                     id="search-contact-facebook">
-                                                                @error('facebook')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('facebook') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -818,15 +580,6 @@
                                                                     class="form-control @error('skype') parsley-error @enderror"
                                                                     name="skype" placeholder="Skype account name"
                                                                     id="search-contact-skype">
-                                                                @error('skype')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('skype') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -837,55 +590,26 @@
                                                                     class="form-control @error('viber') parsley-error @enderror"
                                                                     name="viber" placeholder="viber account name"
                                                                     id="search-contact-viber">
-                                                                @error('viber')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('viber') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="row mb-3">
-                                                            <label for="search-contact-fax"
+                                                            <label for="search-contact-fax_number"
                                                                 class="col-4 col-xl-3 col-form-label">Fax Number</label>
                                                             <div class="col-8 col-xl-9">
-                                                                <input type="number"
-                                                                    class="form-control @error('fax') parsley-error @enderror"
-                                                                    name="fax" id="search-contact-fax"
-                                                                    placeholder="Fax Number" data-parsley-type="integer">
-                                                                @error('fax')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('fax') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
+                                                                <input type="tel"
+                                                                    class="form-control @error('fax_number') parsley-error @enderror"
+                                                                    name="fax_number" id="search-contact-fax_number">
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
                                                             <label for="search-contact-mobile"
                                                                 class="col-4 col-xl-3 col-form-label">Mobile</label>
                                                             <div class="col-8 col-xl-9">
-                                                                <input type="number"
+                                                                <input type="tel"
                                                                     class="form-control @error('mobile') parsley-error @enderror"
-                                                                    name="mobile" id="search-contact-mobile"
-                                                                    placeholder="Mobile" data-parsley-type="integer">
-                                                                @error('mobile')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('mobile') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
+                                                                    name="mobile" id="search-contact-mobile">
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -896,34 +620,15 @@
                                                                     class="form-control @error('instagram') parsley-error @enderror"
                                                                     name="instagram" placeholder="Instagram account name"
                                                                     id="search-contact-instagram">
-                                                                @error('instagram')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('instagram') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
                                                             <label for="search-contact-whatsapp"
                                                                 class="col-4 col-xl-3 col-form-label">WhatsApp</label>
                                                             <div class="col-8 col-xl-9">
-                                                                <input type="number"
+                                                                <input type="tel"
                                                                     class="form-control @error('whatsapp') parsley-error @enderror"
-                                                                    name="whatsapp" placeholder="WhatsApp Phone Number"
-                                                                    id="search-contact-whatsapp">
-                                                                @error('whatsapp')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('whatsapp') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
+                                                                    name="whatsapp" id="search-contact-whatsapp">
                                                             </div>
                                                         </div>
                                                         <div class="row mb-3">
@@ -934,15 +639,6 @@
                                                                     class="form-control @error('messenger') parsley-error @enderror"
                                                                     name="messenger" placeholder="messenger account name"
                                                                     id="search-contact-messenger">
-                                                                @error('messenger')
-                                                                    <ul class="parsley-errors-list filled" aria-hidden="false">
-                                                                        <li class="parsley-required">
-                                                                            {{ $errors->first('messenger') }}
-                                                                        </li>
-                                                                    </ul>
-                                                                @else
-                                                                    <ul class="parsley-errors-list" aria-hidden="true"></ul>
-                                                                @enderror
                                                             </div>
                                                         </div>
                                                     </div><!-- end col -->
@@ -956,9 +652,28 @@
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-info waves-effect waves-light">Search</button>
                                 </div>
+                                <br>
                             </form>
                         </div>
                         <div class="tab-pane" id="search-result">
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div id="contacts-result">
+                                                @include('contacts.datatable-contacts')
+                                            </div>
+                                        </div>
+                                    </div> <!-- end card -->
+                                </div> <!-- end col -->
+                                <div class="col-lg-3" id="contacts_person-info-card">
+                                    @include('contacts.contacts_person-info')
+                                </div>
+                                <div class="col-lg-3 d-none" id="contacts_companie-info-card">
+                                    @include('contacts.contacts_companie-info')
+                                </div>
+                            </div>
+                            <!-- end row -->
                         </div>
                     </div>
                 </div> <!-- end card -->
@@ -971,58 +686,65 @@
     @include('contacts.create')
     @include('contacts.edit')
 
+    @include('notes.create-ext')
+    @include('notes.edit-ext')
+
     @include('appointments.create')
 
     @include('email_accounts.send-mail')
+
+    @include('sip_accounts.call')
+
+    @include('sms_accounts.sms')
 @endsection
 
 @section('js')
     <!-- Vendor js -->
-    <script src="/js/vendor.min.js"></script>
+    <script src="{{ asset('js/vendor.min.js') }}"></script>
 
     <!-- Plugin js-->
-    <script src="/libs/parsleyjs/parsley.min.js"></script>
+    <script src="{{ asset('libs/parsleyjs/parsley.min.js') }}"></script>
 
     <!-- Sweet Alerts js -->
-    <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="{{ asset('libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
     <!-- third party js -->
-    <script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
-    <script src="/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="{{ asset('libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
     <!-- button pdf copy -->
-    <script src="/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+    <script src="{{ asset('libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
     <!-- style button -->
-    <script src="/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="{{ asset('libs/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
     <!-- style button end -->
     <!-- button print -->
-    <script src="/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="{{ asset('libs/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
     <!-- not use -->
-    <script src="/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
-    <script src="/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-    <script src="/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+    <script src="{{ asset('libs/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables.net-keytable/js/dataTables.keyTable.min.js') }}"></script>
+    <script src="{{ asset('libs/datatables.net-select/js/dataTables.select.min.js') }}"></script>
     <!-- not use end -->
     <!-- pdf -->
-    <script src="/libs/pdfmake/build/pdfmake.min.js"></script>
-    <script src="/libs/pdfmake/build/vfs_fonts.js"></script>
+    <script src="{{ asset('libs/pdfmake/build/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('libs/pdfmake/build/vfs_fonts.js') }}"></script>
     <!-- third party js ends -->
 
     <!-- Plugins js-->
-    <script src="/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+    <script src="{{ asset('libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js') }}"></script>
 
-    <script src="/twilio/js/intlTelInput.min.js"></script>
-    <script src="/twilio/js/intlTelInput-jquery.min.js"></script>
-    <script src="/twilio/js/utils.js"></script>
-    <script src="/twilio/js/data.min.js"></script>
+    <script src="{{ asset('twilio/js/intlTelInput.min.js') }}"></script>
+    <script src="{{ asset('twilio/js/intlTelInput-jquery.min.js') }}"></script>
+    <script src="{{ asset('twilio/js/utils.js') }}"></script>
+    <script src="{{ asset('twilio/js/data.min.js') }}"></script>
 
     <!-- Plugins js -->
-    <script src="/libs/dropzone/min/dropzone.min.js"></script>
-    <script src="/libs/dropify/js/dropify.min.js"></script>
+    <script src="{{ asset('libs/dropzone/min/dropzone.min.js') }}"></script>
+    <script src="{{ asset('libs/dropify/js/dropify.min.js') }}"></script>
 
     <!-- Tippy js-->
-    <script src="/libs/tippy.js/tippy.all.min.js"></script>
+    <script src="{{ asset('libs/tippy.js/tippy.all.min.js') }}"></script>
 
     <!-- selectize js -->
     <script type="text/javascript"
@@ -1032,62 +754,53 @@
     </script>
 
     <!-- picker js -->
-    <script src="/libs/spectrum-colorpicker2/spectrum.min.js"></script>
-    <script src="/libs/flatpickr/flatpickr.min.js"></script>
-    <script src="/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-    <script src="/js/form-pickers.init.js"></script>
+    <script src="{{ asset('libs/spectrum-colorpicker2/spectrum.min.js') }}"></script>
+    <script src="{{ asset('libs/flatpickr/flatpickr.min.js') }}"></script>
+    <script src="{{ asset('libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('js/form-pickers.init.js') }}"></script>
 
     <!-- Edit contact companie logo js -->
-    <script src="/js/contacts/companie-logo.js"></script>
+    <script src="{{ asset('js/contacts/companie-logo.js') }}"></script>
 
     <!-- custom js files -->
-    <script src="/js/contacts/form-edit-wizard.js"></script>
-    <script src="/js/contacts/form-add-wizard.js"></script>
-    <script src="/js/contacts/contacts-validation.js"></script>
+    <script src="{{ asset('js/contacts/form-edit-wizard.js') }}"></script>
+    <script src="{{ asset('js/contacts/form-add-wizard.js') }}"></script>
 
-    <script src="/js/contacts/datatable-contacts.init.js"></script>
-    <script src="/js/contacts/contacts-list.js"></script>
+    <script src="{{ asset('js/contacts/datatable-contacts.init.js') }}"></script>
+    <script src="{{ asset('js/contacts/contacts-list.js') }}"></script>
 
-    <script src="/js/contacts/country-select.js"></script>
+    <script src="{{ asset('js/contacts/country-select.js') }}"></script>
 
-    <script src="/js/custom-parsley.js"></script>
-    <script src="/js/helpers.js"></script>
+    <script src="{{ asset('js/custom-parsley.js') }}"></script>
+    <script src="{{ asset('js/helpers.js') }}"></script>
 
-    <script src="/js/form-validation-laravel.js"></script>
-
-    <script src="/js/contacts/data/contact-data.js"></script>
-    <script src="/js/contacts/data/add-phone-data.js"></script>
-    <script src="/js/contacts/data/edit-phone-data.js"></script>
-
-    <script src="/js/notes/notes-module-ext.js"></script>
-
-    <script src="/js/contacts/search/form-search-wizard.js"></script>
-    <script src="/js/contacts/search/search-module.js"></script>
-
-    <script src="/js/contacts/custom-fields/form-create.js"></script>
-    <script src="/js/contacts/custom-fields/custom-fields.js"></script>
+    <script src="{{ asset('js/form-validation-laravel.js') }}"></script>
 
     <!-- appointments -->
-    <script src="/js/appointments/create-ext.js"></script>
+    <script src="{{ asset('js/appointments/create-ext.js') }}"></script>
 
     <!-- send email modal -->
-    <script src="/js/email_accounts/send-mail.js"></script>
+    <script src="{{ asset('js/email_accounts/send-mail.js') }}"></script>
 
     <!-- jquery-ui 
-                                                                <script src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+                                                                <script src="https://code.jquery.com/jquery-1.12.4.js') }}"></script>-->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js') }}"></script>
 
     <!-- Quill js 
-                                                            <script src="/libs/quill/quill.min.js"></script>-->
+                                                            <script src="{{ asset('libs/quill/quill.min.js') }}"></script>-->
 
     <!-- Include the Quill library -->
-    <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
+    <script src="https://cdn.quilljs.com/1.0.0/quill.js') }}"></script>
 
     <!-- call voip modal -->
-    <script src="/js/sip_accounts/sip_accounts.js"></script>
+    <script src="{{ asset('js/sip_accounts/sip_accounts.js') }}"></script>
 
     <!-- send sms modal -->
-    <script src="/js/sms_accounts/sms.js"></script>
+    <script src="{{ asset('js/sms_accounts/sms.js') }}"></script>
+
+    <!-- js file for form search -->
+    <script src="{{ asset('js/contacts/search/form-search-wizard.js') }}"></script>
+    <script src="{{ asset('js/contacts/search/search-module.js') }}"></script>
 
     <script>
         url_logo = '{{ URL::asset('/storage/images/logo/') }}';
@@ -1119,6 +832,8 @@
         url_jsfile_communications = '{{ URL::asset('/js/communications/') }}';
         var create_communication_errors = null
         var edit_communication_errors = null
+
+        var search_contact_errors = null
     </script>
 
     <script>
@@ -1129,5 +844,5 @@
     <!-- custom js files end -->
 
     <!-- App js -->
-    <script src="/js/app.min.js"></script>
+    <script src="{{ asset('js/app.min.js') }}"></script>
 @endsection

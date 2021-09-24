@@ -2,13 +2,25 @@
 
 namespace App\Http\Controllers;
 
-require 'vendor/autoload.php';
-
+require '../vendor/autoload.php';
+use Plivo\Resources\PHLO\PhloRestClient;
+use Plivo\Exceptions\PlivoRestException;
 use Illuminate\Http\Request;
-use Plivo\RestClient;
 
 class PhloController extends Controller
 {
+    public function triggerPhlo()
+    {
+        $client = new PhloRestClient("YOUR_AUTH_ID", "YOUR_AUTH_TOKEN");
+        $phlo = $client->phlo->get("YOUR_PHLO_ID");
+        try {
+            $response = $phlo->run();
+            echo json_encode($response);
+        } catch (PlivoRestException $ex) {
+            echo json_encode($ex);
+        }
+    }
+
     /**
      * Send SMS via plivo.
      *
@@ -23,13 +35,15 @@ class PhloController extends Controller
             'to' => 'required|string|max:128',
             'message' => 'required|string',
         ]);
-        //$msg = plivo_send_text($data['to'], $data['message'], $data['from']);
-        $client = new RestClient();
-        $message_created = $client->messages->create(
-            'the_source_number',
-            ['the_destination_number'],
-            'Hello, world!'
-        );
-        return response()->json(['success' => 'SMS Sent to ' . $data['to']]);
+        $client = new PhloRestClient("YOUR_AUTH_ID", "YOUR_AUTH_TOKEN");
+        $phlo = $client->phlo->get("YOUR_PHLO_ID");
+        try {
+            $response = $phlo->run(["from" => $data['username'], "to" => $data['to'], "text" => $data['message']]); // username will be replace by phone number
+            echo json_encode($response);
+            return response()->json(['success' => 'SMS Sent to ' . $data['to']]);
+        } catch (PlivoRestException $ex) {
+            echo json_encode($ex);
+            return response()->json(['error' => 'Error while sending that message !!!'], 300);
+        }
     }
 }

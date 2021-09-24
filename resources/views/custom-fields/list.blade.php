@@ -28,13 +28,13 @@
                     </td>
                     <td>
                         @if ($custom_field->status === 0)
-                            <a href="javascript:void(0);" class="btn- btn-xs btn-info"> <i
+                            <a href="javascript:void(0);" class="btn- btn-xs btn-secondary"> <i
                                     class="mdi mdi-square-edit-outline"></i></a>
                             <a href="javascript:void(0);" class="btn- btn-xs btn-danger"> <i
                                     class="mdi mdi-delete-circle"></i></a>
                         @else
                             <a id="edit-{{ $custom_field->id }}" href="javascript:void(0);"
-                                class="btn- btn-xs btn-info" data-bs-toggle="modal"
+                                class="btn- btn-xs btn-secondary" data-bs-toggle="modal"
                                 data-bs-target="#edit-custom-field-modal"
                                 onclick="editCustomField({{ $custom_field->id }});" data-toggle="modal"> <i
                                     class="mdi mdi-square-edit-outline"></i></a>

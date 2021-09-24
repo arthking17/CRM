@@ -26,19 +26,19 @@
                     <p id="user_id" class="text-muted d-none">{{ $user->id }}</p>
 
                     <div class="btn-group mb-2">
-                        <a href="javascript: void(0);" class="btn- btn-xs btn-info btn-sm dropdown-toggle" title="New Email"
+                        <a href="javascript: void(0);" class="btn- btn-xs btn-secondary btn-sm dropdown-toggle" title="New Email"
                             href="javascript: void(0);" data-bs-target="#send-mail-modal" data-bs-toggle="modal"
                             onclick="setToEmailValues({{ getElementByName('users') }}, {{ $user->id }});"><i
                                 class="mdi mdi-email-edit-outline"></i></a>
                     </div>
                     <div class="btn-group mb-2">
-                        <a href="javascript: void(0);" class="btn- btn-xs btn-info btn-sm dropdown-toggle" title="New Sms"
+                        <a href="javascript: void(0);" class="btn- btn-xs btn-secondary btn-sm dropdown-toggle" title="New Sms"
                             data-bs-target="#sms-modal" data-bs-toggle="modal"
                             onclick="setToContactValues({{ getElementByName('users') }}, {{ $user->id }});">
                             <i class="mdi mdi-message-text-outline"></i></a>
                     </div>
                     <div class="btn-group mb-2">
-                        <a href="javascript: void(0);" class="btn- btn-xs btn-success btn-sm dropdown-toggle" title="Call"
+                        <a href="javascript: void(0);" class="btn- btn-xs btn-secondary btn-sm dropdown-toggle" title="Call"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                                 class="fe-phone-call"></i></a>
                         <div class="dropdown-menu">
@@ -53,7 +53,7 @@
                     </div>
                     @if ($user->status == 0)
                         <div class="btn-group mb-2">
-                            <a id="btn-edit-{{ $user->id }}" class="btn- btn-xs btn-primary" href="javascript: void(0);"
+                            <a id="btn-edit-{{ $user->id }}" class="btn- btn-xs btn-secondary" href="javascript: void(0);"
                                 title="edit user"><i class="mdi mdi-square-edit-outline"></i></a>
                         </div>
                         <div class="btn-group mb-2">
@@ -62,7 +62,7 @@
                         </div>
                     @else
                         <div class="btn-group mb-2">
-                            <a id="btn-edit-{{ $user->id }}" class="btn- btn-xs btn-primary" title="edit user"
+                            <a id="btn-edit-{{ $user->id }}" class="btn- btn-xs btn-secondary" title="edit user"
                                 href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-modal"
                                 onclick="editUser({{ $user->id }});"><i class="mdi mdi-square-edit-outline"></i></a>
                         </div>

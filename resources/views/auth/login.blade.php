@@ -12,14 +12,14 @@
     <link rel="shortcut icon" href="https://coderthemes.com/ubold/layouts/assets/images/favicon.ico">
 
     <!-- App css -->
-    <link href="/css/config/creative/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
-    <link href="/css/config/creative/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
+    <link href="{{ asset('css/config/creative/bootstrap.min.css') }}" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
+    <link href="{{ asset('css/config/creative/app.min.css') }}" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
 
-    <link href="/css/config/creative/bootstrap-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
-    <link href="/css/config/creative/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
+    <link href="{{ asset('css/config/creative/bootstrap-dark.min.css') }}" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
+    <link href="{{ asset('css/config/creative/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
 
     <!-- icons -->
-    <link href="/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -37,13 +37,13 @@
                                 <div class="auth-logo">
                                     <a href="{{ route('home') }}" class="logo logo-dark text-center">
                                         <span class="logo-lg">
-                                            <img src="/images/logo-dark.png" alt="" height="22">
+                                            <img src="{{ asset('images/logo-dark.png') }}" alt="" height="22">
                                         </span>
                                     </a>
 
                                     <a href="{{ route('home') }}" class="logo logo-light text-center">
                                         <span class="logo-lg">
-                                            <img src="/images/logo-light.png" alt="" height="22">
+                                            <img src="{{ asset('images/logo-light.png') }}" alt="" height="22">
                                         </span>
                                     </a>
                                 </div>
@@ -145,10 +145,10 @@
     </footer>
 
     <!-- Vendor js -->
-    <script src="/js/vendor.min.js"></script>
+    <script src="{{ asset('js/vendor.min.js') }}"></script>
 
     <!-- App js -->
-    <script src="/js/app.min.js"></script>
+    <script src="{{ asset('js/app.min.js') }}"></script>
 
 </body>
 

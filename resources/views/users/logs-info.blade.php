@@ -18,12 +18,12 @@
                         <p class="text-center"> empty</p>
                     @endif
                     @foreach ($logs as $log)
-                        <div class="card border-success border mb-3">
+                        <div class="card border-info border mb-3">
                             <div class="card-body" id="card-note-body">
-                                <h6 class="card-title text-success">{{ $log->log_date }}</h6>
+                                <h6 class="card-title text-info">{{ $log->log_date }}</h6>
                                 <p class="card-text">
                                     Action | ID of resource
-                                <h4 class="text-success">{{ $log->action }} | @if (!$log->element_id) All @else {{ $log->element_id }} @endif
+                                <h4 class="text-info">{{ $log->action }} | @if (!$log->element_id) All @else {{ $log->element_id }} @endif
                                 </h4>
                                 </p>
                             </div>

@@ -20,20 +20,20 @@
                     <p class="text-muted d-none" id="contact_id">{{ $contact->id }}</p>
 
                     <div class="btn-group mb-2">
-                        <a href="javascript: void(0);" class="btn- btn-xs btn-info btn-sm dropdown-toggle"
+                        <a href="javascript: void(0);" class="btn- btn-xs btn-secondary btn-sm dropdown-toggle"
                             title="New Email" href="javascript: void(0);" data-bs-target="#send-mail-modal"
                             data-bs-toggle="modal"
                             onclick="setToEmailValues({{ getElementByName('contacts') }}, {{ $contact->id }});"><i
                                 class="mdi mdi-email-edit-outline"></i></a>
                     </div>
                     <div class="btn-group mb-2">
-                        <a href="javascript: void(0);" class="btn- btn-xs btn-info btn-sm dropdown-toggle"
+                        <a href="javascript: void(0);" class="btn- btn-xs btn-secondary btn-sm dropdown-toggle"
                             title="New Sms" data-bs-target="#sms-modal" data-bs-toggle="modal"
                             onclick="setToContactValues({{ getElementByName('contacts') }}, {{ $contact->id }});">
                             <i class="mdi mdi-message-text-outline"></i></a>
                     </div>
                     <div class="btn-group mb-2">
-                        <a href="javascript: void(0);" class="btn- btn-xs btn-success btn-sm dropdown-toggle"
+                        <a href="javascript: void(0);" class="btn- btn-xs btn-secondary btn-sm dropdown-toggle"
                             title="Call" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                                 class="fe-phone-call"></i></a>
                         <div class="dropdown-menu">
@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <div class="btn-group mb-2">
-                        <a id="edit-{{ $contact->id }}" class="btn- btn-xs btn-info" title="Edit Contact"
+                        <a id="edit-{{ $contact->id }}" class="btn- btn-xs btn-secondary" title="Edit Contact"
                             href="javascript: void(0);" data-bs-toggle="modal" data-bs-target="#edit-modal"
                             onclick="editContact({{ $contact->id }});"><i
                                 class="mdi mdi-square-edit-outline"></i></a>

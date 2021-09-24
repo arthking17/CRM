@@ -147,7 +147,7 @@ class ContactImport extends DefaultValueBinder implements ToCollection, SkipsEmp
                 if ($row[$this->column['gender']] == 'female')
                     $contact_person->gender = 2;
                 if ($this->column['language'])
-                    $contact_person->language = $row[$this->column['language']];
+                    $contact_person->language = strtoupper($row[$this->column['language']]);
                 if ($this->column['country'])
                     $contact_person->country = $row[$this->column['country']];
                 if ($this->column['birthdate'])
@@ -213,7 +213,7 @@ class ContactImport extends DefaultValueBinder implements ToCollection, SkipsEmp
                 if ($this->column['language'])
                     $contact_companie->language = $row[$this->column['language']];
                 if ($this->column['country'])
-                    $contact_companie->country = $row[$this->column['country']];
+                    $contact_companie->country = strtoupper($row[$this->column['country']]);
                 if ($this->column['activity'])
                     $contact_companie->activity = $row[$this->column['activity']];
                 $contact_companie->save();

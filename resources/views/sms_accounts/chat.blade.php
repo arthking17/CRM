@@ -5,14 +5,14 @@
     <link rel="shortcut icon" href="https://coderthemes.com/ubold/layouts/assets/images/favicon.ico">
 
     <!-- App css -->
-    <link href="/css/config/creative/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
-    <link href="/css/config/creative/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
+    <link href="{{ asset('css/config/creative/bootstrap.min.css') }}" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
+    <link href="{{ asset('css/config/creative/app.min.css') }}" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
 
-    <link href="/css/config/creative/bootstrap-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
-    <link href="/css/config/creative/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
+    <link href="{{ asset('css/config/creative/bootstrap-dark.min.css') }}" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
+    <link href="{{ asset('css/config/creative/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
 
     <!-- icons -->
-    <link href="/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('content')
@@ -46,7 +46,7 @@
                         <div class="card-body">
 
                             <div class="d-flex align-items-start mb-3">
-                                <img src="/images/users/user-1.jpg" class="me-2 rounded-circle" height="42"
+                                <img src="{{ asset('images/users/user-1.jpg') }}" class="me-2 rounded-circle" height="42"
                                     alt="Brandon Smith">
                                 <div class="w-100">
                                     <h5 class="mt-0 mb-0 font-15">
@@ -92,7 +92,7 @@
                                     <div data-simplebar style="max-height: 375px;">
                                         <a href="javascript:void(0);" class="text-body">
                                             <div class="d-flex align-items-start p-2">
-                                                <img src="/images/users/user-2.jpg" class="me-2 rounded-circle"
+                                                <img src="{{ asset('images/users/user-2.jpg') }}" class="me-2 rounded-circle"
                                                     height="42" alt="Brandon Smith" />
                                                 <div class="w-100">
                                                     <h5 class="mt-0 mb-0 font-14">
@@ -110,7 +110,7 @@
 
                                         <a href="javascript:void(0);" class="text-body">
                                             <div class="d-flex align-items-start p-2">
-                                                <img src="/images/users/user-5.jpg" class="me-2 rounded-circle"
+                                                <img src="{{ asset('images/users/user-5.jpg') }}" class="me-2 rounded-circle"
                                                     height="42" alt="James Z" />
                                                 <div class="w-100">
                                                     <h5 class="mt-0 mb-0 font-14">
@@ -126,7 +126,7 @@
 
                                         <a href="javascript:void(0);" class="text-body">
                                             <div class="d-flex align-items-start p-2">
-                                                <img src="/images/users/user-7.jpg" class="me-2 rounded-circle"
+                                                <img src="{{ asset('images/users/user-7.jpg') }}" class="me-2 rounded-circle"
                                                     height="42" alt="Maria C" />
                                                 <div class="w-100">
                                                     <h5 class="mt-0 mb-0 font-14">
@@ -145,7 +145,7 @@
 
                                         <a href="javascript:void(0);" class="text-body">
                                             <div class="d-flex align-items-start bg-light p-2">
-                                                <img src="/images/users/user-10.jpg" class="me-2 rounded-circle"
+                                                <img src="{{ asset('images/users/user-10.jpg') }}" class="me-2 rounded-circle"
                                                     height="42" alt="Rhonda D" />
                                                 <div class="w-100">
                                                     <h5 class="mt-0 mb-0 font-14">
@@ -161,7 +161,7 @@
 
                                         <a href="javascript:void(0);" class="text-body">
                                             <div class="d-flex align-items-start p-2">
-                                                <img src="/images/users/user-3.jpg" class="me-2 rounded-circle"
+                                                <img src="{{ asset('images/users/user-3.jpg') }}" class="me-2 rounded-circle"
                                                     height="42" alt="Michael H" />
                                                 <div class="w-100">
                                                     <h5 class="mt-0 mb-0 font-14">
@@ -178,7 +178,7 @@
 
                                         <a href="javascript:void(0);" class="text-body">
                                             <div class="d-flex align-items-start p-2">
-                                                <img src="/images/users/user-6.jpg" class="me-2 rounded-circle"
+                                                <img src="{{ asset('images/users/user-6.jpg') }}" class="me-2 rounded-circle"
                                                     height="42" alt="Thomas R" />
                                                 <div class="w-100">
                                                     <h5 class="mt-0 mb-0 font-14">
@@ -195,7 +195,7 @@
 
                                         <a href="javascript:void(0);" class="text-body">
                                             <div class="d-flex align-items-start p-2">
-                                                <img src="/images/users/user-8.jpg" class="me-2 rounded-circle"
+                                                <img src="{{ asset('images/users/user-8.jpg') }}" class="me-2 rounded-circle"
                                                     height="42" alt="Thomas J" />
                                                 <div class="w-100">
                                                     <h5 class="mt-0 mb-0 font-14">
@@ -211,7 +211,7 @@
 
                                         <a href="javascript:void(0);" class="text-body">
                                             <div class="d-flex align-items-start p-2">
-                                                <img src="/images/users/user-4.jpg" class="me-2 rounded-circle"
+                                                <img src="{{ asset('images/users/user-4.jpg') }}" class="me-2 rounded-circle"
                                                     height="42" alt="Ricky J" />
                                                 <div class="w-100">
                                                     <h5 class="mt-0 mb-0 font-14">
@@ -245,7 +245,7 @@
                             <div class="row justify-content-between py-1">
                                 <div class="col-sm-7">
                                     <div class="d-flex align-items-start">
-                                        <img src="/images/users/user-5.jpg" class="me-2 rounded-circle" height="36"
+                                        <img src="{{ asset('images/users/user-5.jpg') }}" class="me-2 rounded-circle" height="36"
                                             alt="Brandon Smith">
                                         <div>
                                             <h5 class="mt-0 mb-0 font-15">
@@ -283,7 +283,7 @@
                             <ul class="conversation-list" data-simplebar style="max-height: 460px;">
                                 <li class="clearfix">
                                     <div class="chat-avatar">
-                                        <img src="/images/users/user-5.jpg" class="rounded" alt="James Z" />
+                                        <img src="{{ asset('images/users/user-5.jpg') }}" class="rounded" alt="James Z" />
                                         <i>10:00</i>
                                     </div>
                                     <div class="conversation-text">
@@ -307,7 +307,7 @@
                                 </li>
                                 <li class="clearfix odd">
                                     <div class="chat-avatar">
-                                        <img src="/images/users/user-1.jpg" class="rounded" alt="Geneva M" />
+                                        <img src="{{ asset('images/users/user-1.jpg') }}" class="rounded" alt="Geneva M" />
                                         <i>10:01</i>
                                     </div>
                                     <div class="conversation-text">
@@ -331,7 +331,7 @@
                                 </li>
                                 <li class="clearfix">
                                     <div class="chat-avatar">
-                                        <img src="/images/users/user-5.jpg" class="rounded" alt="James Z" />
+                                        <img src="{{ asset('images/users/user-5.jpg') }}" class="rounded" alt="James Z" />
                                         <i>10:01</i>
                                     </div>
                                     <div class="conversation-text">
@@ -355,7 +355,7 @@
                                 </li>
                                 <li class="clearfix odd">
                                     <div class="chat-avatar">
-                                        <img src="/images/users/user-1.jpg" class="rounded" alt="Geneva M" />
+                                        <img src="{{ asset('images/users/user-1.jpg') }}" class="rounded" alt="Geneva M" />
                                         <i>10:02</i>
                                     </div>
                                     <div class="conversation-text">
@@ -379,7 +379,7 @@
                                 </li>
                                 <li class="clearfix">
                                     <div class="chat-avatar">
-                                        <img src="/images/users/user-5.jpg" alt="James Z" class="rounded" />
+                                        <img src="{{ asset('images/users/user-5.jpg') }}" alt="James Z" class="rounded" />
                                         <i>10:02</i>
                                     </div>
                                     <div class="conversation-text">
@@ -403,7 +403,7 @@
                                 </li>
                                 <li class="clearfix odd">
                                     <div class="chat-avatar">
-                                        <img src="/images/users/user-1.jpg" alt="Geneva M" class="rounded" />
+                                        <img src="{{ asset('images/users/user-1.jpg') }}" alt="Geneva M" class="rounded" />
                                         <i>10:03</i>
                                     </div>
                                     <div class="conversation-text">
@@ -427,7 +427,7 @@
                                 </li>
                                 <li class="clearfix">
                                     <div class="chat-avatar">
-                                        <img src="/images/users/user-5.jpg" alt="James Z" class="rounded" />
+                                        <img src="{{ asset('images/users/user-5.jpg') }}" alt="James Z" class="rounded" />
                                         <i>10:04</i>
                                     </div>
                                     <div class="conversation-text">
@@ -452,7 +452,7 @@
                                 </li>
                                 <li class="clearfix">
                                     <div class="chat-avatar">
-                                        <img src="/images/users/user-5.jpg" alt="James Z" class="rounded" />
+                                        <img src="{{ asset('images/users/user-5.jpg') }}" alt="James Z" class="rounded" />
                                         <i>10:04</i>
                                     </div>
                                     <div class="conversation-text">
@@ -477,7 +477,7 @@
                                 </li>
                                 <li class="clearfix odd">
                                     <div class="chat-avatar">
-                                        <img src="/images/users/user-1.jpg" alt="Geneva M" class="rounded" />
+                                        <img src="{{ asset('images/users/user-1.jpg') }}" alt="Geneva M" class="rounded" />
                                         <i>10:05</i>
                                     </div>
                                     <div class="conversation-text">
@@ -572,17 +572,17 @@
 
 @section('js')
     <!-- Vendor js -->
-    <script src="/js/vendor.min.js"></script>
+    <script src="{{ asset('js/vendor.min.js') }}"></script>
 
     <!-- Plugin js-->
-    <script src="/libs/parsleyjs/parsley.min.js"></script>
+    <script src="{{ asset('libs/parsleyjs/parsley.min.js') }}"></script>
 
     <!-- Sweet Alerts js -->
-    <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="{{ asset('libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
     <!-- custom js files -->
-    <script src="/js/sms/sms.js"></script>
-    <script src="/js/form-validation-laravel.js"></script>
+    <script src="{{ asset('js/sms/sms.js') }}"></script>
+    <script src="{{ asset('js/form-validation-laravel.js') }}"></script>
     <script>
         url_jsfile = '{{ URL::asset('/js/sms/') }}';
         var create_sms_account_errors = null
@@ -590,5 +590,5 @@
     </script>
 
     <!-- App js-->
-    <script src="/js/app.min.js"></script>
+    <script src="{{ asset('js/app.min.js') }}"></script>
 @endsection

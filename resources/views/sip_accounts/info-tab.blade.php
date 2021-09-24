@@ -32,7 +32,7 @@
                         <p class="mb-3">{{ $sip_account->name }}</p>
     
                         @if ($sip_account->status === 1)
-                            <a id="edit-{{ $sip_account->id }}" class="btn- btn-xs btn-info js--tippy"
+                            <a id="edit-{{ $sip_account->id }}" class="btn- btn-xs btn-secondary js--tippy"
                                 title="Edit sip_account" href="javascript: void(0);" data-bs-toggle="modal"
                                 data-bs-target="#edit-sip_account-modal"
                                 onclick="editSipAccount({{ $sip_account->id }});"><i

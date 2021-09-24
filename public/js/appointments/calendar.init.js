@@ -16,9 +16,7 @@
         var a = this;
         $.get('/appointments/all', function(data) {
             var t = [];
-            console.log(data)
             data.forEach(element => {
-                console.log(element)
                 if (element.class == 1)
                     t.push({ title: element.subject, start: new Date(element.start_date), end: new Date(element.end_date), className: "bg-info" })
                 else if (element.class == 2)

@@ -515,27 +515,46 @@ class ContactController extends Controller
      */
     public function searchForm()
     {
-        $accounts = Account::all();
-        $contacts = DB::table('contacts')->select('id', 'class')->get();
         $groups = Group::all();
         $imports = DB::table('imports')->select('id')->get();
-        $custom_fields = Custom_field::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
-        $select_options = DB::table('custom_select_fields')->join('custom_fields', 'field_id', '=', 'custom_fields.id')->select('custom_select_fields.*')->where('status', 1)->where('account_id', Auth::user()->account_id)->get();
-        $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
-            ->select('contacts.id', 'contacts_companies.name')->get();
-        $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
-            ->select('contacts.id', 'first_name', 'last_name')->get();
-        $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
-        $email_accounts = Email_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
-        $sip_accounts = Sip_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
-        $sms_accounts = Sms_account::where('status', 1)->get();
+        if (Auth::user()->role == 1) {
+            $contacts = Contact::all();
+            $accounts = Account::All();
+            $email_accounts = Email_account::where('status', 1)->get();
+            $sip_accounts = Sip_account::where('status', 1)->get();
+            $sms_accounts = Sms_account::where('status', 1)->get();
+            $custom_fields = Custom_field::where('status', 1)->get();
+            $select_options = DB::table('custom_select_fields')->join('custom_fields', 'field_id', '=', 'custom_fields.id')
+                ->select('custom_select_fields.*')->where('status', 1)->get();
+            $users = DB::table('users')->select('id', 'username')->get();
+            $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+                ->select('contacts.id', 'contacts_companies.name')->get();
+            $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
+                ->select('contacts.id', 'first_name', 'last_name')->get();
+        } else if (Auth::user()->role == 2) {
+            $contacts = Contact::whereIn('status', [1, 2, 3])->where('account_id', Auth::user()->account_id)->get();
+            $email_accounts = Email_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+            $sip_accounts = Sip_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+            $sms_accounts = Sms_account::where('status', 1)->where('account_id', Auth::user())->get();
+            $custom_fields = Custom_field::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+            $select_options = DB::table('custom_select_fields')->join('custom_fields', 'field_id', '=', 'custom_fields.id')
+                ->select('custom_select_fields.*')->where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+            $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
+            $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
+                ->select('contacts.id', 'contacts_companies.name')->where('account_id', Auth::user()->account_id)->get();
+            $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
+                ->select('contacts.id', 'first_name', 'last_name')->where('account_id', Auth::user()->account_id)->get();
+        } else {
+            return response()->json(['message' => 'you do not have the necessary rights'], 300);
+        }
         return view('/contacts/search', [
-            'accounts' => $accounts,
+            'accounts' => $accounts ?? [],
             'groups' => $groups,
             'imports' => $imports,
             'custom_fields' => $custom_fields,
             'select_options' => $select_options,
-            'contacts' => $contacts,
+            'contacts_1' => $contacts,
+            'contacts' => [],
             'contacts_persons' => $contacts_persons,
             'contacts_companies' => $contacts_companies,
             'users' => $users,
@@ -554,7 +573,7 @@ class ContactController extends Controller
      */
     public function search(Request $request)
     {
-        //return $request;
+        return $request->input('status');
         $request->validate([
             //validate contact
             'id' => 'nullable|string',
@@ -569,7 +588,7 @@ class ContactController extends Controller
             'last_name' => 'nullable|string|max:255',
             'nickname' => 'string|nullable|max:255',
             'profile' => 'nullable|integer|digits_between:1,1',
-            'gender' => 'nullable|integer|min:1|max:2',
+            'gender' => 'nullable|integer|min:0|max:2',
             'person_language' => 'string|nullable|min:2|max:2',
             'person_country' => 'string|nullable|min:2|max:2',
             'birthdate' => 'date|nullable|min:today',
@@ -580,6 +599,17 @@ class ContactController extends Controller
             'activity' => 'nullable|integer|digits_between:0,10',
             'companies_language' => 'nullable|string|min:2|max:2',
             'companies_country' => 'nullable|string|min:2|max:2',
+            //validate contact data
+            'phone' => 'nullable|string',
+            'email' => 'nullable|string',
+            'facebook' => 'nullable|string',
+            'skype' => 'nullable|string',
+            'viber' => 'nullable|string',
+            'fax' => 'nullable|string',
+            'mobile' => 'nullable|string',
+            'instagram' => 'nullable|string',
+            'whatsapp' => 'nullable|string',
+            'messenger' => 'nullable|string',
         ]);
         $accounts = Account::All();
         if ($request->class == 1) {
@@ -719,7 +749,22 @@ class ContactController extends Controller
                             </div>'
             ]);
         } else {
-            $returnHTML = view('contacts/datatable-contacts', compact('contacts', 'accounts'))->render();
+            $contacts_1 = [];
+            foreach ($contacts as $key => $contact) {
+                array_push($contacts_1, Contact::find($contact->id));
+            }
+            $contacts = $contacts_1;
+            if (Auth::user()->role == 1) {
+                $accounts = Account::All();
+                $sip_accounts = Sip_account::where('status', 1)->get();
+            } else if (Auth::user()->role == 2) {
+                $accounts = [];
+                $sip_accounts = Sip_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+            } else {
+                return response()->json(['message' => 'you do not have the necessary rights'], 300);
+            }
+
+            $returnHTML = view('contacts/datatable-contacts', compact('contacts', 'accounts', 'sip_accounts'))->render();
             return response()->json(['success' => 'Results found !!!', 'html' => $returnHTML]);
         }
     }

@@ -28,7 +28,7 @@
                 <td id="note-content" data-bind="text: text()" class="text-truncate" style="max-width: 200px"
                     title="{{ $note->content }}">{{ $note->content }}</td>
                 <td>
-                    <a href="javascript:void(0);" class="btn- btn-xs btn-info" data-bs-toggle="modal"
+                    <a href="javascript:void(0);" class="btn- btn-xs btn-secondary" data-bs-toggle="modal"
                         data-bs-target="#edit-note-modal" onclick="editNote({{ $note->id }});" data-toggle="modal"> <i
                             class="mdi mdi-square-edit-outline"></i></a>
                     <a href="javascript:void(0);" onclick="deleteNote({{ $note->id }});"
