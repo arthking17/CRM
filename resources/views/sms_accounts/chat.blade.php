@@ -581,7 +581,7 @@
     <script src="{{ asset('libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
 
     <!-- custom js files -->
-    <script src="{{ asset('js/sms/sms.js') }}"></script>
+    <script src="{{ asset('js/sms_accounts/sms.js') }}"></script>
     <script src="{{ asset('js/form-validation-laravel.js') }}"></script>
     <script>
         url_jsfile = '{{ URL::asset('/js/sms/') }}';

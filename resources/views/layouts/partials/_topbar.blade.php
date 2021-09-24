@@ -44,7 +44,7 @@
                                 <!-- item-->
                                 <a href="javascript:void(0);" class="dropdown-item notify-item">
                                     <div class="d-flex align-items-start">
-                                        <img class="d-flex me-2 rounded-circle" src="/images/users/user-2.jpg"
+                                        <img class="d-flex me-2 rounded-circle" src="{{ asset('images/users/user-2.jpg') }}"
                                             alt="Generic placeholder image" height="32">
                                         <div class="w-100">
                                             <h5 class="m-0 font-14">Erwin E. Brown</h5>
@@ -56,7 +56,7 @@
                                 <!-- item-->
                                 <a href="javascript:void(0);" class="dropdown-item notify-item">
                                     <div class="d-flex align-items-start">
-                                        <img class="d-flex me-2 rounded-circle" src="/images/users/user-5.jpg"
+                                        <img class="d-flex me-2 rounded-circle" src="{{ asset('images/users/user-5.jpg') }}"
                                             alt="Generic placeholder image" height="32">
                                         <div class="w-100">
                                             <h5 class="m-0 font-14">Jacob Deo</h5>
@@ -94,31 +94,31 @@
             <li class="dropdown d-none d-lg-inline-block topbar-dropdown">
                 <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-bs-toggle="dropdown"
                     href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                    <img src="/images/flags/us.jpg" alt="user-image" height="16">
+                    <img src="{{ asset('images/flags/us.jpg') }}" alt="user-image" height="16">
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
 
                     <!-- item-->
                     <a href="javascript:void(0);" class="dropdown-item">
-                        <img src="/images/flags/germany.jpg" alt="user-image" class="me-1" height="12"> <span
+                        <img src="{{ asset('images/flags/germany.jpg') }}" alt="user-image" class="me-1" height="12"> <span
                             class="align-middle">German</span>
                     </a>
 
                     <!-- item-->
                     <a href="javascript:void(0);" class="dropdown-item">
-                        <img src="/images/flags/italy.jpg" alt="user-image" class="me-1" height="12"> <span
+                        <img src="{{ asset('images/flags/italy.jpg') }}" alt="user-image" class="me-1" height="12"> <span
                             class="align-middle">Italian</span>
                     </a>
 
                     <!-- item-->
                     <a href="javascript:void(0);" class="dropdown-item">
-                        <img src="/images/flags/spain.jpg" alt="user-image" class="me-1" height="12"> <span
+                        <img src="{{ asset('images/flags/spain.jpg') }}" alt="user-image" class="me-1" height="12"> <span
                             class="align-middle">Spanish</span>
                     </a>
 
                     <!-- item-->
                     <a href="javascript:void(0);" class="dropdown-item">
-                        <img src="/images/flags/russia.jpg" alt="user-image" class="me-1" height="12"> <span
+                        <img src="{{ asset('images/flags/russia.jpg') }}" alt="user-image" class="me-1" height="12"> <span
                             class="align-middle">Russian</span>
                     </a>
 
@@ -149,7 +149,7 @@
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item notify-item active">
                             <div class="notify-icon">
-                                <img src="/images/users/user-1.jpg" class="img-fluid rounded-circle" alt="" />
+                                <img src="{{ asset('images/users/user-1.jpg') }}" class="img-fluid rounded-circle" alt="" />
                             </div>
                             <p class="notify-details">Cristina Pride</p>
                             <p class="text-muted mb-0 user-msg">
@@ -170,7 +170,7 @@
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item notify-item">
                             <div class="notify-icon">
-                                <img src="/images/users/user-4.jpg" class="img-fluid rounded-circle" alt="" />
+                                <img src="{{ asset('images/users/user-4.jpg') }}" class="img-fluid rounded-circle" alt="" />
                             </div>
                             <p class="notify-details">Karen Robinson</p>
                             <p class="text-muted mb-0 user-msg">
@@ -275,21 +275,21 @@
         <div class="logo-box">
             <a href="{{ route('home') }}" class="logo logo-dark text-center">
                 <span class="logo-sm">
-                    <img src="/images/logo-sm.png" alt="" height="22">
+                    <img src="{{ asset('images/logo-sm.png') }}" alt="" height="22">
                     <!-- <span class="logo-lg-text-light">UBold</span> -->
                 </span>
                 <span class="logo-lg">
-                    <img src="/images/logo-dark.png" alt="" height="20">
+                    <img src="{{ asset('images/logo-dark.png') }}" alt="" height="20">
                     <!-- <span class="logo-lg-text-light">U</span> -->
                 </span>
             </a>
 
             <a href="{{ route('home') }}" class="logo logo-light text-center">
                 <span class="logo-sm">
-                    <img src="/images/logo-sm.png" alt="" height="22">
+                    <img src="{{ asset('images/logo-sm.png') }}" alt="" height="22">
                 </span>
                 <span class="logo-lg">
-                    <img src="/images/logo-light.png" alt="" height="20">
+                    <img src="{{ asset('images/logo-light.png') }}" alt="" height="20">
                 </span>
             </a>
         </div>

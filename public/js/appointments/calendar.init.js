@@ -14,7 +14,7 @@
     }
     (e.prototype.init = function() {
         var a = this;
-        $.get('/appointments/all', function(data) {
+        $.get(route('appointments.all'), function(data) {
             var t = [];
             data.forEach(element => {
                 if (element.class == 1)

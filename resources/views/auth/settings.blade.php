@@ -29,7 +29,7 @@
     <link href="{{ asset('css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- custom style css files -->
-    <link rel="stylesheet" href="build/css/countrySelect.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/css/countrySelect.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom-style.css') }}">
     <!-- custom style css files end -->
 @endsection
