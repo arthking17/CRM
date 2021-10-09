@@ -80,15 +80,15 @@ Route::post('contacts/upload/{skipErrors}', 'ContactController@upload')->name('c
 
 Route::get('/contacts/search', 'ContactController@searchForm')->name('contacts.search')->middleware('auth');
 Route::post('/contacts/search', 'ContactController@search')->name('contacts.search')->middleware('auth');
-//route for groups of users
-Route::get('/users/groups', 'GroupController@index')->name('users.groups')->middleware('auth');
-Route::post('/users/groups/create', 'GroupController@store')->name('users.groups.create')->middleware('auth');
-Route::put('/users/groups/update', 'GroupController@update')->name('users.groups.update')->middleware('auth');
-Route::delete('/users/groups/delete/{id}', 'GroupController@destroy')->name('users.groups.delete')->middleware('auth');
-Route::get('/users/groups/get/{id}/{modal}', 'GroupController@getGroupJsonById')->name('users.groups.get')->middleware('auth');
+//route for groups of contacts
+Route::get('/contacts/groups', 'GroupController@index')->name('contacts.groups')->middleware('auth');
+Route::post('/contacts/groups/create', 'GroupController@store')->name('contacts.groups.create')->middleware('auth');
+Route::put('/contacts/groups/update', 'GroupController@update')->name('contacts.groups.update')->middleware('auth');
+Route::delete('/contacts/groups/delete/{id}', 'GroupController@destroy')->name('contacts.groups.delete')->middleware('auth');
+Route::get('/contacts/groups/get/{id}/{modal}', 'GroupController@getGroupJsonById')->name('contacts.groups.get')->middleware('auth');
 //route for contact data
 Route::post('/contacts/data/create', 'Contact_dataController@store')->name('contacts.data.create')->middleware('auth');
-Route::get('/contacts/data/get/{id}', 'Contact_dataController@getContactDataJsonById')->name('contacts.data.get')->middleware('auth');
+Route::get('/contacts/data/get/{element_id}/{element}', 'Contact_dataController@getContactDataJsonByElementId')->name('contacts.data.get')->middleware('auth');
 Route::get('/contacts/data/edit/{id}', 'Contact_dataController@edit')->name('contacts.data.edit')->middleware('auth');
 Route::put('/contacts/data/update', 'Contact_dataController@update')->name('contacts.data.update')->middleware('auth');
 Route::delete('/contacts/data/delete/{id}', 'Contact_dataController@destroy')->name('contacts.data.delete')->middleware('auth');
@@ -101,7 +101,7 @@ Route::get('/notes/get/{id}/{modal}', 'NoteController@getNoteJsonById')->name('n
 Route::put('/notes/update', 'NoteController@update')->name('notes.update')->middleware('auth');
 Route::delete('/notes/delete/{id}', 'NoteController@destroy')->name('notes.delete')->middleware('auth');
 Route::get('/notes/element/{element_id}/{element}', 'NoteController@show')->name('notes.element')->middleware('auth');
-Route::get('/notes/get/element/{element_id}/{element}', 'NoteController@listNotes')->name('notes.get')->middleware('auth');
+Route::get('/notes/element/modal/{element_id}/{element}', 'NoteController@showInModal')->name('notes.element.modal')->middleware('auth');
 
 //route for custom fields
 Route::get('/contacts/custom-fields', 'CustomFieldController@index')->name('custom-fields')->middleware('auth');
@@ -109,6 +109,7 @@ Route::get('/contacts/custom-fields/get/{id}', 'CustomFieldController@edit')->na
 Route::post('/contacts/custom-fields/create', 'CustomFieldController@store')->name('custom-fields.create')->middleware('auth');
 Route::put('/contacts/custom-fields/update', 'CustomFieldController@update')->name('custom-fields.update')->middleware('auth');
 Route::delete('/contacts/custom-fields/delete/{id}', 'CustomFieldController@destroy')->name('custom-fields.delete')->middleware('auth');
+Route::get('/contacts/custom-fields/form/{contact_id}/{form_type}', 'CustomFieldController@formCustomFields')->name('custom-fields.form')->middleware('auth');
 
 //route for contacts fields 
 Route::delete('/contacts/field/file/{id}', 'CustomFieldController@deleteContactFieldFile')->name('contacts_field_file.delete')->middleware('auth');
@@ -167,7 +168,7 @@ Route::get('/sms_accounts/get/{id}', 'SMSAccountController@getSMSAccount')->name
 Route::delete('/sms_accounts/delete/{id}', 'SMSAccountController@destroy')->name('sms_accounts.delete')->middleware('auth');
 Route::get('/sms_accounts/get', 'SMSAccountController@getAllSMSAccount')->name('sms_accounts')->middleware('auth');
 Route::get('/sms', 'SMSAccountController@chat')->name('chat')->middleware('auth');
-Route::post('/sms/send', 'PHloController@sendSMS')->name('sms.send')->middleware('auth');
+Route::post('/sms/send', 'SMSAccountController@sendSMS')->name('sms.send')->middleware('auth');
 
 //route for shortcodes settings
 Route::post('/shortcodes/create', 'ShortCodeController@store')->name('shortcodes.create')->middleware('auth');
@@ -175,3 +176,10 @@ Route::put('/shortcodes/update', 'ShortCodeController@update')->name('shortcodes
 Route::get('/shortcodes/get/{id}', 'ShortCodeController@get')->name('shortcodes.get')->middleware('auth');
 Route::delete('/shortcodes/delete/{id}', 'ShortCodeController@destroy')->name('shortcodes.delete')->middleware('auth');
 Route::get('/shortcodes/get', 'ShortCodeController@getAllShortCodes')->name('shortcodes')->middleware('auth');
+
+//route for users_sip_accounts settings
+Route::post('/users_sip_accounts/create', 'Users_SipAccountsController@store')->name('users_sip_accounts.create')->middleware('auth');
+Route::put('/users_sip_accounts/update', 'Users_SipAccountsController@update')->name('users_sip_accounts.update')->middleware('auth');
+Route::get('/users_sip_accounts/get/{id}', 'Users_SipAccountsController@get')->name('users_sip_accounts.get')->middleware('auth');
+Route::delete('/users_sip_accounts/delete/{id}', 'Users_SipAccountsController@destroy')->name('users_sip_accounts.delete')->middleware('auth');
+Route::get('/users_sip_accounts/get', 'Users_SipAccountsController@getAllUserSipAccounts')->name('users_sip_accounts')->middleware('auth');

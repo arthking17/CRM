@@ -430,11 +430,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->account = $user->account[0];
-        $logs = DB::table('logs')
-            ->where('user_id', $user->id)
-            ->orderBy('id', 'asc')
-            ->take(20)
-            ->get();
+        $logs = Log::orderBy('id', 'DESC')->where('user_id', $user->id)->get();
         $notes = DB::table('notes')
             ->where('element', getElementByName('users'))->where('element_id', $user->id)->get();
         $users_permissions = Users_permission::where('user_id', $user->id)->where('status', 1)->get();

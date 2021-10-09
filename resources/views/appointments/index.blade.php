@@ -8,23 +8,32 @@
     <link href="{{ asset('libs/fullcalendar/main.min.css') }}" rel="stylesheet" type="text/css" />
 
     <!-- third party css -->
-    <link href="{{ asset('libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('libs/datatables.net-select-bs4/css/select.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('libs/datatables.net-select-bs4/css/select.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
     <!-- third party css end -->
 
     <!-- picker css -->
     <link href="{{ asset('libs/spectrum-colorpicker2/spectrum.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet"
+        type="text/css" />
 
     <!-- App css -->
-    <link href="{{ asset('css/config/creative/bootstrap.min.css') }}" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
-    <link href="{{ asset('css/config/creative/app.min.css') }}" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
+    <link href="{{ asset('css/config/creative/bootstrap.min.css') }}" rel="stylesheet" type="text/css"
+        id="bs-default-stylesheet" />
+    <link href="{{ asset('css/config/creative/app.min.css') }}" rel="stylesheet" type="text/css"
+        id="app-default-stylesheet" />
 
-    <link href="{{ asset('css/config/creative/bootstrap-dark.min.css') }}" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
-    <link href="{{ asset('css/config/creative/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
+    <link href="{{ asset('css/config/creative/bootstrap-dark.min.css') }}" rel="stylesheet" type="text/css"
+        id="bs-dark-stylesheet" />
+    <link href="{{ asset('css/config/creative/app-dark.min.css') }}" rel="stylesheet" type="text/css"
+        id="app-dark-stylesheet" />
 
     <!-- icons -->
     <link href="{{ asset('css/icons.min.css') }}" rel="stylesheet" type="text/css" />
@@ -40,15 +49,28 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
-                        <div class="page-title-right">
-                            <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ config('app.name') }}</a>
-                                </li>
-                                <li class="breadcrumb-item"><a href="{{ route('contacts') }}">Contacts</a></li>
-                                <li class="breadcrumb-item active">Appointments</li>
-                            </ol>
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
+                                <div class="text-sm-end">
+                                    <h4 class="page-title">Appointments &nbsp;
+                                        <button id="btn-add" class="btn btn-xs btn-primary"
+                                            data-bs-toggle="modal" data-bs-target="#create-appointment-modal"><i
+                                                class="mdi mdi-plus-circle me-1"></i> Add Appointment </button>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="col-sm-auto">
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a
+                                                href="{{ route('home') }}">{{ config('app.name') }}</a>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="{{ route('contacts') }}">Contacts</a></li>
+                                        <li class="breadcrumb-item active">Appointments</li>
+                                    </ol>
+                                </div>
+                            </div><!-- end col-->
                         </div>
-                        <h4 class="page-title">Appointments</h4>
                     </div>
                 </div>
             </div>
@@ -65,7 +87,8 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#calendar-view" data-bs-toggle="tab" aria-expanded="true" class="nav-link active">
+                                    <a href="#calendar-view" data-bs-toggle="tab" aria-expanded="true"
+                                        class="nav-link active">
                                         Calendar
                                     </a>
                                 </li>

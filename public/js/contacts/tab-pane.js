@@ -1,8 +1,8 @@
 $(document).ready(function () {
     $('.nav-link').on('click', function () {
         $('#global-btn-add').addClass('d-none')
-        $('#div-global-btn-add').addClass('d-none')
-        $('#global-btn-add').attr('onclick', '#')
+        $('#btn-add-contact_data').addClass('d-none')
+        $('#global-btn-add').attr('onclick', '')
     })
     $('#appointments-link').on('click', function () {
         $('#create-appointment-row-contact_id').addClass('d-none')
@@ -25,7 +25,7 @@ $(document).ready(function () {
         $('#global-btn-add').removeClass('d-none')
     })
     $('#contact_data-link').on('click', function () {
-        $('#div-global-btn-add').html($('#btn-add-contact_data').html())
-        $('#div-global-btn-add').removeClass('d-none')
+        //$('#div-global-btn-add').html($('#btn-add-contact_data').html())
+        $('#btn-add-contact_data').removeClass('d-none')
     })
 });

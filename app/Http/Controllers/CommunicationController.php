@@ -109,7 +109,7 @@ class CommunicationController extends Controller
             } else {
                 return response()->json(['message' => 'you do not have the necessary rights'], 300);
             }
-        } else if ($page_name == 'page_users') {
+        } else if ($page_name == 'page_users_view') {
             if (Auth::user()->role == 1) {
                 $communications = Communication::where('user_id', $data['user_id'])->get();
             } else if (Auth::user()->role == 2) {
@@ -122,7 +122,7 @@ class CommunicationController extends Controller
             } else {
                 return response()->json(['message' => 'you do not have the necessary rights'], 300);
             }
-        } else if ($page_name == 'page_contacts') {
+        } else if ($page_name == 'page_contacts_view') {
             if (Auth::user()->role == 1) {
                 $communications = Communication::where('contact_id', $data['contact_id'])->get();
             } else if (Auth::user()->role == 2) {

@@ -29,7 +29,9 @@
 
     @include('layouts.partials._rightbar')
 
+    
     @yield('js')
+    <script src="{{ asset('/js/helpers.js') }}"></script>
 </body>
 
 </html>

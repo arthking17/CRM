@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Users Group'])
+@extends('layouts.app', ['title' => 'Contacts Group'])
 
 @section('css')
     <!-- App favicon -->
@@ -36,79 +36,21 @@
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ config('app.name') }}</a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="{{ route('users') }}">Users</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('contacts') }}">Contacts</a></li>
                                 <li class="breadcrumb-item active">Groups</li>
                             </ol>
                         </div>
-                        <h4 class="page-title">Users Group</h4>
+                        <h4 class="page-title">Contacts Group</h4>
                     </div>
                 </div>
             </div>
             <!-- end page title -->
             <div class="row">
-                <div class="col-lg-3">
-                    <div class="card" id="user-permissions-info-card">
-                        @include('permissions.users-permissions-info')
-                    </div>
-                </div>
-                <div class="col-lg-6">
+                <div class="col-lg-9">
                     <div class="card">
                         <div class="card-body">
-                            <div class="row justify-content-between">
-                                <div class="col-auto">
-                                    <h4 class="header-title">List of Groups</h4>
-                                    <p class="sub-header">
-                                        All groups of users are mentioned here.
-                                    </p>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="text-sm-end">
-                                        <button type="button" class="btn btn-danger waves-effect waves-light"
-                                            data-bs-toggle="modal" data-bs-target="#create-modal"><i
-                                                class="mdi mdi-plus-circle me-1"></i> Add Groups</button>
-                                    </div>
-                                </div><!-- end col-->
-                            </div>
-                            <div class="table-responsive" id="view-list" data-simplebar>
-                                <table id="datatable-groups"
-                                    class="table table-center dt-responsive nowrap table-hover w-100">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-filter">Id</th>
-                                            <th class="select-filter">Account</th>
-                                            <th class="text-filter">Name</th>
-                                            <th class="disabled">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($groups as $group)
-                                            <tr id="groupid{{ $group->id }}" onclick="viewGroup({{ $group->id }});">
-                                                <td>{{ $group->id }}</td>
-                                                <td>{{ $group->name }}</td>
-                                                <td>{{ $group->account[0]->name }}</td>
-                                                <td>
-                                                    <div class="text-sm-end">
-                                                        <a href="javascript:void(0);" class="action-icon"
-                                                            data-bs-toggle="modal" data-bs-target="#edit-modal"
-                                                            onclick="editGroup({{ $group->id }});"> <i
-                                                                class="mdi mdi-square-edit-outline"></i></a>
-                                                        <a href="javascript:void(0);" class="action-icon"
-                                                            onclick="deleteGroup({{ $group->id }});"> <i
-                                                                class="mdi mdi-delete-circle"></i></a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th class="">Id</th>
-                                            <th class="select account">Account</th>
-                                            <th class="">Name</th>
-                                            <th class="disabled">Action</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                            <div id="view-list">
+                                @include('groups.datatable-groups')
                             </div>
                         </div> <!-- end card-body -->
                     </div> <!-- end card -->
@@ -125,14 +67,6 @@
     </div> <!-- content -->
     @include('groups.create')
     @include('groups.edit')
-    @if ($groups->count() > 0)
-        <div id="users_permissions-div">
-            @include('permissions.users_permissions')
-        </div>
-        <div id="create-Permission-div">
-            @include('permissions.create-permission')
-        </div>
-    @endif
 @endsection
 
 @section('js')
@@ -173,16 +107,11 @@
     <script src="{{ asset('js/groups/groups-list.js') }}"></script>
     <script src="{{ asset('js/groups/groups-validation.js') }}"></script>
     <script src="{{ asset('js/groups/datatable-groups.init.js') }}"></script>
-    <script src="{{ asset('js/users/users-select.js') }}"></script>
 
-    <!-- users permissions js -->
-    <script src="{{ asset('js/users/users-permissions.js') }}"></script>
     <script>
         url_jsfile = '{{ URL::asset('/js/groups/') }}';
         var create_group_errors = null
         var edit_group_errors = null
-        var create_permission_errors = null
-        elementSelect($('#create-permissions-element'))
     </script>
 
     <!-- App js-->

@@ -63,7 +63,7 @@ function restoreUser(id) {
 }
 
 function viewUser(id) {
-    $.get('/users/get/' + id + '/0', function (data) {
+    $.get(route('user.get', {'id':id, 'modal':0}), function (data) {
         $('#datatable-users tbody tr').removeClass('selected')
         $('#userid' + id).addClass('selected')
         viewLogsInCard(id)
@@ -71,7 +71,7 @@ function viewUser(id) {
 }
 
 function editUser(id) {
-    $.get('/users/get/' + id + '/1', function (user) {
+    $.get(route('user.get', {'id':id, 'modal':1}), function (user) {
         $('#edit-user-id').val(id)
         $('#edit-user-account_id').val(user.account_id)
         $('#edit-user-username').val(user.username)
@@ -193,7 +193,7 @@ $(document).ready(function () {
 
 
 function viewLogs(id) {
-    $.get('/users/logs/get/' + id + '/1', function (data) {
+    $.get(route('user.logs', {'user_id':id, 'modal':1}), function (data) {
         dataTableLogs.destroy()
         $('#logs-div').empty().html(data);
         dataTableLogs = $('#datatable-logs').DataTable({
@@ -257,7 +257,7 @@ function viewNotification(id) {
 }
 
 function viewLogsInCard(id) {
-    $.get('/users/logs/get/' + id + '/0', function (data) {
+    $.get(route('user.logs', {'user_id':id, 'modal':0}), function (data) {
         $('#logs-info-card').empty().html(data);
     })
 }

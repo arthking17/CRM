@@ -1,5 +1,5 @@
 function editAccount(id) {
-    $.get('/accounts/' + id, function(account) {
+    $.get(route('account.get', id), function(account) {
         $('#edit-account-id').val(id)
         $('#edit-account-name').val(account.name)
         $('#edit-account-url').val(account.url)

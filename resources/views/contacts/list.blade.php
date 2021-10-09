@@ -71,11 +71,20 @@
                                         </a> &nbsp;
                                         <a href="{{ route('contacts.search') }}" class="btn- btn-xs btn-secondary">
                                             <i class="fe-search"></i> Search
+                                        </a> &nbsp;
+                                        <a href="{{ route('contacts.groups') }}" class="btn- btn-xs btn-info">
+                                            <i class="mdi mdi-layers-outline"></i> Groups
                                         </a>
                                     </h4>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
+                                <h4 class="page-title-right">
+                                <button id="btn-add" class="btn btn-primary"
+                                    data-bs-toggle="modal" data-bs-target="#create-contact-modal"><i
+                                        class="mdi mdi-plus-circle me-1"></i> Add Contact </button></h4>
+                            </div>
+                            <div class="col-sm-auto">
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a
@@ -207,7 +216,7 @@
     <script src="{{ asset('js/form-validation-laravel.js') }}"></script>
 
     <!-- appointments -->
-    <script src="{{ asset('js/appointments/create-ext.js') }}"></script>
+    <script src="{{ asset('js/appointments/create.js') }}"></script>
 
     <!-- send email modal -->
     <script src="{{ asset('js/email_accounts/send-mail.js') }}"></script>

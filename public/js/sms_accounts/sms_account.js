@@ -88,7 +88,7 @@ $(document).ready(function() {
 
 
 function editSMSAccount(id) {
-    $.get('/sms_accounts/get/' + id, function(data) {
+    $.get(route('sms_accounts.get', id), function(data) {
         console.log(data)
         $('#edit-sms_account-id').val(id)
         $('#edit-sms_account-name').val(data.sms_account.name)

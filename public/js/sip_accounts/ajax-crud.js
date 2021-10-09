@@ -99,7 +99,7 @@ $('#edit-sip_account').submit(function (e) {
 
 function editSipAccount(id) {
     $('#edit-sip_accounts-modal').modal('toggle')
-    $.get('/sip_accounts/get/' + id, function (data) {
+    $.get(route('sip_accounts.get', id), function (data) {
         console.log(data)
         $('#edit-sip_account-id').val(id)
         $('#edit-sip_account-channel_id').val(data.sip_account.channel_id)
@@ -148,7 +148,7 @@ function deleteSipAccount(id) {
 }
 
 function viewSipAccount(id) {
-    $.get('/sip_accounts/show/' + id, function (response) {
+    $.get(route('sip_accounts.show', id), function (response) {
         console.log(response)
 
         $('#datatable-sip_accounts tbody tr').removeClass('selected')

@@ -69,6 +69,7 @@
                             title="Call" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                                 class="fe-phone-call"></i></a>
                         <div class="dropdown-menu">
+                            @if (Auth::user()->role === 1)
                             @foreach ($sip_accounts as $key => $sip_account)
                                 <a id="button-call-one" class="dropdown-item" href="#call-one-modal"
                                     data-backdrop="false" data-bs-toggle="modal"
@@ -77,6 +78,14 @@
                                     <img src="{{ asset('images/contact_data/mobile.png') }}" alt="contact-data-logo"
                                         height="12" class="me-1">{{ $sip_account->name }}</a>
                             @endforeach
+                            @elseif(Auth::user()->role === 2)
+                                <a id="button-call-one" class="dropdown-item" href="#call-one-modal"
+                                    data-backdrop="false" data-bs-toggle="modal"
+                                    data-sipaccount-username="{{ Auth::user()->users_sipaccount[0]->sipaccount[0]->username }}">
+                                    <img src="{{ asset('images/contact_data/mobile.png') }}" alt="contact-data-logo"
+                                        height="12"
+                                        class="me-1">{{ Auth::user()->users_sipaccount[0]->sipaccount[0]->name }}</a>
+                            @endif
                         </div>
                     </div>
                     <div class="btn-group mb-2">

@@ -13,26 +13,6 @@ use Throwable;
 class Contact_dataController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -55,18 +35,18 @@ class Contact_dataController extends Controller
     /**
      * Get contact by id with json response.
      *
-     * @param int $id
+     * @param int $element_id
+     * @param int $element
      * @return \Illuminate\Http\Response
      */
-    public function getContactDataJsonById(int $id)
+    public function getContactDataJsonByElementId(int $element_id, int $element)
     {
-        $contact_datas = Contact_data::all()->where('element_id', $id);
-        $contact = Contact::find($id);
+        $contact_datas = Contact_data::where('status', 1)->where('element', $element)->where('element_id', $element_id)->get();
         try {
-            return view('contacts/contact_data', compact('contact_datas', 'contact'))->render();
+            return view('contact_data.contact_data', compact('contact_datas'))->render();
         } catch (Throwable $e) {
             report($e);
-            return view('contacts/contact_data')->render();
+            return view('contact_data.contact_data')->render();
         }
     }
 
@@ -94,17 +74,6 @@ class Contact_dataController extends Controller
         }
 
         return response()->json([$contact_datas]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Contact_data  $contact_data
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contact_data $contact_data)
-    {
-        //
     }
 
     /**

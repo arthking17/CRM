@@ -22,20 +22,21 @@ $(document).ready(function () {
                 console.log(response)
                 Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                 $('#create-note')[0].reset();
-                if (typeof response.note.element !== 'undefined')
-                    $.get('/notes/element/' + response.note.element_id + '/' + response.note.element, function (response) {
-                        setTimeout(() => {
-                            $.getScript(url_jsfile_notes + "/datatable-notes.init.js")
-                                .done(function (script, textStatus) {
-                                    console.log(textStatus);
-                                })
-                                .fail(function (jqxhr, settings, exception) {
-                                    console.log("Triggered ajaxError handler.");
-                                });
-                            $('#notes').html(response.html);
-                            setTippyOnNoteContent();
-                        }, 1500);
-                    })
+                var note = response.note;
+                $.get(route('notes.element', { 'element_id': note.element_id, 'element': note.element }), function (response) {
+
+                    setTimeout(() => {
+                        $.getScript(url_jsfile_notes + "/datatable-notes.init.js")
+                            .done(function (script, textStatus) {
+                                console.log(textStatus);
+                            })
+                            .fail(function (jqxhr, settings, exception) {
+                                console.log("Triggered ajaxError handler.");
+                            });
+                        $('#notes').html(response.html);
+                        setTippyOnNoteContent();
+                    }, 1500);
+                })
             },
             error: function (error) {
                 console.log(error)
@@ -61,17 +62,22 @@ $(document).ready(function () {
                 console.log(response)
                 Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
                 //$('#edit-note')[0].reset();
+                var note = response.note;
                 if (typeof response.note.element !== 'undefined')
-                    $.get('/notes/element/' + response.note.element_id + '/' + response.note.element, function (response) {
+                    $.get(route('notes.element', { 'element_id': response.note.element_id, 'element': response.note.element }), function (response) {
                         setTimeout(() => {
-                            $.getScript(url_jsfile_notes + "/datatable-notes.init.js")
-                                .done(function (script, textStatus) {
-                                    console.log(textStatus);
-                                })
-                                .fail(function (jqxhr, settings, exception) {
-                                    console.log("Triggered ajaxError handler.");
-                                });
-                            $('#notes').html(response.html);
+                            $('#noteid' + note.id + ' td:nth-child(2)').html(getNoteClassName(note.class))
+                            var html;
+                            if (note.visibility == 1)
+                                html = '<span class="badge bg-success">Visible for all</span>';
+                            else if (note.visibility == 0)
+                                html = '<span class="badge label-table bg-danger">Visible only for admin</span>';
+                            $('#noteid' + note.id + ' td:nth-child(3)').html(html)
+                            $('#noteid' + note.id + ' td:nth-child(4)').html(getElementName(note.element))
+                            $('#noteid' + note.id + ' td:nth-child(5)').html(note.element_id)
+                            $('#noteid' + note.id + ' td:nth-child(6)').html(note.content)
+                            $('#noteid' + note.id + ' td:nth-child(6)').attr('title', note.content)
+                            instanceOfTippyNoteContent.destroy();
                             setTippyOnNoteContent();
                         }, 1500);
                     })
@@ -94,7 +100,7 @@ function viewFomAddNote(element_id, element) {
 }
 
 function viewFomEditNote(id) {
-    $.get('/notes/get/' + id + '/1', function (note) {
+    $.get(route('notes.get', { 'id': id, 'modal': 1 }), function (note) {
         console.log(note)
         $("#edit-note-id").val(note.id);
         $("#edit-note-element_id").val(note.element_id);
@@ -106,7 +112,7 @@ function viewFomEditNote(id) {
 }
 
 function editNote(id) {
-    $.get('/notes/get/' + id + '/1', function (note) {
+    $.get(route('notes.get', { 'id': id, 'modal': 1 }), function (note) {
         console.log(note)
         $('#edit-note-id').val(id)
         $('#edit-note-element_id').val(note.element_id)
@@ -114,31 +120,6 @@ function editNote(id) {
         $('#edit-note-class').val(note.class)
         $('#edit-note-visibility').val(note.visibility)
         $('#edit-note-content').val(note.content)
-    })
-}
-
-function viewNotes(element_id, element) {
-    $.get('/notes/element/' + element_id + '/' + element, function (notes) {
-        if (notes.length) {
-            $('#notes-info-card').empty().html(notes);
-        }
-    })
-}
-
-function viewDatatableNotes(element_id, element) {
-    $.get('/notes/get/element/' + element_id + '/' + element, function (data) {
-        console.log(data)
-        if (typeof dataTableNotes !== 'undefined')
-            dataTableNotes.destroy()
-        $('#notes-div').empty().html(data);
-        dataTableNotes = $('#datatable-notes').DataTable({
-            stateSave: !0,
-            language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
-            drawCallback: function () {
-                $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
-            },
-        });
-        $('#notes-modal').modal('toggle')
     })
 }
 
@@ -157,17 +138,21 @@ function deleteNote(id) {
                         console.log(response)
                         Swal.fire({ icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
 
-                        setTimeout(() => {
-                            $.getScript(url_jsfile_notes + "/datatable-notes.init.js")
-                                .done(function (script, textStatus) {
-                                    console.log(textStatus);
-                                })
-                                .fail(function (jqxhr, settings, exception) {
-                                    console.log("Triggered ajaxError handler.");
-                                });
-                            $('#notes').html(response.html);
-                            setTippyOnNoteContent();
-                        }, 1500);
+                        var note = response.note;
+                        $.get(route('notes.element', { 'element_id': note.element_id, 'element': note.element }), function (response) {
+
+                            setTimeout(() => {
+                                $.getScript(url_jsfile_notes + "/datatable-notes.init.js")
+                                    .done(function (script, textStatus) {
+                                        console.log(textStatus);
+                                    })
+                                    .fail(function (jqxhr, settings, exception) {
+                                        console.log("Triggered ajaxError handler.");
+                                    });
+                                $('#notes').html(response.html);
+                                setTippyOnNoteContent();
+                            }, 1500);
+                        })
                     },
                     error: function (error) {
                         console.log(error)
@@ -180,7 +165,7 @@ function deleteNote(id) {
 }
 
 function setTippyOnNoteContent() {
-    tippy('#note-content', {
+    instanceOfTippyNoteContent = tippy('#note-content', {
         // change these to your liking
         arrow: true,
         placement: 'left', // top, right, bottom, left

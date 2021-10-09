@@ -15,6 +15,56 @@ $(document).ready(function () {
             $('#form_edit .person-required').attr('required', false)
         }
     })
+
+    $('#form_edit-account_id').on('change', function () {
+        $.get(route('custom-fields.form', {'account_id':$('#form_edit-id').val(), 'form_type':'edit'}), function (data) {
+           $('#edit-custom-fields').html(data.html);
+
+           (data.custom_fields).forEach(field => {
+               if (field.field_type == 'checkbox') {
+                   $('#form_edit-' + field.tag).attr('checked', false)
+               } else if (field.field_type == 'file') {
+                   $('#form_edit-' + field.tag + '-preview').addClass('d-none')
+                   $('#form_edit-' + field.tag + '-preview').attr('href', '#')
+                   $('#form_edit-' + field.tag + '-delete').attr('onclick', '#')
+                   $('#form_edit-' + field.tag + '-delete').addClass('d-none')
+               } else if (field.field_type == 'select') {
+                   $('#form_edit-' + field.tag).val('')
+               } else {
+                   $('#form_edit-' + field.tag).val('')
+               }
+               if (field.field_type == 'datetime') {
+                   $('#form_edit-' + field.tag).flatpickr({
+                       enableTime: true,
+                       altInput: true,
+                       defaultDate: null,
+                       dateFormat: "Y-m-d H:i",
+                   })
+               }
+           });
+           (data.contact_field).forEach(field => {
+               if (field.field_type == 'checkbox') {
+                   $('#form_edit-' + field.tag).attr('checked', true)
+               } else if (field.field_type == 'file') {
+                   $('#form_edit-' + field.tag + '-preview').removeClass('d-none')
+                   $('#form_edit-' + field.tag + '-preview').attr('href', url_custom_field + '/' + field.field_value)
+                   $('#form_edit-' + field.tag + '-delete').removeClass('d-none')
+                   $('#form_edit-' + field.tag + '-delete').attr('onclick', 'deleteContactFieldFile(' + field.id + ', "' + field.tag + '")')
+               } else {
+                   $('#form_edit-' + field.tag).val(field.field_value)
+               }
+               if (field.field_type == 'datetime') {
+                   $('#form_edit-' + field.tag).flatpickr({
+                       enableTime: true,
+                       altInput: true,
+                       defaultDate: field.value,
+                       dateFormat: "Y-m-d H:i",
+                   })
+               }
+           });
+        });
+    })
+
     $("#edit-contactwizard").bootstrapWizard({
         onTabShow: function (t, r, a) {
             var o = ((a + 1) / r.find("li").length) * 100;

@@ -72,9 +72,9 @@
                             onclick="deleteCommunication({{ $communication->id }});" class="btn- btn-xs btn-danger">
                             <i class="mdi mdi-delete-circle"></i></a>
                     @endif
-                    <a href="javascript:void(0);" class="btn- btn-xs btn-secondary" data-bs-toggle=""
-                        data-bs-target="#notes-modal"
-                        onclick="viewDatatableNotes({{ $communication->id }}, 'communications');"> <i
+                    <a href="javascript:void(0);" class="btn- btn-xs btn-secondary" 
+                    data-bs-target="#notes-modal" data-bs-toggle=""
+                        onclick="viewDatatableNotes({{ $communication->id }}, {{ getElementByName('communications') }});"> <i
                             class="mdi mdi-notebook-outline"></i></a>
                 </td>
             </tr>

@@ -1,0 +1,4 @@
+[05-Oct-2021 11:38:03 +0000]: <8qf52ar2> DB Error: SQLSTATE[HY000] [1045] Access denied for user 'roundcube'@'localhost' (using password: YES) in D:\GCS\CRM\public\webmail\program\lib\Roundcube\rcube_db.php on line 175 (GET /webmail)
+[05-Oct-2021 11:38:03 +0000]: <8qf52ar2> DB Error: SQLSTATE[HY000] [1045] Access denied for user 'roundcube'@'localhost' (using password: YES) (GET /webmail)
+[05-Oct-2021 11:38:14 +0000]: <8qf52ar2> DB Error: SQLSTATE[HY000] [1045] Access denied for user 'roundcube'@'localhost' (using password: YES) in D:\GCS\CRM\public\webmail\program\lib\Roundcube\rcube_db.php on line 175 (GET /webmail)
+[05-Oct-2021 11:38:14 +0000]: <8qf52ar2> DB Error: SQLSTATE[HY000] [1045] Access denied for user 'roundcube'@'localhost' (using password: YES) (GET /webmail)

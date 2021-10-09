@@ -1,9 +1,9 @@
-$(document).ready(function() {
-    setTippyOnButton();
+$(document).ready(function () {
+    setTippyOnBtnXs();
 })
 
 function viewInfoCardContact(id, type) {
-    $.get('/contacts/get/' + id + '/0', function(response) {
+    $.get(route('contacts.get', { 'id': id, 'modal': 0 }), function (response) {
         console.log(response)
         try {
             if (type == 1) {
@@ -22,16 +22,16 @@ function viewInfoCardContact(id, type) {
         } catch (e) {
             Swal.fire({ icon: "error", title: 'error !!!', showConfirmButton: !1, timer: 1500 });
         }
-    }).fail(function() {
+    }).fail(function () {
         Swal.fire({ icon: "error", title: response.error, showConfirmButton: !1, timer: 1500 });
     })
 }
 
 function viewContact(id, type) {
-    $.get('/contacts/get/' + id + '/0', function(response) {
+    $.get(route('contacts.get', { 'id': id, 'modal': 0 }), function (response) {
 
         $('#datatable-contacts tbody tr').removeClass('selected')
-        $('#contactid'+id).addClass('selected')
+        $('#contactid' + id).addClass('selected')
 
         //console.log(response)
         try {
@@ -51,7 +51,7 @@ function viewContact(id, type) {
             $('#contacts_person-info-card').addClass('d-none')
             $('#contacts_companie-info-card').addClass('d-none')
         }
-    }).fail(function(error) {
+    }).fail(function (error) {
         console.log(error)
         Swal.fire({ icon: "error", title: 'error !!!', showConfirmButton: !1, timer: 1500 });
         $('#contacts_person-info-card').addClass('d-none')
@@ -60,7 +60,7 @@ function viewContact(id, type) {
 }
 
 function editContact(id) {
-    $.get('/contacts/get/' + id + '/1', function(data) {
+    $.get(route('contacts.get', { 'id': id, 'modal': 1 }), function (data) {
         console.log(data)
         $('#form_edit-id').val(id)
         $('#form_edit-class').val(data.contact.class)
@@ -71,9 +71,9 @@ function editContact(id) {
         $('#form_edit-source_id').val(data.contact.source_id)
         if (data.contact.class == 1) {
             $('#edit-nav-tab-info a:nth-of-type(1)').attr('href', '#edit-personcontact')
-                //disable validation on companies contact tab
+            //disable validation on companies contact tab
             $('#form_edit .companie-required').attr('required', false)
-                //active validation on person contact tab
+            //active validation on person contact tab
             $('#form_edit .person-required').attr('required', true)
             $('#form_edit-first_name').val(data.contact.first_name)
             $('#form_edit-nickname').val(data.contact.nickname)
@@ -89,9 +89,9 @@ function editContact(id) {
             $('#form_edit-person_language').val(data.contact.language)
         } else if (data.contact.class == 2) {
             $('#edit-nav-tab-info a:nth-of-type(1)').attr('href', '#edit-companiescontact')
-                //active validation on companies contact tab
+            //active validation on companies contact tab
             $('#form_edit .companie-required').attr('required', true)
-                //disable validation on person contact tab
+            //disable validation on person contact tab
             $('#form_edit .person-required').attr('required', false)
             $('#form_edit-companies_country').val(data.contact.country)
             $('#form_edit-name').val(data.contact.name)
@@ -104,48 +104,53 @@ function editContact(id) {
             else
                 $('#form_edit-logo-img').attr('src', url_logo + '/image-not-found.png')
         }
+
         //custom field
-        (data.custom_fields).forEach(field => {
-            if (field.field_type == 'checkbox') {
-                $('#form_edit-' + field.tag).attr('checked', false)
-            } else if (field.field_type == 'file') {
-                $('#form_edit-' + field.tag + '-preview').addClass('d-none')
-                $('#form_edit-' + field.tag + '-preview').attr('href', '#')
-                $('#form_edit-' + field.tag + '-delete').attr('onclick', '#')
-                $('#form_edit-' + field.tag + '-delete').addClass('d-none')
-            } else if (field.field_type == 'select') {
-                $('#form_edit-' + field.tag).val('')
-            } else {
-                $('#form_edit-' + field.tag).val('')
-            }
-            if (field.field_type == 'datetime') {
-                $('#form_edit-' + field.tag).flatpickr({
-                    enableTime: true,
-                    altInput: true,
-                    defaultDate: null,
-                    dateFormat: "Y-m-d H:i",
-                })
-            }
-        });
-        (data.contact_field).forEach(field => {
-            if (field.field_type == 'checkbox') {
-                $('#form_edit-' + field.tag).attr('checked', true)
-            } else if (field.field_type == 'file') {
-                $('#form_edit-' + field.tag + '-preview').removeClass('d-none')
-                $('#form_edit-' + field.tag + '-preview').attr('href', url_custom_field + '/' + field.field_value)
-                $('#form_edit-' + field.tag + '-delete').removeClass('d-none')
-                $('#form_edit-' + field.tag + '-delete').attr('onclick', 'deleteContactFieldFile(' + field.id + ', "' + field.tag + '")')
-            } else {
-                $('#form_edit-' + field.tag).val(field.field_value)
-            }
-            if (field.field_type == 'datetime') {
-                $('#form_edit-' + field.tag).flatpickr({
-                    enableTime: true,
-                    altInput: true,
-                    defaultDate: field.value,
-                    dateFormat: "Y-m-d H:i",
-                })
-            }
+        $.get(route('custom-fields.form', {'contact_id':id, 'form_type':'edit'}), function (data) {
+           $('#edit-custom-fields').html(data.html);
+
+           (data.custom_fields).forEach(field => {
+               if (field.field_type == 'checkbox') {
+                   $('#form_edit-' + field.tag).attr('checked', false)
+               } else if (field.field_type == 'file') {
+                   $('#form_edit-' + field.tag + '-preview').addClass('d-none')
+                   $('#form_edit-' + field.tag + '-preview').attr('href', '#')
+                   $('#form_edit-' + field.tag + '-delete').attr('onclick', '#')
+                   $('#form_edit-' + field.tag + '-delete').addClass('d-none')
+               } else if (field.field_type == 'select') {
+                   $('#form_edit-' + field.tag).val('')
+               } else {
+                   $('#form_edit-' + field.tag).val('')
+               }
+               if (field.field_type == 'datetime') {
+                   $('#form_edit-' + field.tag).flatpickr({
+                       enableTime: true,
+                       altInput: true,
+                       defaultDate: null,
+                       dateFormat: "Y-m-d H:i",
+                   })
+               }
+           });
+           (data.contact_field).forEach(field => {
+               if (field.field_type == 'checkbox') {
+                   $('#form_edit-' + field.tag).attr('checked', true)
+               } else if (field.field_type == 'file') {
+                   $('#form_edit-' + field.tag + '-preview').removeClass('d-none')
+                   $('#form_edit-' + field.tag + '-preview').attr('href', url_custom_field + '/' + field.field_value)
+                   $('#form_edit-' + field.tag + '-delete').removeClass('d-none')
+                   $('#form_edit-' + field.tag + '-delete').attr('onclick', 'deleteContactFieldFile(' + field.id + ', "' + field.tag + '")')
+               } else {
+                   $('#form_edit-' + field.tag).val(field.field_value)
+               }
+               if (field.field_type == 'datetime') {
+                   $('#form_edit-' + field.tag).flatpickr({
+                       enableTime: true,
+                       altInput: true,
+                       defaultDate: field.value,
+                       dateFormat: "Y-m-d H:i",
+                   })
+               }
+           });
         });
 
         $('#btn-delete').attr('onClick', 'deleteContact(' + id + ');')
@@ -154,7 +159,7 @@ function editContact(id) {
 
 function deleteContact(id) {
     Swal.fire({ title: "Are you sure?", text: "This contact will be disabled!", icon: "warning", showCancelButton: !0, confirmButtonColor: "#28bb4b", cancelButtonColor: "#f34e4e", confirmButtonText: "Yes, delete it!" }).then(
-        function(e) {
+        function (e) {
             e.value ?
                 $.ajax({
                     type: "DELETE",
@@ -163,18 +168,18 @@ function deleteContact(id) {
                         _token: $("input[name=_token]").val(),
                     },
                     dataType: "json",
-                    success: function(response) {
+                    success: function (response) {
                         Swal.fire({ icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
 
                         setTimeout(function () {
                             $('#contactid' + id + ' td:nth-child(6)').html('<span class="badge bg-danger">Disabled</span>')
                             for (let i = 1; i <= 6; i++) {
-                                $('#contactid' + id + ' a:nth-child('+i+')').attr('onclick', '')
-                                $('#contactid' + id + ' a:nth-child('+i+')').attr('data-bs-toggle', '')
+                                $('#contactid' + id + ' a:nth-child(' + i + ')').attr('onclick', '')
+                                $('#contactid' + id + ' a:nth-child(' + i + ')').attr('data-bs-toggle', '')
                             }
                         }, 1500);
                     },
-                    error: function(error) {
+                    error: function (error) {
                         console.log(error)
                         Swal.fire({ icon: "error", title: response.error, showConfirmButton: !1, timer: 1500 });
                     }
@@ -187,33 +192,4 @@ function deleteContact(id) {
 function viewFormCreateAppointment(contact_id, user_id) {
     $('#create-appointment-contact_id').val(contact_id)
     $('#create-appointment-user_id').val(user_id)
-}
-
-function setTippyOnButton(){
-    tippy('.btn-xs', {
-        // change these to your liking
-        arrow: true,
-        placement: 'bottom', // top, right, bottom, left
-        duration: [600, 300], //ms
-        distance: 15, //px or string
-        maxWidth: 300, //px or string
-        animation: 'perspective',
-        // leave these as they are
-        allowHTML: true,
-        theme: 'custom',
-        ignoreAttributes: true,
-        content(reference) {
-            const title = reference.getAttribute('title');
-            reference.removeAttribute('title');
-            return title;
-        },
-        interactive: "true",
-        hideOnClick: false, // if you want
-        onShow(instance) {
-            setTimeout(() => {
-                instance.hide();
-            }, 1000);
-        }
-
-    });
 }

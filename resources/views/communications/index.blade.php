@@ -40,15 +40,28 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
-                        <div class="page-title-right">
-                            <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ config('app.name') }}</a>
-                                </li>
-                                <li class="breadcrumb-item"><a href="{{ route('contacts') }}">Contacts</a></li>
-                                <li class="breadcrumb-item active">Communications</li>
-                            </ol>
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
+                                <div class="text-sm-end">
+                                    <h4 class="page-title">Communications &nbsp;
+                                        <button id="btn-add" class="btn btn-xs btn-primary"
+                                            data-bs-toggle="modal" data-bs-target="#create-communication-modal"><i
+                                                class="mdi mdi-plus-circle me-1"></i> Add Communication </button>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="col-sm-auto">
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a
+                                                href="{{ route('home') }}">{{ config('app.name') }}</a>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="{{ route('contacts') }}">Contacts</a></li>
+                                        <li class="breadcrumb-item active">Communications</li>
+                                    </ol>
+                                </div>
+                            </div><!-- end col-->
                         </div>
-                        <h4 class="page-title">Communications</h4>
                     </div>
                 </div>
             </div>
@@ -74,12 +87,10 @@
 
     @include('communications.create')
     @include('communications.edit')
-    @include('notes.create-ext')
-    @include('notes.edit-ext')
-    <div id="notes-div">
-    </div>
-    @if ($communications->count() > 0)
-    @endif
+
+    <div id="notes-div"></div>
+    @include('notes.create-ext-modal')
+    @include('notes.edit-ext-modal')
 @endsection
 
 @section('js')
@@ -135,13 +146,17 @@
     <script src="{{ asset('js/communications/edit.js') }}"></script>
     <script src="{{ asset('js/form-validation-laravel.js') }}"></script>
 
-    <script src="{{ asset('js/notes/notes-module-ext.js') }}"></script>
+    <script src="{{ asset('js/notes/notes-module-ext-in-modal.js') }}"></script>
+
+    <script src="{{ asset('js/helpers.js') }}"></script>
     <script>
         url_jsfile_communications = '{{ URL::asset('/js/communications/') }}';
         var create_communication_errors = null
         var edit_communication_errors = null
         var create_note_errors = null
         var edit_note_errors = null
+        var url_jsfile_notes = '{{ URL::asset('/js/notes/') }}';
+        var instanceOfTippyNoteContent = null;
     </script>
 
     <!-- App js-->

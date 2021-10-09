@@ -83,10 +83,10 @@ class AppointmentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param int $type
+     * @param string $page_name
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, int $type)
+    public function store(Request $request, string $page_name)
     {
         //return $request;
         $data = $request->validate([
@@ -102,22 +102,37 @@ class AppointmentController extends Controller
         $appointment = Appointment::create($data);
         Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'appointments.create', 'element' => getElementByName('appointments'), 'element_id' => $appointment->id, 'source' => 'appointments.create']);
 
-        $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
-        $users_id = [];
-        foreach ($users as $user) {
-            array_push($users_id, $user->id);
-        }
-        if ($type == 1)
-            $appointments = Appointment::whereIn('user_id', $users_id)->where('status', 1)->get();
-        else
-            $appointments = Appointment::whereIn('user_id', $users_id)->where('contact_id', $appointment->contact_id)->where('status', 1)->get();
 
         if (Auth::user()->role == 1) {
+            if ($page_name == 'page_contacts_view')
+                $appointments = Appointment::orderBy('id', 'DESC')->where('contact_id', $data['contact_id'])->get();
+            else if ($page_name == 'page_users_view')
+                $appointments = Appointment::orderBy('id', 'DESC')->where('user_id', $data['user_id'])->get();
+            else if ($page_name == 'page_appointments')
+                $appointments = Appointment::orderBy('id', 'DESC')->get();
             $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
                 ->select('contacts.id', 'contacts_companies.name')->get();
             $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
                 ->select('contacts.id', 'first_name', 'last_name')->get();
         } else if (Auth::user()->role == 2) {
+            //make a user id table
+            $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
+            $users_id = [];
+            foreach ($users as $user) {
+                array_push($users_id, $user->id);
+            }
+            //make a contact id table
+            $contacts = DB::table('contacts')->select('id', 'class')->where('account_id', Auth::user()->account_id)->get();
+            $contact_id = [];
+            foreach ($contacts as $contact) {
+                array_push($contact_id, $contact->id);
+            }
+            if ($page_name == 'page_contacts_view')
+                $appointments = Appointment::orderBy('id', 'DESC')->where('contact_id', $data['contact_id'])->whereIn('user_id', $users_id)->where('status', 1)->get();
+            else if ($page_name == 'page_users_view')
+                $appointments = Appointment::orderBy('id', 'DESC')->where('user_id', $data['user_id'])->whereIn('contact_id', $contact_id)->where('status', 1)->get();
+            else if ($page_name == 'page_appointments')
+                $appointments = Appointment::orderBy('id', 'DESC')->whereIn('user_id', $users_id)->where('contact_id', $appointment->contact_id)->where('status', 1)->get();
             $contacts_companies = DB::table('contacts')->join('contacts_companies', 'contacts.id', '=', 'contacts_companies.id')
                 ->where('account_id', Auth::user()->account_id)
                 ->select('contacts.id', 'contacts_companies.name')->get();
@@ -148,10 +163,9 @@ class AppointmentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param int $type
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, int $type)
+    public function update(Request $request)
     {
         //return $request;
         $data = $request->validate([
@@ -172,9 +186,9 @@ class AppointmentController extends Controller
 
         $appointment->user = $appointment->user[0];
         $appointment->contact = $appointment->contact[0];
-        if($appointment->contact->class == 1){
-            $contact_name = Contacts_person::find($appointment->contact->id)->first_name .' '.Contacts_person::find($appointment->contact->id)->last_name;
-        }else if($appointment->contact->class == 2){
+        if ($appointment->contact->class == 1) {
+            $contact_name = Contacts_person::find($appointment->contact->id)->first_name . ' ' . Contacts_person::find($appointment->contact->id)->last_name;
+        } else if ($appointment->contact->class == 2) {
             $contact_name = Contacts_companie::find($appointment->contact->id)->name;
         }
         return response()->json(['success' => 'Appointment Updated', 'appointment' => $appointment, 'contact_name' => $contact_name]);

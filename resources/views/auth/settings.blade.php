@@ -86,6 +86,12 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a id="users-sip-account-link" href="#users-sip-account" data-bs-toggle="tab" aria-expanded="true"
+                                    class="nav-link">
+                                    Users SIP Account
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a id="sms-account-link" href="#sms-account" data-bs-toggle="tab" aria-expanded="true"
                                     class="nav-link">
                                     SMS Account
@@ -121,6 +127,14 @@
                                 </div>
                             </div><!-- end tab-pane -->
                             <!-- end sip account section content -->
+
+                            <div class="tab-pane" id="users-sip-account">
+
+                                <div id="list-users_sip_accounts">
+                                    @include('users_sip_accounts.list')
+                                </div>
+                            </div><!-- end tab-pane -->
+                            <!-- end users sip account section content -->
 
                             <div class="tab-pane" id="sms-account">
 
@@ -172,6 +186,9 @@
 
     @include('custom-fields.create')
     @include('custom-fields.edit')
+
+    @include('users_sip_accounts.create')
+    @include('users_sip_accounts.edit')
 @endsection
 
 @section('js')
@@ -239,12 +256,16 @@
     <script src="{{ asset('js/custom-fields/custom-fields.js') }}"></script>
     <script src="{{ asset('js/custom-fields/form-create.js') }}"></script>
 
+    <script src="{{ asset('js/users_sip_accounts/datatable-users_sip_accounts.init.js') }}"></script>
+    <script src="{{ asset('js/users_sip_accounts/users_sip_accounts.js') }}"></script>
+
     <script>
         url_photo = '{{ URL::asset('/storage/images/users/') }}';
         url_jsfile_sip_accounts = '{{ URL::asset('/js/sip_accounts/') }}';
         url_jsfile_email_accounts = '{{ URL::asset('/js/email_accounts/') }}';
         url_jsfile_sms_accounts = '{{ URL::asset('/js/sms_accounts/') }}';
         url_jsfile_shortcodes = '{{ URL::asset('/js/shortcodes/') }}';
+        url_jsfile_users_sip_accounts = '{{ URL::asset('/js/users_sip_accounts/') }}';
 
         var create_email_account_errors = null
         var edit_email_account_errors = null
@@ -260,6 +281,9 @@
 
         var create_custom_field_errors = null
         var edit_custom_field_errors = null
+
+var create_users_sip_account_errors = null
+var edit_users_sip_account_errors = null
 
         var url_jsfile_custom_fields = '{{ URL::asset('/js/custom-fields/') }}';
     </script>

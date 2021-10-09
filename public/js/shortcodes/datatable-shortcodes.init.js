@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    dataTableSmsAccounts = $('#datatable-shortcodes').DataTable({
+    dataTableShortCodes = $('#datatable-shortcodes').DataTable({
         stateSave: 0,
         language: { paginate: { previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>" } },
         drawCallback: function () {
@@ -18,7 +18,7 @@ $(document).ready(function () {
                 $(this).html('<input class="form-control form-control-sm shortcodes" type="text" placeholder="Search ' + title + '" />');
             }
         });
-    dataTableSmsAccounts.columns().every(function () {
+    dataTableShortCodes.columns().every(function () {
         var that = this;
 
         $('.shortcodes', this.footer()).on('keyup change clear', function () {
@@ -29,7 +29,7 @@ $(document).ready(function () {
             }
         });
     });
-    dataTableSmsAccounts.columns().every(function () {
+    dataTableShortCodes.columns().every(function () {
         var column = this;
         if ($(column.footer()).hasClass('select')) {
             var select = $('<select class="form-select"><option value=""></option></select>')

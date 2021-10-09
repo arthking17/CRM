@@ -4,7 +4,7 @@ $(document).ready(function () {
 
 function editAppointment(id) {
     $('#edit-appointments-modal').modal('toggle')
-    $.get('/appointments/get/' + id, function (data) {
+    $.get(route('appointments.get', id), function (data) {
         console.log(data)
         $('#edit-appointment-id').val(id)
         $('#edit-appointment-contact_id').val(data.appointment.contact_id)
@@ -47,13 +47,19 @@ function deleteAppointment(id) {
                         $('#appointmentid' + id + ' a:nth-child(1)').attr('data-bs-toggle', '')
                         $('#appointmentid' + id + ' a:nth-child(2)').attr('onclick', '')
 
-                        $.getScript(url_jsfile_appointments + "/calendar.init.js")
-                            .done(function (script, textStatus) {
-                                console.log(textStatus);
-                            })
-                            .fail(function (jqxhr, settings, exception) {
-                                console.log("Triggered ajaxError handler.");
-                            });
+                        var currentUrl = window.location.href;
+                        var urlTable = currentUrl.split('/');
+                        var page_name = 'page_' + urlTable[3];
+                        console.log(urlTable)
+
+                        if (page_name == 'page_appointments')
+                            $.getScript(url_jsfile_appointments + "/calendar.init.js")
+                                .done(function (script, textStatus) {
+                                    console.log(textStatus);
+                                })
+                                .fail(function (jqxhr, settings, exception) {
+                                    console.log("Triggered ajaxError handler.");
+                                });
                     },
                     error: function (error) {
                         console.log(error)

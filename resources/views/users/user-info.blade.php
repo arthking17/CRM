@@ -26,14 +26,15 @@
                     <p id="user_id" class="text-muted d-none">{{ $user->id }}</p>
 
                     <div class="btn-group mb-2">
-                        <a href="javascript: void(0);" class="btn- btn-xs btn-secondary btn-sm dropdown-toggle" title="New Email"
-                            href="javascript: void(0);" data-bs-target="#send-mail-modal" data-bs-toggle="modal"
+                        <a href="javascript: void(0);" class="btn- btn-xs btn-secondary btn-sm dropdown-toggle"
+                            title="New Email" href="javascript: void(0);" data-bs-target="#send-mail-modal"
+                            data-bs-toggle="modal"
                             onclick="setToEmailValues({{ getElementByName('users') }}, {{ $user->id }});"><i
                                 class="mdi mdi-email-edit-outline"></i></a>
                     </div>
                     <div class="btn-group mb-2">
-                        <a href="javascript: void(0);" class="btn- btn-xs btn-secondary btn-sm dropdown-toggle" title="New Sms"
-                            data-bs-target="#sms-modal" data-bs-toggle="modal"
+                        <a href="javascript: void(0);" class="btn- btn-xs btn-secondary btn-sm dropdown-toggle"
+                            title="New Sms" data-bs-target="#sms-modal" data-bs-toggle="modal"
                             onclick="setToContactValues({{ getElementByName('users') }}, {{ $user->id }});">
                             <i class="mdi mdi-message-text-outline"></i></a>
                     </div>
@@ -53,8 +54,9 @@
                     </div>
                     @if ($user->status == 0)
                         <div class="btn-group mb-2">
-                            <a id="btn-edit-{{ $user->id }}" class="btn- btn-xs btn-secondary" href="javascript: void(0);"
-                                title="edit user"><i class="mdi mdi-square-edit-outline"></i></a>
+                            <a id="btn-edit-{{ $user->id }}" class="btn- btn-xs btn-secondary"
+                                href="javascript: void(0);" title="edit user"><i
+                                    class="mdi mdi-square-edit-outline"></i></a>
                         </div>
                         <div class="btn-group mb-2">
                             <a id="delete-{{ $user->id }}" class="btn- btn-xs btn-danger" title="Delete User"
@@ -100,6 +102,16 @@
 
             <h4 class="font-13 text-muted text-uppercase mb-1">language :</h4>
             <p class="mb-3"> {{ getLanguageName($user->language) }}</p>
+
+            <h4 class="font-13 text-muted text-uppercase mb-1">SIP Account :</h4>
+            @if (isset($user->users_sipaccount[0]->sipaccount[0]->name))
+                <p class="mb-3"> {{ $user->users_sipaccount[0]->sipaccount[0]->name }}
+                    <a href="javascript: void(0);" class="" data-bs-toggle="modal"
+                        data-bs-target="#sipaccount-modal"> voir plus </a>
+                </p>
+            @else
+                empty
+            @endif
         </div>
 
         <div class="col-sm-2">

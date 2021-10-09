@@ -321,38 +321,29 @@
                 </a>
                 <div class="dropdown-menu">
                     <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle=""
-                        data-bs-target="#create-contact-modal">
+                    <a id="open-create-contact-modal" href="javascript:void(0);" class="dropdown-item">
                         <i class="fe-phone me-1"></i>
                         <span>New Contact</span>
                     </a>
 
                     <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle=""
-                    data-bs-target="#create-appointment-modal">
+                    <a id="open-create-appointment-modal" href="javascript:void(0);" class="dropdown-item">
                         <i class="fe-calendar me-1"></i>
                         <span>New Appointment</span>
                     </a>
 
                     <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item" data-bs-toggle=""
-                    data-bs-target="#create-user-modal">
+                    <a id="open-create-user-modal" href="javascript:void(0);" class="dropdown-item">
                         <i class="fe-user me-1"></i>
                         <span>Create Users</span>
-                    </a>
-
-                    <!-- item-->
-                    <a href="{{ route('settings') }}" class="dropdown-item">
-                        <i class="fe-settings me-1"></i>
-                        <span>Settings</span>
                     </a>
 
                     <div class="dropdown-divider"></div>
 
                     <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item">
-                        <i class="fe-headphones me-1"></i>
-                        <span>Help & Support</span>
+                    <a href="{{ route('settings') }}" class="dropdown-item">
+                        <i class="fe-settings me-1"></i>
+                        <span>Settings</span>
                     </a>
 
                 </div>

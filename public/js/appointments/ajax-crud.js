@@ -111,7 +111,7 @@ $('#edit-appointment').submit(function(e) {
 
 function editAppointment(id) {
     $('#edit-appointments-modal').modal('toggle')
-    $.get('/appointments/get/' + id, function(data) {
+    $.get(route('appointments.get', id), function(data) {
         console.log(data)
         $('#edit-appointment-id').val(id)
         $('#edit-appointment-contact_id').val(data.appointment.contact_id)

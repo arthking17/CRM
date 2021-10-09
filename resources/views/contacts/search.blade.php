@@ -40,18 +40,8 @@
     <!-- send email modal -->
     <link href="{{ asset('css/contacts/data/send-mail.css') }}" rel="stylesheet" type="text/css" />
 
-    <!-- jquery-ui 
-                                                                            <link rel="stylesheet" href="{{ asset('/code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">-->
-
-    <!-- quill css 
-                                                                        <link href="{{ asset('libs/quill/quill.core.css') }}" rel="stylesheet" type="text/css" />
-                                                                        <link href="{{ asset('libs/quill/quill.snow.css') }}" rel="stylesheet" type="text/css" />-->
-
     <!-- Include Quill stylesheet -->
-    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css') }}" rel="stylesheet">
-
-    <!-- phone call animation 
-                                                        <link href="{{ asset('css/phone_call_animation.css') }}" rel="stylesheet">-->
+    <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
 
     <!-- App css -->
     <link href="{{ asset('css/config/creative/bootstrap.min.css') }}" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
@@ -777,20 +767,15 @@
     <script src="{{ asset('js/form-validation-laravel.js') }}"></script>
 
     <!-- appointments -->
-    <script src="{{ asset('js/appointments/create-ext.js') }}"></script>
+    <script src="{{ asset('js/appointments/create.js') }}"></script>
 
     <!-- send email modal -->
     <script src="{{ asset('js/email_accounts/send-mail.js') }}"></script>
 
-    <!-- jquery-ui 
-                                                                <script src="https://code.jquery.com/jquery-1.12.4.js') }}"></script>-->
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js') }}"></script>
-
-    <!-- Quill js 
-                                                            <script src="{{ asset('libs/quill/quill.min.js') }}"></script>-->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <!-- Include the Quill library -->
-    <script src="https://cdn.quilljs.com/1.0.0/quill.js') }}"></script>
+    <script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
 
     <!-- call voip modal -->
     <script src="{{ asset('js/sip_accounts/sip_accounts.js') }}"></script>

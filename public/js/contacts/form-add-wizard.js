@@ -16,6 +16,13 @@ $(document).ready(function () {
             $('#form_create .person-required').attr('required', false)
         }
     })
+    
+    $('#form_create-account_id').on('change', function () {
+        $.get(route('custom-fields.form', {'account_id':$('#form_create-account_id').val(), 'form_type':'create'}), function (data) {
+           $('#custom-fields').html(data);
+        });
+    })
+
     $("#contactwizard").bootstrapWizard({
         onTabShow: function (t, r, a) {
             var o = ((a + 1) / r.find("li").length) * 100;

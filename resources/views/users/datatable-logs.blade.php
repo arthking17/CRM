@@ -1,6 +1,5 @@
 <div>
-    <table id="datatable-logs"
-        class="table activate-select dt-responsive nowrap w-100 table-hover">
+    <table id="datatable-logs" class="table activate-select dt-responsive nowrap w-100 table-hover">
         <thead>
             <tr>
                 <th>id</th>
@@ -17,13 +16,7 @@
                 @foreach ($logs as $log)
                     <tr>
                         <td>{{ $log->id }}</td>
-                        <td> @php
-                            try {
-                                $username = $log->user[0]->username;
-                            } catch (Exception $e) {
-                                $username = 'no user';
-                            }
-                        @endphp {{ $username }}</td>
+                        <td>{{ $log->user[0]->username }}</td>
                         <td>{{ $log->log_date }}</td>
                         <td>{{ $log->action }}</td>
                         <td>{{ getElementName($log->element) }}</td>

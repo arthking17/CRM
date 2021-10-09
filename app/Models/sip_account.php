@@ -38,4 +38,13 @@ class Sip_account extends Model
    {
        return $this->hasMany(Channel::class, 'id', 'channel_id');
    }
+
+   /**
+    * Get the users sip accounts record associated with the users sip accounts
+    * @return \App\Models\Users_SipAccount
+    */
+   public function users_sipaccount()
+   {
+       return $this->belongsTo(Users_SipAccount::class);
+   }
 }

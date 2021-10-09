@@ -64,7 +64,7 @@
                         </div>
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="submit" id="btn-create" class="btn btn-info waves-effect waves-light"><i
+                        <button type="submit" id="btn-create" class="btn btn-primary waves-effect waves-light"><i
                                 class="mdi mdi-plus-circle"></i>Create</button>
                         <button type="reset" class="btn btn-secondary waves-effect waves-light m-1"><i
                                 class="fe-x me-1"></i>Reset</button>

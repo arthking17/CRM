@@ -4,7 +4,7 @@ function sms(phone_number) {
     var fromName = null
     var id = $('#send-sms-from').val()
 
-    $.get('/sms_accounts/get/' + id, function (data) {
+    $.get(route('sms_accounts.get', id), function (data) {
         console.log(data)
         password = data.sms_account.pwd
         username = data.sms_account.username
@@ -24,7 +24,7 @@ $('#send-sms').submit(function (e) {
     var id = $('#send-sms-from').val()
     console.log($('#send-sms')[0])
 
-    $.get('/sms_accounts/get/' + id, function (data) {
+    $.get(route('sms_accounts.get', id), function (data) {
         console.log(data)
         password = data.sms_account.pwd
         username = data.sms_account.username

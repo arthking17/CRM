@@ -56,12 +56,12 @@
                     $list_add = ['user', 'account', 'contact', 'appointment', 'communication', 'note', 'sip_account'];
                     $entity = substr($title ?? null, 0, -1);
                 @endphp
-                <div class="d-flex flex-row-reverse">
+                <!--<div class="d-flex flex-row-reverse">
                     <button id="global-btn-add" type="button" class="btn btn-primary @if (!in_array(strtolower($entity), $list_add)) d-none @endif"
                         data-bs-toggle="modal" data-bs-target="#create-{{ strtolower($entity) }}-modal"><i
                             class="mdi mdi-plus-circle me-1"></i> Add {{ $entity }} </button>
                     <div id="div-global-btn-add"></div>
-                </div>
+                </div>-->
             </div> <!-- end .collapsed-->
         </nav>
     </div> <!-- end container-fluid -->

@@ -84,7 +84,7 @@ $(document).ready(function() {
 
 
 function editShortCode (id) {
-    $.get('/shortcodes/get/' + id, function(data) {
+    $.get(route('shortcodes.get', id), function(data) {
         console.log(data)
         $('#edit-shortcode-id').val(id)
         $('#edit-shortcode-account_id').val(data.shortcode.account_id)

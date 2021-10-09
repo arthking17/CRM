@@ -37,13 +37,23 @@
                             title="Call" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
                                 class="fe-phone-call"></i></a>
                         <div class="dropdown-menu">
-                            @foreach ($sip_accounts as $key => $sip_account)
+                            @if (Auth::user()->role === 1)
+                                @foreach ($sip_accounts as $key => $sip_account)
+                                    <a id="button-call-one" class="dropdown-item" href="#call-one-modal"
+                                        data-backdrop="false" data-bs-toggle="modal"
+                                        data-sipaccount-username="{{ $sip_account->username }}">
+                                        <img src="{{ asset('images/contact_data/mobile.png') }}"
+                                            alt="contact-data-logo" height="12"
+                                            class="me-1">{{ $sip_account->name }}</a>
+                                @endforeach
+                            @elseif(Auth::user()->role === 2)
                                 <a id="button-call-one" class="dropdown-item" href="#call-one-modal"
                                     data-backdrop="false" data-bs-toggle="modal"
-                                    data-sipaccount-username="{{ $sip_account->username }}">
+                                    data-sipaccount-username="{{ Auth::user()->users_sipaccount[0]->sipaccount[0]->username }}">
                                     <img src="{{ asset('images/contact_data/mobile.png') }}" alt="contact-data-logo"
-                                        height="12" class="me-1">{{ $sip_account->name }}</a>
-                            @endforeach
+                                        height="12"
+                                        class="me-1">{{ Auth::user()->users_sipaccount[0]->sipaccount[0]->name }}</a>
+                            @endif
                         </div>
                     </div>
                     <div class="btn-group mb-2">
@@ -95,46 +105,31 @@
     <div class="row">
         <h4>Custom fields</h4>
         @if (isset($contact_field) && $contact_field->count() > 0)
-            @php
-                $i = (int) ($contact_field->count() / 3 + 1);
-                $count = 0;
-            @endphp
-            @foreach ($contact_field as $key => $field)
+            <div class="row row-cols-3">
+                @foreach ($contact_field as $key => $field)
+                    <div class="col">
 
-                @if ($count === 0 && $key !== 0)
+                        <h4 class="font-13 text-muted text-uppercase">{{ $field->name }} :</h4>
+                        @if ($field->field_type === 'file')
+                            <p class="mb-3"><a
+                                    href="{{ asset('storage/custom_field/' . $field->field_value) }}"
+                                    target="_blank">view {{ $field->tag }} content</a></p>
+                        @elseif($field->field_type === 'checkbox')
+                            @if ($field->field_value === 'on')
+                                <p class="mb-3"> Yes </p>
+                            @endif
+                        @elseif($field->field_type === 'select')
+                            <p class="mb-3"> {{ $field->option[0]->title }}</p>
+                        @else
+                            <p class="mb-3"> {{ $field->field_value }}</p>
+                        @endif
+
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <p class="text-center">empty</p>
+        @endif
     </div>
-@endif
-@if ($count === 0 || $count === $i)
-    <div class="col-sm-4">
-@endif
-@php
-$count++;
-if ($count == $i) {
-    $count = 0;
-}
-@endphp
-
-<h4 class="font-13 text-muted text-uppercase">{{ $field->name }} :</h4>
-@if ($field->field_type === 'file')
-    <p class="mb-3"><a href="{{ asset('storage/custom_field/' . $field->field_value) }}"
-            target="_blank">view {{ $field->tag }} content</a></p>
-@elseif($field->field_type === 'checkbox')
-    @if ($field->field_value === 'on')
-        <p class="mb-3"> Yes </p>
-    @endif
-@elseif($field->field_type === 'select')
-    <p class="mb-3"> {{ $field->option[0]->title }}</p>
-@else
-    <p class="mb-3"> {{ $field->field_value }}</p>
-@endif
-
-@if ($key === $contact_field->count() - 1)
-    </div>
-@endif
-@endforeach
-@else
-<p class="text-center">empty</p>
-@endif
-</div>
 
 @endif

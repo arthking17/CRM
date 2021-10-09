@@ -18,9 +18,14 @@ $(document).ready(function () {
         e.preventDefault();
         cleanErrorsInForm('create-communication', create_communication_errors)
 
-        var currentUrl = window.location.href;
-        var urlTable = currentUrl.split('/');
-        var page_name = 'page_'+urlTable[3];
+        var currentUrl = route().current();
+        if (currentUrl == 'users.view')
+            page_name = 'page_users_view';
+        else if (currentUrl == 'contacts.view')
+            page_name = 'page_contacts_view';
+        else if (currentUrl == 'appointments')
+            page_name = 'page_appointments';
+        console.log(currentUrl)
 
         $.ajax({
             type: "POST",

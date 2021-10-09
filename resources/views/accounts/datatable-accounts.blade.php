@@ -34,7 +34,7 @@
                         <a href="javascript:void(0);" class="btn- btn-xs btn-secondary"> <i
                                 class="mdi mdi-square-edit-outline"></i></a>
                         <a href="javascript:void(0);" class="btn- btn-xs btn-danger"> <i
-                                class="mdi mdi-delete"></i></a>
+                                class="mdi mdi-delete-circle"></i></a>
                     @else
                         <a href="javascript:void(0);" class="btn- btn-xs btn-secondary" data-bs-toggle="modal"
                             data-bs-target="#edit-modal" id="edit-{{ $account->id }}"
@@ -42,7 +42,7 @@
                                 class="mdi mdi-square-edit-outline"></i></a>
                         <a href="javascript:void(0);" id="delete-{{ $account->id }}"
                             onclick="deleteAccount({{ $account->id }});" class="btn- btn-xs btn-danger"> <i
-                                class="mdi mdi-delete"></i></a>
+                                class="mdi mdi-delete-circle"></i></a>
                     @endif
                 </td>
             </tr>

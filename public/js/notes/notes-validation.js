@@ -30,8 +30,6 @@ $(document).ready(function () {
 
                     $('#create-note')[0].reset();
 
-                    //viewNote(response.note.id)
-
                     setTimeout(() => {
                         $.getScript(url_jsfile_notes + "/datatable-notes.init.js")
                             .done(function (script, textStatus) {
@@ -73,19 +71,24 @@ $(document).ready(function () {
                     $('#edit-note-modal').modal('toggle')
                     Swal.fire({ position: "top-end", icon: "success", title: response.success, showConfirmButton: !1, timer: 1500 });
 
-                    //viewNote(response.note.id)
-
-                    setTimeout(() => {
-                        $.getScript(url_jsfile_notes + "/datatable-notes.init.js")
-                            .done(function (script, textStatus) {
-                                console.log(textStatus);
-                            })
-                            .fail(function (jqxhr, settings, exception) {
-                                console.log("Triggered ajaxError handler.");
-                            });
-                        $('#notes').html(response.html);
-                        setTippyOnNoteContent();
-                    }, 1500);
+                    var note = response.note;
+                    if (typeof response.note.element !== 'undefined')
+                        $.get(route('notes.element', { 'element_id': response.note.element_id, 'element': response.note.element }), function (response) {
+                            setTimeout(() => {
+                                $('#noteid' + note.id + ' td:nth-child(2)').html(getNoteClassName(note.class))
+                                var html;
+                                if (note.visibility == 1)
+                                    html = '<span class="badge bg-success">Visible for all</span>';
+                                else if (note.visibility == 0)
+                                    html = '<span class="badge label-table bg-danger">Visible only for admin</span>';
+                                $('#noteid' + note.id + ' td:nth-child(3)').html(html)
+                                $('#noteid' + note.id + ' td:nth-child(4)').html(getElementName(note.element))
+                                $('#noteid' + note.id + ' td:nth-child(5)').html(note.element_id)
+                                $('#noteid' + note.id + ' td:nth-child(6)').html(note.content)
+                                $('#noteid' + note.id + ' td:nth-child(6)').attr('title', note.content)
+                                setTippyOnNoteContent();
+                            }, 1500);
+                        })
 
                     //$('#create-note')[0].reset();
                 },

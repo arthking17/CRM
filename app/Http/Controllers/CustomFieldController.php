@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contact;
 use App\Models\Contacts_field;
 use App\Models\Custom_field;
 use App\Models\Custom_select_field;
@@ -9,6 +10,7 @@ use App\Models\Log;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class CustomFieldController extends Controller
@@ -39,7 +41,7 @@ class CustomFieldController extends Controller
             'field_type' => 'required|string|max:32',
             'account_id' => 'required|exists:App\Models\Account,id',
         ]);
-        
+
         if ($request->field_type == 'select') {
             $request->validate([
                 'select_option' => 'required|string',
@@ -51,10 +53,10 @@ class CustomFieldController extends Controller
             }
         } else
             $custom_field = Custom_field::create($data);
-            
+
         if (Auth::user()->role == 1) {
             $custom_fields = Custom_field::all();
-        }else if (Auth::user()->role == 2){
+        } else if (Auth::user()->role == 2) {
             $custom_fields = Custom_field::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
         }
         $returnHTML = view('custom-fields/list', compact('custom_fields'))->render();
@@ -72,7 +74,7 @@ class CustomFieldController extends Controller
     {
         $options = [];
         $custom_field = Custom_field::find($id);
-        if($custom_field->field_type == 'select'){
+        if ($custom_field->field_type == 'select') {
             $options = Custom_select_field::where('field_id', $custom_field->id)->get();
         }
         return response()->json(['custom_field' => $custom_field, 'options' => $options]);
@@ -103,17 +105,17 @@ class CustomFieldController extends Controller
             $options = explode(",", $request->select_option);
             $select_options = Custom_select_field::where('field_id', $request->id)->get();
             foreach ($options as $key => $opt) {
-                if($key < $select_options->count()){
+                if ($key < $select_options->count()) {
                     $select_option = Custom_select_field::find($select_options[$key]->id);
                     $select_option->title = $opt;
                     $select_option->save();
-                }else{
+                } else {
                     Custom_select_field::create(['field_id' => $custom_field->id, 'title' => $opt]);
                 }
             }
         } else
             $custom_field->update($data);
-            $custom_field->account = $custom_field->account[0];
+        $custom_field->account = $custom_field->account[0];
         Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'custom-field.update', 'element' => getElementByName('custom_fields'), 'element_id' => $custom_field->id, 'source' => 'custom-field.update']);
         return response()->json(['success' => 'This Custom Field has been Updated !!!', 'custom_field' => $custom_field]);
     }
@@ -150,5 +152,29 @@ class CustomFieldController extends Controller
             return response()->json(['success' => 'This File has been Deleted !!!', 'file' => $file]);
         } else
             return response()->json(['error' => 'Failed to delete this file !!!']);
+    }
+
+    /**
+     * Display a custom field in form.
+     *
+     * @param int $contact_id
+     * @param string $form_type
+     * @return \Illuminate\Http\Response
+     */
+    public function formCustomFields(int $contact_id, string $form_type)
+    {
+        $contact = Contact::find($contact_id);
+        $custom_fields = Custom_field::where('status', 1)->where('account_id', $contact->account_id)->get();
+        if ($form_type == 'create')
+            return view('custom-fields.form-create-custom-fields', compact('custom_fields', 'select_options'))->render();
+        else if ($form_type == 'edit') {
+            $select_options = DB::table('custom_select_fields')->join('custom_fields', 'field_id', '=', 'custom_fields.id')
+                ->select('custom_select_fields.*')->where('status', 1)->where('account_id', $contact->account_id)->get();
+            $contact_field = Contacts_field::join('custom_fields', 'field_id', '=', 'custom_fields.id')->where('contact_id', $contact->id)
+                ->where('status', 1)->where('account_id', $contact->account_id)->select('contacts_fields.id', 'field_type', 'custom_fields.tag', 'field_value', 'custom_fields.name')->get();
+            $returnHTML = view('custom-fields.form-edit-custom-fields', compact('custom_fields', 'select_options'))->render();
+            return response()->json(['html' => $returnHTML, 'contact_field' => $contact_field, 'custom_fields' => $custom_fields]);
+        } else
+            return response()->json(['error' => 'Failed to load custom field form !!!']);
     }
 }

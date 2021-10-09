@@ -21,4 +21,8 @@ $(document).ready(function() {
         $('#settings-btn-add').attr('data-bs-target', '#create-custom-field-modal')
         $('#settings-btn-add').html('<i class="mdi mdi-plus-circle me-1"></i> Add Custom Field ')
     })
+    $('#users-sip-account-link').on('click', function() {
+        $('#settings-btn-add').attr('data-bs-target', '#create-users_sip_account-modal')
+        $('#settings-btn-add').html('<i class="mdi mdi-plus-circle me-1"></i> Add User Sip Account ')
+    })
 });

@@ -146,7 +146,7 @@ class ContactController extends Controller
                         $returnHTML = view('contacts/contacts_person-info', compact('contact', 'account_name'))->render();
                         return response()->json(['success' => 'Contact Person found', 'html' => $returnHTML]);
                     } else if ($modal == 1)
-                        return response()->json(['contact' => $contact, 'contact_field' => $contact_field, 'custom_fields' => $custom_fields]);
+                        return response()->json(['contact' => $contact]);
                 } else
                     return response()->json(['error' => 'Contact Not Found !!!'], 300);
             } else if ($contact->class == 2) {
@@ -160,7 +160,7 @@ class ContactController extends Controller
                         $returnHTML = view('contacts/contacts_companie-info', compact('contact', 'account_name'))->render();
                         return response()->json(['success' => 'Contact Companie found', 'html' => $returnHTML]);
                     } else if ($modal == 1)
-                        return response()->json(['contact' => $contact, 'contact_field' => $contact_field, 'custom_fields' => $custom_fields]);
+                        return response()->json(['contact' => $contact]);
                 } else
                     return response()->json(['error' => 'Contact Not Found !!!'], 300);
             }
@@ -444,8 +444,8 @@ class ContactController extends Controller
         } else if ($page == 'page_view') {
             if (Auth::user()->role == 1) {
                 $sip_accounts = Sip_account::where('status', 1)->get();
-                $contact_field = Contacts_field::join('custom_fields', 'field_id', '=', 'custom_fields.id')->where('contact_id', $contact->id)
-                    ->where('status', 1)->select('contacts_fields.id', 'field_type', 'custom_fields.tag', 'field_value', 'custom_fields.name')->get();
+                $contact_field = Contacts_field::join('custom_fields', 'field_id', '=', 'custom_fields.id')->where('contact_id', $contact->id)->where('status', 1)
+                    ->select('contacts_fields.id', 'field_type', 'custom_fields.tag', 'field_value', 'custom_fields.name')->get();
             } else if (Auth::user()->role == 2) {
                 $sip_accounts = Sip_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
                 $contact_field = Contacts_field::join('custom_fields', 'field_id', '=', 'custom_fields.id')->where('contact_id', $contact->id)->where('status', 1)
@@ -573,7 +573,7 @@ class ContactController extends Controller
      */
     public function search(Request $request)
     {
-        return $request->input('status');
+        //return $request->input('status');
         $request->validate([
             //validate contact
             'id' => 'nullable|string',
@@ -600,12 +600,12 @@ class ContactController extends Controller
             'companies_language' => 'nullable|string|min:2|max:2',
             'companies_country' => 'nullable|string|min:2|max:2',
             //validate contact data
-            'phone' => 'nullable|string',
+            'phone_number' => 'nullable|string',
             'email' => 'nullable|string',
             'facebook' => 'nullable|string',
             'skype' => 'nullable|string',
             'viber' => 'nullable|string',
-            'fax' => 'nullable|string',
+            'fax_number' => 'nullable|string',
             'mobile' => 'nullable|string',
             'instagram' => 'nullable|string',
             'whatsapp' => 'nullable|string',
@@ -737,6 +737,87 @@ class ContactController extends Controller
                 })
                 ->get();
         }
+
+        /**
+         * search with contact_data
+         **/
+
+        $results = [];
+        if ($request->phone_number) {
+            $contacts_id = Contact_data::where('element', getElementByName('contacts'))
+                ->where('class', getContactDataClass('phone_number'))
+                ->where('data', 'like', '%' . $request->phone_number . '%')
+                ->select('element_id')->get()->toArray();
+                //return $contacts_id;
+            $results = array_merge($results, $contacts_id);
+        } else if ($request->email) {
+            $contacts_id = Contact_data::where('element', getElementByName('contacts'))
+                ->where('class', getContactDataClass('email'))
+                ->where('data', 'like', '%' . $request->email . '%')
+                ->select('element_id')->get()->toArray();
+            $results = array_merge($results, $contacts_id);
+        } else if ($request->facebook) {
+            $contacts_id = Contact_data::where('element', getElementByName('contacts'))
+                ->where('class', getContactDataClass('facebook'))
+                ->where('data', 'like', '%' . $request->facebook . '%')
+                ->select('element_id')->get()->toArray();
+            $results = array_merge($results, $contacts_id);
+        } else if ($request->skype) {
+            $contacts_id = Contact_data::where('element', getElementByName('contacts'))
+                ->where('class', getContactDataClass('skype'))
+                ->where('data', 'like', '%' . $request->skype . '%')
+                ->select('element_id')->get()->toArray();
+            $results = array_merge($results, $contacts_id);
+        } else if ($request->viber) {
+            $contacts_id = Contact_data::where('element', getElementByName('contacts'))
+                ->where('class', getContactDataClass('viber'))
+                ->where('data', 'like', '%' . $request->viber . '%')
+                ->select('element_id')->get()->toArray();
+            $results = array_merge($results, $contacts_id);
+        } else if ($request->fax_number) {
+            $contacts_id = Contact_data::where('element', getElementByName('contacts'))
+                ->where('class', getContactDataClass('fax_number'))
+                ->where('data', 'like', '%' . $request->fax_number . '%')
+                ->select('element_id')->get()->toArray();
+            $results = array_merge($results, $contacts_id);
+        } else if ($request->mobile) {
+            $contacts_id = Contact_data::where('element', getElementByName('contacts'))
+                ->where('class', getContactDataClass('mobile'))
+                ->where('data', 'like', '%' . $request->mobile . '%')
+                ->select('element_id')->get()->toArray();
+            $results = array_merge($results, $contacts_id);
+        } else if ($request->instagram) {
+            $contacts_id = Contact_data::where('element', getElementByName('contacts'))
+                ->where('class', getContactDataClass('instagram'))
+                ->where('data', 'like', '%' . $request->instagram . '%')
+                ->select('element_id')->get()->toArray();
+            $results = array_merge($results, $contacts_id);
+        } else if ($request->whatsapp) {
+            $contacts_id = Contact_data::where('element', getElementByName('contacts'))
+                ->where('class', getContactDataClass('whatsapp'))
+                ->where('data', 'like', '%' . $request->whatsapp . '%')
+                ->select('element_id')->get()->toArray();
+            $results = array_merge($results, $contacts_id);
+        } else if ($request->messenger) {
+            $contacts_id = Contact_data::where('element', getElementByName('contacts'))
+                ->where('class', getContactDataClass('messenger'))
+                ->where('data', 'like', '%' . $request->messenger . '%')
+                ->select('element_id')->get()->toArray();
+            $results = array_merge($results, $contacts_id);
+        }
+
+        if ($results != []) {
+            //make a contact id table
+            $contact_id = [];
+            foreach ($results as $contact) {
+                array_push($contact_id, $contact['element_id']);
+            }
+            $contacts = $contacts->whereIn('id', $contact_id);
+        }
+        /**
+         * end search with contact_data
+         **/
+
         if ($contacts->isEmpty()) {
             return response()->json([
                 'success' => 'Data not found !!!',
@@ -987,15 +1068,9 @@ class ContactController extends Controller
             $name = $contact[0]->name;
         }
         $contact = $contact[0];
-        $contact->account_id = $account_id;
         $notes = DB::table('notes')
             ->where('element', getElementByName('contacts'))->where('element_id', $contact->id)->get();
         $contact_datas = Contact_data::where('status', 1)->where('element', getElementByName('contacts'))->where('element_id', $contact->id)->get();
-        $custom_fields = Custom_field::where('status', 1)->where('account_id', $contact->account_id)->get();
-        $select_options = DB::table('custom_select_fields')->join('custom_fields', 'field_id', '=', 'custom_fields.id')
-            ->select('custom_select_fields.*')->where('status', 1)->where('account_id', $contact->account_id)->get();
-        $contact_field = Contacts_field::join('custom_fields', 'field_id', '=', 'custom_fields.id')->where('contact_id', $contact->id)
-            ->where('status', 1)->where('account_id', $contact->account_id)->select('contacts_fields.id', 'field_type', 'custom_fields.tag', 'field_value', 'custom_fields.name')->get();
 
         if (Auth::user()->role == 1) {
             $contacts = DB::table('contacts')->select('id', 'class')->get();
@@ -1013,6 +1088,9 @@ class ContactController extends Controller
                 ->select('contacts.id', 'first_name', 'last_name')->get();
             $accounts = DB::table('accounts')
                 ->orderBy('id', 'desc')->get();
+
+            $contact_field = Contacts_field::join('custom_fields', 'field_id', '=', 'custom_fields.id')->where('contact_id', $contact->id)->where('status', 1)
+                ->select('contacts_fields.id', 'field_type', 'custom_fields.tag', 'field_value', 'custom_fields.name')->get();
         } else if (Auth::user()->role == 2) {
             //retrieve all the contacts and users belonging to the account id of the logged in user
             $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
@@ -1035,9 +1113,14 @@ class ContactController extends Controller
             $contacts_persons = DB::table('contacts')->join('contacts_persons', 'contacts.id', '=', 'contacts_persons.id')
                 ->where('account_id', Auth::user()->account_id)
                 ->select('contacts.id', 'first_name', 'last_name')->get();
+
+            $contact_field = Contacts_field::join('custom_fields', 'field_id', '=', 'custom_fields.id')->where('contact_id', $contact->id)->where('status', 1)
+                ->where('account_id', $contact->account_id)->select('contacts_fields.id', 'field_type', 'custom_fields.tag', 'field_value', 'custom_fields.name')->get();
         } else {
             return response()->json(['message' => 'you do not have the necessary rights'], 300);
         }
+
+        $contact->account_id = $account_id;
 
         return view('contacts/view', [
             'name' => $name,
@@ -1045,8 +1128,8 @@ class ContactController extends Controller
             'contact' => $contact,
             'contact_datas' => $contact_datas,
             'notes' => $notes,
-            'custom_fields' => $custom_fields,
-            'select_options' => $select_options,
+            'custom_fields' => $custom_fields ?? [],
+            'select_options' => $select_options ?? [],
             'contact_field' => $contact_field,
             'email_accounts' => $email_accounts,
             'sip_accounts' => $sip_accounts,

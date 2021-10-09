@@ -3,41 +3,17 @@
         <div class="modal-dialog modal-full-width">
             <div class="modal-content">
                 <div class="modal-header bg-light">
-                    <h4 class="modal-title" id="myCenterModalLabel">Notes</h4>
+                    <h4 class="modal-title" id="myCenterModalLabel">
+                        Notes
+                        <button id="btn-add-note-2" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#create-note-2-modal">
+                            <i class="mdi mdi-plus-circle me-1"></i> Add Note
+                        </button>
+                    </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <table class="table activate-select dt-responsive nowrap w-100 users-state-datatable"
-                        id="datatable-notes">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Class</th>
-                                <th>Visibility</th>
-                                <th>Element</th>
-                                <th>Element Id</th>
-                                <th>Content</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($notes as $note)
-                                <tr>
-                                    <td>{{ $note->id }}</td>
-                                    <td>{{ getNoteClassName($note->class) }}</td>
-                                    <td>
-                                        @if ($note->visibility === 1) <span
-                                                class="badge bg-success">Visible for all</span>
-                                        @elseif ($note->visibility === 0)
-                                            <span class="badge label-table bg-danger">Visible only for admin</span>
-                                        @endif
-                                    </td>
-                                    <td>{{ getElementName($note->element) }}</td>
-                                    <td>{{ $note->element_id }}</td>
-                                    <td data-bind="text: text()" class="text-truncate" style="max-width: 200px" title="{{ $note->content }}">{{ $note->content }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                    @include('notes.datatable-notes-modal')
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

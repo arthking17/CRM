@@ -11,6 +11,7 @@ use App\Models\Shortcode;
 use App\Models\Sip_account;
 use App\Models\Sms_account;
 use App\Models\User;
+use App\Models\Users_SipAccount;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -90,6 +91,8 @@ class ProfileController extends Controller
             $custom_fields = Custom_field::all();
             $select_options = DB::table('custom_select_fields')->join('custom_fields', 'field_id', '=', 'custom_fields.id')
             ->select('custom_select_fields.*')->get();
+            $users_sip_accounts = Users_SipAccount::all();
+            $users = DB::table('users')->select('id', 'username')->get();
         } else if (Auth::user()->role == 2) {
             $shortcodes = ShortCode::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
             $email_accounts = Email_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
@@ -99,6 +102,8 @@ class ProfileController extends Controller
             $custom_fields = Custom_field::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
             $select_options = DB::table('custom_select_fields')->join('custom_fields', 'field_id', '=', 'custom_fields.id')
             ->select('custom_select_fields.*')->where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+            $users_sip_accounts = Sip_account::where('status', 1)->where('account_id', Auth::user()->account_id)->get();
+            $users = DB::table('users')->select('id', 'username')->where('account_id', Auth::user()->account_id)->get();
         } else {
             return response()->json(['message' => 'you do not have the necessary rights'], 300);
         }
@@ -111,6 +116,8 @@ class ProfileController extends Controller
             'shortcodes' => $shortcodes ?? [],
             'custom_fields' => $custom_fields ?? [],
             'select_options' => $select_options,
+            'users_sip_accounts' => $users_sip_accounts ?? [],
+            'users' => $users ?? [],
         ]);
     }
 }

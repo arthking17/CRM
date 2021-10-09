@@ -1,22 +1,20 @@
 function viewInfoCardGroup(id) {
-    $.get('/users/groups/get/' + id + '/0', function(data) {
+    $.get(route('contacts.groups.get', {'id':id, 'modal':0}), function(data) {
         $('#group-info-card').empty().html(data.html);
     })
 }
 
 function viewGroup(id) {
-    $.get('/users/groups/get/' + id + '/0', function(data) {
+    $.get(route('contacts.groups.get', {'id':id, 'modal':0}), function(data) {
         console.log(data)
+        $('#datatable-groups tbody tr').removeClass('selected')
+        $('#groupid' + id).addClass('selected')
         $('#group-info-card').empty().html(data.html);
-        if (data.user_id != null)
-            viewUsers_Permissions(data.user_id)
-        else
-            viewUsers_Permissions(-1)
     })
 }
 
 function editGroup(id) {
-    $.get('/users/groups/get/' + id + '/1', function(group) {
+    $.get(route('contacts.groups.get', {'id':id, 'modal':1}), function(group) {
         console.log(group)
         $('#edit-group-id').val(id)
         $('#edit-group-account_id').val(group.account_id)
@@ -31,7 +29,7 @@ function deleteGroup(id) {
             e.value ?
                 $.ajax({
                     type: "DELETE",
-                    url: route('users.groups.delete', id),
+                    url: route('contacts.groups.delete', id),
                     data: {
                         _token: $("input[name=_token]").val(),
                     },

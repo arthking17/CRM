@@ -2,7 +2,7 @@ $(document).ready(function () {
     setTippyOnNoteContent();
 });
 function viewNote(id) {
-    $.get('/notes/get/' + id + '/0', function (note) {
+    $.get(route('notes.get', {'id':id, 'modal':0}), function (note) {
 
         $('#datatable-notes tbody tr').removeClass('selected')
         $('#noteid' + id).addClass('selected')
@@ -17,7 +17,7 @@ function viewNote(id) {
 }
 
 function editNote(id) {
-    $.get('/notes/get/' + id + '/1', function (note) {
+    $.get(route('notes.get', {'id':id, 'modal':1}), function (note) {
         console.log(note)
         $('#edit-note-id').val(id)
         $('#edit-note-element_id').val(note.element_id)

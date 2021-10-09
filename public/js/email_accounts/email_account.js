@@ -88,9 +88,10 @@ $(document).ready(function () {
 
 
 function editEmailAccount(id) {
-    $.get('/email_accounts/get/' + id, function (data) {
+    $.get(route('email_accounts.get', id), function (data) {
         console.log(data)
         $('#edit-email-account-id').val(id)
+        $('#edit-email-account-account_id').val(data.email_account.account_id)
         $('#edit-email-account-host').val(data.email_account.host)
         $('#edit-email-account-email').val(data.email_account.email)
         $('#edit-email-account-username').val(data.email_account.username)

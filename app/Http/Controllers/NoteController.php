@@ -28,16 +28,6 @@ class NoteController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -55,20 +45,9 @@ class NoteController extends Controller
         ]);
         $note = Note::create($data);
         Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'note.create', 'element' => getElementByName('notes'), 'element_id' => $note->id, 'source' => 'note.create']);
-        $notes = Note::All();
+        $notes = Note::orderBy('id', 'DESC')->get();
         $returnHTML = view('notes/datatable-notes', compact('notes'))->render();
         return response()->json(['success' => 'This note has been added !!!', 'html' => $returnHTML, 'note' => $note]);
-    }
-
-    /**
-     * list Notes
-     */
-    public function listNotes($element_id, $element)
-    {
-        $notes = Note::all()
-            ->where('element_id', $element_id)
-            ->where('element', $element);
-        return view('notes/list-modal', compact('notes'))->render();
     }
 
     /**
@@ -98,20 +77,23 @@ class NoteController extends Controller
      */
     public function show(int $element_id, int $element)
     {
-        $notes = DB::table('notes')->where('element_id', $element_id)->where('element', $element)->get();
+        $notes = DB::table('notes')->orderBy('id', 'DESC')->where('element_id', $element_id)->where('element', $element)->get();
         $returnHTML = view('notes/datatable-notes', compact('notes'))->render();
         return response()->json(['success' => 'Notes Found', 'html' => $returnHTML]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified resource.
      *
-     * @param  \App\Models\Note  $note
+     * @param  int $element_id
+     * @param  int $element
      * @return \Illuminate\Http\Response
      */
-    public function edit(Note $note)
+    public function showInModal(int $element_id, int $element)
     {
-        //
+        $notes = DB::table('notes')->orderBy('id', 'DESC')->where('element_id', $element_id)->where('element', $element)->get();
+        $returnHTML = view('notes/list-modal', compact('notes'))->render();
+        return response()->json(['success' => 'Notes Found', 'html' => $returnHTML]);
     }
 
     /**
@@ -134,9 +116,7 @@ class NoteController extends Controller
         $note = Note::find($request->id);
         $note->update($data);
         Log::create(['user_id' => Auth::id(), 'log_date' => new DateTime(), 'action' => 'note.update', 'element' => getElementByName('notes'), 'element_id' => $note->id, 'source' => 'note.update']);
-        $notes = Note::All();
-        $returnHTML = view('notes/datatable-notes', compact('notes'))->render();
-        return response()->json(['success' => 'This note has been updated !!!', 'html' => $returnHTML, 'note' => $note]);
+        return response()->json(['success' => 'This note has been updated !!!', 'note' => $note]);
     }
 
     /**

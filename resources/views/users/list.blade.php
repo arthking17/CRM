@@ -5,10 +5,14 @@
     <link rel="shortcut icon" href="https://coderthemes.com/ubold/layouts/assets/images/favicon.ico">
 
     <!-- third party css -->
-    <link href="{{ asset('libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('libs/datatables.net-select-bs4/css/select.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('libs/datatables.net-select-bs4/css/select.bootstrap4.min.css') }}" rel="stylesheet"
+        type="text/css" />
     <!-- third party css end -->
 
     <!-- Edit user photo css -->
@@ -22,11 +26,15 @@
     <link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
 
     <!-- App css -->
-    <link href="{{ asset('css/config/creative/bootstrap.min.css') }}" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
-    <link href="{{ asset('css/config/creative/app.min.css') }}" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
+    <link href="{{ asset('css/config/creative/bootstrap.min.css') }}" rel="stylesheet" type="text/css"
+        id="bs-default-stylesheet" />
+    <link href="{{ asset('css/config/creative/app.min.css') }}" rel="stylesheet" type="text/css"
+        id="app-default-stylesheet" />
 
-    <link href="{{ asset('css/config/creative/bootstrap-dark.min.css') }}" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
-    <link href="{{ asset('css/config/creative/app-dark.min.css') }}" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
+    <link href="{{ asset('css/config/creative/bootstrap-dark.min.css') }}" rel="stylesheet" type="text/css"
+        id="bs-dark-stylesheet" />
+    <link href="{{ asset('css/config/creative/app-dark.min.css') }}" rel="stylesheet" type="text/css"
+        id="app-dark-stylesheet" />
 
     <!-- icons -->
     <link href="{{ asset('css/icons.min.css') }}" rel="stylesheet" type="text/css" />
@@ -45,18 +53,19 @@
                         <div class="row justify-content-between">
                             <div class="col-auto">
                                 <div class="text-sm-end">
-                                    <h4 class="page-title">Users &nbsp; &nbsp;
-                                        <a href="{{ route('users.groups') }}" class="btn- btn-xs btn-info">
-                                            <i class="mdi mdi-layers-outline"></i> Groups
+                                    <h4 class="page-title">Users &nbsp;
+                                        <a href="{{ route('users.logs') }}" class="btn- btn-xs btn-secondary">
+                                            <i class="fe-activity"></i> Logs
                                         </a>
                                     </h4>
                                 </div>
                             </div>
                             <div class="col-sm-5">
                                 <h4 class="page-title-right">
-                                <button id="btn-add" class="btn btn-primary"
-                                    data-bs-toggle="modal" data-bs-target="#create-user-modal"><i
-                                        class="mdi mdi-plus-circle me-1"></i> Add User </button></h4>
+                                    <button id="btn-add" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#create-user-modal"><i class="mdi mdi-plus-circle me-1"></i> Add
+                                        User </button>
+                                </h4>
                             </div>
                             <div class="col-sm-auto">
                                 <div class="page-title-right">
@@ -245,6 +254,7 @@
             }
         });
     </script>
+    <script src="{{ asset('js/helpers.js') }}"></script>
     <script src="{{ asset('js/users/users-ajax-list.js') }}"></script>
     <script src="{{ asset('js/users/datatable-users.init.js') }}"></script>
     <script src="{{ asset('js/custom-parsley.js') }}"></script>
@@ -279,11 +289,20 @@
         })
         url_photo = '{{ URL::asset('/storage/images/users/') }}';
         url_jsfile = '{{ URL::asset('/js/users/') }}';
+        url_audio = '{{ URL::asset('/audio') }}';
+        url_contact_image = '{{ URL::asset('images/contact_data/') }}';
+
         var form_create_errors = null
         var form_edit_errors = null
+
         var create_note_errors = null
         var edit_note_errors = null
+
         var edit_password_errors = null
+
+        var editor = new Quill('#snow-editor', {
+            theme: 'snow'
+        });
     </script>
     <!-- custom js files end -->
 

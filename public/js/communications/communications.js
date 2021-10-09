@@ -1,6 +1,6 @@
 function editCommunication(id) {
     $('#edit-communications-modal').modal('toggle')
-    $.get('/communications/get/' + id, function(data) {
+    $.get(route('communications.get', id), function(data) {
         console.log(data)
         $('#edit-communication-id').val(id)
         $('#edit-communication-contact_id').val(data.communication.contact_id)
@@ -53,7 +53,7 @@ function deleteCommunication(id) {
 }
 
 function viewCommunication(id) {
-    $.get('/communications/show/' + id, function(response) {
+    $.get(route('communications.show', id), function(response) {
         console.log(response)
 
         $('#datatable-communications tbody tr').removeClass('selected')

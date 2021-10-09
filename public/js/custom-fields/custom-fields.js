@@ -52,7 +52,7 @@ $(document).ready(function() {
 });
 
 function viewCustomFields() {
-    $.get('/contacts/custom-fields', function(data) {
+    $.get(route('custom-fields'), function(data) {
         //console.log(data)
         if (typeof dataTableCustomFields !== 'undefined')
             dataTableCustomFields.destroy()
@@ -114,7 +114,7 @@ function viewCustomFields() {
 
 function editCustomField(id) {
     $('#custom-fields-modal').modal('toggle')
-    $.get('/contacts/custom-fields/get/' + id, function(data) {
+    $.get(route('custom-fields.get', id), function(data) {
         console.log(data)
         $('#edit-custom-field-id').val(id)
         $('#edit-custom-field-account_id').val(data.custom_field.account_id)

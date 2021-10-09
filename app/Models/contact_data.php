@@ -21,5 +21,5 @@ class Contact_data extends Model
      */
     public $timestamps = false;
 
-    protected $table = 'Contact_data';
+    protected $table = 'contact_data';
 }

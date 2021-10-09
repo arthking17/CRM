@@ -56,6 +56,14 @@ if (!function_exists('getContactTypeByClass')) {
     }
 }
 
+if (!function_exists('getContactDataClass')) {
+    function getContactDataClass($className): int
+    {
+        $contacts_class = ["phone_number", "mobile", "fax_number", "email", "facebook", "instagram", "skype", "whatsapp", "viber", "messenger"];
+        return array_search(strtolower($className), $contacts_class);
+    }
+}
+
 if (!function_exists('getCompanieClassName')) {
     function getCompanieClassName($class): string
     {

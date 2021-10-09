@@ -66,4 +66,13 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Log::class);
     }
+
+    /**
+     * Get the user record associated with the Users_sip_account.
+     * @return \App\Models\Users_SipAccount
+     */
+    public function users_sipaccount()
+    {
+        return $this->hasMany(Users_SipAccount::class, 'user_id', 'id');
+    }
 }
